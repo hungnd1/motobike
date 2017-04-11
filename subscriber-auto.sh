@@ -1,0 +1,1 @@
+/opt/php/bin/php /opt/code/tvod2-backend/yii subscriber/auto-delete-subscriber
