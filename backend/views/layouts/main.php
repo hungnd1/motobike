@@ -109,8 +109,9 @@ $arrlang = array();
 
             $rightItems = [
                 [
-                    'label' => Yii::t("app","Hệ thống"),
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Hệ thống'),
                     'url' => 'javascript:;',
+                    'encode' => false,
 //                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
 //                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
                     'items' => [
@@ -134,6 +135,24 @@ $arrlang = array();
                         ],
                     ]
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý danh mục'),
+                    'url' => ['category/index'],
+                    'require_auth' => true,
+                ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý cửa hàng xe'),
+                    'url' => ['shopbike/index'],
+                    'require_auth' => true,
+                ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý sản phẩm'),
+                    'url' => ['product/index'],
+                    'require_auth' => true,
+                ]
             ];
 
 
@@ -151,11 +170,7 @@ $arrlang = array();
                          * @var $sp_user User
                          */
                         $sp_user = $user->identity;
-                        if($sp_user->site_id && $sp_user->site->user_admin_id == $sp_user->id){
-                            return true;
-                        }else{
                             return false;
-                        }
                     }else{
                         return false;
                     }
