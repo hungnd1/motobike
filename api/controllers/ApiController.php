@@ -41,7 +41,6 @@ class ApiController extends Controller
         $behaviors['authenticator'] = [
             'class' => CompositeAuth::className(),
             'authMethods' => [
-                IdentifyMsisdn::className(),
                 // them header: -H "Authorization: Bearer access_token"
                 HttpBearerAuth::className(),
                 // them tham so 'access-token' vao query
@@ -59,12 +58,6 @@ class ApiController extends Controller
      */
     public function beforeAction($action)
     {
-        $language = Yii::$app->request->headers->get(static::HEADER_LANGUAGE);
-
-        if(!array_key_exists($language, Languages::$language)){
-            throw new UnauthorizedHttpException(Yii::t('app','Không hỗ trợ ngôn ngữ : ').$language);
-        }
-        $this->language = $language;
 
         /** Sửa lại phần beforeAction vì code đang sai */
         $api_key = Yii::$app->request->headers->get(static::HEADER_API_KEY);
@@ -77,13 +70,7 @@ class ApiController extends Controller
         if (!$credential) {
             throw new UnauthorizedHttpException(Yii::t('app','Không tồn tại API key'));
         }
-        $this->site = Site::findOne(['id' => $credential->site_id, 'status' => Site::STATUS_ACTIVE]);
-        /**  */
-        if (!$this->site) {
-            throw new UnauthorizedHttpException(Yii::t('app','Không tồn tại Service Provider'));
-        }
         /** Set site_id để dùng cho tiện */
-        Yii::$app->params['site_id'] =   $this->site->id;
         switch ($credential->type) {
             case SiteApiCredential::TYPE_WEB_APPLICATION:
                 break;
@@ -96,15 +83,6 @@ class ApiController extends Controller
                 }
                 break;
             case SiteApiCredential::TYPE_ANDROID_APPLICATION:
-                $packageName = Yii::$app->request->headers->get(static::HEADER_PACKAGE_NAME);
-                $fingerprint = Yii::$app->request->headers->get(static::HEADER_FINGERPRINT);
-//                if (!$packageName
-//                    || ($packageName != $credential->package_name)
-//                    || !$fingerprint
-//                    || ($fingerprint != $credential->certificate_fingerprint)
-//                ) {
-//                    throw new UnauthorizedHttpException(Yii::t('app','PackageName không hợp lệ hoặc chưa được cấp phép'));
-//                }
                 break;
             default:
                 break;

@@ -16,7 +16,7 @@ return [
 //        '@version_folder' => 'version_file',
 //        '@content_images' =>'content_images',
 //        '@ads_images' => 'sp/web/content_images',
-//        '@cat_image' => 'cat_images',
+//        '@cat_image' => 'news',
     ],
     'components' => [
         'user' => [

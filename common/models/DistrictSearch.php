@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\ServiceProviderApiCredential;
+use common\models\District;
 
 /**
- * ServiceProviderApiCredentialSearch represents the model behind the search form about `common\models\ServiceProviderApiCredential`.
+ * DistrictSearch represents the model behind the search form of `common\models\District`.
  */
-class SiteApiCredentialSearch extends SiteApiCredential
+class DistrictSearch extends District
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SiteApiCredentialSearch extends SiteApiCredential
     public function rules()
     {
         return [
-            [['id', 'type', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['client_name', 'client_api_key', 'client_secret', 'description'], 'safe'],
+            [['id', 'province_id'], 'integer'],
+            [['district_name'], 'safe'],
         ];
     }
 
@@ -41,7 +41,9 @@ class SiteApiCredentialSearch extends SiteApiCredential
      */
     public function search($params)
     {
-        $query = SiteApiCredential::find();
+        $query = District::find();
+
+        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -55,18 +57,13 @@ class SiteApiCredentialSearch extends SiteApiCredential
             return $dataProvider;
         }
 
+        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'type' => $this->type,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'province_id' => $this->province_id,
         ]);
 
-        $query->andFilterWhere(['like', 'client_name', $this->client_name])
-            ->andFilterWhere(['like', 'client_api_key', $this->client_api_key])
-            ->andFilterWhere(['like', 'client_secret', $this->client_secret])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'district_name', $this->district_name]);
 
         return $dataProvider;
     }

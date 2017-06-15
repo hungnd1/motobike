@@ -12,7 +12,7 @@ return [
     'controllerNamespace' => 'cp\controllers',
     'bootstrap' => ['log'],
     'aliases' => [
-        '@cat_image' => 'cat_images',
+        '@cat_image' => 'news',
         '@content_images'=>'content_images',
     ],
     'modules' => [

@@ -9,14 +9,11 @@ use Yii;
  *
  * @property integer $id
  * @property integer $subscriber_id
- * @property string $package_name
- * @property string $msisdn
  * @property string $token
  * @property integer $type
- * @property string $ip_address
  * @property integer $created_at
+ * @property integer $updated_at
  * @property integer $expired_at
- * @property string $cookies
  * @property integer $status
  * @property integer $channel
  *
@@ -30,6 +27,8 @@ class SubscriberToken extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 10;
     const STATUS_INACTIVE = 0;
 
+    const CHANNEL_ANDROID = 2;
+    const CHANNEL_IOS = 1;
     /**
      * @inheritdoc
      */
@@ -44,13 +43,9 @@ class SubscriberToken extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['subscriber_id','package_name', 'token'], 'required'],
-            [['subscriber_id', 'type', 'created_at', 'expired_at', 'status', 'channel'], 'integer'],
-            [['package_name'], 'string', 'max' => 255],
-            [['msisdn'], 'string', 'max' => 20],
+            [['subscriber_id', 'token'], 'required'],
+            [['subscriber_id', 'type', 'created_at', 'expired_at', 'status', 'channel','updated_at'], 'integer'],
             [['token'], 'string', 'max' => 100],
-            [['ip_address'], 'string', 'max' => 45],
-            [['cookies'], 'string', 'max' => 1000]
         ];
     }
 
@@ -62,14 +57,10 @@ class SubscriberToken extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'subscriber_id' => Yii::t('app', 'Subscriber ID'),
-            'package_name' => Yii::t('app', 'Package Name'),
-            'msisdn' => Yii::t('app', 'Msisdn'),
             'token' => Yii::t('app', 'Token'),
             'type' => Yii::t('app', 'Type'),
-            'ip_address' => Yii::t('app', 'Ip Address'),
             'created_at' => Yii::t('app', 'Ngày tạo'),
             'expired_at' => Yii::t('app', 'Expired At'),
-            'cookies' => Yii::t('app', 'Cookies'),
             'status' => Yii::t('app', 'Trạng thái'),
             'channel' => Yii::t('app', 'Channel'),
         ];
@@ -89,15 +80,14 @@ class SubscriberToken extends \yii\db\ActiveRecord
      * @return SubscriberToken|null
      * @throws \Exception
      */
-    public static function generateToken($subscriber_id, $channel,$package_name){
+    public static function generateToken($subscriber_id, $channel){
         /** @var  $st SubscriberToken*/
-        $st = SubscriberToken::find()->where(['subscriber_id' => $subscriber_id,'channel'=>$channel,'package_name'=>$package_name])->one();
+        $st = SubscriberToken::find()->where(['subscriber_id' => $subscriber_id,'channel'=>$channel])->one();
         if($st){
             $st->token = Yii::$app->security->generateRandomString();
             $st->created_at = time();
             $st->expired_at = time() + Yii::$app->params['api.AccessTokenExpire'];
             $st->status = SubscriberToken::STATUS_ACTIVE;
-            $st->ip_address = Yii::$app->request->getUserIP();;
             if($st->update()){
                 return $st;
             }
@@ -105,14 +95,12 @@ class SubscriberToken extends \yii\db\ActiveRecord
         }else{
             $s = new SubscriberToken();
             $s->subscriber_id = $subscriber_id;
-            $s->package_name = $package_name;
             $s->token = Yii::$app->security->generateRandomString();
             $s->created_at = time();
             $s->expired_at = time() + Yii::$app->params['api.AccessTokenExpire'];
             $s->type = SubscriberToken::TYPE_WIFI_PASSWORD;
             $s->status = self::STATUS_ACTIVE;
             $s->channel = $channel;
-            $s->ip_address = Yii::$app->request->getUserIP();
             if($s->save()){
                 return $s;
             }

@@ -123,6 +123,12 @@ $arrlang = array();
                         ],
                         [
                             'encode' => false,
+                            'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'QL Key'),
+                            'url' => ['credential/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
                             'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'Lịch sử tương tác'),
                             'url' => ['user-activity/index'],
                             'require_auth' => true,
@@ -136,23 +142,51 @@ $arrlang = array();
                     ]
                 ],
                 [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý thông tin'),
+                    'url' => 'javascript:;',
                     'encode' => false,
-                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý danh mục'),
-                    'url' => ['category/index'],
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý tỉnh'),
+                            'url' => ['province/index'],
+                            'require_auth' => true,
+                        ],
+//                        [
+//                            'encode' => false,
+//                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý huyện'),
+//                            'url' => ['district/index'],
+//                            'require_auth' => true,
+//                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý xã'),
+                            'url' => ['station/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý thiết bị'),
+                            'url' => ['device-info/index'],
+                            'require_auth' => true,
+                        ],
+                    ]
+
+                ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý tài khoản'),
+                    'url' => ['subscriber/index'],
                     'require_auth' => true,
                 ],
                 [
                     'encode' => false,
-                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý cửa hàng xe'),
-                    'url' => ['shopbike/index'],
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý tin tức'),
+                    'url' => ['news/index'],
                     'require_auth' => true,
                 ],
-                [
-                    'encode' => false,
-                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý sản phẩm'),
-                    'url' => ['product/index'],
-                    'require_auth' => true,
-                ]
             ];
 
 
