@@ -1,7 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 
-$this->title = 'TVOD-Backend';
+$this->title = 'GreenCoffee-Backend';
 ?>
 <div class="site-index">
 
