@@ -44,7 +44,7 @@ class StationController extends ApiController
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSizeLimit' => [1, 1],
+                'pageSizeLimit' => [1, 1000],
             ],
             'sort' => [
                 'defaultOrder' => ['station_name' => SORT_ASC],
