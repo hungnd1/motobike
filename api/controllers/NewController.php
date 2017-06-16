@@ -43,6 +43,9 @@ class NewController extends ApiController
         $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
             'sort' => [
                 'defaultOrder' => ['created_at' => SORT_DESC],
             ],
