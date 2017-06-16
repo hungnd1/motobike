@@ -36,7 +36,7 @@ $arrlang = array();
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="<?= Yii::$app->homeUrl ?>">
-                <img src="<?= Url::to("@web/img/logo-big.png") ?>" alt="logo" class="logo-default"/>
+<!--                <img src="--><?//= Url::to("@web/img/") ?><!--" alt="logo" class="logo-default"/>-->
             </a>
 
             <div class="menu-toggler sidebar-toggler hide">
