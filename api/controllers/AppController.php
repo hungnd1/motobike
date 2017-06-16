@@ -26,7 +26,7 @@ class AppController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'check-uid'
+            'check-device-token'
         ];
 
         return $behaviors;
@@ -36,7 +36,7 @@ class AppController extends ApiController
     {
         return [
             'index' => ['GET'],
-            'check-uid' => ['GET']
+            'check-device-token' => ['POST']
         ];
     }
 
