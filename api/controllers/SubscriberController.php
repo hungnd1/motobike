@@ -48,7 +48,6 @@ class SubscriberController extends ApiController
     {
         $username = $this->getParameterPost('username', '');
         $password = $this->getParameterPost('password', '');
-        $channel = $this->getParameterPost('channel', SubscriberToken::CHANNEL_ANDROID);
 
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
@@ -58,11 +57,12 @@ class SubscriberController extends ApiController
         }
 
         $subscriber = Subscriber::findOne(['username' => $username]);
+
         if (!$subscriber->validatePassword($password)) {
             throw new InvalidValueException(Message::getWrongUserOrPassMessage());
         }
 
-        $token = SubscriberToken::generateToken($subscriber->id, $channel);
+        $token = SubscriberToken::generateToken($subscriber->id, $subscriber->authen_type);
         if (!$token) {
             throw new ServerErrorHttpException(Message::getFailMessage());
         }
