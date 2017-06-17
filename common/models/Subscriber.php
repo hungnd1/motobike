@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 use yii\web\IdentityInterface;
 
 /**
@@ -225,5 +226,11 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     {
         // TODO: Implement validateAuthKey() method.
         return $this->getAuthKey() === $authKey;
+    }
+
+    public function getImageLink()
+    {
+        return $this->avatar_url ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@avatar_image') . DIRECTORY_SEPARATOR . $this->avatar_url, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }

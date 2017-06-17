@@ -7,6 +7,7 @@ $config = [
     'aliases' => [
         '@file_downloads' => 'static/file_dowloads',
         '@news_image' => 'static/news',
+        '@avatar_image' => 'static/avatar',
         '@messages' => 'messages',
         '@site' => '@sp',
         '@service_group_icon' => 'static/service_group_icon',

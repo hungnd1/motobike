@@ -44,8 +44,12 @@ class AppController extends ApiController
     {
         $uid = $this->getParameterPost('device_token', '');
         $type = $this->getParameterPost('channel', DeviceInfo::TYPE_ANDROID);
+        $mac = $this->getParameterPost('mac','');
         if (!$uid) {
             throw new InvalidValueException('Device token không được để trống');
+        }
+        if (!$mac) {
+            throw new InvalidValueException('mac không được để trống');
         }
         $deviceInfo = DeviceInfo::findOne(['device_type' => $type, 'device_uid' => $uid]);
         if (!$deviceInfo) {

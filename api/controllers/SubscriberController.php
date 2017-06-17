@@ -40,7 +40,8 @@ class SubscriberController extends ApiController
         return [
             'get-user' => ['GET'],
             'login' => ['POST'],
-            'register' => ['POST']
+            'register' => ['POST'],
+            'get-info' => ['GET']
         ];
     }
 
@@ -120,5 +121,24 @@ class SubscriberController extends ApiController
             ];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
+
+    public function actionChangeInfo()
+    {
+        $fullname = $this->getParameterPost('fullname', '');
+        $email = $this->getParameterPost('email', '');
+        $avatar = $this->getParameterPost('avatar', '');
+
+    }
+
+    public function actionGetInfo($id)
+    {
+        UserHelpers::manualLogin();
+        $subscriber = \api\models\Subscriber::findOne(['id' => $id]);
+        if(!$subscriber){
+            throw new InvalidValueException('Tài khoản không tồn tại, vui lòng kiểm tra lại');
+        }
+
+        return $subscriber;
     }
 }
