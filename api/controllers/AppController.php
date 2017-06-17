@@ -58,6 +58,7 @@ class AppController extends ApiController
             $device->device_type = $type;
             $device->created_at = time();
             $device->updated_at = time();
+            $device->mac = $mac;
             $device->status = DeviceInfo::STATUS_ACTIVE;
             $device->save();
         }

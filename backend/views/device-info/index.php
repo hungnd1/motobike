@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="portlet-body">
                 <p>
-                    <?php echo Html::a('Thêm mới ', Yii::$app->urlManager->createUrl(['device-info/create']), ['class' => 'btn btn-success']) ?>
+<!--                    --><?php //echo Html::a('Thêm mới ', Yii::$app->urlManager->createUrl(['device-info/create']), ['class' => 'btn btn-success']) ?>
                 </p>
                 <?php
                 $gridColumn = [
@@ -61,6 +61,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             'pluginOptions' => ['allowClear' => true],
                         ],
                         'filterInputOptions' => ['placeholder' => Yii::t("app", "Tất cả")],
+                    ],
+                    [
+                        'class' => '\kartik\grid\DataColumn',
+                        'attribute' => 'mac',
+                        'value' => function ($model, $key, $index, $widget) {
+                            /** @var $model \common\models\DeviceInfo */
+                            return $model->mac;
+                        },
+                        'width' => '150px',
                     ],
                     [
                         'class' => 'kartik\grid\EditableColumn',
@@ -104,6 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 $gridColumn[] = [
                     'class' => 'kartik\grid\ActionColumn',
+                    'template' => '{view} {delete}',
                     'buttons' => [
                         'delete' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>',

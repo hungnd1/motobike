@@ -11,6 +11,7 @@ use Yii;
  * @property integer $device_type
  * @property string $device_uid
  * @property integer $status
+ * @property integer $mac
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -38,7 +39,7 @@ class DeviceInfo extends \yii\db\ActiveRecord
         return [
             [['device_type', 'device_uid'], 'required'],
             [['device_type', 'created_at', 'updated_at','status'], 'integer'],
-            [['device_uid'], 'string', 'max' => 500],
+            [['device_uid','mac'], 'string', 'max' => 500],
         ];
     }
 

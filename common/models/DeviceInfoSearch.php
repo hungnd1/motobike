@@ -19,7 +19,7 @@ class DeviceInfoSearch extends DeviceInfo
     {
         return [
             [['id', 'device_type', 'created_at', 'updated_at','status'], 'integer'],
-            [['device_uid'], 'safe'],
+            [['device_uid','mac'], 'safe'],
         ];
     }
 
