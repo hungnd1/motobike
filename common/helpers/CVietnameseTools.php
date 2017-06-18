@@ -5,7 +5,6 @@ namespace common\helpers;
  *
  * @version 1.0
  * @since 1 Nov 2011
- * @author Nguyen Chi Thuc, gthuc.nguyen@gmail.com
  * @copyright 2011
  * 
  */

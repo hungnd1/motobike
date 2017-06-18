@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Province */
 
-$this->title = 'Create Province';
+$this->title = 'Tạo tỉnh';
 $this->params['breadcrumbs'][] = ['label' => 'Provinces', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

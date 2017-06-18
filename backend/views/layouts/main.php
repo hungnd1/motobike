@@ -123,6 +123,12 @@ $arrlang = array();
                         ],
                         [
                             'encode' => false,
+                            'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý thiết bị'),
+                            'url' => ['device-info/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
                             'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'QL Key'),
                             'url' => ['credential/index'],
                             'require_auth' => true,
@@ -166,12 +172,6 @@ $arrlang = array();
                             'url' => ['station/index'],
                             'require_auth' => true,
                         ],
-                        [
-                            'encode' => false,
-                            'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý thiết bị'),
-                            'url' => ['device-info/index'],
-                            'require_auth' => true,
-                        ],
                     ]
 
                 ],
@@ -185,6 +185,12 @@ $arrlang = array();
                     'encode' => false,
                     'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý tin tức'),
                     'url' => ['news/index'],
+                    'require_auth' => true,
+                ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý giá'),
+                    'url' => ['price-coffee/index'],
                     'require_auth' => true,
                 ],
             ];

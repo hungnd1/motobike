@@ -39,8 +39,8 @@ class Province extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'province_name' => 'Province Name',
-            'province_code' => 'Province Code',
+            'province_name' => 'Tên tỉnh',
+            'province_code' => 'Mã tỉnh',
         ];
     }
 }

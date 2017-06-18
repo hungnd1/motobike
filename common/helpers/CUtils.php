@@ -78,7 +78,7 @@ class CUtils
         if (!isset($price) || empty($price)) {
             return "0";
         }
-        return "" . number_format($price, 0, ',', '.');
+        return "" . number_format($price, 0, ',', ',');
     }
 
     public static function randomString($length = 32, $chars = "abcdefghijklmnopqrstuvwxyz0123456789")
@@ -438,29 +438,6 @@ class CUtils
     /**
      * @param $image VideoImage|String
      */
-    public static function makeImageUrl($image)
-    {
-        $url = "";
-        if (is_string($image) || $image == null) {
-            $url = $image;
-        } else {
-            $url = $image->url;
-        }
-
-        if (strpos($url, "http://") == 0 || strpos($url, "https://") == 0) {
-
-        } else {
-
-        }
-
-        if (is_string($image) || $image == null) {
-        } else {
-            $image->url = $url;
-        }
-        $url = CommonConst::HOST_IMAGE_ROOT . $url;
-        return $url;
-
-    }
 
     /**
      * @param $video Video|String

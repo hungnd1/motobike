@@ -12,8 +12,10 @@ namespace api\controllers;
 use common\models\Category;
 use common\models\Content;
 use common\models\DeviceInfo;
+use common\models\PriceCoffee;
 use common\models\ServiceGroup;
 use yii\base\InvalidValueException;
+use yii\data\ActiveDataProvider;
 
 class AppController extends ApiController
 {
@@ -26,7 +28,8 @@ class AppController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'check-device-token'
+            'check-device-token',
+            'get-price'
         ];
 
         return $behaviors;
@@ -36,6 +39,7 @@ class AppController extends ApiController
     {
         return [
             'index' => ['GET'],
+            'get-price' => ['GET'],
             'check-device-token' => ['POST']
         ];
     }
@@ -44,7 +48,7 @@ class AppController extends ApiController
     {
         $uid = $this->getParameterPost('device_token', '');
         $type = $this->getParameterPost('channel', DeviceInfo::TYPE_ANDROID);
-        $mac = $this->getParameterPost('mac','');
+        $mac = $this->getParameterPost('mac', '');
         if (!$uid) {
             throw new InvalidValueException('Device token không được để trống');
         }
@@ -63,5 +67,17 @@ class AppController extends ApiController
             $device->save();
         }
         return true;
+    }
+
+    public function actionGetPrice($date = 0)
+    {
+        if (!$date) {
+            $date = date('d/m/Y',time());
+        }
+
+        $listPrice = PriceCoffee::getPrice($date);
+
+
+        return $listPrice;
     }
 }

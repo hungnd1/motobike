@@ -9,7 +9,6 @@
 namespace common\components;
 
 
-use common\helpers\CommonUtils;
 use common\helpers\CUtils;
 use common\helpers\CVietnameseTools;
 use FileUpload\FileUpload;
