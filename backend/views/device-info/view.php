@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'model' => $model,
                             'attributes' => [
                                 'device_uid',
+                                'mac',
                                 [
                                     'attribute' => 'device_type',
                                     'value' => \common\models\DeviceInfo::getListStatusNameByType($model->device_type)

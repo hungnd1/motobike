@@ -131,12 +131,12 @@ class SubscriberController extends ApiController
 
     }
 
-    public function actionGetInfo($id)
+    public function actionGetInfo()
     {
         UserHelpers::manualLogin();
-        $subscriber = \api\models\Subscriber::findOne(['id' => $id]);
+        $subscriber = Yii::$app->user->identity;
         if(!$subscriber){
-            throw new InvalidValueException('Tài khoản không tồn tại, vui lòng kiểm tra lại');
+            throw new InvalidValueException(Message::getAccessDennyMessage());
         }
 
         return $subscriber;
