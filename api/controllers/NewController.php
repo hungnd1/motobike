@@ -39,7 +39,7 @@ class NewController extends ApiController
 
     public function actionGetListNew()
     {
-        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] : 0;
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
