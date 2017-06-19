@@ -131,7 +131,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
                     $pricePre = PriceCoffee::find()->andWhere(['province_id' => $item->id, 'district_id' => $price->district_id])->andWhere(['<>','id',$price->id])->orderBy(['created_at' => SORT_DESC])->one();
                     /** @var $pricePre PriceCoffee */
                     if ($pricePre) {
-                        $arrPrice['change_info'] = $price->price_average - $pricePre->price_average < 0 ? 'Trừ lùi: ' . $price->price_average - $pricePre->price_average : '+' . $price->price_average - $pricePre->price_average;
+                        $arrPrice['change_info'] = $price->price_average - $pricePre->price_average < 0 ? ('Trừ lùi: ' . ($price->price_average - $pricePre->price_average)) : ('+' . ($price->price_average - $pricePre->price_average));
                     } else {
                         $arrPrice['change_info'] = 0;
                     }
