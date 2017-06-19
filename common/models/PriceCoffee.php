@@ -10,8 +10,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $province_id
- * @property string $name
- * @property string $change_info
+ * @property integer $district_id
  * @property integer $price_average
  * @property integer $unit
  * @property integer $created_at
@@ -36,10 +35,8 @@ class PriceCoffee extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price_average', 'province_id', 'unit', 'name'], 'required'],
-            [['province_id', 'price_average', 'unit', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'required'],
-            [['name', 'change_info'], 'string', 'max' => 255],
+            [['price_average', 'province_id', 'unit', 'district_id'], 'required'],
+            [['province_id', 'price_average', 'district_id', 'unit', 'created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -51,10 +48,9 @@ class PriceCoffee extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'province_id' => 'Tỉnh',
-            'name' => 'Huyện/Thành phố',
+            'district_id' => 'Huyện/Thành phố',
             'price_average' => 'Giá trung bình',
             'unit' => 'Đơn vị',
-            'change_info' => 'Thay đổi (So với hôm qua)',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -72,10 +68,28 @@ class PriceCoffee extends \yii\db\ActiveRecord
         return $listArr;
     }
 
+    public static function getListDistrict()
+    {
+
+        $listArr = array();
+        $lstPro = District::find()->all();
+        foreach ($lstPro as $item) {
+            /** @var $item District */
+            $listArr[$item->id] = $item->district_name;
+        }
+        return $listArr;
+    }
+
     public static function getProvinceDetail($province_id)
     {
         $province = Province::findOne(['id' => $province_id]);
         return $province->province_name;
+    }
+
+    public static function getDistrictDetail($district_id)
+    {
+        $province = District::findOne(['id' => $district_id]);
+        return $province->district_name;
     }
 
     public static function getListUnit()
@@ -113,8 +127,14 @@ class PriceCoffee extends \yii\db\ActiveRecord
             if ($listPrice) {
                 foreach ($listPrice as $price) {
                     /** @var $price PriceCoffee */
-                    $arrPrice['name'] = $price->name;
-                    $arrPrice['change_info'] = $price->change_info;
+                    $arrPrice['name'] = District::findOne(['id' => $price->district_id])->district_name;
+                    $pricePre = PriceCoffee::find()->andWhere(['province_id' => $item->id, 'district_id' => $price->district_id])->orderBy(['id' => SORT_DESC])->one();
+                    /** @var $pricePre PriceCoffee */
+                    if ($pricePre) {
+                        $arrPrice['change_info'] = $price->price_average - $pricePre->price_average < 0 ? 'Trừ lùi: ' . $price->price_average - $pricePre->price_average : '+' . $price->price_average - $pricePre->price_average;
+                    } else {
+                        $arrPrice['change_info'] = 0;
+                    }
                     $arrPrice['price_average'] = CUtils::formatPrice($price->price_average);
                     $arrPrice['unit'] = PriceCoffee::getListStatusNameByUnit($price->unit);
                     $province['items'][] = $arrPrice;
@@ -124,5 +144,11 @@ class PriceCoffee extends \yii\db\ActiveRecord
         }
         $arr['items'] = $province_return;
         return $arr;
+    }
+
+    public function getContentProvider()
+    {
+        $listCp = Province::find()->all();
+        return $listCp;
     }
 }

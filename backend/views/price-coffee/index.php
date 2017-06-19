@@ -54,22 +54,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filterInputOptions' => ['placeholder' => Yii::t("app", "Tất cả")],
                     ],
                     [
-                        'format' => 'raw',
                         'class' => '\kartik\grid\DataColumn',
-                        'attribute' => 'name',
-                        'value' => function ($model, $key, $index) {
+                        'attribute' => 'district_id',
+                        'value' => function ($model, $key, $index, $widget) {
                             /** @var $model \common\models\PriceCoffee */
-                            return $model->name;
+                            return PriceCoffee::getDistrictDetail($model->district_id);
                         },
-                    ],
-                    [
-                        'format' => 'raw',
-                        'class' => '\kartik\grid\DataColumn',
-                        'attribute' => 'change_info',
-                        'value' => function ($model, $key, $index) {
-                            /** @var $model \common\models\PriceCoffee */
-                            return $model->change_info;
-                        },
+                        'width' => '150px',
+                        'filterType' => GridView::FILTER_SELECT2,
+                        'filter' => PriceCoffee::getListDistrict(),
+                        'filterWidgetOptions' => [
+                            'pluginOptions' => ['allowClear' => true],
+                        ],
+                        'filterInputOptions' => ['placeholder' => Yii::t("app", "Tất cả")],
                     ],
                     [
                         'format' => 'raw',

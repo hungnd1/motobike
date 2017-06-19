@@ -1,7 +1,9 @@
 <?php
 
 use common\models\PriceCoffee;
+use kartik\select2\Select2;
 use kartik\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -24,15 +26,14 @@ use yii\helpers\Html;
 ]); ?>
 <div class="form-body">
 
-    <?= $form->field($model, 'province_id')->dropDownList(
-        PriceCoffee::getListProvince(), ['class' => 'input-circle']
+    <?= $form->field($model, 'district_id')->dropDownList(
+        PriceCoffee::getListDistrict(), ['class' => 'input-circle']
     ) ?>
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
+
     <?= $form->field($model, 'price_average')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
     <?= $form->field($model, 'unit')->dropDownList(
         PriceCoffee::getListUnit(), ['class' => 'input-circle']
     ) ?>
-
 
 </div>
 <div class="form-actions">

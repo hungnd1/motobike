@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\District;
 use common\models\PriceCoffee;
 use common\models\PriceCoffeeSearch;
 use Yii;
@@ -66,6 +67,7 @@ class PriceCoffeeController extends Controller
         $model = new PriceCoffee();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->province_id = District::findOne(['id'=>$model->district_id])->province_id;
             $model->created_at = time();
             $model->updated_at = time();
             $model->save();

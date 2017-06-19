@@ -10,7 +10,7 @@ class m170618_045711_price_coffee extends Migration
     CREATE TABLE `price_coffee` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `province_id` INT NULL COMMENT '',
-  `name` VARCHAR(255) NOT NULL COMMENT '',
+  `district_id` INT NOT NULL COMMENT '',
   `price_average` INT NULL COMMENT '',
   `unit` INT NULL COMMENT '',
   `created_at` INT NULL COMMENT '',

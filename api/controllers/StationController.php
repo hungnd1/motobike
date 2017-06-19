@@ -9,7 +9,7 @@
 namespace api\controllers;
 
 
-use common\models\Station;
+use api\models\Station;
 use Yii;
 use yii\data\ActiveDataProvider;
 
