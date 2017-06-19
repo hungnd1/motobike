@@ -128,7 +128,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
                 foreach ($listPrice as $price) {
                     /** @var $price PriceCoffee */
                     $arrPrice['name'] = District::findOne(['id' => $price->district_id])->district_name;
-                    $pricePre = PriceCoffee::find()->andWhere(['province_id' => $item->id, 'district_id' => $price->district_id])->orderBy(['id' => SORT_DESC])->one();
+                    $pricePre = PriceCoffee::find()->andWhere(['province_id' => $item->id, 'district_id' => $price->district_id])->andWhere(['<>','id',$price->id])->orderBy(['created_at' => SORT_DESC])->one();
                     /** @var $pricePre PriceCoffee */
                     if ($pricePre) {
                         $arrPrice['change_info'] = $price->price_average - $pricePre->price_average < 0 ? 'Trừ lùi: ' . $price->price_average - $pricePre->price_average : '+' . $price->price_average - $pricePre->price_average;
