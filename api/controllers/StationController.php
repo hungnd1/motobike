@@ -44,9 +44,7 @@ class StationController extends ApiController
         $query = Station::find()->andWhere(['status' => Station::STATUS_ACTIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSizeLimit' => [1, 1000],
-            ],
+            'pagination' => false,
             'sort' => [
                 'defaultOrder' => ['station_name' => SORT_ASC],
             ],
