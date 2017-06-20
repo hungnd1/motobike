@@ -10,6 +10,7 @@ namespace api\controllers;
 
 
 use api\models\Station;
+use common\helpers\CVietnameseTools;
 use Yii;
 use yii\data\ActiveDataProvider;
 
@@ -52,5 +53,24 @@ class StationController extends ApiController
         ]);
         return $dataProvider;
 
+    }
+
+    public function actionSearch($keyword = '')
+    {
+        $query = Station::find()->andWhere(['status' => Station::STATUS_ACTIVE])
+            ->andWhere(['like', 'station_name', CVietnameseTools::removeSigns($keyword)])
+            ->orWhere(['like', 'station_name', $keyword]);
+        $defaultSort = ['station_name' => SORT_ASC];
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSizeLimit' => [1, 1000],
+            ],
+            'sort' => [
+                'defaultOrder' => $defaultSort,
+            ],
+        ]);
+        return $dataProvider;
     }
 }

@@ -54,4 +54,23 @@ class NewController extends ApiController
         return $dataProvider;
 
     }
+
+    public function actionSearch($keyword = '')
+    {
+        $query = News::find()->andWhere(['like', 'title', $keyword])
+            ->orWhere(['like','content',$keyword])
+            ->andWhere(['status' => News::STATUS_ACTIVE]);
+        $defaultSort = ['created_at' => SORT_DESC];
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+            'sort' => [
+                'defaultOrder' => $defaultSort,
+            ],
+        ]);
+        return $dataProvider;
+    }
 }
