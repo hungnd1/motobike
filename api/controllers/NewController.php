@@ -24,7 +24,8 @@ class NewController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-new'
+            'get-list-new',
+            'search'
         ];
 
         return $behaviors;
