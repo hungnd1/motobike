@@ -105,7 +105,7 @@ class NewsController extends Controller
         $model = $this->findModel($id);
         $oldImg = $model->image;
         if ($model->load(Yii::$app->request->post())) {
-            $image = UploadedFile::getInstance($model, 'images');
+            $image = UploadedFile::getInstance($model, 'image');
             if ($image) {
                 $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
                 $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
