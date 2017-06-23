@@ -168,8 +168,8 @@ class SubscriberController extends ApiController
         UserHelpers::manualLogin();
 
         $quality = $this->getParameterPost('quality', '');
-        $sold = $this->getParameterPost('sold', '');
-        $desire_to_sell = $this->getParameterPost('desire_to_sell', '');
+        $sold = $this->getParameterPost('sold', 0);
+        $desire_to_sell = $this->getParameterPost('desire_to_sell', 0);
         $type_coffee = $this->getParameterPost('type_coffee', 1);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
@@ -177,10 +177,6 @@ class SubscriberController extends ApiController
         }
         if (!$quality) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng')]));
-        }
-
-        if (!$sold) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng đã bán')]));
         }
 
         if (!$desire_to_sell) {
