@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\helpers\UserHelpers;
+use common\models\ExchangeFarmer;
 use common\models\Subscriber;
 use common\models\SubscriberToken;
 use Yii;
@@ -42,7 +43,8 @@ class SubscriberController extends ApiController
             'login' => ['POST'],
             'register' => ['POST'],
             'get-info' => ['GET'],
-            'change-info' => ['POST']
+            'change-info' => ['POST'],
+            'exchange-coffee' => ['POST']
         ];
     }
 
@@ -161,4 +163,46 @@ class SubscriberController extends ApiController
         return $subscriber;
     }
 
+    public function actionExchangeCoffee()
+    {
+        UserHelpers::manualLogin();
+
+        $quality = $this->getParameterPost('quality', '');
+        $sold = $this->getParameterPost('sold', '');
+        $desire_to_sell = $this->getParameterPost('desire_to_sell', '');
+        $type_coffee = $this->getParameterPost('type_coffee', 1);
+        $subscriber = Yii::$app->user->id;
+        if (!$subscriber) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Người dùng chưa đăng nhập')]));
+        }
+        if (!$quality) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng')]));
+        }
+
+        if (!$sold) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng đã bán')]));
+        }
+
+        if (!$desire_to_sell) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng mong muốn bán')]));
+        }
+        if (!$type_coffee) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại cafe')]));
+        }
+
+
+        $exchange = new ExchangeFarmer();
+        $exchange->quanlity = $quality;
+        $exchange->sold = $sold;
+        $exchange->desire_to_sell = $desire_to_sell;
+        $exchange->type_coffee = $type_coffee;
+        $exchange->subscriber_id = Yii::$app->user->id;
+        $exchange->type_coffee = $type_coffee;
+        $exchange->created_at = time();
+        $exchange->updated_at = time();
+        if ($exchange->save()) {
+            return true;
+        }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
 }
