@@ -30,6 +30,7 @@ use yii\web\IdentityInterface;
  * @property integer $client_type
  * @property integer $using_promotion
  * @property string $verification_code
+ * @property string $address
  * @property string $user_agent
  */
 class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
@@ -62,7 +63,7 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
             [['full_name', 'password'], 'string', 'max' => 200],
             [['avatar_url', 'skype_id', 'google_id', 'facebook_id'], 'string', 'max' => 255],
             [['verification_code'], 'string', 'max' => 32],
-            [['user_agent'], 'string', 'max' => 512],
+            [['user_agent','address'], 'string', 'max' => 512],
         ];
     }
 

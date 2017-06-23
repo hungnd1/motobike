@@ -41,7 +41,8 @@ class SubscriberController extends ApiController
             'get-user' => ['GET'],
             'login' => ['POST'],
             'register' => ['POST'],
-            'get-info' => ['GET']
+            'get-info' => ['GET'],
+            'change-info' => ['POST']
         ];
     }
 
@@ -125,9 +126,27 @@ class SubscriberController extends ApiController
 
     public function actionChangeInfo()
     {
+        UserHelpers::manualLogin();
+
         $fullname = $this->getParameterPost('fullname', '');
-        $email = $this->getParameterPost('email', '');
-        $avatar = $this->getParameterPost('avatar', '');
+        $sex = $this->getParameterPost('sex', 1);
+        $address = $this->getParameterPost('address', '');
+        if (!$fullname) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Họ và tên')]));
+        }
+
+        if (!$address) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ')]));
+        }
+        $subscriber = Subscriber::findOne(['id' => Yii::$app->user->id]);
+        $subscriber->full_name = $fullname;
+        $subscriber->sex = $sex;
+        $subscriber->address = $address;
+        if ($subscriber->save(false)) {
+            return true;
+        }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+
 
     }
 
@@ -135,10 +154,11 @@ class SubscriberController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
-        if(!$subscriber){
+        if (!$subscriber) {
             throw new InvalidValueException(Message::getAccessDennyMessage());
         }
 
         return $subscriber;
     }
+
 }
