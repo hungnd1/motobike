@@ -14,6 +14,9 @@ use common\models\Content;
 use common\models\DeviceInfo;
 use common\models\PriceCoffee;
 use common\models\ServiceGroup;
+use common\models\Sold;
+use common\models\TotalQuality;
+use common\models\TypeCoffee;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
 
@@ -29,7 +32,10 @@ class AppController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'check-device-token',
-            'get-price'
+            'get-price',
+            'total-quality',
+            'sold',
+            'type-coffee'
         ];
 
         return $behaviors;
@@ -40,6 +46,9 @@ class AppController extends ApiController
         return [
             'index' => ['GET'],
             'get-price' => ['GET'],
+            'total-quality' => ['GET'],
+            'sold' => ['GET'],
+            'type-coffee' => ['GET'],
             'check-device-token' => ['POST']
         ];
     }
@@ -79,5 +88,35 @@ class AppController extends ApiController
 
 
         return $listPrice;
+    }
+
+    public function actionTotalQuality(){
+        $query = TotalQuality::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionSold(){
+        $query = Sold::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionTypeCoffee(){
+        $query = TypeCoffee::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
     }
 }

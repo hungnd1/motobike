@@ -11,7 +11,7 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\helpers\UserHelpers;
-use common\models\ExchangeFarmer;
+use common\models\Exchange;
 use common\models\Subscriber;
 use common\models\SubscriberToken;
 use Yii;
@@ -167,33 +167,37 @@ class SubscriberController extends ApiController
     {
         UserHelpers::manualLogin();
 
-        $quality = $this->getParameterPost('quality', '');
-        $sold = $this->getParameterPost('sold', 0);
-        $desire_to_sell = $this->getParameterPost('desire_to_sell', 0);
-        $type_coffee = $this->getParameterPost('type_coffee', 1);
+        $quality = $this->getParameterPost('total_quality_id', 0);
+        $sold = $this->getParameterPost('sold_id', 0);
+        $type_coffee = $this->getParameterPost('type_coffee', 0);
+        $location = $this->getParameterPost('location', '');
+        $price = $this->getParameterPost('price', 0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Người dùng chưa đăng nhập')]));
         }
         if (!$quality) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng')]));
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tổng sản lượng')]));
         }
 
-        if (!$desire_to_sell) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng mong muốn bán')]));
+        if (!$sold) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng  bán')]));
         }
         if (!$type_coffee) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại cafe')]));
         }
+        if (!$price) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giá')]));
+        }
 
 
-        $exchange = new ExchangeFarmer();
-        $exchange->quanlity = $quality;
-        $exchange->sold = $sold;
-        $exchange->desire_to_sell = $desire_to_sell;
+        $exchange = new Exchange();
+        $exchange->total_quality_id = $quality;
+        $exchange->sold_id = $sold;
         $exchange->type_coffee = $type_coffee;
+        $exchange->location = $location;
         $exchange->subscriber_id = Yii::$app->user->id;
-        $exchange->type_coffee = $type_coffee;
+        $exchange->price = $price;
         $exchange->created_at = time();
         $exchange->updated_at = time();
         if ($exchange->save()) {

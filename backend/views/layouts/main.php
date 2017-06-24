@@ -176,6 +176,34 @@ $arrlang = array();
 
                 ],
                 [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý giao dịch'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý tổng sản lượng'),
+                            'url' => ['total-quality/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý sản lượng đã bán'),
+                            'url' => ['sold/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý loại coffee'),
+                            'url' => ['type-coffee/index'],
+                            'require_auth' => true,
+                        ],
+                    ]
+
+                ],
+                [
                     'encode' => false,
                     'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý tài khoản'),
                     'url' => ['subscriber/index'],
