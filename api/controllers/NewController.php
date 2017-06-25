@@ -58,8 +58,8 @@ class NewController extends ApiController
 
     public function actionSearch($keyword = '')
     {
-        $query = News::find()->andWhere(['like', 'title', urlencode($keyword)])
-            ->orWhere(['like','content',urlencode($keyword)])
+        $query = News::find()->andWhere(['like', 'title', $keyword])
+            ->orWhere(['like','content',$keyword])
             ->andWhere(['status' => News::STATUS_ACTIVE]);
         $defaultSort = ['created_at' => SORT_DESC];
 
