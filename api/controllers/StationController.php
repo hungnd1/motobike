@@ -57,8 +57,8 @@ class StationController extends ApiController
     public function actionSearch($keyword = '')
     {
         $query = Station::find()->andWhere(['status' => Station::STATUS_ACTIVE])
-            ->andWhere(['like', 'station_name', CVietnameseTools::removeSigns($keyword)])
-            ->orWhere(['like', 'station_name', $keyword]);
+            ->andWhere(['like', 'station_name', CVietnameseTools::removeSigns(urlencode($keyword))])
+            ->orWhere(['like', 'station_name', urlencode($keyword)]);
         $defaultSort = ['station_name' => SORT_ASC];
 
         $dataProvider = new ActiveDataProvider([
