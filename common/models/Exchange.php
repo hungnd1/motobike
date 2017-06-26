@@ -13,7 +13,7 @@ use Yii;
  * @property integer $sold_id
  * @property integer $type_coffee
  * @property string $location
- * @property integer $price
+ * @property string $price
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -33,8 +33,8 @@ class Exchange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['subscriber_id', 'total_quality_id','price','sold_id', 'type_coffee', 'created_at', 'updated_at'], 'integer'],
-            [['location'], 'string', 'max' => 255],
+            [['subscriber_id', 'total_quality_id','sold_id', 'type_coffee', 'created_at', 'updated_at'], 'integer'],
+            [['location','price'], 'string', 'max' => 255],
         ];
     }
 
