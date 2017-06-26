@@ -200,7 +200,7 @@ class SubscriberController extends ApiController
         $exchange->price = $price;
         $exchange->created_at = time();
         $exchange->updated_at = time();
-        if ($exchange->save()) {
+        if ($exchange->save(false)) {
             return true;
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
