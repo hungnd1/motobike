@@ -14,7 +14,7 @@ use common\helpers\CVietnameseTools;
 use Yii;
 use yii\data\ActiveDataProvider;
 
-class StationsController extends ApiController
+class StationController extends ApiController
 {
     public $serializer = [
         'class' => 'yii\rest\Serializer',

@@ -24,7 +24,7 @@ class NewsController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-new',
+            'get-list-news',
             'search'
         ];
 
@@ -34,11 +34,11 @@ class NewsController extends ApiController
     protected function verbs()
     {
         return [
-            'get-list-new'
+            'get-list-news'
         ];
     }
 
-    public function actionGetListNew()
+    public function actionGetListNews()
     {
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE]);

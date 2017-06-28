@@ -46,7 +46,7 @@ class AppController extends ApiController
         return [
             'index' => ['GET'],
             'get-price' => ['GET'],
-            'total-quality' => ['GET'],
+            'total-quantity' => ['GET'],
             'sold' => ['GET'],
             'type-coffee' => ['GET'],
             'check-device-token' => ['POST']
@@ -90,7 +90,7 @@ class AppController extends ApiController
         return $listPrice;
     }
 
-    public function actionTotalQuality(){
+    public function actionTotalQuantity(){
         $query = TotalQuality::find();
 
         $dataProvider = new ActiveDataProvider([
