@@ -13,7 +13,7 @@ use api\models\News;
 use Yii;
 use yii\data\ActiveDataProvider;
 
-class NewController extends ApiController
+class NewsController extends ApiController
 {
     public $serializer = [
         'class' => 'yii\rest\Serializer',
