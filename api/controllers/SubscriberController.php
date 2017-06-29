@@ -11,11 +11,12 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\helpers\UserHelpers;
-use common\models\Exchange;
+use api\models\Exchange;
 use common\models\Subscriber;
 use common\models\SubscriberToken;
 use Yii;
 use yii\base\InvalidValueException;
+use yii\data\ActiveDataProvider;
 use yii\web\ServerErrorHttpException;
 
 class SubscriberController extends ApiController
@@ -204,5 +205,26 @@ class SubscriberController extends ApiController
             return true;
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
+
+    public function actionTransaction(){
+
+        UserHelpers::manualLogin();
+
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $query = Exchange::find()->andWhere(['subscriber_id' => Yii::$app->user->id]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
+        ]);
+        return $dataProvider;
+
     }
 }
