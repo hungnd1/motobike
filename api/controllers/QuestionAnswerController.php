@@ -2,18 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: HungChelsea
- * Date: 14-Jun-17
- * Time: 10:25 PM
+ * Date: 30-Jun-17
+ * Time: 11:23 AM
  */
 
 namespace api\controllers;
 
 
-use api\models\News;
+use api\helpers\Message;
+use api\models\QuestionAnswer;
 use Yii;
+use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
 
-class NewsController extends ApiController
+class QuestionAnswerController extends ApiController
 {
     public $serializer = [
         'class' => 'yii\rest\Serializer',
@@ -24,8 +26,9 @@ class NewsController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-news',
-            'search'
+            'get-list-question-answer',
+            'search',
+            'detail-question'
         ];
 
         return $behaviors;
@@ -38,10 +41,10 @@ class NewsController extends ApiController
         ];
     }
 
-    public function actionGetListNews()
+    public function actionGetListQuestionAnswer()
     {
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE]);
+        $query = QuestionAnswer::find()->andWhere(['status' => QuestionAnswer::STATUS_ACTIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -58,9 +61,9 @@ class NewsController extends ApiController
 
     public function actionSearch($keyword = '')
     {
-        $query = News::find()->andWhere(['like', 'lower(title)', strtolower($keyword)])
-            ->orWhere(['like','lower(content)',strtolower($keyword)])
-            ->andWhere(['status' => News::STATUS_ACTIVE]);
+        $query = QuestionAnswer::find()->andWhere(['like', 'lower(question)', strtolower($keyword)])
+            ->orWhere(['like', 'lower(answer)', strtolower($keyword)])
+            ->andWhere(['status' => QuestionAnswer::STATUS_ACTIVE]);
         $defaultSort = ['created_at' => SORT_DESC];
 
         $dataProvider = new ActiveDataProvider([
@@ -73,5 +76,19 @@ class NewsController extends ApiController
             ],
         ]);
         return $dataProvider;
+    }
+
+    public function actionDetailQuestion()
+    {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $question = QuestionAnswer::findOne([$id]);
+        if ($question) {
+            return $question;
+        }
+        $this->setStatusCode(500);
+        return ['message' => 'Not found'];
     }
 }
