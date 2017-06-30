@@ -36,6 +36,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'yii\grid\SerialColumn',
                         ],
                         [
+                            'attribute' => 'title',
+                            'label'=>'Tiêu đề',
+                            'format' => 'html',
+                            'width' => '30%',
+                            'value' => function ($model, $key, $index, $widget) {
+                                /**
+                                 * @var $model \common\models\GapGeneral
+                                 */
+                                return \common\helpers\CUtils::subString($model->title,150,'...');
+
+                            },
+                        ],
+                        [
                             'attribute' => 'gap',
                             'label'=>'Tiêu đề',
                             'format' => 'html',

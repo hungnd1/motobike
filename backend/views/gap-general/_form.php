@@ -19,6 +19,12 @@ use yii\helpers\Html;
 
     <div class="row">
         <div class="col-md-12">
+            <?= $form->field($model, 'title')->textarea(['rows' => 6]) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <?= $form->field($model, 'gap')->widget(\dosamigos\ckeditor\CKEditor::className(), [
                 'options' => ['rows' => 8],
                 'preset' => 'full'

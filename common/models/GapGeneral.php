@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $gap
+ * @property string $title
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -32,7 +33,8 @@ class GapGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gap'], 'string'],
+            [['gap','title'], 'required'],
+            [['gap','title'], 'string'],
             [['status', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -45,7 +47,8 @@ class GapGeneral extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'gap' => 'Gap',
-            'status' => 'Status',
+            'status' => 'Trạng thái',
+            'title' => 'Tiêu đề',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
