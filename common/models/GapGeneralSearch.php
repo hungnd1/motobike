@@ -19,7 +19,7 @@ class GapGeneralSearch extends GapGeneral
     {
         return [
             [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['gap'], 'safe'],
+            [['gap','title'], 'safe'],
         ];
     }
 
@@ -66,6 +66,7 @@ class GapGeneralSearch extends GapGeneral
         ]);
 
         $query->andFilterWhere(['like', 'gap', $this->gap]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }
