@@ -64,7 +64,9 @@ class SubscriberController extends ApiController
         }
 
         $subscriber = Subscriber::findOne(['username' => $username]);
-
+        if(!$subscriber){
+            throw new InvalidValueException('Người dùng không tồn tại');
+        }
         if (!$subscriber->validatePassword($password)) {
             throw new InvalidValueException(Message::getWrongUserOrPassMessage());
         }
