@@ -9,7 +9,10 @@
 namespace api\controllers;
 
 
+use api\helpers\Message;
 use common\models\GapGeneral;
+use Yii;
+use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
 
 class GapController extends ApiController
@@ -24,7 +27,8 @@ class GapController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'get-list-gap',
-            'search'
+            'search',
+            'detail-gap'
         ];
 
         return $behaviors;
@@ -39,7 +43,7 @@ class GapController extends ApiController
 
     public function actionGetListGap()
     {
-        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $page = isset($_GET['page']) && $_GET['page '] > 1 ? $_GET['page'] - 1 : 0;
         $query = GapGeneral::find()->andWhere(['status' => GapGeneral::STATUS_ACTIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -71,5 +75,19 @@ class GapController extends ApiController
             ],
         ]);
         return $dataProvider;
+    }
+
+    public function actionDetailGap()
+    {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $gap = GapGeneral::findOne([$id]);
+        if ($gap) {
+            return $gap;
+        }
+        $this->setStatusCode(500);
+        return ['message' => 'Not found'];
     }
 }
