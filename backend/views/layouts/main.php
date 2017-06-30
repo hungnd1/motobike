@@ -227,6 +227,12 @@ $arrlang = array();
                     'url' => ['question-answer/index'],
                     'require_auth' => true,
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý GAP'),
+                    'url' => ['gap-general/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 
