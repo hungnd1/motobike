@@ -13,7 +13,7 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'aliases' => [
-//        '@version_folder' => 'version_file',
+        '@question' => 'staticdata/question',
 //        '@content_images' =>'content_images',
 //        '@ads_images' => 'sp/web/content_images',
 //        '@cat_image' => 'news',

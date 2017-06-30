@@ -2,39 +2,27 @@
 /**
  * Created by PhpStorm.
  * User: HungChelsea
- * Date: 29-Jun-17
- * Time: 10:16 PM
+ * Date: 30-Jun-17
+ * Time: 4:59 PM
  */
 
 namespace api\models;
 
 
-use common\models\Sold;
-use common\models\Subscriber;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
 
-class Exchange extends \common\models\Exchange
+class ExchangeBuy extends \common\models\ExchangeBuy
 {
     public function fields()
     {
         $fields = parent::fields();
-        unset($fields['sold_id']);
-        unset($fields['type_coffee']);
-        unset($fields['total_quality_id']);
-
-        $fields['sold'] = function ($model) {
-            /* @var $model \common\models\Exchange */
-            $sold = Sold::findOne($model->sold_id);
-            if($sold){
-                return $sold->min_sold.'-'.$sold->max_sold.' tấn';
-            }
-            return '';
-        };
+        unset($fields['type_coffee_id']);
+        unset($fields['total_quantity']);
 
         $fields['coffee'] = function ($model) {
-            /* @var $model \common\models\Exchange */
-            $coffee = TypeCoffee::findOne($model->type_coffee);
+            /* @var $model \common\models\ExchangeBuy */
+            $coffee = TypeCoffee::findOne($model->type_coffee_id);
             if($coffee){
                 return $coffee->name;
             }
@@ -42,8 +30,8 @@ class Exchange extends \common\models\Exchange
         };
 
         $fields['total_quantity'] = function ($model) {
-            /* @var $model \common\models\Exchange */
-            $quantity = TotalQuality::findOne($model->total_quality_id);
+            /* @var $model \common\models\ExchangeBuy */
+            $quantity = TotalQuality::findOne($model->total_quantity);
             if($quantity){
                 return $quantity->min_total_quality.'-'.$quantity->max_total_quality.' tấn';
             }
@@ -61,5 +49,4 @@ class Exchange extends \common\models\Exchange
 
         return $fields;
     }
-
 }

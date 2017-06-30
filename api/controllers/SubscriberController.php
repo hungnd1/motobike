@@ -12,6 +12,7 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\Exchange;
+use api\models\ExchangeBuy;
 use common\models\Subscriber;
 use common\models\SubscriberToken;
 use Yii;
@@ -45,7 +46,8 @@ class SubscriberController extends ApiController
             'register' => ['POST'],
             'get-info' => ['GET'],
             'change-info' => ['POST'],
-            'exchange-coffee' => ['POST']
+            'exchange-coffee' => ['POST'],
+            'exchange-buy' => ['POST'],
         ];
     }
 
@@ -202,17 +204,114 @@ class SubscriberController extends ApiController
         $exchange->created_at = time();
         $exchange->updated_at = time();
         if ($exchange->save(false)) {
-            return true;
+            return ['message'=>'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 
-    public function actionTransaction(){
+    public function actionTransactionSold(){
 
         UserHelpers::manualLogin();
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = Exchange::find()->andWhere(['subscriber_id' => Yii::$app->user->id]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
+        ]);
+        return $dataProvider;
+
+    }
+
+    public function actionGetListExchangeSold(){
+
+        UserHelpers::manualLogin();
+
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $query = Exchange::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionGetListExchangeBuy(){
+
+        UserHelpers::manualLogin();
+
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $query = ExchangeBuy::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionExchangeBuy()
+    {
+        UserHelpers::manualLogin();
+
+        $quality = $this->getParameterPost('total_quantity', 0);
+        $type_coffee = $this->getParameterPost('type_coffee', 0);
+        $price = $this->getParameterPost('price', 0);
+        $subscriber = Yii::$app->user->id;
+        if (!$subscriber) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Người dùng chưa đăng nhập')]));
+        }
+        if (!$quality) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tổng sản lượng mua')]));
+        }
+
+        if (!$type_coffee) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại cafe')]));
+        }
+        if (!$price) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giá')]));
+        }
+
+
+        $exchange = new ExchangeBuy();
+        $exchange->total_quantity = $quality;
+        $exchange->type_coffee_id = $type_coffee;
+        $exchange->subscriber_id = Yii::$app->user->id;
+        $exchange->price_buy = $price;
+        $exchange->created_at = time();
+        $exchange->updated_at = time();
+        if ($exchange->save(false)) {
+            return ['message'=>'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+        }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
+
+    public function actionTransactionBuy(){
+
+        UserHelpers::manualLogin();
+
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $query = ExchangeBuy::find()->andWhere(['subscriber_id' => Yii::$app->user->id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

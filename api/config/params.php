@@ -2,4 +2,5 @@
 return [
     'adminEmail' => 'admin@example.com',
     'api.AccessTokenExpire' =>86400 * 30,
+    'url' => ''
 ];
