@@ -19,10 +19,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 <div class="form-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'question')->widget(\dosamigos\ckeditor\CKEditor::className(), [
-                'options' => ['rows' => 2],
-                'preset' => 'full'
-            ]) ?>
+            <?= $form->field($model, 'question')->textarea(['rows' => 6]) ?>
         </div>
     </div>
 
