@@ -173,7 +173,7 @@ class CUtils
         // Remove string "+"
         $mobileNumber = str_replace('+84', '84', $mobileNumber);
 
-        if (preg_match('/^(84|0|)(86|96|98|162|163|164|165|166|167|168|169|90|93|120|121|122|126|128)\d{7}$/', $mobileNumber, $matches)) {
+        if (preg_match('/^(84|0|)(86|96|98|162|163|164|165|166|167|168|169|90|93|120|121|122|126|128|91|94|123|124|125|127|129|92|188|186|99|199)\d{7}$/', $mobileNumber, $matches)) {
             /**
              * $typeFormat == 0: 8491xxxxxx
              * $typeFormat == 1: 091xxxxxx
