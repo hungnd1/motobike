@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'answer',
-                            'label'=>'Câu hỏi',
+                            'label'=>'Câu trả lời',
                             'format' => 'html',
                             'width' => '20%',
                             'value' => function ($model, $key, $index, $widget) {
