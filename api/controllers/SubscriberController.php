@@ -138,6 +138,7 @@ class SubscriberController extends ApiController
         $fullname = $this->getParameterPost('fullname', '');
         $sex = $this->getParameterPost('sex', 1);
         $address = $this->getParameterPost('address', '');
+        $base = $this->getParameterPost('image','');
         if (!$fullname) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Họ và tên')]));
         }
@@ -145,9 +146,25 @@ class SubscriberController extends ApiController
         if (!$address) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ')]));
         }
+
+        $file_name = '';
+        if ($base) {
+            $binary = base64_decode($base, true);
+            $url = Yii::getAlias('@avatar') . DIRECTORY_SEPARATOR;
+            $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
+            if (!file_exists($url)) {
+                mkdir($url, 0777, true);
+            }
+            file_put_contents($url . $file_name, $binary);
+            $file = fopen($url . $file_name, 'wb');
+            fwrite($file, $binary);
+            fclose($file);
+        }
+
         $subscriber = Subscriber::findOne(['id' => Yii::$app->user->id]);
         $subscriber->full_name = $fullname;
         $subscriber->sex = $sex;
+        $subscriber->avatar_url = $file_name;
         $subscriber->address = $address;
         if ($subscriber->save(false)) {
             return true;
@@ -160,7 +177,7 @@ class SubscriberController extends ApiController
     public function actionGetInfo()
     {
         UserHelpers::manualLogin();
-        $subscriber = Yii::$app->user->identity;
+        $subscriber = \api\models\Subscriber::findOne(Yii::$app->user->id);
         if (!$subscriber) {
             throw new InvalidValueException(Message::getAccessDennyMessage());
         }
