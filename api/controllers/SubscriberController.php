@@ -123,12 +123,12 @@ class SubscriberController extends ApiController
                 }
             }
         }
-        $subscriber = Subscriber::findOne(['username' => $username, 'status' => Subscriber::STATUS_ACTIVE]);
+        $subscriber = Subscriber::findOne(['username' => $phone_number, 'status' => Subscriber::STATUS_ACTIVE]);
         if ($subscriber) {
             throw new InvalidValueException($this->replaceParam(Message::getExitsUsernameMessage(), [Yii::t('app', 'Tên đăng nhập')]));
         }
         $subscriber = new Subscriber();
-        $subscriber->username = $username;
+        $subscriber->username = $phone_number;
         $subscriber->setPassword($password);
         $subscriber->verification_code = $password;
         $subscriber->status = Subscriber::STATUS_ACTIVE;
