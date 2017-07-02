@@ -12,11 +12,9 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\QuestionAnswer;
-use common\models\User;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
 
 class QuestionAnswerController extends ApiController
 {
@@ -40,7 +38,7 @@ class QuestionAnswerController extends ApiController
     protected function verbs()
     {
         return [
-            'question-and-answer'=>['POST']
+            'question-and-answer' => ['POST']
         ];
     }
 
@@ -95,37 +93,29 @@ class QuestionAnswerController extends ApiController
         return ['message' => 'Not found'];
     }
 
-    public function actionQuestionAndAnswer(){
+    public function actionQuestionAndAnswer()
+    {
 
         UserHelpers::manualLogin();
+        $question = $this->getParameterPost('question', null);
+        $base = $this->getParameterPost('image', '');
 
-        $question = $this->getParameterPost('question',null);
-        $base = $this->getParameterPost('image','');
-        $filename = "123.jpg";
-        $binary=base64_decode($base);
-        var_dump($binary);exit;
-        $url = Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@question') . DIRECTORY_SEPARATOR);
-        $file_name = Yii::$app->user->id . '.' . uniqid() . time().'.jpg';
-        $tmp = Yii::getAlias('@api') . '/web/' . Yii::getAlias('@question') . '/';
-        if (!file_exists($tmp)) {
-            mkdir($tmp, 0777, true);
+        $binary = base64_decode($base,true);
+        $url = Yii::getAlias('@question') . DIRECTORY_SEPARATOR;
+        $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
+        if (!file_exists($url)) {
+            mkdir($url, 0777, true);
         }
-//        move_uploaded_file($tmp,)
-//        if ($image->saveAs($tmp . $file_name)) {
-//            $model->image = $file_name;
-//        }
-        $file = fopen($url.$filename, 'w');
+        file_put_contents($url . $file_name, $binary);
+        $file = fopen($url . $file_name, 'wb');
         fwrite($file, $binary);
         fclose($file);
-        echo $filename;
-//        $image = $this->getParameterPost('image','');
-//        if($image){
-//            $binary = base64_decode($image);
-//            header('Content-Type: bitmap; charset=utf-8');
-//            $file = fopen(Yii::$app->user->id . '.' . uniqid() . time() . '.jpg', 'wb');
-//            fwrite($file, $binary);
-//            fclose($file);
-//        }
-
+        $question_answer = new \common\models\QuestionAnswer();
+        $question_answer->question  = $question;
+        $question_answer->image = $file_name;
+        $question_answer->created_at = time();
+        $question_answer->updated_at = time();
+        $question_answer->status = QuestionAnswer::STATUS_ACTIVE;
+        $question_answer->save(false);
     }
 }
