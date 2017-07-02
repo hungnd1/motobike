@@ -32,11 +32,7 @@ class ExchangeBuy extends \common\models\ExchangeBuy
 
         $fields['total_quantity'] = function ($model) {
             /* @var $model \common\models\ExchangeBuy */
-            $quantity = TotalQuality::findOne($model->total_quantity);
-            if($quantity){
-                return $quantity->min_total_quality.'-'.$quantity->max_total_quality.' tấn';
-            }
-            return '';
+            return $model->total_quantity;
         };
         $fields['subscriber_name'] = function ($model) {
             /* @var $model \common\models\ExchangeBuy */
