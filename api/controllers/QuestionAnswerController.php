@@ -103,24 +103,26 @@ class QuestionAnswerController extends ApiController
         if (!$question) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
         }
-
-        $binary = base64_decode($base,true);
-        $url = Yii::getAlias('@question') . DIRECTORY_SEPARATOR;
-        $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
-        if (!file_exists($url)) {
-            mkdir($url, 0777, true);
+        $file_name = '';
+        if ($base) {
+            $binary = base64_decode($base, true);
+            $url = Yii::getAlias('@question') . DIRECTORY_SEPARATOR;
+            $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
+            if (!file_exists($url)) {
+                mkdir($url, 0777, true);
+            }
+            file_put_contents($url . $file_name, $binary);
+            $file = fopen($url . $file_name, 'wb');
+            fwrite($file, $binary);
+            fclose($file);
         }
-        file_put_contents($url . $file_name, $binary);
-        $file = fopen($url . $file_name, 'wb');
-        fwrite($file, $binary);
-        fclose($file);
         $question_answer = new \common\models\QuestionAnswer();
-        $question_answer->question  = $question;
+        $question_answer->question = $question;
         $question_answer->image = $file_name;
         $question_answer->created_at = time();
         $question_answer->updated_at = time();
         $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
-        if($question_answer->save(false)){
+        if ($question_answer->save(false)) {
             return [
                 'message' => 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời',
             ];
