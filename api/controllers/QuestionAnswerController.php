@@ -15,6 +15,7 @@ use api\models\QuestionAnswer;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
+use yii\web\ServerErrorHttpException;
 
 class QuestionAnswerController extends ApiController
 {
@@ -88,8 +89,7 @@ class QuestionAnswerController extends ApiController
         if ($question) {
             return $question;
         }
-        $this->setStatusCode(500);
-        return ['message' => 'Not found'];
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 
     public function actionQuestionAndAnswer()
@@ -126,5 +126,6 @@ class QuestionAnswerController extends ApiController
                 'message' => 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời',
             ];
         }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 }

@@ -65,7 +65,7 @@ class SubscriberController extends ApiController
         }
 
         $subscriber = Subscriber::findOne(['username' => $username]);
-        if(!$subscriber){
+        if (!$subscriber) {
             throw new InvalidValueException('Thông tin tài khoản hoặc mật khẩu không hợp lệ');
         }
         if (!$subscriber->validatePassword($password)) {
@@ -113,12 +113,12 @@ class SubscriberController extends ApiController
         if (!$channel) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại tài khoản')]));
         }
-        $phone_number = CUtils::validateMobile($username,0);
-        if($phone_number == ''){
-            $phone_number  = CUtils::validateMobile($username,1);
-            if($phone_number == ''){
-                $phone_number = CUtils::validateMobile($username,2);
-                if($phone_number == ''){
+        $phone_number = CUtils::validateMobile($username, 0);
+        if ($phone_number == '') {
+            $phone_number = CUtils::validateMobile($username, 1);
+            if ($phone_number == '') {
+                $phone_number = CUtils::validateMobile($username, 2);
+                if ($phone_number == '') {
                     throw new InvalidValueException('Số điện thoại không đúng định dạng');
                 }
             }
@@ -137,7 +137,7 @@ class SubscriberController extends ApiController
         $subscriber->authen_type = $channel;
         if ($subscriber->save(false)) {
             return [
-                'message' => 'Đăng ký tài khoản thành công, quý khách có thể đăng nhập hệ thống để sử dụng các ưu đãi',
+                'message' => 'Đăng ký tài khoản thành công, quý khách có thể đăng nhập hệ thống để sử dụng các dịch vụ',
             ];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
@@ -150,11 +150,10 @@ class SubscriberController extends ApiController
         $fullname = $this->getParameterPost('fullname', '');
         $sex = $this->getParameterPost('sex', 1);
         $address = $this->getParameterPost('address', '');
-        $base = $this->getParameterPost('image','');
+        $base = $this->getParameterPost('image', '');
         if (!$fullname) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Họ và tên')]));
         }
-
         if (!$address) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ')]));
         }
@@ -179,7 +178,7 @@ class SubscriberController extends ApiController
         $subscriber->avatar_url = $file_name;
         $subscriber->address = $address;
         if ($subscriber->save(false)) {
-            return true;
+            return ['message' => 'Cập nhật thông tin thành công!!!'];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
 
@@ -235,12 +234,13 @@ class SubscriberController extends ApiController
         $exchange->created_at = time();
         $exchange->updated_at = time();
         if ($exchange->save(false)) {
-            return ['message'=>'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+            return ['message' => 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 
-    public function actionTransactionSold(){
+    public function actionTransactionSold()
+    {
 
         UserHelpers::manualLogin();
 
@@ -261,7 +261,8 @@ class SubscriberController extends ApiController
 
     }
 
-    public function actionGetListExchangeSold(){
+    public function actionGetListExchangeSold()
+    {
 
         UserHelpers::manualLogin();
 
@@ -281,7 +282,8 @@ class SubscriberController extends ApiController
         return $dataProvider;
     }
 
-    public function actionGetListExchangeBuy(){
+    public function actionGetListExchangeBuy()
+    {
 
         UserHelpers::manualLogin();
 
@@ -332,12 +334,13 @@ class SubscriberController extends ApiController
         $exchange->created_at = time();
         $exchange->updated_at = time();
         if ($exchange->save(false)) {
-            return ['message'=>'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+            return ['message' => 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 
-    public function actionTransactionBuy(){
+    public function actionTransactionBuy()
+    {
 
         UserHelpers::manualLogin();
 

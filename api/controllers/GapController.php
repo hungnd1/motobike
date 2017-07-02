@@ -14,6 +14,7 @@ use common\models\GapGeneral;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
+use yii\web\ServerErrorHttpException;
 
 class GapController extends ApiController
 {
@@ -89,7 +90,6 @@ class GapController extends ApiController
         if ($gap) {
             return $gap;
         }
-        $this->setStatusCode(500);
-        return ['message' => 'Not found'];
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 }
