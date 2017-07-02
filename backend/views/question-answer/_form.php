@@ -54,13 +54,6 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <?= $form->field($model, 'status')->dropDownList(
-                \common\models\QuestionAnswer::listStatus(), ['class' => 'input-circle']
-            ) ?>
-        </div>
-    </div>
 </div>
 <div class="form-actions">
     <div class="row">

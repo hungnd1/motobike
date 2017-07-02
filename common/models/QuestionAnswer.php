@@ -36,7 +36,7 @@ class QuestionAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question','answer','status'],'required'],
+            [['question','status'],'required'],
             [['question', 'answer'], 'string'],
             [['created_at', 'updated_at', 'status'], 'integer'],
             [['image'], 'string', 'max' => 500],
@@ -62,8 +62,8 @@ class QuestionAnswer extends \yii\db\ActiveRecord
     public static function listStatus()
     {
         $lst = [
-            self::STATUS_ACTIVE => \Yii::t('app', 'Kích hoạt'),
-            self::STATUS_INACTIVE => \Yii::t('app', 'Tạm dừng'),
+            self::STATUS_ACTIVE => \Yii::t('app', 'Đã trả lời'),
+            self::STATUS_INACTIVE => \Yii::t('app', 'Chưa trả lời'),
         ];
         return $lst;
     }
@@ -81,5 +81,12 @@ class QuestionAnswer extends \yii\db\ActiveRecord
     {
         return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@question') . DIRECTORY_SEPARATOR . $this->image, true) : '';
         // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
+    }
+    public static function getListStatusNameByStatus($status){
+        $lst = self::listStatus();
+        if (array_key_exists($status, $lst)) {
+            return $lst[$status];
+        }
+        return $status;
     }
 }

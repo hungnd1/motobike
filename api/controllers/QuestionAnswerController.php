@@ -45,7 +45,7 @@ class QuestionAnswerController extends ApiController
     public function actionGetListQuestionAnswer()
     {
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = QuestionAnswer::find()->andWhere(['status' => QuestionAnswer::STATUS_ACTIVE]);
+        $query = QuestionAnswer::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -63,8 +63,7 @@ class QuestionAnswerController extends ApiController
     public function actionSearch($keyword = '')
     {
         $query = QuestionAnswer::find()->andWhere(['like', 'lower(question)', strtolower($keyword)])
-            ->orWhere(['like', 'lower(answer)', strtolower($keyword)])
-            ->andWhere(['status' => QuestionAnswer::STATUS_ACTIVE]);
+            ->orWhere(['like', 'lower(answer)', strtolower($keyword)]);
         $defaultSort = ['created_at' => SORT_DESC];
 
         $dataProvider = new ActiveDataProvider([

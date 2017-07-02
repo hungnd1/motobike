@@ -81,6 +81,7 @@ class SubscriberController extends ApiController
 
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $subscriber->id,
+            'avatar' => $subscriber->getImageAvatar($subscriber->avatar_url),
             'username' => $subscriber->username,
             'full_name' => $subscriber->full_name,
             'token' => $token->token,

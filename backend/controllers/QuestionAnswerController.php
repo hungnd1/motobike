@@ -2,12 +2,12 @@
 
 namespace backend\controllers;
 
-use Yii;
 use common\models\QuestionAnswer;
 use common\models\QuestionAnswerSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
@@ -79,11 +79,15 @@ class QuestionAnswerController extends Controller
                     $model->image = $file_name;
                 }
             }
-
+            if ($model->answer) {
+                $model->status = QuestionAnswer::STATUS_ACTIVE;
+            } else {
+                $model->status = QuestionAnswer::STATUS_INACTIVE;
+            }
             $model->created_at = time();
             $model->updated_at = time();
             $model->save();
-            \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
+            \Yii::$app->getSession()->setFlash('success', 'Đặt câu hỏi thành công');
 
             return $this->redirect(['index']);
 
@@ -105,8 +109,16 @@ class QuestionAnswerController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->answer) {
+                $model->status = QuestionAnswer::STATUS_ACTIVE;
+            } else {
+                $model->status = QuestionAnswer::STATUS_INACTIVE;
+            }
+            $model->updated_at = time();
+            $model->save();
+            \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

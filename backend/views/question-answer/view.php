@@ -6,36 +6,55 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\QuestionAnswer */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Question Answers', 'url' => ['index']];
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t("app","Danh sách câu hỏi"), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="question-answer-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs font-green-sharp"></i>
+                    <span class="caption-subject font-green-sharp bold uppercase"><?=Yii::t("app","Câu hỏi chi tiết ")?><?= $model->title ?>"</span>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <p>
+                    <?= Html::a(Yii::t("app","Cập nhật"), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a(Yii::t("app","Xóa"), ['delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => Yii::t("app","Bạn chắc chắn muốn xóa câu hỏi này không?"),
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </p>
+                <?php
+                echo DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'question:html',
+                        'answer:html',
+                        [
+                            'attribute' => 'status',
+                            'value' => \common\models\QuestionAnswer::getListStatusNameByStatus($model->status)
+                        ],
+                        [                      // the owner name of the model
+                            'attribute'=>'created_at',
+                            'label' => ''.\Yii::t('app', 'Ngày tạo'),
+                            'value' => date('d/m/Y H:i:s',$model->created_at),
+                        ],
+                    ],
+                ]);
+                ?>
+            </div>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'question:ntext',
-            'answer:ntext',
-            'created_at',
-            'updated_at',
-            'status',
-            'image',
-        ],
-    ]) ?>
-
+        </div>
+    </div>
 </div>
