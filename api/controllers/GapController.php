@@ -37,13 +37,15 @@ class GapController extends ApiController
     protected function verbs()
     {
         return [
-            'get-list-gap'
+            'get-list-gap'=>['GET']
         ];
     }
 
     public function actionGetListGap()
     {
-        $page = isset($_GET['page']) && $_GET['page '] > 1 ? $_GET['page'] - 1 : 0;
+        $page = $this->getParameter('page',0);
+        $page = $page > 1 ? $page - 1 : 0;
+
         $query = GapGeneral::find()->andWhere(['status' => GapGeneral::STATUS_ACTIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

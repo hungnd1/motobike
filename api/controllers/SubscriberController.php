@@ -13,6 +13,7 @@ use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\Exchange;
 use api\models\ExchangeBuy;
+use common\helpers\CUtils;
 use common\models\Subscriber;
 use common\models\SubscriberToken;
 use Yii;
@@ -104,13 +105,23 @@ class SubscriberController extends ApiController
         $password = $this->getParameterPost('password', '');
         $channel = $this->getParameterPost('channel', '');
         if (!$username) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Số điện thoại')]));
         }
         if (!$password) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
         }
         if (!$channel) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại tài khoản')]));
+        }
+        $phone_number = CUtils::validateMobile($username,0);
+        if($phone_number == ''){
+            $phone_number  = CUtils::validateMobile($username,1);
+            if($phone_number == ''){
+                $phone_number = CUtils::validateMobile($username,2);
+                if($phone_number == ''){
+                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
+                }
+            }
         }
         $subscriber = Subscriber::findOne(['username' => $username, 'status' => Subscriber::STATUS_ACTIVE]);
         if ($subscriber) {
