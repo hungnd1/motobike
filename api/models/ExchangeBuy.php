@@ -19,6 +19,7 @@ class ExchangeBuy extends \common\models\ExchangeBuy
         $fields = parent::fields();
         unset($fields['type_coffee_id']);
         unset($fields['total_quantity']);
+        unset($fields['price_buy']);
 
         $fields['coffee'] = function ($model) {
             /* @var $model \common\models\ExchangeBuy */
@@ -38,12 +39,16 @@ class ExchangeBuy extends \common\models\ExchangeBuy
             return '';
         };
         $fields['subscriber_name'] = function ($model) {
-            /* @var $model \common\models\Exchange */
+            /* @var $model \common\models\ExchangeBuy */
             $subscriber = Subscriber::findOne($model->subscriber_id);
             if($subscriber){
                 return $subscriber->username;
             }
             return '';
+        };
+        $fields['price'] = function ($model) {
+            /* @var $model \common\models\ExchangeBuy */
+            return $model->price_buy;
         };
 
 
