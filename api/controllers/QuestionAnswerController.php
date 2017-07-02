@@ -100,6 +100,10 @@ class QuestionAnswerController extends ApiController
         $question = $this->getParameterPost('question', null);
         $base = $this->getParameterPost('image', '');
 
+        if (!$question) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
+        }
+
         $binary = base64_decode($base,true);
         $url = Yii::getAlias('@question') . DIRECTORY_SEPARATOR;
         $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
@@ -115,7 +119,11 @@ class QuestionAnswerController extends ApiController
         $question_answer->image = $file_name;
         $question_answer->created_at = time();
         $question_answer->updated_at = time();
-        $question_answer->status = QuestionAnswer::STATUS_ACTIVE;
-        $question_answer->save(false);
+        $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
+        if($question_answer->save(false)){
+            return [
+                'message' => 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời',
+            ];
+        }
     }
 }
