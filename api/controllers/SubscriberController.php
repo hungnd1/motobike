@@ -157,7 +157,7 @@ class SubscriberController extends ApiController
         if (!$address) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ')]));
         }
-
+        $subscriber = Subscriber::findOne(['id' => Yii::$app->user->id]);
         $file_name = '';
         if ($base) {
             $binary = base64_decode($base, true);
@@ -170,12 +170,11 @@ class SubscriberController extends ApiController
             $file = fopen($url . $file_name, 'wb');
             fwrite($file, $binary);
             fclose($file);
+            $subscriber->avatar_url = $file_name;
         }
 
-        $subscriber = Subscriber::findOne(['id' => Yii::$app->user->id]);
         $subscriber->full_name = $fullname;
         $subscriber->sex = $sex;
-        $subscriber->avatar_url = $file_name;
         $subscriber->address = $address;
         if ($subscriber->save(false)) {
             return ['message' => 'Cập nhật thông tin thành công!!!'];
