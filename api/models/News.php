@@ -27,7 +27,7 @@ class News extends \common\models\News
     public function fields()
     {
         $fields = parent::fields();
-
+        unset($fields['content']);
         $fields['image'] = function ($model) {
             /* @var $model \common\models\News */
             if($model->image){

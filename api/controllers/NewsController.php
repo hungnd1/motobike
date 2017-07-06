@@ -9,9 +9,12 @@
 namespace api\controllers;
 
 
+use api\helpers\Message;
 use api\models\News;
 use Yii;
+use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
+use yii\web\ServerErrorHttpException;
 
 class NewsController extends ApiController
 {
@@ -25,7 +28,8 @@ class NewsController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'get-list-news',
-            'search'
+            'search',
+            'detail-news'
         ];
 
         return $behaviors;
@@ -73,5 +77,18 @@ class NewsController extends ApiController
             ],
         ]);
         return $dataProvider;
+    }
+
+    public function actionDetailNews()
+    {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $gap = News::findOne([$id]);
+        if ($gap) {
+            return $gap;
+        }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 }
