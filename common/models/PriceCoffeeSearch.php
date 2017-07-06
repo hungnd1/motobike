@@ -18,8 +18,8 @@ class PriceCoffeeSearch extends PriceCoffee
     public function rules()
     {
         return [
-            [['id', 'province_id', 'price_average','district_id', 'unit', 'updated_at'], 'integer'],
-            [['created_at'], 'safe'],
+            [['id', 'price_average', 'unit', 'updated_at'], 'integer'],
+            [['created_at','province_id','organisation_name'], 'safe'],
         ];
     }
 
@@ -60,8 +60,6 @@ class PriceCoffeeSearch extends PriceCoffee
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'province_id' => $this->province_id,
-            'district_id' => $this->district_id,
             'price_average' => $this->price_average,
             'unit' => $this->unit,
             'updated_at' => $this->updated_at,
@@ -72,6 +70,8 @@ class PriceCoffeeSearch extends PriceCoffee
             $query->andFilterWhere(['>=', 'created_at', $from_time]);
             $query->andFilterWhere(['<=', 'created_at', $to_time]);
         }
+        $query->andFilterWhere(['like','province_id',$this->province_id]);
+        $query->andFilterWhere(['like','organisation_name',$this->organisation_name]);
 
 
         return $dataProvider;

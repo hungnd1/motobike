@@ -33,40 +33,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p>
-                    <?php echo Html::a('Thêm mới ', Yii::$app->urlManager->createUrl(['price-coffee/create']), ['class' => 'btn btn-success']) ?>
-                </p>
                 <?php
                 $gridColumn = [
                     [
+                        'format' => 'raw',
                         'class' => '\kartik\grid\DataColumn',
                         'attribute' => 'province_id',
-                        'value' => function ($model, $key, $index, $widget) {
+                        'value' => function ($model, $key, $index) {
                             /** @var $model \common\models\PriceCoffee */
-                            return PriceCoffee::getProvinceDetail($model->province_id);
+                            return $model->province_id;
                         },
-                        'width' => '150px',
-                        'filterType' => GridView::FILTER_SELECT2,
-                        'filter' => PriceCoffee::getListProvince(),
-                        'filterWidgetOptions' => [
-                            'pluginOptions' => ['allowClear' => true],
-                        ],
-                        'filterInputOptions' => ['placeholder' => Yii::t("app", "Tất cả")],
                     ],
                     [
+                        'format' => 'raw',
+                        'label'=>'Doanh nghiệp',
                         'class' => '\kartik\grid\DataColumn',
-                        'attribute' => 'district_id',
-                        'value' => function ($model, $key, $index, $widget) {
+                        'attribute' => 'organisation_name',
+                        'value' => function ($model, $key, $index) {
                             /** @var $model \common\models\PriceCoffee */
-                            return PriceCoffee::getDistrictDetail($model->district_id);
+                            return $model->organisation_name;
                         },
-                        'width' => '150px',
-                        'filterType' => GridView::FILTER_SELECT2,
-                        'filter' => PriceCoffee::getListDistrict(),
-                        'filterWidgetOptions' => [
-                            'pluginOptions' => ['allowClear' => true],
-                        ],
-                        'filterInputOptions' => ['placeholder' => Yii::t("app", "Tất cả")],
                     ],
                     [
                         'format' => 'raw',

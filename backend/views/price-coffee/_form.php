@@ -26,14 +26,8 @@ use yii\helpers\Html;
 ]); ?>
 <div class="form-body">
 
-    <?= $form->field($model, 'district_id')->dropDownList(
-        PriceCoffee::getListDistrict(), ['class' => 'input-circle']
-    ) ?>
 
     <?= $form->field($model, 'price_average')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
-    <?= $form->field($model, 'unit')->dropDownList(
-        PriceCoffee::getListUnit(), ['class' => 'input-circle']
-    ) ?>
 
 </div>
 <div class="form-actions">

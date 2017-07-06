@@ -2,8 +2,8 @@
 
 namespace common\models;
 
-use common\helpers\CUtils;
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "price_coffee".
@@ -38,8 +38,8 @@ class PriceCoffee extends \yii\db\ActiveRecord
     {
         return [
             [['price_average', 'province_id', 'unit'], 'required'],
-            [['coffee_old_id','last_time_value', 'price_average', 'unit', 'created_at', 'updated_at'], 'integer'],
-            [['province_id','organisation_name'],'safe']
+            [['coffee_old_id', 'last_time_value', 'price_average', 'unit', 'created_at', 'updated_at'], 'integer'],
+            [['province_id', 'organisation_name'], 'safe']
         ];
     }
 
@@ -54,6 +54,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
             'district_id' => 'Huyện/Thành phố',
             'price_average' => 'Giá trung bình',
             'unit' => 'Đơn vị',
+            'organisation_name' => 'Doanh nghiệp',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -117,40 +118,16 @@ class PriceCoffee extends \yii\db\ActiveRecord
     {
         $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
-        $arr = [];
-        $province_return = [];
-        $listProvince = Province::find()->all();
-        foreach ($listProvince as $item) {
-            /** @var $item Province */
-            $province = [];
-            $province['province_name'] = $item->province_name;
-            $listPrice = PriceCoffee::find()->andWhere(['province_id' => $item->id])
-                ->andFilterWhere(['>=', 'created_at', $from_time])
-                ->andFilterWhere(['<=', 'created_at', $to_time])->all();
-            if ($listPrice) {
-                foreach ($listPrice as $price) {
-                    /** @var $price PriceCoffee */
-                    $arrPrice['name'] = District::findOne(['id' => $price->district_id])->district_name;
-                    $pricePre = PriceCoffee::find()
-                        ->andWhere(['province_id' => $item->id, 'district_id' => $price->district_id])
-                        ->andWhere(['<>', 'id', $price->id])
-                        ->andWhere(['<=', 'created_at', $to_time])
-                        ->orderBy(['created_at' => SORT_DESC])->one();
-                    /** @var $pricePre PriceCoffee */
-                    if ($pricePre) {
-                        $arrPrice['change_info'] = $price->price_average - $pricePre->price_average < 0 ? ('Trừ lùi: ' . ($price->price_average - $pricePre->price_average)) : ('+' . ($price->price_average - $pricePre->price_average));
-                    } else {
-                        $arrPrice['change_info'] = 0;
-                    }
-                    $arrPrice['price_average'] = CUtils::formatPrice($price->price_average);
-                    $arrPrice['unit'] = PriceCoffee::getListStatusNameByUnit($price->unit);
-                    $province['items'][] = $arrPrice;
-                }
-            }
-            $province_return[] = $province;
-        }
-        $arr['items'] = $province_return;
-        return $arr;
+        $pricePre = \api\models\PriceCoffee::find()
+            ->andWhere(['>=', 'created_at', $from_time])
+            ->andWhere(['<=', 'created_at', $to_time])
+            ->groupBy('coffee_old_id')
+            ->orderBy(['created_at' => SORT_DESC]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $pricePre,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
     }
 
     public function getContentProvider()

@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\PriceCoffee */
 
-$this->title = $model->district_id;
+$this->title = $model->province_id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app", "Danh sách giá"), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="caption">
                     <i class="fa fa-cogs font-green-sharp"></i>
                     <span
-                        class="caption-subject font-green-sharp bold uppercase"><?= Yii::t("app", "Thông tin giá ") ?><?= $model->district_id ?>
+                        class="caption-subject font-green-sharp bold uppercase"><?= Yii::t("app", "Thông tin giá ") ?><?= $model->province_id ?>
                         "</span>
                 </div>
                 <div class="tools">
@@ -43,11 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         [
                             'attribute' => 'province_id',
-                            'value' => \common\models\PriceCoffee::getProvinceDetail($model->province_id)
+                            'value' => $model->province_id
                         ],
                         [
-                            'attribute' => 'district_id',
-                            'value' => \common\models\PriceCoffee::getDistrictDetail($model->district_id)
+                            'attribute' => 'organisation_name',
+                            'value' => $model->organisation_name
                         ],
                         'price_average',
                         [
