@@ -91,7 +91,7 @@ class PriceController extends Controller
                                 $priceOld->save(false);
                                 PriceController::infoLog(' Thoi gian cuoi cung lon hon thoi gian ghi trong database ');
                             }
-                        } elseif ($last_time_value < $tomorrow || $last_time_value - $priceOld >= 86400) {
+                        } elseif ($last_time_value < $tomorrow || $last_time_value - $priceOld->created_at >= 86400) {
                             $price = new PriceCoffee();
                             $price->province_id = $name;
                             $price->price_average = $price_average;
