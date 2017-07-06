@@ -81,16 +81,18 @@ class AppController extends ApiController
     public function actionGetPrice($date = 0)
     {
         if (!$date) {
-            $date = date('d/m/Y',time());
+            $date = date('d/m/Y', time());
         }
-
         $listPrice = PriceCoffee::getPrice($date);
-
-
-        return $listPrice;
+        if ($listPrice->query->one()) {
+            return $listPrice;
+        }
+        $this->setStatusCode(500);
+        return ['message' => 'Hệ thống chưa cập nhật giá'];
     }
 
-    public function actionTotalQuantity(){
+    public function actionTotalQuantity()
+    {
         $query = TotalQuality::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -100,7 +102,8 @@ class AppController extends ApiController
         return $dataProvider;
     }
 
-    public function actionSold(){
+    public function actionSold()
+    {
         $query = Sold::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -110,7 +113,8 @@ class AppController extends ApiController
         return $dataProvider;
     }
 
-    public function actionTypeCoffee(){
+    public function actionTypeCoffee()
+    {
         $query = TypeCoffee::find();
 
         $dataProvider = new ActiveDataProvider([
