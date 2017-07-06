@@ -27,6 +27,11 @@ class PriceCoffee extends \common\models\PriceCoffee
             return \common\helpers\CUtils::formatPrice($model->price_average);
         };
 
+        $fields['unit'] = function ($model) {
+            /* @var $model \common\models\PriceCoffee */
+            return $model->getListStatusNameByUnit($model->unit);
+        };
+
         return $fields;
     }
 }

@@ -50,8 +50,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'province_id' => 'Tỉnh',
-            'district_id' => 'Huyện/Thành phố',
+            'province_id' => 'Tỉnh,Xã',
             'price_average' => 'Giá trung bình',
             'unit' => 'Đơn vị',
             'organisation_name' => 'Doanh nghiệp',
@@ -88,12 +87,6 @@ class PriceCoffee extends \yii\db\ActiveRecord
     {
         $province = Province::findOne(['id' => $province_id]);
         return $province->province_name;
-    }
-
-    public static function getDistrictDetail($district_id)
-    {
-        $province = District::findOne(['id' => $district_id]);
-        return $province->district_name;
     }
 
     public static function getListUnit()
