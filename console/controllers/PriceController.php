@@ -64,7 +64,6 @@ class PriceController extends Controller
                 $last_time_value = $arr_detail['results'][0]['last_value_timestamp'] / 1000;
                 $last_value = $arr_detail['results'][0]['last_value'];
                 $organisation_name  = $arr_detail['results'][0]['name'];
-
                 if ($last_value) {
                     if ($last_time_value >= $tomorrow) {
                         $price = new PriceCoffee();
@@ -90,8 +89,20 @@ class PriceController extends Controller
                                 $priceOld->updated_at = time();
                                 $priceOld->save(false);
                                 PriceController::infoLog(' Thoi gian cuoi cung lon hon thoi gian ghi trong database ');
+                            }elseif(time() - $priceOld->created_at >= 86400){
+                                $price = new PriceCoffee();
+                                $price->province_id = $name;
+                                $price->price_average = $price_average;
+                                $price->unit = PriceCoffee::UNIT_VND;
+                                $price->created_at = $today;
+                                $price->updated_at = $today;
+                                $price->organisation_name = $organisation_name;
+                                $price->last_time_value = $last_time_value;
+                                $price->coffee_old_id = $id;
+                                $price->save(false);
+                                PriceController::infoLog(' Thoi gian cuoi cung  bang thoi gian  hien tai ');
                             }
-                        } elseif ($last_time_value < $tomorrow || $last_time_value - $priceOld->created_at >= 86400) {
+                        } elseif ($last_time_value < $tomorrow) {
                             $price = new PriceCoffee();
                             $price->province_id = $name;
                             $price->price_average = $price_average;
@@ -102,7 +113,7 @@ class PriceController extends Controller
                             $price->last_time_value = $last_time_value;
                             $price->coffee_old_id = $id;
                             $price->save(false);
-                            PriceController::infoLog(' Thoi gian cuoi cung nho hon hoac bang thoi gian ngay mai hoac hien tai ');
+                            PriceController::infoLog(' Thoi gian cuoi cung nho hon  thoi gian ngay mai  ');
                         }
                     }
                 }
