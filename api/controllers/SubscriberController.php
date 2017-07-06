@@ -33,7 +33,8 @@ class SubscriberController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'login',
-            'register'
+            'register',
+            'run'
         ];
 
         return $behaviors;
@@ -359,4 +360,5 @@ class SubscriberController extends ApiController
         return $dataProvider;
 
     }
+
 }

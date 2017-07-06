@@ -9,10 +9,12 @@ use Yii;
  * This is the model class for table "price_coffee".
  *
  * @property integer $id
- * @property integer $province_id
- * @property integer $district_id
+ * @property string $province_id
  * @property integer $price_average
  * @property integer $unit
+ * @property string $organisation_name
+ * @property integer $coffee_old_id
+ * @property integer $last_time_value
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -35,8 +37,9 @@ class PriceCoffee extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price_average', 'province_id', 'unit', 'district_id'], 'required'],
-            [['province_id', 'price_average', 'district_id', 'unit', 'created_at', 'updated_at'], 'integer'],
+            [['price_average', 'province_id', 'unit'], 'required'],
+            [['coffee_old_id','last_time_value', 'price_average', 'unit', 'created_at', 'updated_at'], 'integer'],
+            [['province_id','organisation_name'],'safe']
         ];
     }
 
