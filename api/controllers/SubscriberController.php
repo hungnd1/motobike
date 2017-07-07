@@ -204,6 +204,7 @@ class SubscriberController extends ApiController
         $sold = $this->getParameterPost('sold_id', 0);
         $type_coffee = $this->getParameterPost('type_coffee', 0);
         $location = $this->getParameterPost('location', '');
+        $location_name = $this->getParameterPost('location_name','');
         $price = $this->getParameterPost('price', 0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
@@ -229,6 +230,7 @@ class SubscriberController extends ApiController
         $exchange->sold_id = $sold;
         $exchange->type_coffee = $type_coffee;
         $exchange->location = $location;
+        $exchange->location_name = $location_name;
         $exchange->subscriber_id = Yii::$app->user->id;
         $exchange->price = $price;
         $exchange->created_at = time();
@@ -309,6 +311,8 @@ class SubscriberController extends ApiController
 
         $quality = $this->getParameterPost('total_quantity', 0);
         $type_coffee = $this->getParameterPost('type_coffee', 0);
+        $location = $this->getParameterPost('location', '');
+        $location_name = $this->getParameterPost('location_name','');
         $price = $this->getParameterPost('price', 0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
@@ -328,6 +332,9 @@ class SubscriberController extends ApiController
 
         $exchange = new ExchangeBuy();
         $exchange->total_quantity = $quality;
+        $exchange->type_coffee_id = $type_coffee;
+        $exchange->location = $location;
+        $exchange->location_name = $location_name;
         $exchange->type_coffee_id = $type_coffee;
         $exchange->subscriber_id = Yii::$app->user->id;
         $exchange->price_buy = $price;

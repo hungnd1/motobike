@@ -11,6 +11,8 @@ use Yii;
  * @property integer $subscriber_id
  * @property string $price_buy
  * @property string $total_quantity
+ * @property string $location
+ * @property string $location_name
  * @property integer $created_at
  * @property integer $type_coffee_id
  * @property integer $updated_at
@@ -32,7 +34,7 @@ class ExchangeBuy extends \yii\db\ActiveRecord
     {
         return [
             [['subscriber_id', 'created_at', 'updated_at','type_coffee_id'], 'integer'],
-            [['price_buy', 'total_quantity'], 'string', 'max' => 255],
+            [['price_buy', 'total_quantity','location','location_name'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,6 +50,8 @@ class ExchangeBuy extends \yii\db\ActiveRecord
             'total_quantity' => 'Total Quantity',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'location' => 'Tọa độ',
+            'location_name' => 'Địa điểm',
         ];
     }
 }
