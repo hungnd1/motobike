@@ -20,8 +20,9 @@ class PriceController extends Controller
 
     public function actionRun()
     {
-        $today = strtotime('today midnight');
-        $tomorrow = strtotime('tomorrow');
+        date_default_timezone_set("Asia/Bangkok");
+        $today = strtotime('today midnight') + 7 * 60 * 60;
+        $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
         $ch = curl_init();
