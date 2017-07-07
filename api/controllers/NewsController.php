@@ -85,7 +85,7 @@ class NewsController extends ApiController
         if (!$id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
         }
-        $gap = News::findOne([$id]);
+        $gap = \common\models\News::findOne([$id]);
         if ($gap) {
             return $gap;
         }
