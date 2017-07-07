@@ -10,6 +10,7 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\models\PriceCoffeeDetail;
 use common\models\DeviceInfo;
 use common\models\PriceCoffee;
 use common\models\Sold;
@@ -137,7 +138,7 @@ class AppController extends ApiController
 
         $to_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $from_time = $to_time - 86400 * 7;
-        $pricePre = PriceCoffee::find()
+        $pricePre = PriceCoffeeDetail::find()
             ->andWhere(['>=', 'created_at', $from_time])
             ->andWhere(['<=', 'created_at', $to_time])
             ->andWhere(['coffee_old_id'=>$coffee_old_id])
