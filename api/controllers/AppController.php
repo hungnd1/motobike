@@ -9,14 +9,13 @@
 namespace api\controllers;
 
 
-use common\models\Category;
-use common\models\Content;
+use api\helpers\Message;
 use common\models\DeviceInfo;
 use common\models\PriceCoffee;
-use common\models\ServiceGroup;
 use common\models\Sold;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
+use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
 
@@ -35,6 +34,7 @@ class AppController extends ApiController
             'get-price',
             'total-quality',
             'sold',
+            'get-price-detail',
             'type-coffee'
         ];
 
@@ -122,5 +122,31 @@ class AppController extends ApiController
             'pagination' => false,
         ]);
         return $dataProvider;
+    }
+
+    public function actionGetPriceDetail()
+    {
+        $coffee_old_id = $this->getParameter('coffee_old_id', '');
+        $date = $this->getParameter('date',0);
+        if (!$coffee_old_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'coffee_old_id')]));
+        }
+        if (!$date) {
+            $date = date('d/m/Y', time());
+        }
+
+        $to_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
+        $from_time = $to_time - 86400 * 7;
+        $pricePre = PriceCoffee::find()
+            ->andWhere(['>=', 'created_at', $from_time])
+            ->andWhere(['<=', 'created_at', $to_time])
+            ->andWhere(['coffee_old_id'=>$coffee_old_id])
+            ->orderBy(['created_at' => SORT_DESC]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $pricePre,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
+
     }
 }
