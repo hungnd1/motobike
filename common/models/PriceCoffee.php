@@ -115,7 +115,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
             ->andWhere(['>=', 'created_at', $from_time])
             ->andWhere(['<=', 'created_at', $to_time])
             ->groupBy('coffee_old_id')
-            ->orderBy(['created_at' => SORT_DESC]);
+            ->orderBy(['coffee_old_id' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
             'query' => $pricePre,
             'pagination' => false,
