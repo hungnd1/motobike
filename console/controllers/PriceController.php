@@ -132,4 +132,8 @@ class PriceController extends Controller
         FileUtils::appendToFile(Yii::getAlias('@runtime/logs/info.log'), $txt);
     }
 
+    public function actionDemo(){
+        PriceController::infoLog("aaaaaa");
+    }
+
 }
