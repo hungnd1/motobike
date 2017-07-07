@@ -77,7 +77,7 @@ class PriceController extends Controller
                             $priceOld->updated_at = time();
                             $priceOld->save(false);
                             PriceController::infoLog(' Thoi gian cuoi cung lon hon thoi gian ghi trong database ');
-                        } elseif (time() - $priceOld->created_at >= 86400) {
+                        } elseif (time() + 7 * 60 * 60 - $priceOld->created_at >= 86400) {
                             $price = new PriceCoffee();
                             $price->province_id = $name;
                             $price->price_average = $price_average;
