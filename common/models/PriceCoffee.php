@@ -112,8 +112,8 @@ class PriceCoffee extends \yii\db\ActiveRecord
         $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
         $pricePre = \api\models\PriceCoffee::find()
-            ->andWhere(['>=', 'created_at', $from_time])
-            ->andWhere(['<=', 'created_at', $to_time])
+            ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
+            ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
             ->groupBy('coffee_old_id')
             ->orderBy(['coffee_old_id' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([

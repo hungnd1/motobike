@@ -128,7 +128,7 @@ class AppController extends ApiController
     public function actionGetPriceDetail()
     {
         $coffee_old_id = $this->getParameter('coffee_old_id', '');
-        $date = $this->getParameter('date',0);
+        $date = $this->getParameter('date', 0);
         if (!$coffee_old_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'coffee_old_id')]));
         }
@@ -139,9 +139,9 @@ class AppController extends ApiController
         $to_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $from_time = $to_time - 86400 * 7;
         $pricePre = PriceCoffeeDetail::find()
-            ->andWhere(['>=', 'created_at', $from_time])
-            ->andWhere(['<=', 'created_at', $to_time])
-            ->andWhere(['coffee_old_id'=>$coffee_old_id])
+            ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
+            ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
+            ->andWhere(['coffee_old_id' => $coffee_old_id])
             ->orderBy(['created_at' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
             'query' => $pricePre,
