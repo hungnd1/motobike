@@ -78,17 +78,20 @@ class PriceController extends Controller
                             $priceOld->save(false);
                             PriceController::infoLog(' Thoi gian cuoi cung lon hon thoi gian ghi trong database ');
                         } elseif (time() + 7 * 60 * 60 - $priceOld->created_at >= 86400) {
-                            $price = new PriceCoffee();
-                            $price->province_id = $name;
-                            $price->price_average = $price_average;
-                            $price->unit = PriceCoffee::UNIT_VND;
-                            $price->created_at = $today;
-                            $price->updated_at = $today;
-                            $price->organisation_name = $organisation_name;
-                            $price->last_time_value = $last_time_value;
-                            $price->coffee_old_id = $id;
-                            $price->save(false);
-                            PriceController::infoLog(' Thoi gian cuoi cung  bang thoi gian  hien tai ');
+                            $day_next = floor((time() + 7 * 60 * 60 - $priceOld->created_at) / 86400);
+                            for ($t = 0; $t <= $day_next; $t++) {
+                                $price = new PriceCoffee();
+                                $price->province_id = $name;
+                                $price->price_average = $price_average;
+                                $price->unit = PriceCoffee::UNIT_VND;
+                                $price->created_at = $priceOld->created_at + 86400 * $t;
+                                $price->updated_at = $priceOld->created_at + 86400 * $t;
+                                $price->organisation_name = $organisation_name;
+                                $price->last_time_value = $last_time_value;
+                                $price->coffee_old_id = $id;
+                                $price->save(false);
+                                PriceController::infoLog(' Thoi gian cuoi cung  bang thoi gian  hien tai ');
+                            }
                         }
                     } elseif ($last_time_value < $tomorrow) {
                         $price = new PriceCoffee();
@@ -151,6 +154,7 @@ class PriceController extends Controller
             $arr_organisation = json_decode($ch_result, true);
             for ($j = 0; $j < sizeof($arr_organisation['results']); $j++) {
                 $api_price_detail_ = $api_price_detail . $arr_organisation['results'][$j]['uuid'];
+//                $api_price_detail_ = 'https://greencoffee.lizard.net/api/v2/timeseries/?end=1690171661710&min_points=320&start=1488521600001&format=json&uuid=676802a3-087d-43ee-b7c5-a1565b24278b';
                 PriceController::infoLog('URL ' . $api_price_detail_);
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $api_price_detail_);
@@ -198,7 +202,7 @@ class PriceController extends Controller
                                         }
                                     }
                                 }
-                            } else if ($k < sizeof($event_arr) - 1) {
+                            } else if ($last_time_value == $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000 && $k == sizeof($event_arr) - 1) {
                                 $price = new PriceCoffee();
                                 $price->province_id = $name;
                                 $price->price_average = $event_arr[$k]['value'];
@@ -209,8 +213,61 @@ class PriceController extends Controller
                                 $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
                                 $price->coffee_old_id = $id;
                                 $price->save(false);
-                                $day_next = ($event_arr[$k + 1]['timestamp'] / 1000 - $event_arr[$k]['timestamp'] / 1000) / 86400;
-                                if ($day_next > 1) {
+                                $day_next = floor((time() + 7 * 60 * 60 - $last_time_value) / 86400);
+                                for ($h = 1; $h <= $day_next; $h++) {
+                                    $price = new PriceCoffee();
+                                    $price->province_id = $name;
+                                    $price->price_average = $event_arr[$k]['value'];
+                                    $price->unit = PriceCoffee::UNIT_VND;
+                                    $price->created_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $h;
+                                    $price->updated_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $h;
+                                    $price->organisation_name = $organisation_name;
+                                    $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
+                                    $price->coffee_old_id = $id;
+                                    $price->save(false);
+                                }
+                            } elseif ($last_time_value > $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000 && $k == sizeof($event_arr) - 1) {
+
+                                if ($last_time_value < strtotime('today midnight') + 7 * 60 * 60) {
+                                    $day_next = floor((strtotime('today midnight') + 7 * 60 * 60 - $last_time_value) / 86400);
+                                    if ($day_next >= 1) {
+                                        for ($t = 0; $t <= $day_next; $t++) {
+                                            $price = new PriceCoffee();
+                                            $price->province_id = $name;
+                                            $price->price_average = $last_value;
+                                            $price->unit = PriceCoffee::UNIT_VND;
+                                            $price->created_at = $last_time_value + $t * 86400;
+                                            $price->updated_at = $last_time_value + $t * 86400;
+                                            $price->organisation_name = $organisation_name;
+                                            $price->last_time_value = $last_time_value;
+                                            $price->coffee_old_id = $id;
+                                            $price->save(false);
+                                        }
+                                    }
+                                } elseif ($last_time_value == strtotime('today midnight') + 7 * 60 * 60) {
+                                    $price = new PriceCoffee();
+                                    $price->province_id = $name;
+                                    $price->price_average = $last_value;
+                                    $price->unit = PriceCoffee::UNIT_VND;
+                                    $price->created_at = $last_time_value;
+                                    $price->updated_at = $last_time_value;
+                                    $price->organisation_name = $organisation_name;
+                                    $price->last_time_value = $last_time_value;
+                                    $price->coffee_old_id = $id;
+                                    $price->save(false);
+                                }
+                                $price = new PriceCoffee();
+                                $price->province_id = $name;
+                                $price->price_average = $event_arr[$k]['value'];
+                                $price->unit = PriceCoffee::UNIT_VND;
+                                $price->created_at = $event_arr[$k]['timestamp'] / 1000;
+                                $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
+                                $price->organisation_name = $organisation_name;
+                                $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
+                                $price->coffee_old_id = $id;
+                                $price->save(false);
+                                $day_next = floor(($last_time_value - $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000) / 86400);
+                                if ($day_next >= 1) {
                                     for ($t = 1; $t < $day_next; $t++) {
                                         $price = new PriceCoffee();
                                         $price->province_id = $name;
@@ -224,7 +281,8 @@ class PriceController extends Controller
                                         $price->save(false);
                                     }
                                 }
-                            } else if ($last_time_value == $event_arr[$k]['timestamp'] / 1000) {
+
+                            } else {
                                 $price = new PriceCoffee();
                                 $price->province_id = $name;
                                 $price->price_average = $event_arr[$k]['value'];
@@ -235,18 +293,20 @@ class PriceController extends Controller
                                 $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
                                 $price->coffee_old_id = $id;
                                 $price->save(false);
-                                $day_next = floor((time() - $last_time_value) / 86400);
-                                for ($h = 1; $h <= $day_next; $h++) {
-                                    $price = new PriceCoffee();
-                                    $price->province_id = $name;
-                                    $price->price_average = $event_arr[$k]['value'];
-                                    $price->unit = PriceCoffee::UNIT_VND;
-                                    $price->created_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $h;
-                                    $price->updated_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $h;
-                                    $price->organisation_name = $organisation_name;
-                                    $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
-                                    $price->coffee_old_id = $id;
-                                    $price->save(false);
+                                $day_next = floor(($event_arr[$k + 1]['timestamp'] / 1000 - $event_arr[$k]['timestamp'] / 1000) / 86400);
+                                if ($day_next > 1) {
+                                    for ($t = 1; $t < $day_next; $t++) {
+                                        $price = new PriceCoffee();
+                                        $price->province_id = $name;
+                                        $price->price_average = $event_arr[$k]['value'];
+                                        $price->unit = PriceCoffee::UNIT_VND;
+                                        $price->created_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $t;
+                                        $price->updated_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $t;
+                                        $price->organisation_name = $organisation_name;
+                                        $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
+                                        $price->coffee_old_id = $id;
+                                        $price->save(false);
+                                    }
                                 }
                             }
                         }
