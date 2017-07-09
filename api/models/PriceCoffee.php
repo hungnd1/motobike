@@ -23,7 +23,7 @@ class PriceCoffee extends \common\models\PriceCoffee
         };
         $fields['price_average'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
-            return \common\helpers\CUtils::formatPrice($model->price_average);
+            return $model->price_average;
         };
 
         $fields['unit'] = function ($model) {
