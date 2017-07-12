@@ -180,7 +180,7 @@ class PriceController extends Controller
                                 if($last_time_value == $event_arr[$k]['timestamp'] / 1000){
                                     $day_next = floor((strtotime('today midnight') + 7 * 60 * 60 - $last_time_value) / 86400);
                                     if($day_next >= 1){
-                                        for ($t = 1; $t <= $day_next; $t++) {
+                                        for ($t = 0; $t <= $day_next; $t++) {
                                             $price = new PriceCoffee();
                                             $price->province_id = $name;
                                             $price->price_average = $event_arr[$k]['value'];
