@@ -137,7 +137,7 @@ class AppController extends ApiController
         }
 
         $to_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
-        $from_time = $to_time - 86400 * 7;
+        $from_time = $to_time - 86400 * 6;
         $pricePre = PriceCoffeeDetail::find()
             ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
             ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
