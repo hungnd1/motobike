@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p><?= Html::a('' . \Yii::t('app', 'Tạo GAP'), ['create'], ['class' => 'btn btn-success']) ?> </p>
+                <p><?= Html::a('' . \Yii::t('app', 'Tạo mới'), ['create','type'=> $type], ['class' => 'btn btn-success']) ?> </p>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'gap',
-                            'label'=>'Tiêu đề',
+                            'label'=>'GAP',
                             'format' => 'html',
                             'width' => '50%',
                             'value' => function ($model, $key, $index, $widget) {

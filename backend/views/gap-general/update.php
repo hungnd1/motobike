@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\GapGeneral */
 
 $this->title = Yii::t('app','Cập nhật GAP');
-$this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/gap-general/index'])];
+$this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/gap-general/index','type'=>$type])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="portlet-body form">
                 <?= $this->render('_form', [
                     'model' => $model,
+                    'type' => $type
                 ]) ?>
             </div>
         </div>

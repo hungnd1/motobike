@@ -39,6 +39,26 @@ use yii\helpers\Html;
             ) ?>
         </div>
     </div>
+    <?= $form->field($model,'type')->hiddenInput(['value'=> $type])->label(false) ?>
+    <?php if($type == \common\models\GapGeneral::GAP_DETAIL){ ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'temperature_max')->textInput()->label('Nhiệt độ') ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'evaporation')->textInput()->label('Lượng mưa') ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'humidity')->textInput()->label('Độ ẩm') ?>
+            </div>
+        </div>
+    <?php } ?>
 </div>
 <div class="form-actions">
     <div class="row">

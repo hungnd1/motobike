@@ -1,5 +1,6 @@
 <?php
 use common\models\AuthItem;
+use common\models\GapGeneral;
 use common\models\User;
 use common\widgets\Alert;
 use common\widgets\Nav2;
@@ -215,11 +216,33 @@ $arrlang = array();
                     'url' => ['question-answer/index'],
                     'require_auth' => true,
                 ],
+//                [
+//                    'encode' => false,
+//                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý GAP'),
+//                    'url' => ['gap-general/index'],
+//                    'require_auth' => true,
+//                ],
                 [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý GAP'),
+                    'url' => 'javascript:;',
                     'encode' => false,
-                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý GAP'),
-                    'url' => ['gap-general/index'],
-                    'require_auth' => true,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý GAP chung'),
+                            'url' => ['gap-general/index','type'=>GapGeneral::GAP_GENERAL],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý GAP chi tiết'),
+                            'url' => ['gap-general/index','type'=>GapGeneral::GAP_DETAIL],
+                            'require_auth' => true,
+                        ],
+                    ]
+
                 ],
             ];
 

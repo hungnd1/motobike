@@ -5,7 +5,6 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\GapGeneral;
 
 /**
  * GapGeneralSearch represents the model behind the search form of `common\models\GapGeneral`.
@@ -19,7 +18,7 @@ class GapGeneralSearch extends GapGeneral
     {
         return [
             [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['gap','title'], 'safe'],
+            [['gap', 'title'], 'safe'],
         ];
     }
 
@@ -39,9 +38,9 @@ class GapGeneralSearch extends GapGeneral
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $type)
     {
-        $query = GapGeneral::find();
+        $query = GapGeneral::find()->andWhere(['type' => $type]);
 
         // add conditions that should always apply here
 

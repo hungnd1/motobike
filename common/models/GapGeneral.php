@@ -13,6 +13,11 @@ use Yii;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $type
+ * @property float $temperature_max
+ * @property float $temperature_min
+ * @property float $evaporation
+ * @property float $humidity
  */
 class GapGeneral extends \yii\db\ActiveRecord
 {
@@ -27,6 +32,9 @@ class GapGeneral extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 10;
     const STATUS_INACTIVE = 0;
 
+    const GAP_GENERAL = 1;
+    const GAP_DETAIL = 2;
+
     /**
      * @inheritdoc
      */
@@ -35,7 +43,8 @@ class GapGeneral extends \yii\db\ActiveRecord
         return [
             [['gap','title'], 'required'],
             [['gap','title'], 'string'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'created_at', 'updated_at','type'], 'integer'],
+            [['temperature_max','temperature_min','evaporation','humidity'],'safe']
         ];
     }
 
@@ -51,6 +60,10 @@ class GapGeneral extends \yii\db\ActiveRecord
             'title' => 'Tiêu đề',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'temperature_max' => 'Nhiệt độ',
+            'temperature_min' => 'Nhiệt độ nhỏ nhất',
+            'evaporation' => 'Lượng mưa',
+            'humidity' => 'Độ ẩm',
         ];
     }
 

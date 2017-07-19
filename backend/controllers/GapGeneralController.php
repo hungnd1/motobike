@@ -33,14 +33,15 @@ class GapGeneralController extends Controller
      * Lists all GapGeneral models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($type = GapGeneral::GAP_GENERAL)
     {
         $searchModel = new GapGeneralSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$type);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'type' => $type
         ]);
     }
 
@@ -61,19 +62,20 @@ class GapGeneralController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type = GapGeneral::GAP_GENERAL)
     {
         $model = new GapGeneral();
-
         if ($model->load(Yii::$app->request->post())) {
+            $model->type = $type;
             $model->created_at = time();
             $model->updated_at = time();
             $model->save();
             \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
-            return $this->redirect(['index']);
+            return $this->redirect(['index','type'=>$type]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'type' => $type
             ]);
         }
     }
@@ -96,6 +98,7 @@ class GapGeneralController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'type' => $model->type
             ]);
         }
     }
