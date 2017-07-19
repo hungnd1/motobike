@@ -47,7 +47,7 @@ class GapController extends ApiController
         $page = $this->getParameter('page',0);
         $page = $page > 1 ? $page - 1 : 0;
 
-        $query = GapGeneral::find()->andWhere(['status' => GapGeneral::STATUS_ACTIVE]);
+        $query = GapGeneral::find()->andWhere(['status' => GapGeneral::STATUS_ACTIVE])->andWhere(['type'=>GapGeneral::GAP_GENERAL]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -65,6 +65,7 @@ class GapController extends ApiController
     public function actionSearch($keyword = '')
     {
         $query = GapGeneral::find()->andWhere(['like', 'lower(gap)', strtolower($keyword)])
+            ->andWhere(['type'=>GapGeneral::GAP_GENERAL])
             ->andWhere(['status' => GapGeneral::STATUS_ACTIVE]);
         $defaultSort = ['created_at' => SORT_DESC];
 
