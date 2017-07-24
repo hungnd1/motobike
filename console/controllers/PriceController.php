@@ -26,37 +26,16 @@ class PriceController extends Controller
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $api_organisation);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $ch_result = curl_exec($ch);
-        curl_close($ch);
-        $arr_organisation = json_decode($ch_result, true);
+        $arr_organisation = $this->callCurl($api_organisation);
         $page = ceil($arr_organisation['count'] / 10);
         for ($i = 1; $i <= $page; $i++) {
             $api_organisation_ = $api_organisation . '&page=' . $i;
             PriceController::infoLog('URL ' . $api_organisation_);
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $api_organisation_);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $ch_result = curl_exec($ch);
-            curl_close($ch);
-            $arr_organisation = json_decode($ch_result, true);
+            $arr_organisation = $this->callCurl($api_organisation_);
             for ($j = 0; $j < sizeof($arr_organisation['results']); $j++) {
                 $api_price_detail_ = $api_price_detail . $arr_organisation['results'][$j]['uuid'];
                 PriceController::infoLog('URL ' . $api_price_detail_);
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $api_price_detail_);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $ch_result = curl_exec($ch);
-                curl_close($ch);
-                $arr_detail = json_decode($ch_result, true);
+                $arr_detail = $this->callCurl($api_price_detail_);
                 $id = $arr_detail['results'][0]['id'];
                 $name = $arr_detail['results'][0]['location']['name'];
 
@@ -136,38 +115,19 @@ class PriceController extends Controller
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
         $arr_price_name = ['dRCC', 'dRBA', 'dRBC', 'dRBE'];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $api_organisation);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $ch_result = curl_exec($ch);
-        curl_close($ch);
-        $arr_organisation = json_decode($ch_result, true);
+
+        $arr_organisation = $this->callCurl($api_organisation);
         $page = ceil($arr_organisation['count'] / 10);
         for ($i = 1; $i <= $page; $i++) {
             $api_organisation_ = $api_organisation . '&page=' . $i;
             PriceController::infoLog('URL ' . $api_organisation_);
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $api_organisation_);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $ch_result = curl_exec($ch);
-            curl_close($ch);
-            $arr_organisation = json_decode($ch_result, true);
+
+            $arr_organisation = $this->callCurl($api_organisation_);
             for ($j = 0; $j < sizeof($arr_organisation['results']); $j++) {
                 $api_price_detail_ = $api_price_detail . $arr_organisation['results'][$j]['uuid'];
 //                $api_price_detail_ = 'https://greencoffee.lizard.net/api/v2/timeseries/?end=1690171661710&min_points=320&start=1488521600001&format=json&uuid=95594060-0e7c-4d9e-902a-b900a0342c1e';
                 PriceController::infoLog('URL ' . $api_price_detail_);
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $api_price_detail_);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $ch_result = curl_exec($ch);
-                curl_close($ch);
-                $arr_detail = json_decode($ch_result, true);
+                $arr_detail = $this->callCurl($api_price_detail_);
                 $event_arr = $arr_detail['results']['0']['events'];
                 $first_time_value = $arr_detail['results']['0']['first_value_timestamp'] / 1000;
                 $last_time_value = $arr_detail['results']['0']['last_value_timestamp'] / 1000;
@@ -266,5 +226,18 @@ class PriceController extends Controller
                 }
             }
         }
+    }
+
+    private function callCurl($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8', 'username: duc.dam', 'password:Kopainfo2017'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch_result = curl_exec($ch);
+        curl_close($ch);
+        $arr_detail = json_decode($ch_result, true);
+        return $arr_detail;
     }
 }
