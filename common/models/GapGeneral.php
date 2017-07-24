@@ -55,7 +55,7 @@ class GapGeneral extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'gap' => 'Gap',
+            'gap' => 'Nội dung',
             'status' => 'Trạng thái',
             'title' => 'Tiêu đề',
             'created_at' => 'Created At',

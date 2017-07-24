@@ -231,7 +231,7 @@ $arrlang = array();
                     'items' => [
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý GAP chung'),
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý tin sâu bệnh'),
                             'url' => ['gap-general/index','type'=>GapGeneral::GAP_GENERAL],
                             'require_auth' => true,
                         ],

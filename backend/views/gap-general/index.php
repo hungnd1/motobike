@@ -9,7 +9,11 @@ use yii\helpers\Url;
 /* @var $searchModel common\models\GapGeneralSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '' . \Yii::t('app', 'Quản lý Gap chung');
+if($type == GapGeneral::GAP_GENERAL ){
+    $this->title = '' . \Yii::t('app', 'Quản lý tin sâu bệnh');
+}else{
+    $this->title = '' . \Yii::t('app', 'Quản lý GAP chi tiết');
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

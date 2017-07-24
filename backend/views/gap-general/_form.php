@@ -1,5 +1,6 @@
 <?php
 
+use common\models\GapGeneral;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
 use yii\helpers\Html;
@@ -7,6 +8,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\GapGeneral */
 /* @var $form yii\widgets\ActiveForm */
+
 ?>
 
 <?php $form = ActiveForm::begin([

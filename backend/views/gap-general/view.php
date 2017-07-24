@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\GapGeneral */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t("app","Danh sách GAP"), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t("app","Danh sách "), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

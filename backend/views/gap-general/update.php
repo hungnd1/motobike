@@ -1,11 +1,16 @@
 <?php
 
+use common\models\GapGeneral;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\GapGeneral */
 
-$this->title = Yii::t('app','Cập nhật GAP');
+if($type == GapGeneral::GAP_GENERAL ){
+    $this->title = '' . \Yii::t('app', 'Cập nhật tin sâu bệnh');
+}else{
+    $this->title = '' . \Yii::t('app', 'Cập nhật GAP chi tiết');
+}
 $this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/gap-general/index','type'=>$type])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
