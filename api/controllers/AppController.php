@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\models\PriceCoffeeDetail;
+use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\PriceCoffee;
 use common\models\Sold;
@@ -36,7 +37,8 @@ class AppController extends ApiController
             'total-quality',
             'sold',
             'get-price-detail',
-            'type-coffee'
+            'type-coffee',
+            'get-category'
         ];
 
         return $behaviors;
@@ -50,6 +52,7 @@ class AppController extends ApiController
             'total-quantity' => ['GET'],
             'sold' => ['GET'],
             'type-coffee' => ['GET'],
+            'get-category' => ['GET'],
             'check-device-token' => ['POST']
         ];
     }
@@ -149,5 +152,16 @@ class AppController extends ApiController
         ]);
         return $dataProvider;
 
+    }
+
+    public function actionGetCategory()
+    {
+        $query = Category::find()->andWhere(['status'=>Category::STATUS_ACTIVE])->orderBy(['order_number'=>SORT_DESC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
     }
 }

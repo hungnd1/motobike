@@ -1,7 +1,9 @@
 <?php
 
+use common\models\Category;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -73,6 +75,12 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             ]) ?>
         </div>
     </div>
+
+    <?php $data = ArrayHelper::map(Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->asArray()->all(), 'id', 'display_name') ?>
+    <?= $form->field($model, 'category_id')->dropDownList(
+        $data
+    ) ?>
+
 
     <div class="row">
         <div class="col-md-12">

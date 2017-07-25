@@ -200,12 +200,6 @@ $arrlang = array();
                 ],
                 [
                     'encode' => false,
-                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý tin tức'),
-                    'url' => ['news/index'],
-                    'require_auth' => true,
-                ],
-                [
-                    'encode' => false,
                     'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý giá'),
                     'url' => ['price-coffee/index'],
                     'require_auth' => true,
@@ -216,12 +210,28 @@ $arrlang = array();
                     'url' => ['question-answer/index'],
                     'require_auth' => true,
                 ],
-//                [
-//                    'encode' => false,
-//                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý GAP'),
-//                    'url' => ['gap-general/index'],
-//                    'require_auth' => true,
-//                ],
+                [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý tin tức'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý danh mục'),
+                            'url' => ['category/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý tin tức'),
+                            'url' => ['news/index'],
+                            'require_auth' => true,
+                        ],
+                    ]
+
+                ],
                 [
                     'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý GAP'),
                     'url' => 'javascript:;',

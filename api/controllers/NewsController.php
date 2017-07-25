@@ -44,8 +44,12 @@ class NewsController extends ApiController
 
     public function actionGetListNews()
     {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id category')]));
+        }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE]);
+        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->andWhere(['category_id' => $id])->orderBy(['created_at' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -63,7 +67,7 @@ class NewsController extends ApiController
     public function actionSearch($keyword = '')
     {
         $query = News::find()->andWhere(['like', 'lower(title)', strtolower($keyword)])
-            ->orWhere(['like','lower(content)',strtolower($keyword)])
+            ->orWhere(['like', 'lower(content)', strtolower($keyword)])
             ->andWhere(['status' => News::STATUS_ACTIVE]);
         $defaultSort = ['created_at' => SORT_DESC];
 

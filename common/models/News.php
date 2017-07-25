@@ -17,6 +17,7 @@ use yii\helpers\Url;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $status
+ * @property integer $category_id
  */
 class News extends \yii\db\ActiveRecord
 {
@@ -37,10 +38,10 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'short_description'], 'required'],
+            [['title', 'short_description','category_id'], 'required'],
             [['image'], 'required', 'on' => 'admin_create_update'],
             [['description', 'image', 'content'], 'string'],
-            [['created_at', 'updated_at', 'status'], 'integer'],
+            [['created_at', 'updated_at', 'status','category_id'], 'integer'],
             [['title', 'short_description'], 'string', 'max' => 500],
         ];
     }
@@ -60,6 +61,7 @@ class News extends \yii\db\ActiveRecord
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Updated At',
             'status' => 'Trạng thái',
+            'category_id' => 'Danh mục',
         ];
     }
 
