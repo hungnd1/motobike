@@ -54,7 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'gap',
-                            'label'=>'GAP',
                             'format' => 'html',
                             'width' => '50%',
                             'value' => function ($model, $key, $index, $widget) {
