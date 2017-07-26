@@ -49,7 +49,7 @@ class NewsController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id category')]));
         }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->andWhere(['category_id' => $id])->orderBy(['created_at' => SORT_DESC]);
+        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->andWhere(['category_id' => (int)$id])->orderBy(['created_at' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
