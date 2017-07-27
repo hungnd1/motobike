@@ -7,6 +7,7 @@
  */
 namespace console\controllers;
 
+use backend\controllers\CategoryController;
 use common\auth\helpers\AuthHelper;
 use common\helpers\StringUtils;
 use common\models\AuthItem;

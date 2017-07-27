@@ -41,8 +41,8 @@ class ImportDeviceForm extends Model
         ];
     }
 
-    public function getTemplateFile() {
-        return Yii::$app->getUrlManager()->getBaseUrl() . '/ImportDevicesTemplate.xlsx';
+    public static function getTemplateFile() {
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/Locations_Data_Lizard_072017.xlsx';
     }
 
     public function getEditTemplateFile(){
