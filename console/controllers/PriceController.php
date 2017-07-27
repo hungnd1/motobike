@@ -242,20 +242,23 @@ class PriceController extends Controller
         return $arr_detail;
     }
 
-    public function actionMigrateLatLong(){
+    public function actionMigrateLatLong()
+    {
 
-        $station = Station::findAll(['status'=>Station::STATUS_ACTIVE]);
+        $station = Station::findAll(['status' => Station::STATUS_ACTIVE]);
         $url = "https://greencoffee.lizard.net/api/v3/locations/?format=json&code=";
-        foreach($station as $item){
+        foreach ($station as $item) {
             /** @var $item Station */
-            $arr_detail = $this->callCurl($url.$item->station_code);
+            $arr_detail = $this->callCurl($url . $item->station_code);
             $value = $arr_detail['results'];
-            if($value){
-                $long = $arr_detail['results'][0]['geometry']['coordinates'][0];
-                $lat = $arr_detail['results'][0]['geometry']['coordinates'][1];
-                $item->latitude = $lat;
-                $item->longtitude = $long;
-                $item->save(false);
+            if ($value) {
+                if (!$item->longtitude || !$item->latitude) {
+                    $long = $arr_detail['results'][0]['geometry']['coordinates'][0];
+                    $lat = $arr_detail['results'][0]['geometry']['coordinates'][1];
+                    $item->latitude = $lat;
+                    $item->longtitude = $long;
+                    $item->save(false);
+                }
             }
         }
 
