@@ -254,6 +254,12 @@ $arrlang = array();
                     ]
 
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý thông tin AKVO'),
+                    'url' => ['log-data/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 
