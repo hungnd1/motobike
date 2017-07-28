@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\QuestionAnswer;
+use common\models\Term;
 
 /**
- * QuestionAnswerSearch represents the model behind the search form of `common\models\QuestionAnswer`.
+ * TermSearch represents the model behind the search form of `common\models\Term`.
  */
-class QuestionAnswerSearch extends QuestionAnswer
+class TermSearch extends Term
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class QuestionAnswerSearch extends QuestionAnswer
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at', 'status'], 'integer'],
-            [['question', 'answer', 'image'], 'safe'],
+            [['id', 'created_at', 'updated_at'], 'integer'],
+            [['term'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class QuestionAnswerSearch extends QuestionAnswer
      */
     public function search($params)
     {
-        $query = QuestionAnswer::find()->orderBy(['created_at'=>SORT_DESC]);
+        $query = Term::find();
 
         // add conditions that should always apply here
 
@@ -62,12 +62,9 @@ class QuestionAnswerSearch extends QuestionAnswer
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'question', $this->question])
-            ->andFilterWhere(['like', 'answer', $this->answer])
-            ->andFilterWhere(['like', 'image', $this->image]);
+        $query->andFilterWhere(['like', 'term', $this->term]);
 
         return $dataProvider;
     }

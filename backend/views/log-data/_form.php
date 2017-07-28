@@ -47,7 +47,7 @@ use yii\helpers\Html;
 <div class="form-actions">
     <div class="row">
         <div class="col-md-offset-3 col-md-9">
-            <?= Html::submitButton($model->isNewRecord ? 'Tạo GAP' : 'Cập nhật',
+            <?= Html::submitButton($model->isNewRecord ? 'Tạo thông tin' : 'Cập nhật',
                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             <?= Html::a('Quay lại', ['index'], ['class' => 'btn btn-default']) ?>
         </div>

@@ -40,7 +40,7 @@ class GapGeneralSearch extends GapGeneral
      */
     public function search($params, $type)
     {
-        $query = GapGeneral::find()->andWhere(['type' => $type]);
+        $query = GapGeneral::find()->andWhere(['type' => $type])->orderBy(['created_at'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

@@ -41,7 +41,7 @@ class NewSearch extends News
      */
     public function search($params)
     {
-        $query = News::find();
+        $query = News::find()->orderBy(['created_at'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

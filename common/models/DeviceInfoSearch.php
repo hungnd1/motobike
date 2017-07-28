@@ -41,7 +41,7 @@ class DeviceInfoSearch extends DeviceInfo
      */
     public function search($params)
     {
-        $query = DeviceInfo::find();
+        $query = DeviceInfo::find()->orderBy(['created_at'=>SORT_DESC]);
 
         // add conditions that should always apply here
 

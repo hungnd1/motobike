@@ -3,12 +3,11 @@
 use common\models\GapGeneral;
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
-/* @var $model common\models\LogData */
+/* @var $model common\models\GapGeneral */
 
-$this->title = '' . \Yii::t('app', 'Tạo thông tin coffee AKVO');
-$this->params['breadcrumbs'][] = ['label' => 'Thông tin coffee AKVO ', 'url' => Yii::$app->urlManager->createUrl(['/log-data/index'])];
+$this->title = '' . \Yii::t('app', 'Cập nhật quy định');
+$this->params['breadcrumbs'][] = ['label' => 'Quy định ', 'url' => Yii::$app->urlManager->createUrl(['/term/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -28,3 +27,4 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+

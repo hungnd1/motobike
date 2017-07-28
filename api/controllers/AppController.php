@@ -15,6 +15,7 @@ use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\PriceCoffee;
 use common\models\Sold;
+use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
 use Yii;
@@ -38,7 +39,8 @@ class AppController extends ApiController
             'sold',
             'get-price-detail',
             'type-coffee',
-            'get-category'
+            'get-category',
+            'term'
         ];
 
         return $behaviors;
@@ -53,6 +55,7 @@ class AppController extends ApiController
             'sold' => ['GET'],
             'type-coffee' => ['GET'],
             'get-category' => ['GET'],
+            'term' => ['GET'],
             'check-device-token' => ['POST']
         ];
     }
@@ -156,8 +159,18 @@ class AppController extends ApiController
 
     public function actionGetCategory()
     {
-        $query = Category::find()->andWhere(['status'=>Category::STATUS_ACTIVE])->orderBy(['order_number'=>SORT_DESC]);
+        $query = Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->orderBy(['order_number' => SORT_DESC]);
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionTerm()
+    {
+        $query = Term::find()->orderBy(['updated_at' => SORT_DESC])->limit(1);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
