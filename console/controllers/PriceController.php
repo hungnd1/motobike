@@ -48,45 +48,56 @@ class PriceController extends Controller
                 $organisation_name = $arr_detail['results'][0]['name'];
                 if (in_array($name, $arr_price_name) || in_array($organisation_name, $arr_price_name)) {
                     if ($last_value) {
-                        $priceOld = PriceCoffee::find()
+                        $date = date('d/m/Y', time());
+                        $to_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
+                        $from_time = $to_time - 86400 * 29;
+                        $checkPriceExpired = PriceCoffee::find()
+                            ->distinct('price_average')
+                            ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
+                            ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
                             ->andWhere(['coffee_old_id' => $id])
-                            ->orderBy(['id' => SORT_DESC])->one();
-                        /** @var $priceOld PriceCoffee */
-                        if ($priceOld) {
-                            if (time() + 7 * 60 * 60 - $priceOld->created_at < 86400 && $last_time_value > $priceOld->last_time_value && $last_time_value < $tomorrow) {
-                                $priceOld->price_average = $price_average;
-                                $priceOld->last_time_value = $last_time_value;
-                                $priceOld->updated_at = time();
-                                $priceOld->save(false);
-                                PriceController::infoLog(' Thoi gian cuoi cung lon hon thoi gian ghi trong database ');
-                            } elseif (time() + 7 * 60 * 60 - $priceOld->created_at >= 86400) {
-                                $day_next = floor((time() + 7 * 60 * 60 - $priceOld->created_at) / 86400);
-                                for ($t = 1; $t <= $day_next; $t++) {
-                                    $price = new PriceCoffee();
-                                    $price->province_id = $name;
-                                    $price->price_average = $price_average;
-                                    $price->unit = PriceCoffee::UNIT_VND;
-                                    $price->created_at = $priceOld->created_at + 86400 * $t;
-                                    $price->updated_at = $priceOld->created_at + 86400 * $t;
-                                    $price->organisation_name = $organisation_name;
-                                    $price->last_time_value = $last_time_value;
-                                    $price->coffee_old_id = $id;
-                                    $price->save(false);
-                                    PriceController::infoLog(' Thoi gian cuoi cung  bang thoi gian  hien tai ');
+                            ->orderBy(['created_at' => SORT_DESC]);
+                        if ($checkPriceExpired->count() >= 2) {
+                            $priceOld = PriceCoffee::find()
+                                ->andWhere(['coffee_old_id' => $id])
+                                ->orderBy(['id' => SORT_DESC])->one();
+                            /** @var $priceOld PriceCoffee */
+                            if ($priceOld) {
+                                if (time() + 7 * 60 * 60 - $priceOld->created_at < 86400 && $last_time_value > $priceOld->last_time_value && $last_time_value < $tomorrow) {
+                                    $priceOld->price_average = $price_average;
+                                    $priceOld->last_time_value = $last_time_value;
+                                    $priceOld->updated_at = time();
+                                    $priceOld->save(false);
+                                    PriceController::infoLog(' Thoi gian cuoi cung lon hon thoi gian ghi trong database ');
+                                } elseif (time() + 7 * 60 * 60 - $priceOld->created_at >= 86400) {
+                                    $day_next = floor((time() + 7 * 60 * 60 - $priceOld->created_at) / 86400);
+                                    for ($t = 1; $t <= $day_next; $t++) {
+                                        $price = new PriceCoffee();
+                                        $price->province_id = $name;
+                                        $price->price_average = $price_average;
+                                        $price->unit = PriceCoffee::UNIT_VND;
+                                        $price->created_at = $priceOld->created_at + 86400 * $t;
+                                        $price->updated_at = $priceOld->created_at + 86400 * $t;
+                                        $price->organisation_name = $organisation_name;
+                                        $price->last_time_value = $last_time_value;
+                                        $price->coffee_old_id = $id;
+                                        $price->save(false);
+                                        PriceController::infoLog(' Thoi gian cuoi cung  bang thoi gian  hien tai ');
+                                    }
                                 }
+                            } elseif ($last_time_value < $tomorrow) {
+                                $price = new PriceCoffee();
+                                $price->province_id = $name;
+                                $price->price_average = $price_average;
+                                $price->unit = PriceCoffee::UNIT_VND;
+                                $price->created_at = $today;
+                                $price->updated_at = $today;
+                                $price->organisation_name = $organisation_name;
+                                $price->last_time_value = $last_time_value;
+                                $price->coffee_old_id = $id;
+                                $price->save(false);
+                                PriceController::infoLog(' Thoi gian cuoi cung nho hon  thoi gian ngay mai  ');
                             }
-                        } elseif ($last_time_value < $tomorrow) {
-                            $price = new PriceCoffee();
-                            $price->province_id = $name;
-                            $price->price_average = $price_average;
-                            $price->unit = PriceCoffee::UNIT_VND;
-                            $price->created_at = $today;
-                            $price->updated_at = $today;
-                            $price->organisation_name = $organisation_name;
-                            $price->last_time_value = $last_time_value;
-                            $price->coffee_old_id = $id;
-                            $price->save(false);
-                            PriceController::infoLog(' Thoi gian cuoi cung nho hon  thoi gian ngay mai  ');
                         }
                     }
                 }
