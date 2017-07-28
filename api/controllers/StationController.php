@@ -42,7 +42,9 @@ class StationController extends ApiController
     public function actionGetListStation()
     {
 
-        $query = Station::find()->andWhere(['status' => Station::STATUS_ACTIVE]);
+        $query = Station::find()
+            ->andWhere(['status' => Station::STATUS_ACTIVE])
+            ->andWhere('latitude is not null');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
@@ -57,6 +59,7 @@ class StationController extends ApiController
     public function actionSearch($keyword = '')
     {
         $query = Station::find()->andWhere(['status' => Station::STATUS_ACTIVE])
+            ->andWhere('latitude is not null')
             ->andWhere(['like', 'lower(station_name)', CVietnameseTools::removeSigns((strtolower($keyword)))])
             ->orWhere(['like', 'lower(station_name)', strtolower($keyword)]);
         $defaultSort = ['station_name' => SORT_ASC];
