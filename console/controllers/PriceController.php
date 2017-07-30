@@ -327,78 +327,78 @@ class PriceController extends Controller
                                 } elseif ($code == 'WNDSPD') {
                                     $wind_spd = $last_value;
                                 }
-                                if (sizeof($array_event) > 0) {
-                                    for ($j = 0; $j < sizeof($array_event); $j++) {
-                                        $checkDetail = WeatherDetail::findOne(['station_code' => $station->station_code, 'timestamp' => $array_event[$j]['timestamp'] / 1000]);
-                                        // check timestamp va station_code da ton tai chua
-                                        if (!$checkDetail) {
-                                            if ($code == 'PRCP') {
-                                                $weather_detail = new WeatherDetail();
-                                                $weather_detail->precipitation = $array_event[$j]['max'];
-                                                $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
-                                                $weather_detail->created_at = time();
-                                                $weather_detail->updated_at = time();
-                                                $weather_detail->station_id = $station->id;
-                                                $weather_detail->station_code = $station->station_code;
-                                                $weather_detail->save();
-                                            } elseif ($code == 'TMAX') {
-                                                $weather_detail = new WeatherDetail();
-                                                $weather_detail->tmax = $array_event[$j]['max'];
-                                                $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
-                                                $weather_detail->created_at = time();
-                                                $weather_detail->updated_at = time();
-                                                $weather_detail->station_id = $station->id;
-                                                $weather_detail->station_code = $station->station_code;
-                                                $weather_detail->save();
-                                            } elseif ($code == 'TMIN') {
-                                                $weather_detail = new WeatherDetail();
-                                                $weather_detail->tmin = $array_event[$j]['max'];
-                                                $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
-                                                $weather_detail->created_at = time();
-                                                $weather_detail->updated_at = time();
-                                                $weather_detail->station_id = $station->id;
-                                                $weather_detail->station_code = $station->station_code;
-                                                $weather_detail->save();
-                                            } elseif ($code == 'WNDDIR') {
-                                                $weather_detail = new WeatherDetail();
-                                                $weather_detail->wnddir = $array_event[$j]['max'];
-                                                $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
-                                                $weather_detail->created_at = time();
-                                                $weather_detail->updated_at = time();
-                                                $weather_detail->station_id = $station->id;
-                                                $weather_detail->station_code = $station->station_code;
-                                                $weather_detail->save();
-                                            } elseif ($code == 'WNDSPD') {
-                                                $weather_detail = new WeatherDetail();
-                                                $weather_detail->wndspd = $array_event[$j]['max'];
-                                                $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
-                                                $weather_detail->created_at = time();
-                                                $weather_detail->updated_at = time();
-                                                $weather_detail->station_id = $station->id;
-                                                $weather_detail->station_code = $station->station_code;
-                                                $weather_detail->save();
-                                            }
-                                        } else {
-                                            //chay lan dau thi comment if lai
-//                                            if($array_event[$j]['timestamp'] / 1000 > time() * 7* 60 * 60){
-                                                if ($code == 'PRCP') {
-                                                    $checkDetail->precipitation = $array_event[$j]['max'];
-                                                    $checkDetail->save();
-                                                } elseif ($code == 'TMAX') {
-                                                    $checkDetail->tmax = $array_event[$j]['max'];
-                                                    $checkDetail->save();
-                                                } elseif ($code == 'TMIN') {
-                                                    $checkDetail->tmin = $array_event[$j]['max'];
-                                                    $checkDetail->save();
-                                                } elseif ($code == 'WNDDIR') {
-                                                    $checkDetail->wnddir = $array_event[$j]['max'];
-                                                    $checkDetail->save();
-                                                } elseif ($code == 'WNDSPD') {
-                                                    $checkDetail->wndspd = $array_event[$j]['max'];
-                                                    $checkDetail->save();
-                                                }
-//                                            }
+                            }
+                            if (sizeof($array_event) > 0) {
+                                for ($j = 0; $j < sizeof($array_event); $j++) {
+                                    $checkDetail = WeatherDetail::findOne(['station_code' => $station->station_code, 'timestamp' => $array_event[$j]['timestamp'] / 1000]);
+                                    // check timestamp va station_code da ton tai chua
+                                    if (!$checkDetail) {
+                                        if ($code == 'PRCP') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->precipitation = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'TMAX') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->tmax = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'TMIN') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->tmin = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'WNDDIR') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->wnddir = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'WNDSPD') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->wndspd = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
                                         }
+                                    } else {
+                                        //chay lan dau thi comment if lai
+//                                            if($array_event[$j]['timestamp'] / 1000 > time() * 7* 60 * 60){
+                                        if ($code == 'PRCP') {
+                                            $checkDetail->precipitation = $array_event[$j]['max'];
+                                            $checkDetail->save();
+                                        } elseif ($code == 'TMAX') {
+                                            $checkDetail->tmax = $array_event[$j]['max'];
+                                            $checkDetail->save();
+                                        } elseif ($code == 'TMIN') {
+                                            $checkDetail->tmin = $array_event[$j]['max'];
+                                            $checkDetail->save();
+                                        } elseif ($code == 'WNDDIR') {
+                                            $checkDetail->wnddir = $array_event[$j]['max'];
+                                            $checkDetail->save();
+                                        } elseif ($code == 'WNDSPD') {
+                                            $checkDetail->wndspd = $array_event[$j]['max'];
+                                            $checkDetail->save();
+                                        }
+//                                            }
                                     }
                                 }
                             }
