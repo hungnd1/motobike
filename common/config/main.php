@@ -10,6 +10,7 @@ $config = [
         '@messages' => 'messages',
         '@question' => 'static/question',
         '@excel_folder' => "uploaded_excels",
+        '@weather'=>'weather'
     ],
     'components' => [
         'cache' => [
