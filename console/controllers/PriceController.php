@@ -294,8 +294,8 @@ class PriceController extends Controller
         foreach ($listStation as $station) {
             /** @var $station Station */
             $url = "https://greencoffee.lizard.net/api/v3/timeseries/?end=1601545600000&format=json&start=1498802400000&search=" . $station->station_code;
-            $this->infoLogWeather("****START WEATHER URL ".$url."******* /n");
-            $this->infoLogWeather("****STATION ".$station->id."*******");
+            $this->infoLogWeather("****START WEATHER URL " . $url . "******* /n");
+            $this->infoLogWeather("****STATION " . $station->id . "*******");
 //            $url = "https://greencoffee.lizard.net/api/v3/timeseries/?end=1601545600000&format=json&search=67_663_24667&start=1498802400000";
             $station_result = $this->callCurl($url);
             $tmax = 0;
@@ -381,24 +381,24 @@ class PriceController extends Controller
                                         }
                                     } else {
                                         //chay lan dau thi comment if lai
-//                                            if($array_event[$j]['timestamp'] / 1000 > time() * 7* 60 * 60){
-                                        if ($code == 'PRCP') {
-                                            $checkDetail->precipitation = $array_event[$j]['max'];
-                                            $checkDetail->save();
-                                        } elseif ($code == 'TMAX') {
-                                            $checkDetail->tmax = $array_event[$j]['max'];
-                                            $checkDetail->save();
-                                        } elseif ($code == 'TMIN') {
-                                            $checkDetail->tmin = $array_event[$j]['max'];
-                                            $checkDetail->save();
-                                        } elseif ($code == 'WNDDIR') {
-                                            $checkDetail->wnddir = $array_event[$j]['max'];
-                                            $checkDetail->save();
-                                        } elseif ($code == 'WNDSPD') {
-                                            $checkDetail->wndspd = $array_event[$j]['max'];
-                                            $checkDetail->save();
+                                        if ($array_event[$j]['timestamp'] / 1000 > time() * 7 * 60 * 60) {
+                                            if ($code == 'PRCP') {
+                                                $checkDetail->precipitation = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'TMAX') {
+                                                $checkDetail->tmax = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'TMIN') {
+                                                $checkDetail->tmin = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'WNDDIR') {
+                                                $checkDetail->wnddir = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'WNDSPD') {
+                                                $checkDetail->wndspd = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            }
                                         }
-//                                            }
                                     }
                                 }
                             }
