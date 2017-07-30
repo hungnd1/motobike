@@ -379,7 +379,8 @@ class PriceController extends Controller
                                                 $weather_detail->save();
                                             }
                                         } else {
-                                            if($array_event[$j]['timestamp'] / 1000 > $end){
+                                            //chay lan dau thi comment if lai
+//                                            if($array_event[$j]['timestamp'] / 1000 > time() * 7* 60 * 60){
                                                 if ($code == 'PRCP') {
                                                     $checkDetail->precipitation = $array_event[$j]['max'];
                                                     $checkDetail->save();
@@ -396,7 +397,7 @@ class PriceController extends Controller
                                                     $checkDetail->wndspd = $array_event[$j]['max'];
                                                     $checkDetail->save();
                                                 }
-                                            }
+//                                            }
                                         }
                                     }
                                 }
