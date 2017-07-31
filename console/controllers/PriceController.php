@@ -290,6 +290,7 @@ class PriceController extends Controller
             ->andWhere('latitude is not null')
 //            ->limit(1)
             ->all();
+        $today = strtotime('today midnight') + 7 * 60 * 60;
         $arr_price_name = ['dRCC', 'dRBA', 'dRBC', 'dRBE'];
         foreach ($listStation as $station) {
             /** @var $station Station */
@@ -381,7 +382,9 @@ class PriceController extends Controller
                                         }
                                     } else {
                                         //chay lan dau thi comment if lai
-                                        if ($array_event[$j]['timestamp'] / 1000 > time() * 7 * 60 * 60) {
+
+                                        if ($array_event[$j]['timestamp'] / 1000 > $today || !$checkDetail->precipitation
+                                            || !$checkDetail->tmax || !$checkDetail->tmin || !$checkDetail->wnddir || !$checkDetail->wndspd) {
                                             if ($code == 'PRCP') {
                                                 $checkDetail->precipitation = $array_event[$j]['max'];
                                                 $checkDetail->save();
