@@ -50,6 +50,7 @@ class SubscriberController extends ApiController
             'change-info' => ['POST'],
             'exchange-coffee' => ['POST'],
             'exchange-buy' => ['POST'],
+            'change-password' => ['POST']
         ];
     }
 
@@ -378,11 +379,88 @@ class SubscriberController extends ApiController
 
     }
 
-    public function actionResetPassword(){
+    public function actionChangePassword(){
+
         UserHelpers::manualLogin();
 
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
+        $new_password = $this->getParameterPost('new_password', '');
+        $old_password = $this->getParameterPost('old_password','');
+
+        if (!$new_password) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu cũ mới')]));
+        }
+        if (!$old_password) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
+        }
+        if (!$subscriber) {
+            throw new InvalidValueException(Message::getAccessDennyMessage());
+        }
+
+        if (!$subscriber->validatePassword($old_password)) {
+            throw new InvalidValueException(Message::getChangeOldPassFailMessage());
+        }
+        $subscriber->password = $new_password;
+        $subscriber->setPassword($new_password);
+
+        if (!$subscriber->validate() || !$subscriber->save()) {
+            $message = $subscriber->getFirstMessageError();
+            throw new InvalidValueException($message);
+        }
+
+        $st = SubscriberToken::findByAccessToken($subscriber->access_token);
+        $st->status = SubscriberToken::STATUS_INACTIVE;
+        if (!$st->save()) {
+            throw new ServerErrorHttpException(Message::getFailMessage());
+        }
+        return ['message' => Message::getChangePassSuccessMessage()];
+
+    }
+
+    public function actionResetPassword(){
+
         $username = $this->getParameterPost('username', '');
-        $password = $this->getParameterPost('password','');
+        $new_password = $this->getParameterPost('new_password','');
+
+        if (!$username) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
+        }
+        if (!$new_password) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
+        }
+        $phone_number = CUtils::validateMobile($username, 0);
+        if ($phone_number == '') {
+            $phone_number = CUtils::validateMobile($username, 1);
+            if ($phone_number == '') {
+                $phone_number = CUtils::validateMobile($username, 2);
+                if ($phone_number == '') {
+                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
+                }
+            }
+        }
+
+        $subscriber = Subscriber::findOne(['username' => $phone_number]);
+        if (!$subscriber) {
+            throw new InvalidValueException('Thông tin tài khoản  không hợp lệ');
+        }
+
+        $subscriber->password = $new_password;
+        $subscriber->setPassword($new_password);
+
+        if (!$subscriber->validate() || !$subscriber->save()) {
+            $message = $subscriber->getFirstMessageError();
+            throw new InvalidValueException($message);
+        }
+
+        $st = SubscriberToken::findByAccessToken($subscriber->access_token);
+        $st->status = SubscriberToken::STATUS_INACTIVE;
+        if (!$st->save()) {
+            throw new ServerErrorHttpException(Message::getFailMessage());
+        }
+        return ['message' => Message::getChangePassSuccessMessage()];
+
     }
 
 }

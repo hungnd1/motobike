@@ -240,4 +240,15 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
         return $avatar ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@avatar') . DIRECTORY_SEPARATOR . $avatar, true) : '';
         // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
+
+    private function getFirstMessageError()
+    {
+        $error = $this->firstErrors;
+        $message = "";
+        foreach ($error as $key => $value) {
+            $message .= $value;
+            break;
+        }
+        return $message;
+    }
 }
