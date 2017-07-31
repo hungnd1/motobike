@@ -35,13 +35,13 @@ class PriceController extends Controller
             PriceController::infoLog('URL ' . $api_organisation_);
             $arr_organisation = $this->callCurl($api_organisation_);
             for ($j = 0; $j < sizeof($arr_organisation['results']); $j++) {
-                $name = $arr_organisation['results'][$j]['name'];
-                if (in_array($name, $arr_price_name)) {
+                $name_ = $arr_organisation['results'][$j]['name'];
+                if (in_array($name_, $arr_price_name)) {
                     $api_price_detail_ = $api_price_detail . $arr_organisation['results'][$j]['uuid'];
                     PriceController::infoLog('URL ' . $api_price_detail_);
                     $arr_detail = $this->callCurl($api_price_detail_);
                     $id = $arr_detail['results'][0]['id'];
-
+                    $name = $arr_organisation['results'][$j]['location']['name'];
                     PriceController::infoLog('*******START  TO CHUC  ' . $name);
 
                     $price_average = $arr_detail['results'][0]['last_value'];
