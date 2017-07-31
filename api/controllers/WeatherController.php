@@ -13,7 +13,6 @@ use api\helpers\Message;
 use api\models\WeatherDetail;
 use Yii;
 use yii\base\InvalidValueException;
-use yii\data\ActiveDataProvider;
 
 class WeatherController extends ApiController
 {
@@ -57,7 +56,7 @@ class WeatherController extends ApiController
             ->orderBy(['timestamp' => SORT_ASC])
             ->limit(1)
             ->one();
-        if(!$weather){
+        if (!$weather) {
             $weather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $today])
                 ->andWhere(['<', 'timestamp', $tomorrow])
@@ -66,6 +65,15 @@ class WeatherController extends ApiController
                 ->limit(1)
                 ->one();
         }
-        return $weather;
+        $listWeather = WeatherDetail::find()
+            ->andWhere(['>=', 'timestamp', $current_time])
+            ->andWhere(['station_id' => $station_id])
+            ->orderBy(['timestamp' => SORT_ASC])
+            ->all();
+
+        return [
+            'items' => $weather,
+            'events' => $listWeather
+        ];
     }
 }
