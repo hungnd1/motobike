@@ -34,7 +34,8 @@ class SubscriberController extends ApiController
         $behaviors['authenticator']['except'] = [
             'login',
             'register',
-            'run'
+            'run',
+            'reset-password'
         ];
 
         return $behaviors;
@@ -47,6 +48,7 @@ class SubscriberController extends ApiController
             'login' => ['POST'],
             'register' => ['POST'],
             'get-info' => ['GET'],
+            'reset-password' => ['GET'],
             'change-info' => ['POST'],
             'exchange-coffee' => ['POST'],
             'exchange-buy' => ['POST'],
