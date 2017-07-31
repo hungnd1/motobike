@@ -64,8 +64,18 @@ class SubscriberController extends ApiController
         if (!$password) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
         }
+        $phone_number = CUtils::validateMobile($username, 0);
+        if ($phone_number == '') {
+            $phone_number = CUtils::validateMobile($username, 1);
+            if ($phone_number == '') {
+                $phone_number = CUtils::validateMobile($username, 2);
+                if ($phone_number == '') {
+                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
+                }
+            }
+        }
 
-        $subscriber = Subscriber::findOne(['username' => $username]);
+        $subscriber = Subscriber::findOne(['username' => $phone_number]);
         if (!$subscriber) {
             throw new InvalidValueException('Thông tin tài khoản hoặc mật khẩu không hợp lệ');
         }
@@ -366,6 +376,13 @@ class SubscriberController extends ApiController
         ]);
         return $dataProvider;
 
+    }
+
+    public function actionResetPassword(){
+        UserHelpers::manualLogin();
+
+        $username = $this->getParameterPost('username', '');
+        $password = $this->getParameterPost('password','');
     }
 
 }
