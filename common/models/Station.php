@@ -33,12 +33,6 @@ class Station extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
 
-    const STATION_CODE = 'station_code';
-    const STATION_NAME = 'station_name';
-    const DISTRICT_CODE = 'district_code';
-    const COM_CODE = 'com_code';
-    const DISTRICT_NAME = 'district_name';
-    const PROVINCE_ID = 'province_id';
 
     /**
      * @inheritdoc

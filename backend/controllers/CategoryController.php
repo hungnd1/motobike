@@ -5,13 +5,13 @@ namespace backend\controllers;
 use common\models\Category;
 use common\models\CategorySearch;
 use common\models\ImportDeviceForm;
-use common\models\Province;
-use common\models\Station;
+use common\models\LogData;
 use PHPExcel_IOFactory;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -41,7 +41,6 @@ class CategoryController extends Controller
     {
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//        CategoryController::import();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -131,57 +130,6 @@ class CategoryController extends Controller
         }
     }
 
-    public function import()
-    {
-        $objPHPExcel = PHPExcel_IOFactory::load(Yii::getAlias('@excel_folder') . "/" . 'Locations_Data_Lizard_072017.xlsx');
-        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
-        if (sizeof($sheetData) > 0) {
-            $dataStarted = false;
-            $idx = 0;
-            $macArr = [];
-            $errorsArr = [];
-            foreach ($sheetData as $row) {
-                $idx++;
-                if ($row['A'] == 'CODE') {
-                    $dataStarted = true;
-                    continue;
-                }
-                if (!$dataStarted) {
-                    continue;
-                }
-                $station = new Station();
-                $station->station_code = $this->getImportedValue(Station::STATION_CODE, $row['A']);
-                $station->station_name = $this->getImportedValue(Station::STATION_NAME, $row['G']);
-                $station->com_code = $this->getImportedValue(Station::COM_CODE, $row['D']);
-                $station->district_name = $this->getImportedValue(Station::DISTRICT_NAME, $row['F']);
-                $station->district_code = $this->getImportedValue(Station::DISTRICT_CODE, $row['C']);
-                $station->province_id = $this->getImportedValue(Station::PROVINCE_ID, $row['B']);
-                $station->status = Station::STATUS_ACTIVE;
-                $station->save(false);
-            }
-        }
-    }
-//
-    private function getImportedValue($attr, $value)
-    {
-        $value = trim($value);
-        switch ($attr) {
-            case Station::STATION_CODE:
-                return $value;
-            case Station::STATION_NAME:
-                return $value;
-            case Station::DISTRICT_CODE:
-                return $value;
-            case Station::COM_CODE:
-                return $value;
-            case Station::DISTRICT_NAME:
-                return $value;
-            case Station::PROVINCE_ID;
-                $province = Province::findOne(['province_code'=>$value])->id;
-                return $province;
 
-        }
-        return $value;
-    }
 
 }

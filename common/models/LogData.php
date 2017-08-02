@@ -25,6 +25,8 @@ class LogData extends \yii\db\ActiveRecord
         return 'log_data';
     }
 
+    const CONTENT = 'content';
+
     /**
      * @inheritdoc
      */

@@ -11,6 +11,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use yii\web\UploadedFile;
 
 class ImportDeviceForm extends Model
 {
@@ -42,7 +43,7 @@ class ImportDeviceForm extends Model
     }
 
     public static function getTemplateFile() {
-        return Yii::$app->getUrlManager()->getBaseUrl() . '/Locations_Data_Lizard_072017.xlsx';
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/Cleaned_and_processed.xlsx';
     }
 
     public function getEditTemplateFile(){

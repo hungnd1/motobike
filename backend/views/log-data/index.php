@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p><?= Html::a('' . \Yii::t('app', 'Tạo mới'), ['create'], ['class' => 'btn btn-success']) ?> </p>
+                <p><?= Html::a('' . \Yii::t('app', 'Import'), ['import'], ['class' => 'btn btn-success']) ?> </p>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
