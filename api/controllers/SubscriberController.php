@@ -408,8 +408,8 @@ class SubscriberController extends ApiController
         $subscriber->setPassword($new_password);
 
         if (!$subscriber->validate() || !$subscriber->save()) {
-            $message = $subscriber->getFirstMessageError();
-            throw new InvalidValueException($message);
+//            $message = $subscriber->getFirstMessageError();
+            throw new InvalidValueException("error");
         }
 
         $st = SubscriberToken::findByAccessToken($subscriber->access_token);
@@ -452,8 +452,8 @@ class SubscriberController extends ApiController
         $subscriber->setPassword($new_password);
 
         if (!$subscriber->validate() || !$subscriber->save()) {
-            $message = $subscriber->getFirstMessageError();
-            throw new InvalidValueException($message);
+//            $message = $subscriber->getFirstMessageError();
+            throw new InvalidValueException("error");
         }
 
         $st = SubscriberToken::findByAccessToken($subscriber->access_token);
