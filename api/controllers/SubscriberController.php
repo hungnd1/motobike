@@ -48,7 +48,7 @@ class SubscriberController extends ApiController
             'login' => ['POST'],
             'register' => ['POST'],
             'get-info' => ['GET'],
-            'reset-password' => ['GET'],
+            'reset-password' => ['POST'],
             'change-info' => ['POST'],
             'exchange-coffee' => ['POST'],
             'exchange-buy' => ['POST'],
