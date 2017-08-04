@@ -65,12 +65,20 @@ class WeatherController extends ApiController
                 ->limit(1)
                 ->one();
         }
-        $listWeather = WeatherDetail::find()
-            ->andWhere(['>=', 'timestamp', $current_time])
-            ->andWhere(['<>','id',$weather->id])
-            ->andWhere(['station_id' => $station_id])
-            ->orderBy(['timestamp' => SORT_ASC])
-            ->all();
+        if($weather){
+            $listWeather = WeatherDetail::find()
+                ->andWhere(['>=', 'timestamp', $current_time])
+                ->andWhere(['<>','id',$weather->id])
+                ->andWhere(['station_id' => $station_id])
+                ->orderBy(['timestamp' => SORT_ASC])
+                ->all();
+        }else{
+            $listWeather = WeatherDetail::find()
+                ->andWhere(['>=', 'timestamp', $current_time])
+                ->andWhere(['station_id' => $station_id])
+                ->orderBy(['timestamp' => SORT_ASC])
+                ->all();
+        }
 
         return [
             'items' => $weather,
