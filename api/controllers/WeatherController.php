@@ -67,6 +67,7 @@ class WeatherController extends ApiController
         }
         $listWeather = WeatherDetail::find()
             ->andWhere(['>=', 'timestamp', $current_time])
+            ->andWhere(['<>','id',$weather->id])
             ->andWhere(['station_id' => $station_id])
             ->orderBy(['timestamp' => SORT_ASC])
             ->all();
