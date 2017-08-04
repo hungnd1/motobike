@@ -383,8 +383,14 @@ class PriceController extends Controller
                                     } else {
                                         //chay lan dau thi comment if lai
 
-                                        if ($array_event[$j]['timestamp'] / 1000 > $today || !$checkDetail->precipitation
-                                            || !$checkDetail->tmax || !$checkDetail->tmin || !$checkDetail->wnddir || !$checkDetail->wndspd) {
+                                        if ($checkDetail->precipitation != $array_event[$j]['max'] ||
+                                            $checkDetail->tmax != $array_event[$j]['max'] ||
+                                            $checkDetail->tmin != $array_event[$j]['max'] ||
+                                            $checkDetail->wndspd != $array_event[$j]['max'] ||
+                                            $checkDetail->wnddir != $array_event[$j]['max']
+                                            || $array_event[$j]['timestamp'] / 1000 > $today || !$checkDetail->precipitation
+                                            || !$checkDetail->tmax || !$checkDetail->tmin || !$checkDetail->wnddir || !$checkDetail->wndspd
+                                        ) {
                                             if ($code == 'PRCP') {
                                                 $checkDetail->precipitation = $array_event[$j]['max'];
                                                 $checkDetail->save();
