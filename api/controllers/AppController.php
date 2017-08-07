@@ -183,7 +183,8 @@ class AppController extends ApiController
 
     public function actionLogData()
     {
-        $query = LogData::find()->andWhere('latitude is not null');
+        $query = LogData::find()->andWhere('latitude is not null')
+        ->groupBy(['latitude','longitude']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false
