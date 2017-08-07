@@ -67,7 +67,7 @@
             }
         });//end jQuery.ajax
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
+            zoom: 30,
             center: {
                 lat: 11.61,
                 lng: 108.04
