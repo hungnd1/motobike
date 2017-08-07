@@ -5,7 +5,6 @@ namespace backend\controllers;
 use common\models\ImportDeviceForm;
 use common\models\LogData;
 use common\models\LogDataSearch;
-use common\models\Station;
 use PHPExcel_IOFactory;
 use Yii;
 use yii\filters\VerbFilter;
@@ -372,11 +371,8 @@ class LogDataController extends Controller
                                     $row_fa . '<p>' . $row['FA'] . '</p>' . $row_fb . '<p>' . $row['FB'] . '</p>' . $row_fc . '<p>' . $row['FC'] . '</p>' . $row_fd . '<p>' . $row['FD'] . '</p>' .
                                     $row_fe . '<p>' . $row['FE'] . '</p>' . $row_ff . '<p>' . $row['FF'] . '</p>' . $row_fg . '<p>' . $row['FG'] . '</p>' . $row_fh . '<p>' . $row['FH'] . '</p>';
                                 $log = new LogData();
-                                $station = Station::findOne(['station_code' => $row['B']]);
-                                if ($station) {
-                                    $log->latitude = $station->latitude;
-                                    $log->longitude = $station->longtitude;
-                                }
+                                $log->latitude = $row['EU'];
+                                $log->longitude = $row['EV'];
                                 $log->content = $this->getImportedValue(LogData::CONTENT, $content);
                                 $log->save(false);
                             }
@@ -411,5 +407,10 @@ class LogDataController extends Controller
                 return $value;
         }
         return $value;
+    }
+
+    public function actionMap()
+    {
+        return $this->render('map');
     }
 }

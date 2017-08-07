@@ -13,6 +13,7 @@ use api\helpers\Message;
 use api\models\PriceCoffeeDetail;
 use common\models\Category;
 use common\models\DeviceInfo;
+use api\models\LogData;
 use common\models\PriceCoffee;
 use common\models\Sold;
 use common\models\Term;
@@ -40,7 +41,8 @@ class AppController extends ApiController
             'get-price-detail',
             'type-coffee',
             'get-category',
-            'term'
+            'term',
+            'log-data'
         ];
 
         return $behaviors;
@@ -56,7 +58,8 @@ class AppController extends ApiController
             'type-coffee' => ['GET'],
             'get-category' => ['GET'],
             'term' => ['GET'],
-            'check-device-token' => ['POST']
+            'check-device-token' => ['POST'],
+            'log-data' => ['GET']
         ];
     }
 
@@ -174,6 +177,16 @@ class AppController extends ApiController
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionLogData()
+    {
+        $query = LogData::find()->andWhere('latitude is not null');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false
         ]);
         return $dataProvider;
     }
