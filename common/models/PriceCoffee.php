@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "price_coffee".
@@ -30,6 +29,14 @@ class PriceCoffee extends \yii\db\ActiveRecord
 
     const UNIT_VND = 1;
     const UNIT_USD = 2;
+
+    const TYPE_COFFEE_A = 'Cà phê Chè';
+    const TYPE_COFFEE_V = 'Cà phê vối';
+
+    const COMPANY_AGENT = 'Đại lý';
+    const COMPANY_COMPANY = 'Công ty';
+    const COMPANY_EXPORT = 'Xuất khẩu';
+    const COMPANY_FARM_GATE = 'Cổng trại';
 
     /**
      * @inheritdoc
@@ -107,25 +114,130 @@ class PriceCoffee extends \yii\db\ActiveRecord
         return $unit;
     }
 
-    public static function getPrice($date)
+    public static function getPrice($date, $province_id)
     {
         $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
         $pricePre = \api\models\PriceCoffee::find()
-            ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
-            ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
-            ->groupBy('coffee_old_id')
-            ->orderBy(['coffee_old_id' => SORT_DESC]);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $pricePre,
-            'pagination' => false,
-        ]);
-        return $dataProvider;
+            ->innerJoin('station', 'station.station_code = price_coffee.province_id')
+            ->andWhere(['station.province_id' => $province_id])
+            ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
+            ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
+            ->groupBy('price_coffee.coffee_old_id')
+            ->orderBy(['price_coffee.coffee_old_id' => SORT_DESC])->all();
+        return $pricePre;
     }
 
     public function getContentProvider()
     {
         $listCp = Province::find()->all();
         return $listCp;
+    }
+
+    public static function getPriceCode($code)
+    {
+        switch ($code) {
+            case 'dABA':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_AGENT
+                ];
+                break;
+            case 'dABC':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_COMPANY
+                ];
+                break;
+            case 'dABE':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_EXPORT
+                ];
+                break;
+            case 'dABF':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_FARM_GATE
+                ];
+                break;
+            case 'dACA':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_AGENT
+                ];
+                break;
+            case 'dACC':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_COMPANY
+                ];
+                break;
+            case 'dACE':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_EXPORT
+                ];
+                break;
+            case 'dACF':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_FARM_GATE
+                ];
+                break;
+            case 'dRBA':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_AGENT
+                ];
+                break;
+            case 'dRBC':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_COMPANY
+                ];
+                break;
+            case 'dRBE':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_EXPORT
+                ];
+                break;
+            case 'dRBF':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_FARM_GATE
+                ];
+                break;
+            case 'dRCA':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_AGENT
+                ];
+                break;
+            case 'dRCC':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_COMPANY
+                ];
+                break;
+            case 'dRCE':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_EXPORT
+                ];
+                break;
+            case 'dRCF':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_V,
+                    'company' => PriceCoffee::COMPANY_FARM_GATE
+                ];
+                break;
+            default:
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_AGENT
+                ];
+        }
     }
 }

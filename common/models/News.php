@@ -13,10 +13,15 @@ use yii\helpers\Url;
  * @property string $short_description
  * @property string $description
  * @property string $content
+ * @property string $video_url
  * @property string $image
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $status
+ * @property integer $view_count
+ * @property integer $like_count
+ * @property integer $comment_count
+ * @property integer $is_slide
  * @property integer $category_id
  */
 class News extends \yii\db\ActiveRecord
@@ -41,8 +46,8 @@ class News extends \yii\db\ActiveRecord
             [['title', 'short_description','category_id'], 'required'],
             [['image'], 'required', 'on' => 'admin_create_update'],
             [['description', 'image', 'content'], 'string'],
-            [['created_at', 'updated_at', 'status','category_id'], 'integer'],
-            [['title', 'short_description'], 'string', 'max' => 500],
+            [['created_at', 'updated_at', 'status','category_id','is_slide','comment_count','like_count','view_count'], 'integer'],
+            [['title','video_url', 'short_description'], 'string', 'max' => 500],
         ];
     }
 
@@ -62,6 +67,7 @@ class News extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'status' => 'Trạng thái',
             'category_id' => 'Danh mục',
+            'is_slide' => 'Là slide',
         ];
     }
 

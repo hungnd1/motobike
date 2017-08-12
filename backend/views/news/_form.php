@@ -24,6 +24,11 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             <?= $form->field($model, 'title')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'is_slide')->checkbox()->label('Hiển thị slide') ?>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">

@@ -24,7 +24,7 @@ class PriceController extends Controller
     {
         date_default_timezone_set("Asia/Bangkok");
         $today = strtotime('today midnight') + 7 * 60 * 60;
-        $arr_price_name = ['dRCC', 'dRBA', 'dRBC', 'dRBE'];
+        $arr_price_name = ['dABA','dABC','dABE','dABF','dACA','dACC','dACE','dACF','dRBF','dRCA','dRCC','dRCE','dRCF', 'dRBA', 'dRBC', 'dRBE'];
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
@@ -133,7 +133,7 @@ class PriceController extends Controller
 
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
-        $arr_price_name = ['dRCC', 'dRBA', 'dRBC', 'dRBE'];
+        $arr_price_name = ['dABA','dABC','dABE','dABF','dACA','dACC','dACE','dACF','dRBF','dRCA','dRCC','dRCE','dRCF', 'dRBA', 'dRBC', 'dRBE'];
 
         $arr_organisation = $this->callCurl($api_organisation);
         $page = ceil($arr_organisation['count'] / 10);

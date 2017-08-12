@@ -15,6 +15,7 @@ use common\models\Category;
 use common\models\DeviceInfo;
 use api\models\LogData;
 use common\models\PriceCoffee;
+use common\models\Province;
 use common\models\Sold;
 use common\models\Term;
 use common\models\TotalQuality;
@@ -93,12 +94,15 @@ class AppController extends ApiController
         if (!$date) {
             $date = date('d/m/Y', time());
         }
-        $listPrice = PriceCoffee::getPrice($date);
-        if ($listPrice->query->one()) {
-            return $listPrice;
+        $arr = [];
+        $provinces = Province::find()->all();
+        foreach($provinces as $item ){
+            $arr_province = [];
+            $arr_province['province_name'] = $item->province_name;
+            $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date,$item->id);
+            $arr[] = $arr_province;
         }
-        $this->setStatusCode(500);
-        return ['message' => 'Hệ thống chưa cập nhật giá'];
+        return $arr['items'] = $arr;
     }
 
     public function actionTotalQuantity()

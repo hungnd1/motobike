@@ -36,6 +36,10 @@ class PriceCoffee extends \common\models\PriceCoffee
             /* @var $model \common\models\PriceCoffee */
             return $model->getListStatusNameByUnit($model->unit);
         };
+        $fields['type_coffe'] = function($model){
+            /* @var $model \common\models\PriceCoffee */
+            return $model->getPriceCode($model->organisation_name);
+        };
 
         return $fields;
     }
