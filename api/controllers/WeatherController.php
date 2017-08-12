@@ -48,6 +48,7 @@ class WeatherController extends ApiController
         $current_time = time() + 7 * 60 * 60;
         $today = strtotime('today midnight') + 7 * 60 * 60;
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
+        $week_ago = strtotime('today midnight') - 7 * 86400 + 7 * 60 * 60;
 
         $weather = WeatherDetail::find()
             ->andWhere(['>=', 'timestamp', $current_time])
@@ -65,24 +66,31 @@ class WeatherController extends ApiController
                 ->limit(1)
                 ->one();
         }
-        if($weather){
+        if ($weather) {
             $listWeather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $current_time])
-                ->andWhere(['<>','id',$weather->id])
+                ->andWhere(['<>', 'id', $weather->id])
                 ->andWhere(['station_id' => $station_id])
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
-        }else{
+        } else {
             $listWeather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $current_time])
                 ->andWhere(['station_id' => $station_id])
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
         }
+        $weekWeatherAgo = WeatherDetail::find()
+            ->andWhere(['>=', 'timestamp', $week_ago])
+            ->andWhere(['<=', 'timestamp', $today])
+            ->andWhere(['station_id' => $station_id])
+            ->orderBy(['timestamp' => SORT_ASC])
+            ->all();
 
         return [
             'items' => $weather,
-            'events' => $listWeather
+            'events' => $listWeather,
+            'weather_week_ago' => $weekWeatherAgo
         ];
     }
 }
