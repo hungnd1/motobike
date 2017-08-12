@@ -59,32 +59,42 @@ class SubscriberController extends ApiController
     public function actionLogin()
     {
         $username = $this->getParameterPost('username', '');
-        $password = $this->getParameterPost('password', '');
+//        $password = $this->getParameterPost('password', '');
 
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
         }
-        if (!$password) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
-        }
-        $phone_number = CUtils::validateMobile($username, 0);
-        if ($phone_number == '') {
-            $phone_number = CUtils::validateMobile($username, 1);
-            if ($phone_number == '') {
-                $phone_number = CUtils::validateMobile($username, 2);
-                if ($phone_number == '') {
-                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
-                }
-            }
-        }
+//        if (!$password) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
+//        }
+//        $phone_number = CUtils::validateMobile($username, 0);
+//        if ($phone_number == '') {
+//            $phone_number = CUtils::validateMobile($username, 1);
+//            if ($phone_number == '') {
+//                $phone_number = CUtils::validateMobile($username, 2);
+//                if ($phone_number == '') {
+//                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
+//                }
+//            }
+//        }
 
-        $subscriber = Subscriber::findOne(['username' => $phone_number]);
+        $subscriber = Subscriber::findOne(['username' => $username]);
+        $password = CUtils::generateRandomString(8);
         if (!$subscriber) {
-            throw new InvalidValueException('Thông tin tài khoản hoặc mật khẩu không hợp lệ');
+            $subscriber = new Subscriber();
+            $subscriber->username = $username;
+            $subscriber->setPassword($password);
+            $subscriber->msisdn = $password;
+            $subscriber->verification_code = $password;
+            $subscriber->status = Subscriber::STATUS_ACTIVE;
+            $subscriber->created_at = time();
+            $subscriber->updated_at = time();
+            $subscriber->authen_type = Subscriber::AUTHEN_TYPE_NORMAL;
+            $subscriber->save();
         }
-        if (!$subscriber->validatePassword($password)) {
-            throw new InvalidValueException(Message::getWrongUserOrPassMessage());
-        }
+//        if (!$subscriber->validatePassword($password)) {
+//            throw new InvalidValueException(Message::getWrongUserOrPassMessage());
+//        }
 
         $token = SubscriberToken::generateToken($subscriber->id, $subscriber->authen_type);
         if (!$token) {
