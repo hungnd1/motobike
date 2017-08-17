@@ -266,6 +266,12 @@ $arrlang = array();
                     'url' => ['term/index'],
                     'require_auth' => true,
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý đơn vị liên kết'),
+                    'url' => ['unit-link/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 

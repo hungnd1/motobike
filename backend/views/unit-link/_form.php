@@ -1,13 +1,12 @@
 <?php
 
-use common\models\Category;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\News */
+/* @var $model common\models\UnitLink */
 /* @var $form yii\widgets\ActiveForm */
 $showPreview = !$model->isNewRecord && !empty($model->image);
 ?>
@@ -21,20 +20,15 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 <div class="form-body">
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'title')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
+            <?= $form->field($model, 'name')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'is_slide')->checkbox()->label('Hiển thị slide') ?>
+            <?= $form->field($model, 'link')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <?= $form->field($model, 'short_description')->textarea(['rows' => 6]) ?>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
 
@@ -54,47 +48,13 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
                     'showPreview' => (!$showPreview) ? true : false,
                 ]
             ]); ?>
-            <div class="row">
-                <div class="form-group field-content-price" style="padding-left: 27%;color: red;font-size: 15px;">
-                    <p>Ảnh danh mục cấp 1 có ảnh tỉ lệ 1.2 chính xác 16x13 </p>
-                    <p>Yêu cầu up nội dung chính xác.</p>
-                </div>
-            </div>
-            <br><br>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <?= $form->field($model, 'description')->widget(\common\widgets\CKEditor::className(), [
-                'options' => ['rows' => 8],
-                'preset' => 'full'
-            ]) ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <?php  echo $form->field($model, 'content')->widget(\common\widgets\CKEditor::className(), [
-                'options' => ['rows' => 8],
-                'preset' => 'full'
-            ]);
-            $_SESSION['KCFINDER'] = array(
-                'disabled' => false
-            );
-            ?>
-        </div>
-    </div>
-
-    <?php $data = ArrayHelper::map(Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->asArray()->all(), 'id', 'display_name') ?>
-    <?= $form->field($model, 'category_id')->dropDownList(
-        $data
-    ) ?>
-
 
     <div class="row">
         <div class="col-md-12">
             <?= $form->field($model, 'status')->dropDownList(
-                \common\models\News::listStatus(), ['class' => 'input-circle']
+                \common\models\UnitLink::listStatus(), ['class' => 'input-circle']
             ) ?>
         </div>
     </div>
@@ -102,7 +62,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 <div class="form-actions">
     <div class="row">
         <div class="col-md-offset-3 col-md-9">
-            <?= Html::submitButton($model->isNewRecord ? 'Tạo tin tức' : 'Cập nhật',
+            <?= Html::submitButton($model->isNewRecord ? 'Tạo đơn vị' : 'Cập nhật',
                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             <?= Html::a('Quay lại', ['index'], ['class' => 'btn btn-default']) ?>
         </div>

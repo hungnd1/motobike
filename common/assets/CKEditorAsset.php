@@ -10,6 +10,7 @@ class CKEditorAsset extends AssetBundle
     ];
     public $js = [
         'global/plugins/ckeditor/ckeditor.js',
+        'global/plugins/ckeditor/adapters/jquery.js'
     ];
     public $depends = [
         'common\assets\MetronicAdminAsset',
