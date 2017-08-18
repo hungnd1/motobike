@@ -12,6 +12,7 @@
 // Production
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 0);
+$baseUrl = 'http://45.32.112.173:85/';
 
 // Development
 // error_reporting(E_ALL);
@@ -66,7 +67,7 @@ $config['images'] = array(
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => 'http://45.32.112.173:85/ckfinder/userfiles/',
+    'baseUrl'      => $baseUrl.'ckfinder/userfiles/',
 //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,
