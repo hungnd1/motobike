@@ -65,22 +65,19 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->widget(\common\widgets\CKEditor::className(), [
+            <?php echo $form->field($model, 'description')->widget(\common\widgets\CKEditor::className(), [
                 'options' => ['rows' => 8],
                 'preset' => 'full'
-            ]) ?>
+            ]);
+            ?>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <?php  echo $form->field($model, 'content')->widget(\common\widgets\CKEditor::className(), [
-                'options' => ['rows' => 8],
-                'preset' => 'full'
+                'preset' => 'full',
             ]);
-            $_SESSION['KCFINDER'] = array(
-                'disabled' => false
-            );
             ?>
         </div>
     </div>

@@ -1,6 +1,7 @@
 <?php
 
 use common\models\GapGeneral;
+use common\widgets\CKEditor;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
 use yii\helpers\Html;
@@ -27,10 +28,11 @@ use yii\helpers\Html;
 
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'gap')->widget(\dosamigos\ckeditor\CKEditor::className(), [
+            <?php echo $form->field($model, 'gap')->widget(CKEditor::className(), [
                 'options' => ['rows' => 8],
                 'preset' => 'full'
-            ]) ?>
+            ]);
+            ?>
         </div>
     </div>
 

@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
         'css/font/font_open_sans.css'
     ];
     public $js = [
+        'js/ckeditor/ckeditor.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

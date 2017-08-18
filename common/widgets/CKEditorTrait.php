@@ -32,6 +32,9 @@ trait CKEditorTrait
 	 */
 	protected function initOptions()
 	{
+		$_SESSION['KCFINDER'] = array(
+			'disabled' => false
+		);
 		switch ($this->preset) {
 			case 'custom':
 				$options = [];
