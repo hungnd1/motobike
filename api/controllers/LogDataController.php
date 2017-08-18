@@ -16,6 +16,7 @@ use common\models\DeviceInfo;
 use api\models\LogData;
 use common\models\PriceCoffee;
 use common\models\Sold;
+use common\models\Station;
 use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
@@ -34,7 +35,8 @@ class LogDataController extends ApiExceptLoginController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'log-data'
+            'log-data',
+            'get-list-station',
         ];
 
         return $behaviors;
@@ -43,7 +45,8 @@ class LogDataController extends ApiExceptLoginController
     protected function verbs()
     {
         return [
-            'log-data' => ['GET']
+            'log-data' => ['GET'],
+            'get-list-station' => ['GET'],
         ];
     }
 
@@ -57,5 +60,22 @@ class LogDataController extends ApiExceptLoginController
             'pagination' => false
         ]);
         return $dataProvider;
+    }
+
+    public function actionGetListStation()
+    {
+
+        $query = Station::find()
+            ->andWhere(['status' => Station::STATUS_ACTIVE])
+            ->andWhere('latitude is not null');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+            'sort' => [
+                'defaultOrder' => ['station_name' => SORT_ASC],
+            ],
+        ]);
+        return $dataProvider;
+
     }
 }
