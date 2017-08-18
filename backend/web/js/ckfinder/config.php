@@ -29,8 +29,6 @@ $config['authentication'] = function () {
     return true;
 };
 
-$config['language'] = 'vi';
-
 /*============================ License Key ============================================*/
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_licenseKey
 
@@ -68,7 +66,7 @@ $config['images'] = array(
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => Yii::$app->params['baseUrl'].'/ckfinder/userfiles/',
+    'baseUrl'      => 'http://45.32.112.173:85/ckfinder/userfiles/',
 //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,
