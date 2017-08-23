@@ -10,10 +10,10 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\models\LogData;
 use api\models\PriceCoffeeDetail;
 use common\models\Category;
 use common\models\DeviceInfo;
-use api\models\LogData;
 use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Sold;
@@ -95,11 +95,11 @@ class AppController extends ApiController
             $date = date('d/m/Y', time());
         }
         $arr = [];
-        $provinces = Province::find()->all();
-        foreach($provinces as $item ){
+        $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
+        foreach ($provinces as $item) {
             $arr_province = [];
             $arr_province['province_name'] = $item->province_name;
-            $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date,$item->id);
+            $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date, $item->id);
             $arr[] = $arr_province;
         }
         return $arr['items'] = $arr;
@@ -188,7 +188,7 @@ class AppController extends ApiController
     public function actionLogData()
     {
         $query = LogData::find()->andWhere('latitude is not null')
-        ->groupBy(['latitude','longitude']);
+            ->groupBy(['latitude', 'longitude']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false
