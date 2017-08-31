@@ -25,7 +25,7 @@ class PriceController extends Controller
         $this->migrateLatLong();
         date_default_timezone_set("Asia/Bangkok");
         $today = strtotime('today midnight') + 7 * 60 * 60;
-        $arr_price_name = ['dABA','dABC','dABE','dABF','dACA','dACC','dACE','dACF','dRBF','dRCA','dRCC','dRCE','dRCF', 'dRBA', 'dRBC', 'dRBE'];
+        $arr_price_name = ['dABA', 'dABC', 'dABE', 'dABF', 'dACA', 'dACC', 'dACE', 'dACF', 'dRBF', 'dRCA', 'dRCC', 'dRCE', 'dRCF', 'dRBA', 'dRBC', 'dRBE'];
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
@@ -134,7 +134,7 @@ class PriceController extends Controller
 
         $api_organisation = Yii::$app->params['GreenCoffee'];
         $api_price_detail = Yii::$app->params['price_detail'];
-        $arr_price_name = ['dABA','dABC','dABE','dABF','dACA','dACC','dACE','dACF','dRBF','dRCA','dRCC','dRCE','dRCF', 'dRBA', 'dRBC', 'dRBE'];
+        $arr_price_name = ['dABA', 'dABC', 'dABE', 'dABF', 'dACA', 'dACC', 'dACE', 'dACF', 'dRBF', 'dRCA', 'dRCC', 'dRCE', 'dRCF', 'dRBA', 'dRBC', 'dRBE'];
 
         $arr_organisation = $this->callCurl($api_organisation);
         $page = ceil($arr_organisation['count'] / 10);
@@ -262,17 +262,17 @@ class PriceController extends Controller
         return $arr_detail;
     }
 
-    private  function migrateLatLong()
+    private function migrateLatLong()
     {
 
         $station = Station::findAll(['status' => Station::STATUS_ACTIVE]);
         $url = "https://greencoffee.lizard.net/api/v3/locations/?format=json&code=";
         foreach ($station as $item) {
             /** @var $item Station */
-            $arr_detail = $this->callCurl($url . $item->station_code);
-            $value = $arr_detail['results'];
-            if ($value) {
-                if (!$item->longtitude || !$item->latitude) {
+            if (!$item->longtitude || !$item->latitude) {
+                $arr_detail = $this->callCurl($url . $item->station_code);
+                $value = $arr_detail['results'];
+                if ($value) {
                     $long = $arr_detail['results'][0]['geometry']['coordinates'][0];
                     $lat = $arr_detail['results'][0]['geometry']['coordinates'][1];
                     $item->latitude = $lat;
@@ -283,7 +283,7 @@ class PriceController extends Controller
         }
     }
 
-    public  function actionMigrateLatLong()
+    public function actionMigrateLatLong()
     {
 
         $station = Station::findAll(['status' => Station::STATUS_ACTIVE]);
@@ -334,7 +334,7 @@ class PriceController extends Controller
                         $array_event = $station_result['results'][$i]['events'];
                         $code = $station_result['results'][$i]['code'];
                         $last_value = $station_result['results'][$i]['last_value'];
-                        $end = $station_result['results'][$i]['end'] / 1000 ;
+                        $end = $station_result['results'][$i]['end'] / 1000;
                         if ($end) {
                             $checkStart = WeatherDetail::findOne(['station_code' => $station->station_code, 'timestamp' => $end]);
                             if (!$checkStart) {
@@ -359,7 +359,7 @@ class PriceController extends Controller
                                         if ($code == 'PRCP') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->precipitation = $array_event[$j]['max'];
-                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000 ;
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
                                             $weather_detail->created_at = time();
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
@@ -368,7 +368,7 @@ class PriceController extends Controller
                                         } elseif ($code == 'TMAX') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->tmax = $array_event[$j]['max'];
-                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000 ;
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
                                             $weather_detail->created_at = time();
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
@@ -386,7 +386,7 @@ class PriceController extends Controller
                                         } elseif ($code == 'WNDDIR') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->wnddir = $array_event[$j]['max'];
-                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000 ;
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
                                             $weather_detail->created_at = time();
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
@@ -395,7 +395,7 @@ class PriceController extends Controller
                                         } elseif ($code == 'WNDSPD') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->wndspd = $array_event[$j]['max'];
-                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000 ;
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
                                             $weather_detail->created_at = time();
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
@@ -444,7 +444,7 @@ class PriceController extends Controller
                 $weather_detail->tmax = $tmax;
                 $weather_detail->wnddir = $wind_dir;
                 $weather_detail->wndspd = $wind_spd;
-                $weather_detail->timestamp = $timestamp ;
+                $weather_detail->timestamp = $timestamp;
                 $weather_detail->created_at = time();
                 $weather_detail->updated_at = time();
                 $weather_detail->station_code = $station->station_code;
