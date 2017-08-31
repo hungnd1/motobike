@@ -22,6 +22,7 @@ class PriceController extends Controller
 
     public function actionRun()
     {
+        $this->migrateLatLong();
         date_default_timezone_set("Asia/Bangkok");
         $today = strtotime('today midnight') + 7 * 60 * 60;
         $arr_price_name = ['dABA','dABC','dABE','dABF','dACA','dACC','dACE','dACF','dRBF','dRCA','dRCC','dRCE','dRCF', 'dRBA', 'dRBC', 'dRBE'];
@@ -261,7 +262,7 @@ class PriceController extends Controller
         return $arr_detail;
     }
 
-    public function actionMigrateLatLong()
+    private  function migrateLatLong()
     {
 
         $station = Station::findAll(['status' => Station::STATUS_ACTIVE]);
