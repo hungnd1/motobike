@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "gap_general".
@@ -10,6 +11,7 @@ use Yii;
  * @property integer $id
  * @property string $gap
  * @property string $title
+ * @property string $image
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -41,10 +43,10 @@ class GapGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gap','title'], 'required'],
-            [['gap','title'], 'string'],
-            [['status', 'created_at', 'updated_at','type'], 'integer'],
-            [['temperature_max','temperature_min','evaporation','humidity'],'safe']
+            [['gap', 'title'], 'required'],
+            [['gap', 'title', 'image'], 'string'],
+            [['status', 'created_at', 'updated_at', 'type'], 'integer'],
+            [['temperature_max', 'temperature_min', 'evaporation', 'humidity'], 'safe']
         ];
     }
 
@@ -63,6 +65,7 @@ class GapGeneral extends \yii\db\ActiveRecord
             'temperature_max' => 'Nhiệt độ',
             'temperature_min' => 'Nhiệt độ nhỏ nhất',
             'evaporation' => 'Lượng mưa',
+            'image' => 'Ảnh đại diện',
             'humidity' => 'Độ ẩm',
         ];
     }
@@ -85,11 +88,18 @@ class GapGeneral extends \yii\db\ActiveRecord
         return $this->status;
     }
 
-    public static function getListStatusNameByStatus($status){
+    public static function getListStatusNameByStatus($status)
+    {
         $lst = self::listStatus();
         if (array_key_exists($status, $lst)) {
             return $lst[$status];
         }
         return $status;
+    }
+
+    public function getImageLink()
+    {
+        return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }

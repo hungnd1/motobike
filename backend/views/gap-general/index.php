@@ -53,6 +53,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format'=>'raw',
+                            'label'=>'Ảnh đại diện',
+                            'attribute' => 'image',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\GapGeneral */
+                                $cat_image=  Yii::getAlias('@news_image');
+                                return $model->image ? Html::img('@web/'.$cat_image.'/'.$model->image, ['alt' => 'Thumbnail','width'=>'70','height'=>'70']) :  Html::img(Url::to("@web/img/blank.jpg"),['alt' => 'Thumbnail','width'=>'70','height'=>'70']);
+                            },
+                        ],
+                        [
                             'attribute' => 'gap',
                             'format' => 'html',
                             'width' => '50%',

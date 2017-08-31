@@ -8,6 +8,7 @@ use common\models\GapGeneralSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * GapGeneralController implements the CRUD actions for GapGeneral model.
@@ -66,6 +67,17 @@ class GapGeneralController extends Controller
     {
         $model = new GapGeneral();
         if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            }
             $model->type = $type;
             $model->created_at = time();
             $model->updated_at = time();
@@ -89,8 +101,22 @@ class GapGeneralController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $oldImg = $model->image;
         if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            } else {
+                $model->image = $oldImg;
+            }
             $model->updated_at = time();
             $model->save();
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
