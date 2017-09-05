@@ -66,22 +66,36 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     <?= $form->field($model,'type')->hiddenInput(['value'=> $type])->label(false) ?>
     <?php if($type == \common\models\GapGeneral::GAP_DETAIL){ ?>
         <div class="row">
+            <div class="col-sm-12">
+                <?= $form->field($model, 'temperature_max')->textInput() ?>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
-                <?= $form->field($model, 'temperature_max')->textInput()->label('Nhiệt độ') ?>
+                <?= $form->field($model, 'temperature_min')->textInput() ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'windspeed_max')->textInput() ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'windspeed_min')->textInput() ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'precipitation_max')->textInput()?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'precipitation_min')->textInput() ?>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <?= $form->field($model, 'evaporation')->textInput()->label('Lượng mưa') ?>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <?= $form->field($model, 'humidity')->textInput()->label('Độ ẩm') ?>
-            </div>
-        </div>
     <?php } ?>
 </div>
 <div class="form-actions">

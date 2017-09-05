@@ -18,8 +18,10 @@ use yii\helpers\Url;
  * @property integer $type
  * @property float $temperature_max
  * @property float $temperature_min
- * @property float $evaporation
- * @property float $humidity
+ * @property float $precipitation_max
+ * @property float $precipitation_min
+ * @property float $windspeed_max
+ * @property float $windspeed_min
  */
 class GapGeneral extends \yii\db\ActiveRecord
 {
@@ -46,7 +48,7 @@ class GapGeneral extends \yii\db\ActiveRecord
             [['gap', 'title'], 'required'],
             [['gap', 'title', 'image'], 'string'],
             [['status', 'created_at', 'updated_at', 'type'], 'integer'],
-            [['temperature_max', 'temperature_min', 'evaporation', 'humidity'], 'safe']
+            [['temperature_max', 'temperature_min','windspeed_min','windspeed_max','precipitation_max','precipitation_min'], 'safe']
         ];
     }
 
@@ -62,11 +64,13 @@ class GapGeneral extends \yii\db\ActiveRecord
             'title' => 'Tiêu đề',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'temperature_max' => 'Nhiệt độ',
+            'temperature_max' => 'Nhiệt độ lớn nhất',
             'temperature_min' => 'Nhiệt độ nhỏ nhất',
-            'evaporation' => 'Lượng mưa',
+            'windspeed_min' => 'Tốc độ gió nhỏ nhất (m/s)',
+            'windspeed_max' => 'Tốc độ gió lớn nhất (m/s)',
+            'precipitation_max' => 'Lượng mưa lớn nhất (mm)',
+            'precipitation_min' => 'Lượn mưa nhỏ nhất (mm)',
             'image' => 'Ảnh đại diện',
-            'humidity' => 'Độ ẩm',
         ];
     }
 
