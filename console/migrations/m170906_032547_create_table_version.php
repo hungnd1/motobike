@@ -9,7 +9,7 @@ class m170906_032547_create_table_version extends Migration
         $this->createTable('version', [
             'id' => $this->primaryKey(),
             'type' => $this->integer(11),
-            'version' => $this->integer(11),
+            'version' => $this->string(255),
             'link' => $this->string(255),
             'created_at' => $this->integer(11),
             'updated_at' => $this->integer(11)
