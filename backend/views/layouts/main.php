@@ -146,6 +146,12 @@ $arrlang = array();
                             'url' => ['rbac-backend/permission'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý version App'),
+                            'url' => ['version/index'],
+                            'require_auth' => true,
+                        ],
                     ]
                 ],
                 [
