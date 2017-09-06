@@ -20,9 +20,11 @@ use common\models\Sold;
 use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
+use common\models\Version;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
+use yii\web\ServerErrorHttpException;
 
 class AppController extends ApiController
 {
@@ -43,7 +45,8 @@ class AppController extends ApiController
             'type-coffee',
             'get-category',
             'term',
-            'log-data'
+            'log-data',
+            'version-app',
         ];
 
         return $behaviors;
@@ -194,5 +197,17 @@ class AppController extends ApiController
             'pagination' => false
         ]);
         return $dataProvider;
+    }
+
+    public function actionVersionApp($type = Version::TYPE_ANDROID)
+    {
+        $version = Version::find()->andWhere(['type' => $type])->orderBy(['created_at' => SORT_DESC])->one();
+        if ($version) {
+            return [
+                'message' => 'Hiện tại app đã ra phiển bản mới bạn vui lòng cập nhật để tiếp tục sử dụng',
+                'items' => $version
+            ];
+        }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 }
