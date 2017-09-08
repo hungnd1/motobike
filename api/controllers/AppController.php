@@ -14,6 +14,7 @@ use api\models\LogData;
 use api\models\PriceCoffeeDetail;
 use common\models\Category;
 use common\models\DeviceInfo;
+use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Sold;
@@ -47,6 +48,7 @@ class AppController extends ApiController
             'term',
             'log-data',
             'version-app',
+            'gap-advice'
         ];
 
         return $behaviors;
@@ -209,5 +211,60 @@ class AppController extends ApiController
             ];
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
+
+    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
+    {
+
+        $gapAdvice = GapGeneral::find()
+            ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+            ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+            ->andWhere('temperature_max > :temp', [':temp' => $tem])
+            ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+            ->andWhere('precipitation_max >= :prep', [':prep' => $pre])
+            ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+            ->andWhere('windspeed_max >= :wind1', [':wind1' => $wind])->one();
+
+        if (!$gapAdvice) {
+            $gapAdvice = GapGeneral::find()
+                ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                ->andWhere(['precipitation_max' => 0])
+                ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                ->andWhere('windspeed_max > :wind1', [':wind1' => $wind])->one();
+
+            if (!$gapAdvice) {
+                $gapAdvice = GapGeneral::find()
+                    ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                    ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                    ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                    ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                    ->andWhere('precipitation_max > :prep', [':prep' => $pre])
+                    ->andWhere('windspeed_min >= :wind', [':wind' => $wind])
+                    ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                    ->andWhere(['windspeed_max' => 0])->one();
+                if (!$gapAdvice) {
+                    $gapAdvice = GapGeneral::find()
+                        ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                        ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                        ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                        ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                        ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                        ->andWhere(['precipitation_max' => 0])
+                        ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                        ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                        ->andWhere(['windspeed_max' => 0])->one();
+
+                }
+            }
+        }
+        if ($gapAdvice) {
+            return $gapAdvice;
+        } else {
+            throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        }
     }
 }
