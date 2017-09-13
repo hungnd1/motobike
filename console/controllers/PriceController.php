@@ -307,6 +307,7 @@ class PriceController extends Controller
     public function actionRunWeather()
     {
 
+        $this->infoLogWeather("**** TIME START" . time());
         $listStation = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null')
@@ -326,6 +327,11 @@ class PriceController extends Controller
             $precipitation = 0;
             $wind_spd = 0;
             $wind_dir = 0;
+            $cloudc = 0;
+            $hprcp = 0;
+            $hsun = 0;
+            $rftmax = 0;
+            $rftmin = 0;
             $timestamp = 0;
             if ($station_result['results'] && sizeof($station_result['results']) >= 5) {
                 for ($i = 0; $i < sizeof($station_result['results']); $i++) {
@@ -349,6 +355,16 @@ class PriceController extends Controller
                                     $wind_dir = $last_value;
                                 } elseif ($code == 'WNDSPD') {
                                     $wind_spd = $last_value;
+                                } elseif ($code == 'CLOUDC') {
+                                    $cloudc = $last_value;
+                                } elseif ($code == 'HPRCP') {
+                                    $hprcp = $last_value;
+                                } elseif ($code == 'HSUN') {
+                                    $hsun = $last_value;
+                                } elseif ($code == 'RFTMAX') {
+                                    $rftmax = $last_value;
+                                } elseif ($code == 'RFTMIN') {
+                                    $rftmin = $last_value;
                                 }
                             }
                             if (sizeof($array_event) > 0) {
@@ -401,7 +417,54 @@ class PriceController extends Controller
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
                                             $weather_detail->save();
+                                        } elseif ($code == 'CLOUDC') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->clouddc = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'HPRCP') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->hprcp = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'HSUN') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->hsun = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'RFTMAX') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->RFTMAX = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
+                                        } elseif ($code == 'RFTMIN') {
+                                            $weather_detail = new WeatherDetail();
+                                            $weather_detail->RFTMIN = $array_event[$j]['max'];
+                                            $weather_detail->timestamp = $array_event[$j]['timestamp'] / 1000;
+                                            $weather_detail->created_at = time();
+                                            $weather_detail->updated_at = time();
+                                            $weather_detail->station_id = $station->id;
+                                            $weather_detail->station_code = $station->station_code;
+                                            $weather_detail->save();
                                         }
+
+
                                     } else {
                                         //chay lan dau thi comment if lai
 
@@ -409,9 +472,15 @@ class PriceController extends Controller
                                             $checkDetail->tmax != $array_event[$j]['max'] ||
                                             $checkDetail->tmin != $array_event[$j]['max'] ||
                                             $checkDetail->wndspd != $array_event[$j]['max'] ||
-                                            $checkDetail->wnddir != $array_event[$j]['max']
-                                            || $array_event[$j]['timestamp'] / 1000 > $today || !$checkDetail->precipitation
-                                            || !$checkDetail->tmax || !$checkDetail->tmin || !$checkDetail->wnddir || !$checkDetail->wndspd
+                                            $checkDetail->wnddir != $array_event[$j]['max'] ||
+                                            $checkDetail->clouddc != $array_event[$j]['max'] ||
+                                            $checkDetail->hprcp != $array_event[$j]['max'] ||
+                                            $checkDetail->hsun != $array_event[$j]['max'] ||
+                                            $checkDetail->RFTMAX != $array_event[$j]['max'] ||
+                                            $checkDetail->RFTMIN != $array_event[$j]['max'] ||
+                                            !$checkDetail->precipitation
+                                            || !$checkDetail->tmax || !$checkDetail->tmin || !$checkDetail->wnddir || !$checkDetail->wndspd || !$checkDetail->RFTMIN
+                                            || !$checkDetail->clouddc || !$checkDetail->hprcp || !$checkDetail->hsun || !$checkDetail->RFTMAX
                                         ) {
                                             if ($code == 'PRCP') {
                                                 $checkDetail->precipitation = $array_event[$j]['max'];
@@ -427,6 +496,21 @@ class PriceController extends Controller
                                                 $checkDetail->save();
                                             } elseif ($code == 'WNDSPD') {
                                                 $checkDetail->wndspd = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'CLOUDC') {
+                                                $checkDetail->clouddc = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'HPRCP') {
+                                                $checkDetail->hprcp = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'HSUN') {
+                                                $checkDetail->hsun = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'RFTMAX') {
+                                                $checkDetail->RFTMAX = $array_event[$j]['max'];
+                                                $checkDetail->save();
+                                            } elseif ($code == 'RFTMIN') {
+                                                $checkDetail->RFTMIN = $array_event[$j]['max'];
                                                 $checkDetail->save();
                                             }
                                         }
@@ -444,6 +528,11 @@ class PriceController extends Controller
                 $weather_detail->tmax = $tmax;
                 $weather_detail->wnddir = $wind_dir;
                 $weather_detail->wndspd = $wind_spd;
+                $weather_detail->clouddc = $cloudc;
+                $weather_detail->hsun = $hsun;
+                $weather_detail->hprcp = $hprcp;
+                $weather_detail->RFTMAX = $rftmax;
+                $weather_detail->RFTMIN = $rftmin;
                 $weather_detail->timestamp = $timestamp;
                 $weather_detail->created_at = time();
                 $weather_detail->updated_at = time();
@@ -451,5 +540,6 @@ class PriceController extends Controller
                 $weather_detail->station_id = $station->id;
             }
         }
+        $this->infoLogWeather("**** TIME END" . time());
     }
 }

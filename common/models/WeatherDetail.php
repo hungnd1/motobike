@@ -18,6 +18,11 @@ use Yii;
  * @property integer $timestamp
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $clouddc
+ * @property integer $hprcp
+ * @property integer $hsun
+ * @property integer $RFTMAX
+ * @property integer $RFTMIN
  */
 class WeatherDetail extends \yii\db\ActiveRecord
 {
@@ -35,7 +40,9 @@ class WeatherDetail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['precipitation', 'tmax', 'tmin', 'wnddir', 'wndspd', 'station_id', 'timestamp', 'created_at', 'updated_at'], 'integer'],
+            [['precipitation', 'tmax', 'tmin', 'wnddir', 'wndspd', 'station_id', 'timestamp', 'created_at', 'updated_at',
+                'clouddc', 'hprcp', 'hsun', 'RFTMAX', 'RFTMIN'
+            ], 'integer'],
             [['station_code'], 'string', 'max' => 45],
         ];
     }
