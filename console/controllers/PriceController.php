@@ -395,8 +395,8 @@ class PriceController extends Controller
         $this->infoLogWeather("**** TIME START" . time());
         $listStation = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
-            ->andWhere(['station_code'=>'67_665_24728'])
-            ->limit(1)
+//            ->andWhere(['station_code'=>'67_665_24728'])
+//            ->limit(1)
             ->all();
         $today = strtotime('today midnight') + 7 * 60 * 60;
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
@@ -419,7 +419,7 @@ class PriceController extends Controller
             $rftmax = 0;
             $rftmin = 0;
             $timestamp = 0;
-            if ($station_result['results'] && sizeof($station_result['results']) >= 5) {
+            if ($station_result['results'] && sizeof($station_result['results']) >= 1) {
                 for ($i = 0; $i < sizeof($station_result['results']); $i++) {
                     if (!in_array($station_result['results'][$i]['code'], $arr_price_name)) {
                         // them lan luot luong mua, nhiet do max-min, huong gio, toc do gio vao theo ngay va neu time khong trung nhau thi them moi ngay nho hon
