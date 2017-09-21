@@ -123,6 +123,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
             ->andWhere(['station.province_id' => $province_id])
             ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
             ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
+            ->andWhere([])
             ->groupBy('price_coffee.coffee_old_id')
             ->orderBy(['price_coffee.coffee_old_id' => SORT_DESC])->all();
         return $pricePre;
