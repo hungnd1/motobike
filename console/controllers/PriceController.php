@@ -395,8 +395,8 @@ class PriceController extends Controller
         $this->infoLogWeather("**** TIME START" . time());
         $listStation = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
-            ->andWhere('latitude is not null')
-//            ->limit(1)
+            ->andWhere(['station_code'=>'67_665_24728'])
+            ->limit(1)
             ->all();
         $today = strtotime('today midnight') + 7 * 60 * 60;
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
@@ -606,7 +606,7 @@ class PriceController extends Controller
                         }
                     }else{
                         $price_average = $station_result['results'][$i]['last_value'];
-                        $last_time_value = $station_result['results'][$i]['last_value_timestamp'] / 1000;
+                        $last_time_value = $station_result['results'][$i]['end'] / 1000;
                         $last_value = $station_result['results'][$i]['last_value'];
                         $organisation_name = $station_result['results'][$i]['name'];
                         $event_arr = $station_result['results'][$i]['events'];
@@ -646,7 +646,7 @@ class PriceController extends Controller
                                             $price->save(false);
                                             if ($k < sizeof($event_arr) - 1) {
                                                 $day_next = floor(($event_arr[$k + 1]['timestamp'] / 1000 - $event_arr[$k]['timestamp'] / 1000) / 86400);
-                                                if ($day_next > 1) {
+                                                if ($day_next >= 1 ) {
                                                     for ($t = 1; $t < $day_next; $t++) {
                                                         $price = new PriceCoffee();
                                                         $price->province_id = $station->station_code;
@@ -659,6 +659,17 @@ class PriceController extends Controller
                                                         $price->coffee_old_id = $id;
                                                         $price->save(false);
                                                     }
+                                                }else{
+                                                    $price = new PriceCoffee();
+                                                    $price->province_id = $station->station_code;
+                                                    $price->price_average = $event_arr[$k]['max'];
+                                                    $price->unit = PriceCoffee::UNIT_VND;
+                                                    $price->created_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $t;
+                                                    $price->updated_at = $event_arr[$k]['timestamp'] / 1000 + 86400 * $t;
+                                                    $price->organisation_name = $organisation_name;
+                                                    $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
+                                                    $price->coffee_old_id = $id;
+                                                    $price->save(false);
                                                 }
                                             } else {
                                                 $day_next = floor((strtotime('today midnight') + 7 * 60 * 60 - $event_arr[$k]['timestamp'] / 1000) / 86400);
