@@ -553,49 +553,53 @@ class PriceController extends Controller
 
                                     } else {
                                         //chay lan dau thi comment if lai
-
-                                        if ($checkDetail->precipitation != $array_event[$j]['max'] ||
-                                            $checkDetail->tmax != $array_event[$j]['max'] ||
-                                            $checkDetail->tmin != $array_event[$j]['max'] ||
-                                            $checkDetail->wndspd != $array_event[$j]['max'] ||
-                                            $checkDetail->wnddir != $array_event[$j]['max'] ||
-                                            $checkDetail->clouddc != $array_event[$j]['max'] ||
-                                            $checkDetail->hprcp != $array_event[$j]['max'] ||
-                                            $checkDetail->hsun != $array_event[$j]['max'] ||
-                                            $checkDetail->RFTMAX != $array_event[$j]['max'] ||
-                                            $checkDetail->RFTMIN != $array_event[$j]['max'] ||
-                                            !$checkDetail->precipitation
-                                            || !$checkDetail->tmax || !$checkDetail->tmin || !$checkDetail->wnddir || !$checkDetail->wndspd || !$checkDetail->RFTMIN
-                                            || !$checkDetail->clouddc || !$checkDetail->hprcp || !$checkDetail->hsun || !$checkDetail->RFTMAX
-                                        ) {
-                                            if ($code == 'PRCP') {
+                                        if ($code == 'PRCP') {
+                                            if ($checkDetail->precipitation != $array_event[$j]['max'] || !$checkDetail->precipitation){
                                                 $checkDetail->precipitation = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'TMAX') {
+                                            }
+                                        } elseif ($code == 'TMAX') {
+                                            if ($checkDetail->tmax != $array_event[$j]['max'] || !$checkDetail->tmax){
                                                 $checkDetail->tmax = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'TMIN') {
+                                            }
+                                        }elseif ($code == 'TMIN') {
+                                            if ($checkDetail->tmin != $array_event[$j]['max'] || !$checkDetail->tmin){
                                                 $checkDetail->tmin = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'WNDDIR') {
+                                            }
+                                        }elseif ($code == 'WNDDIR') {
+                                            if ($checkDetail->wnddir != $array_event[$j]['max'] || !$checkDetail->wnddir){
                                                 $checkDetail->wnddir = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'WNDSPD') {
+                                            }
+                                        }elseif ($code == 'WNDSPD') {
+                                            if ($checkDetail->wndspd != $array_event[$j]['max'] || !$checkDetail->wndspd){
                                                 $checkDetail->wndspd = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'CLOUDC') {
+                                            }
+                                        }elseif ($code == 'CLOUDC') {
+                                            if ($checkDetail->clouddc != $array_event[$j]['max'] || !$checkDetail->clouddc){
                                                 $checkDetail->clouddc = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'HPRCP') {
+                                            }
+                                        }elseif ($code == 'HPRCP') {
+                                            if ($checkDetail->hprcp != $array_event[$j]['max'] || !$checkDetail->hprcp){
                                                 $checkDetail->hprcp = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'HSUN') {
+                                            }
+                                        }elseif ($code == 'HSUN') {
+                                            if ($checkDetail->hsun != $array_event[$j]['max'] || !$checkDetail->hsun){
                                                 $checkDetail->hsun = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'RFTMAX') {
+                                            }
+                                        }elseif ($code == 'RFTMAX') {
+                                            if ($checkDetail->RFTMAX != $array_event[$j]['max'] || !$checkDetail->RFTMAX){
                                                 $checkDetail->RFTMAX = $array_event[$j]['max'];
                                                 $checkDetail->save();
-                                            } elseif ($code == 'RFTMIN') {
+                                            }
+                                        }elseif ($code == 'RFTMIN') {
+                                            if ($checkDetail->RFTMIN != $array_event[$j]['max'] || !$checkDetail->RFTMIN){
                                                 $checkDetail->RFTMIN = $array_event[$j]['max'];
                                                 $checkDetail->save();
                                             }
