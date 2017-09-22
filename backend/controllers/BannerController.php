@@ -76,7 +76,7 @@ class BannerController extends Controller
                     mkdir($tmp, 0777, true);
                 }
                 if ($image->saveAs($tmp . $file_name)) {
-                    $model->image = $file_name;
+                    $model->banner = $file_name;
                 }
             }
             $model->save();
