@@ -153,7 +153,7 @@ class PriceController extends Controller
                                     ->orderBy(['id' => SORT_DESC])->one();
                                 /** @var $priceOld PriceCoffee */
                                 if ($priceOld) {
-                                    if (time() + 7 * 60 * 60 - $priceOld->created_at < 86400 && $last_time_value > $priceOld->last_time_value && $last_time_value < $tomorrow) {
+                                    if (time() + 7 * 60 * 60 - $priceOld->created_at < 86400) {
                                         $priceOld->price_average = $price_average;
                                         $priceOld->last_time_value = $last_time_value;
                                         $priceOld->updated_at = time();
