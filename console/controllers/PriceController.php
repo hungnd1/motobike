@@ -51,7 +51,7 @@ class PriceController extends Controller
                     $organisation_name = $arr_detail['results'][0]['name'];
                     $event_arr = $arr_detail['results']['0']['events'];
                     $checkOldId = PriceCoffee::find()->andWhere(['coffee_old_id' => $id])
-                        ->andWhere(['<', 'created_at', -strtotime('today midnight') + 7 * 60 * 60])->one();
+                        ->andWhere(['<', 'created_at', strtotime('today midnight') + 7 * 60 * 60])->one();
                     if (!$checkOldId) {
                         if ($last_value) {
                             if (sizeof($event_arr) >= 1) {
