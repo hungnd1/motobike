@@ -152,6 +152,12 @@ $arrlang = array();
                             'url' => ['version/index'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý banner web'),
+                            'url' => ['banner/index'],
+                            'require_auth' => true,
+                        ],
                     ]
                 ],
                 [
