@@ -154,6 +154,7 @@ class PriceController extends Controller
                                 /** @var $priceOld PriceCoffee */
                                 if ($priceOld) {
                                     if (time() + 7 * 60 * 60 - $priceOld->created_at < 86400) {
+                                        PriceController::infoLog('*******Gia ' . $price_average." cua ".$priceOld->province_id);
                                         $priceOld->price_average = $price_average;
                                         $priceOld->last_time_value = $last_time_value;
                                         $priceOld->updated_at = time();
