@@ -121,7 +121,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
         $pricePre = \api\models\PriceCoffee::find()
             ->innerJoin('station', 'station.station_code = price_coffee.province_id')
             ->andWhere(['station.province_id' => $province_id])
-            ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
+            ->andWhere(['>', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
             ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
             ->andWhere(['not in','price_coffee.coffee_old_id',['201029','199811','199808','199807']])
             ->groupBy('price_coffee.coffee_old_id')
