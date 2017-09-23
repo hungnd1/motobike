@@ -160,6 +160,7 @@ class AppController extends ApiController
             ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
             ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
             ->andWhere(['coffee_old_id' => $coffee_old_id])
+            ->groupBy('created_at')
             ->orderBy(['created_at' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
             'query' => $pricePre,
