@@ -16,8 +16,8 @@ class PriceCoffee extends \common\models\PriceCoffee
     public function fields()
     {
         $fields = parent::fields();
-        unset($fields['province_id']);
-        unset($fields['last_time_value']);
+//        unset($fields['province_id']);
+//        unset($fields['last_time_value']);
 
         $fields['province_name'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
