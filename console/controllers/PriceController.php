@@ -42,7 +42,7 @@ class PriceController extends Controller
                     $id = $arr_detail['results'][0]['id'];
                     $name = $arr_organisation['results'][$j]['location']['name'];
                     PriceController::infoLog('*******START  TO CHUC  ' . $name);
-
+                    $lastTime = $arr_detail['results'][0]['last_value_timestamp'] / 1000;
                     $last_value = $arr_detail['results'][0]['last_value'];
                     $organisation_name = $arr_detail['results'][0]['name'];
                     $event_arr = $arr_detail['results']['0']['events'];
@@ -54,11 +54,11 @@ class PriceController extends Controller
                                 for ($k = 0; $k < sizeof($event_arr); $k++) {
                                     $price = new PriceCoffee();
                                     $price->province_id = $name;
-                                    $price->price_average = $event_arr[$k]['value'];
-                                    $price->last_time_value = $event_arr[$k]['timestamp'];
+                                    $price->price_average = $event_arr[$k]['value'] ;
+                                    $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
                                     $price->unit = PriceCoffee::UNIT_VND;
-                                    $price->created_at = $event_arr[$k]['timestamp'];
-                                    $price->updated_at = $event_arr[$k]['timestamp'];
+                                    $price->created_at = $event_arr[$k]['timestamp'] / 1000;
+                                    $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
                                     $price->coffee_old_id = $id;
                                     $price->organisation_name = $organisation_name;
                                     $price->save();
@@ -69,11 +69,33 @@ class PriceController extends Controller
                         if ($last_value) {
                             if (sizeof($event_arr) >= 1) {
                                 for ($k = 0; $k < sizeof($event_arr); $k++) {
+                                    if($k == sizeof($event_arr) - 1){
+                                        if($last_value != $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000 ){
+                                            $priceOld = PriceCoffee::find()
+                                                ->andWhere(['province_id' => $name])
+                                                ->andWhere(['created_at' => $last_value])
+                                                ->andWhere(['organisation_name' => $organisation_name])
+                                                ->andWhere(['coffee_old_id' => $id])->one();
+                                            if(!$priceOld){
+                                                $price = new PriceCoffee();
+                                                $price->province_id = $name;
+                                                $price->price_average = $last_value;
+                                                $price->last_time_value = $lastTime;
+                                                $price->unit = PriceCoffee::UNIT_VND;
+                                                $price->created_at = $lastTime;
+                                                $price->updated_at = $lastTime;
+                                                $price->coffee_old_id = $id;
+                                                $price->organisation_name = $organisation_name;
+                                                $price->save();
+                                            }
+                                        }
+                                    }
                                     $priceOld = PriceCoffee::find()
-                                        ->andWhere(['province_id' => $id])
-                                        ->andWhere(['last_time_value' => $event_arr[$k]['timestamp']])
+                                        ->andWhere(['province_id' => $name])
+                                        ->andWhere(['created_at' => $event_arr[$k]['timestamp']/ 1000])
                                         ->andWhere(['organisation_name' => $organisation_name])
                                         ->andWhere(['coffee_old_id' => $id])->one();
+
                                     /** @var $priceOld PriceCoffee */
                                     if ($priceOld) {
                                         if ($priceOld->price_average != $event_arr[$k]['value']) {
@@ -85,10 +107,10 @@ class PriceController extends Controller
                                         $price = new PriceCoffee();
                                         $price->province_id = $name;
                                         $price->price_average = $event_arr[$k]['value'];
-                                        $price->last_time_value = $event_arr[$k]['timestamp'];
+                                        $price->last_time_value = $event_arr[$k]['timestamp']/ 1000;
                                         $price->unit = PriceCoffee::UNIT_VND;
-                                        $price->created_at = $event_arr[$k]['timestamp'];
-                                        $price->updated_at = $event_arr[$k]['timestamp'];
+                                        $price->created_at = $event_arr[$k]['timestamp'] /1000;
+                                        $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
                                         $price->coffee_old_id = $id;
                                         $price->organisation_name = $organisation_name;
                                         $price->save();
