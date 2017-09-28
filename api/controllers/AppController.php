@@ -99,7 +99,7 @@ class AppController extends ApiController
         if (!$date) {
             $date = date('d/m/Y', time());
         }
-        $date  = '17/9/2017';
+        $date  = '27/9/2017';
         $arr = [];
         $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
         foreach ($provinces as $item) {
