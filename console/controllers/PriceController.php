@@ -22,7 +22,7 @@ class PriceController extends Controller
 
     public function actionRun()
     {
-//        $this->migrateLatLong();
+        $this->migrateLatLong();
         date_default_timezone_set("Asia/Bangkok");
         $arr_price_name = ['dABA', 'dABC', 'dABE', 'dABF', 'dACA', 'dACC', 'dACE', 'dACF', 'dRBF', 'dRCA', 'dRCC', 'dRCE', 'dRCF', 'dRBA', 'dRBC', 'dRBE'];
         $api_organisation = Yii::$app->params['GreenCoffee'];
@@ -46,6 +46,14 @@ class PriceController extends Controller
                     $last_value = $arr_detail['results'][0]['last_value'];
                     $organisation_name = $arr_detail['results'][0]['name'];
                     $event_arr = $arr_detail['results']['0']['events'];
+                    $check = PriceCoffee::find()
+                        ->andWhere(['organisation_name' => $organisation_name, 'province_id' => $name])
+                        ->andWhere('coffee_old_id is null')->all();
+                    foreach ($check as $price) {
+                        /** @var $price PriceCoffee */
+                        $price->coffee_old_id = $id;
+                        $price->save();
+                    }
                     $checkOldId = PriceCoffee::find()->andWhere(['coffee_old_id' => $id])
                         ->andWhere(['<', 'created_at', strtotime('today midnight') + 7 * 60 * 60])->one();
                     if (!$checkOldId) {
@@ -54,7 +62,7 @@ class PriceController extends Controller
                                 for ($k = 0; $k < sizeof($event_arr); $k++) {
                                     $price = new PriceCoffee();
                                     $price->province_id = $name;
-                                    $price->price_average = $event_arr[$k]['value'] ;
+                                    $price->price_average = $event_arr[$k]['value'];
                                     $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
                                     $price->unit = PriceCoffee::UNIT_VND;
                                     $price->created_at = $event_arr[$k]['timestamp'] / 1000;
@@ -69,14 +77,14 @@ class PriceController extends Controller
                         if ($last_value) {
                             if (sizeof($event_arr) >= 1) {
                                 for ($k = 0; $k < sizeof($event_arr); $k++) {
-                                    if($k == sizeof($event_arr) - 1){
-                                        if($last_value != $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000 ){
+                                    if ($k == sizeof($event_arr) - 1) {
+                                        if ($last_value != $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000) {
                                             $priceOld = PriceCoffee::find()
                                                 ->andWhere(['province_id' => $name])
                                                 ->andWhere(['created_at' => $last_value])
                                                 ->andWhere(['organisation_name' => $organisation_name])
                                                 ->andWhere(['coffee_old_id' => $id])->one();
-                                            if(!$priceOld){
+                                            if (!$priceOld) {
                                                 $price = new PriceCoffee();
                                                 $price->province_id = $name;
                                                 $price->price_average = $last_value;
@@ -92,7 +100,7 @@ class PriceController extends Controller
                                     }
                                     $priceOld = PriceCoffee::find()
                                         ->andWhere(['province_id' => $name])
-                                        ->andWhere(['created_at' => $event_arr[$k]['timestamp']/ 1000])
+                                        ->andWhere(['created_at' => $event_arr[$k]['timestamp'] / 1000])
                                         ->andWhere(['organisation_name' => $organisation_name])
                                         ->andWhere(['coffee_old_id' => $id])->one();
 
@@ -107,9 +115,9 @@ class PriceController extends Controller
                                         $price = new PriceCoffee();
                                         $price->province_id = $name;
                                         $price->price_average = $event_arr[$k]['value'];
-                                        $price->last_time_value = $event_arr[$k]['timestamp']/ 1000;
+                                        $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
                                         $price->unit = PriceCoffee::UNIT_VND;
-                                        $price->created_at = $event_arr[$k]['timestamp'] /1000;
+                                        $price->created_at = $event_arr[$k]['timestamp'] / 1000;
                                         $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
                                         $price->coffee_old_id = $id;
                                         $price->organisation_name = $organisation_name;

@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p><?= Html::a('' . \Yii::t('app', 'Import'), ['import'], ['class' => 'btn btn-success']) ?> </p>
                 <?php
                 $gridColumn = [
                     [
@@ -61,14 +60,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'price_average',
                         'value' => function ($model, $key, $index) {
                             /** @var $model \common\models\PriceCoffee */
-                            return \common\helpers\CUtils::formatPrice($model->price_average).' VNĐ/kg';
+                            return \common\helpers\CUtils::formatPrice($model->price_average);
                         },
+                    ],
+                    [
+                        'class' => '\kartik\grid\DataColumn',
+                        'attribute' => 'unit',
+                        'value' => function ($model, $key, $index, $widget) {
+                            /** @var $model \common\models\PriceCoffee */
+                            return PriceCoffee::getListStatusNameByUnit($model->unit);
+                        },
+                        'width' => '150px',
+                        'filterType' => GridView::FILTER_SELECT2,
+                        'filter' => PriceCoffee::getListUnit(),
+                        'filterWidgetOptions' => [
+                            'pluginOptions' => ['allowClear' => true],
+                        ],
+                        'filterInputOptions' => ['placeholder' => Yii::t("app", "Tất cả")],
                     ],
                     [
                         'format' => 'raw',
                         'class' => '\kartik\grid\DataColumn',
                         'width' => '20%',
-                        'label' => 'Giá của ngày',
+                        'label' => 'Thời gian cập nhật',
                         'filterType' => GridView::FILTER_DATE,
                         'attribute' => 'created_at',
                         'value' => function ($model) {

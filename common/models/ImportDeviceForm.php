@@ -19,6 +19,7 @@ class ImportDeviceForm extends Model
      * @var UploadedFile[]
      */
     public $templateFile = '/backend/web/ImportDevicesTemplate.xlsx';
+    public $templateFilePrice = '/backend/web/Coffeeprices_Central_Highlands_Vietnam.csv';
     public $uploadedFile;
     public $errorFile;
 
@@ -26,7 +27,7 @@ class ImportDeviceForm extends Model
     {
         return [
             [['templateFile'], 'string'],
-            [['uploadedFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xlsx', 'maxFiles' => 1],
+            [['uploadedFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xlsx,csv', 'maxFiles' => 1],
             [['errorFile'], 'safe'],
         ];
     }
@@ -44,6 +45,10 @@ class ImportDeviceForm extends Model
 
     public static function getTemplateFile() {
         return Yii::$app->getUrlManager()->getBaseUrl() . '/Cleaned_and_processed.xlsx';
+    }
+
+    public static function getTemplateFilePrice() {
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/Coffeeprices_Central_Highlands_Vietnam.csv';
     }
 
     public function getEditTemplateFile(){

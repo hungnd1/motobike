@@ -148,6 +148,12 @@ $arrlang = array();
                         ],
                         [
                             'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'QL nhóm  quyền'),
+                            'url' => ['rbac-backend/role'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
                             'label' => '<i class=" icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý version App'),
                             'url' => ['version/index'],
                             'require_auth' => true,
@@ -284,6 +290,12 @@ $arrlang = array();
                     'url' => ['unit-link/index'],
                     'require_auth' => true,
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Upload giá'),
+                    'url' => ['price-coffee/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 
@@ -291,21 +303,6 @@ $arrlang = array();
                 'options' => ['class' => "page-sidebar-menu  page-sidebar-fixed", 'data-keep-expanded' => "false", 'data-auto-scroll' => "true", 'data-slide-speed' => "200"],
                 'items' => $rightItems,
                 'activateParents' => true,
-                'accType' => AuthItem::ACC_TYPE_SP,
-                'validateAdminCallback' => function($user){
-                    /**
-                     * @var \yii\web\User $user
-                     */
-                    if($user && isset($user->identity->username)){
-                        /**
-                         * @var $sp_user User
-                         */
-                        $sp_user = $user->identity;
-                            return false;
-                    }else{
-                        return false;
-                    }
-                }
             ]);
 
             ?>
