@@ -57,6 +57,7 @@ class PriceController extends Controller
                     $checkOldId = PriceCoffee::find()->andWhere(['coffee_old_id' => $id])
                         ->andWhere(['<', 'created_at', strtotime('today midnight') + 7 * 60 * 60])->one();
                     if (!$checkOldId) {
+                        $this->infoLog1('Chua co gia tri nao ca');
                         if ($last_value) {
                             if (sizeof($event_arr) >= 1) {
                                 for ($k = 0; $k < sizeof($event_arr); $k++) {
@@ -78,6 +79,7 @@ class PriceController extends Controller
                             if (sizeof($event_arr) >= 1) {
                                 for ($k = 0; $k < sizeof($event_arr); $k++) {
                                     if ($k == sizeof($event_arr) - 1) {
+                                        $this->infoLog1('Gia tri cuoi cung');
                                         if ($last_value != $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000) {
                                             $priceOld = PriceCoffee::find()
                                                 ->andWhere(['province_id' => $name])
@@ -106,12 +108,14 @@ class PriceController extends Controller
 
                                         /** @var $priceOld PriceCoffee */
                                         if ($priceOld) {
+                                            $this->infoLog1('Da ton tai gia tri');
                                             if ($priceOld->price_average != $event_arr[$k]['value']) {
                                                 $priceOld->price_average = $event_arr[$k]['value'];
                                                 $priceOld->updated_at = time();
                                                 $priceOld->save(false);
                                             }
                                         } else {
+                                            $this->infoLog1('Chua ton tai gia tri');
                                             $price = new PriceCoffee();
                                             $price->province_id = $name;
                                             $price->price_average = $event_arr[$k]['value'];
@@ -136,6 +140,11 @@ class PriceController extends Controller
     {
         FileUtils::appendToFile(Yii::getAlias('@runtime/logs/error.log'), $txt);
         FileUtils::appendToFile(Yii::getAlias('@runtime/logs/info.log'), $txt);
+    }
+
+    public static function infoLog1($txt)
+    {
+        FileUtils::appendToFile(Yii::getAlias('@runtime/logs/info1.log'), $txt);
     }
 
     public static function infoLog($txt)
