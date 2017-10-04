@@ -97,31 +97,32 @@ class PriceController extends Controller
                                                 $price->save();
                                             }
                                         }
-                                    }
-                                    $priceOld = PriceCoffee::find()
-                                        ->andWhere(['province_id' => $name])
-                                        ->andWhere(['created_at' => $event_arr[$k]['timestamp'] / 1000])
-                                        ->andWhere(['organisation_name' => $organisation_name])
-                                        ->andWhere(['coffee_old_id' => $id])->one();
+                                    }else{
+                                        $priceOld = PriceCoffee::find()
+                                            ->andWhere(['province_id' => $name])
+                                            ->andWhere(['created_at' => $event_arr[$k]['timestamp'] / 1000])
+                                            ->andWhere(['organisation_name' => $organisation_name])
+                                            ->andWhere(['coffee_old_id' => $id])->one();
 
-                                    /** @var $priceOld PriceCoffee */
-                                    if ($priceOld) {
-                                        if ($priceOld->price_average != $event_arr[$k]['value']) {
-                                            $priceOld->price_average = $event_arr[$k]['value'];
-                                            $priceOld->updated_at = time();
-                                            $priceOld->save(false);
+                                        /** @var $priceOld PriceCoffee */
+                                        if ($priceOld) {
+                                            if ($priceOld->price_average != $event_arr[$k]['value']) {
+                                                $priceOld->price_average = $event_arr[$k]['value'];
+                                                $priceOld->updated_at = time();
+                                                $priceOld->save(false);
+                                            }
+                                        } else {
+                                            $price = new PriceCoffee();
+                                            $price->province_id = $name;
+                                            $price->price_average = $event_arr[$k]['value'];
+                                            $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
+                                            $price->unit = PriceCoffee::UNIT_VND;
+                                            $price->created_at = $event_arr[$k]['timestamp'] / 1000;
+                                            $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
+                                            $price->coffee_old_id = $id;
+                                            $price->organisation_name = $organisation_name;
+                                            $price->save();
                                         }
-                                    } else {
-                                        $price = new PriceCoffee();
-                                        $price->province_id = $name;
-                                        $price->price_average = $event_arr[$k]['value'];
-                                        $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
-                                        $price->unit = PriceCoffee::UNIT_VND;
-                                        $price->created_at = $event_arr[$k]['timestamp'] / 1000;
-                                        $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
-                                        $price->coffee_old_id = $id;
-                                        $price->organisation_name = $organisation_name;
-                                        $price->save();
                                     }
                                 }
                             }
