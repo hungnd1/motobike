@@ -54,12 +54,12 @@ class WeatherDetail extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'station_code' => 'Station Code',
-            'precipitation' => 'Precipitation',
-            'tmax' => 'Tmax',
-            'tmin' => 'Tmin',
-            'wnddir' => 'Wnddir',
-            'wndspd' => 'Wndspd',
+            'station_code' => 'Xã',
+            'precipitation' => 'Lương mưa (mm)',
+            'tmax' => 'Nhiệt độ cao nhất (⁰C)',
+            'tmin' => 'Nhiệt đô thấp nhất (⁰C)',
+            'wnddir' => 'Hướng gió',
+            'wndspd' => 'Tốc độ gió',
             'station_id' => 'Station ID',
             'timestamp' => 'Timestamp',
             'created_at' => 'Created At',

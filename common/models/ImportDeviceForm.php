@@ -51,6 +51,10 @@ class ImportDeviceForm extends Model
         return Yii::$app->getUrlManager()->getBaseUrl() . '/Coffeeprices_Central_Highlands_Vietnam.csv';
     }
 
+    public static function getTemplateFileWeather() {
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/Coffeeprices_Central_Highlands_Vietnam.csv';
+    }
+
     public function getEditTemplateFile(){
         return Yii::$app->getUrlManager()->getBaseUrl() . '/EditDevicesTemplate.xlsx';
 

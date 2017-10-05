@@ -2,23 +2,20 @@
 
 namespace backend\controllers;
 
-use common\models\District;
 use common\models\ImportDeviceForm;
-use common\models\PriceCoffee;
-use common\models\PriceCoffeeSearch;
-use common\models\WeatherDetail;
-use common\models\WeatherDetailSearch;
 use PHPExcel_IOFactory;
 use Yii;
-use yii\filters\VerbFilter;
+use common\models\WeatherDetail;
+use common\models\WeatherDetailSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
- * PriceCoffeeController implements the CRUD actions for PriceCoffee model.
+ * WeatherDetailController implements the CRUD actions for WeatherDetail model.
  */
-class PriceCoffeeController extends Controller
+class WeatherDetailController extends Controller
 {
     /**
      * @inheritdoc
@@ -36,12 +33,12 @@ class PriceCoffeeController extends Controller
     }
 
     /**
-     * Lists all PriceCoffee models.
+     * Lists all WeatherDetail models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PriceCoffeeSearch();
+        $searchModel = new WeatherDetailSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,9 +47,8 @@ class PriceCoffeeController extends Controller
         ]);
     }
 
-
     /**
-     * Displays a single PriceCoffee model.
+     * Displays a single WeatherDetail model.
      * @param integer $id
      * @return mixed
      */
@@ -64,19 +60,15 @@ class PriceCoffeeController extends Controller
     }
 
     /**
-     * Creates a new PriceCoffee model.
+     * Creates a new WeatherDetail model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new PriceCoffee();
+        $model = new WeatherDetail();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->province_id = District::findOne(['id' => $model->district_id])->province_id;
-            $model->created_at = time();
-            $model->updated_at = time();
-            $model->save();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -86,7 +78,7 @@ class PriceCoffeeController extends Controller
     }
 
     /**
-     * Updates an existing PriceCoffee model.
+     * Updates an existing WeatherDetail model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -95,8 +87,7 @@ class PriceCoffeeController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->updated_at = time();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -106,7 +97,7 @@ class PriceCoffeeController extends Controller
     }
 
     /**
-     * Deletes an existing PriceCoffee model.
+     * Deletes an existing WeatherDetail model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -119,30 +110,19 @@ class PriceCoffeeController extends Controller
     }
 
     /**
-     * Finds the PriceCoffee model based on its primary key value.
+     * Finds the WeatherDetail model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return PriceCoffee the loaded model
+     * @return WeatherDetail the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = PriceCoffee::findOne($id)) !== null) {
+        if (($model = WeatherDetail::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionImportIndex()
-    {
-        $searchModel = new PriceCoffeeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
     }
 
     public function actionImport()
@@ -158,23 +138,6 @@ class PriceCoffeeController extends Controller
                     if (sizeof($sheetData) > 0) {
                         foreach ($sheetData as $row) {
                             $rowA = strtotime(str_replace('Z','',str_replace('T',' ',trim($row['A']))));
-                            $coffee_old= PriceCoffee::findOne(['organisation_name'=>trim($row['B']),'province_id'=>trim($row['D']),'created_at'=>$rowA]);
-                            if(!$coffee_old){
-                                $price = new PriceCoffee();
-                                $price->province_id = trim($row['D']);
-                                $price->price_average = trim($row['C']);
-                                $price->unit = PriceCoffee::UNIT_VND;
-                                $price->created_at = $rowA;
-                                $price->updated_at = $rowA;
-                                $price->last_time_value = $rowA;
-                                $coffee_old_id = PriceCoffee::findOne(['organisation_name'=>$row['B'],'province_id'=>$row['D']]);
-                                if($coffee_old_id){
-                                    $price->coffee_old_id = $coffee_old_id->coffee_old_id;
-                                }
-                                $price->organisation_name = trim($row['B']);
-                                $price->save();
-                            }
-
                         }
 
                         Yii::$app->getSession()->setFlash('success', Yii::t("app", "Đã import thành công"));
@@ -190,7 +153,7 @@ class PriceCoffeeController extends Controller
                 ]);
             }
         } else {
-            return $this->render('import', [
+            return $this->render('import_weather', [
                 'model' => $model,
             ]);
         }

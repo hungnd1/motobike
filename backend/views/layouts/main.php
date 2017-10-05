@@ -296,6 +296,12 @@ $arrlang = array();
                     'url' => ['price-coffee/index'],
                     'require_auth' => true,
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Upload thời tiết'),
+                    'url' => ['weather-detail/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 
