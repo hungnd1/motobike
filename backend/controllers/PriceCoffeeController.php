@@ -157,7 +157,7 @@ class PriceCoffeeController extends Controller
                     $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
                     if (sizeof($sheetData) > 0) {
                         foreach ($sheetData as $row) {
-                            $rowA = strtotime(str_replace('Z','',str_replace('T',' ',trim($row['A']))));
+                            $rowA = strtotime(str_replace('Z','',str_replace('T',' ',trim($row['A'])))) + 7 * 3600;
                             $coffee_old= PriceCoffee::findOne(['organisation_name'=>trim($row['B']),'province_id'=>trim($row['D']),'created_at'=>$rowA]);
                             if(!$coffee_old){
                                 $price = new PriceCoffee();
