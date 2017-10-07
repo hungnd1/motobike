@@ -49,14 +49,31 @@ class WeatherController extends ApiController
         $today = strtotime('today midnight') + 7 * 60 * 60;
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
         $week_ago = strtotime('today midnight') - 7 * 86400 + 7 * 60 * 60;
-
-        $weather = WeatherDetail::find()
-            ->andWhere(['>=', 'timestamp', $current_time])
+        $weather = null;
+        $weatherCount = WeatherDetail::find()
+            ->andWhere(['>=', 'timestamp', $today])
             ->andWhere(['<', 'timestamp', $tomorrow])
             ->andWhere(['station_id' => $station_id])
-            ->orderBy(['timestamp' => SORT_ASC])
-            ->limit(1)
-            ->one();
+            ->orderBy(['timestamp' => SORT_ASC])->count();
+        if ($weatherCount >= 2) {
+            $weatherAll = WeatherDetail::find()
+                ->andWhere(['>=', 'timestamp', $today])
+                ->andWhere(['<', 'timestamp', $tomorrow])
+                ->andWhere(['station_id' => $station_id])
+                ->orderBy(['timestamp' => SORT_DESC])->all();
+            foreach ($weatherAll as $item) {
+                /** @var $item WeatherDetail */
+                if ($current_time > $item->timestamp) {
+                    $weather = $item;
+                }
+            }
+        } else {
+            $weather = WeatherDetail::find()
+                ->andWhere(['>=', 'timestamp', $today])
+                ->andWhere(['<', 'timestamp', $tomorrow])
+                ->andWhere(['station_id' => $station_id])
+                ->orderBy(['timestamp' => SORT_ASC])->one();
+        }
         if (!$weather) {
             $weather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $today])
@@ -80,6 +97,7 @@ class WeatherController extends ApiController
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
         }
+
         $weekWeatherAgo = WeatherDetail::find()
             ->andWhere(['>=', 'timestamp', $week_ago])
             ->andWhere(['<=', 'timestamp', $today])
