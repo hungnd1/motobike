@@ -22,18 +22,18 @@ class WeatherController extends Controller
     {
         // define some variables
         $local_file = 'backend/web/AccuWeather_Central_Highlands_Vietnam.csv';
-//        $server_file = '/incoming/09_NIAPP/Weather/AccuWeather_Central_Highlands_Vietnam.csv';
-//        $ftp_server="ftp.nelen-schuurmans.nl";
-//        $ftp_user_name="greencoffee";
-//        $ftp_user_pass="nice cup of green coffee";
-//
-//        $conn_id = ftp_connect($ftp_server);
-//
-//        $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-//
-//        if (ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
-//            $this->infoLogWeather("Successfully written to $local_file\n");
-//            ftp_close($conn_id);
+        $server_file = '/incoming/09_NIAPP/Weather/AccuWeather_Central_Highlands_Vietnam.csv';
+        $ftp_server="ftp.nelen-schuurmans.nl";
+        $ftp_user_name="greencoffee";
+        $ftp_user_pass="nice cup of green coffee";
+
+        $conn_id = ftp_connect($ftp_server);
+
+        $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+
+        if (ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
+            $this->infoLogWeather("Successfully written to $local_file\n");
+            ftp_close($conn_id);
         $this->infoLogWeather("Start update weather");
         $objPHPExcel = PHPExcel_IOFactory::load($local_file);
         $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
@@ -138,10 +138,10 @@ class WeatherController extends Controller
             }
         }
 
-//        }
-//        else {
-//            $this->infoLogWeather("Have problem");
-//        }
+        }
+        else {
+            $this->infoLogWeather("Have problem");
+        }
     }
 
     public static function infoLogWeather($txt)
