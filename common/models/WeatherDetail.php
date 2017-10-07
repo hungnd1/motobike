@@ -19,10 +19,11 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $clouddc
- * @property integer $hprcp
- * @property integer $hsun
+ * @property float $hprcp
+ * @property float $hsun
  * @property integer $RFTMAX
  * @property integer $RFTMIN
+ * @property integer $PROPRCP
  */
 class WeatherDetail extends \yii\db\ActiveRecord
 {
@@ -41,9 +42,10 @@ class WeatherDetail extends \yii\db\ActiveRecord
     {
         return [
             [['precipitation', 'tmax', 'tmin', 'wnddir', 'wndspd', 'station_id', 'timestamp', 'created_at', 'updated_at',
-                'clouddc', 'hprcp', 'hsun', 'RFTMAX', 'RFTMIN'
+                'clouddc', 'RFTMAX', 'RFTMIN','PROPRCP'
             ], 'integer'],
             [['station_code'], 'string', 'max' => 45],
+            [['hsun','hprcp'],'safe']
         ];
     }
 
