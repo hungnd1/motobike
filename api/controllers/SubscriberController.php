@@ -67,16 +67,16 @@ class SubscriberController extends ApiController
 //        if (!$password) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
 //        }
-//        $phone_number = CUtils::validateMobile($username, 0);
-//        if ($phone_number == '') {
-//            $phone_number = CUtils::validateMobile($username, 1);
-//            if ($phone_number == '') {
-//                $phone_number = CUtils::validateMobile($username, 2);
-//                if ($phone_number == '') {
-//                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
-//                }
-//            }
-//        }
+        $phone_number = CUtils::validateMobile($username, 0);
+        if ($phone_number == '') {
+            $phone_number = CUtils::validateMobile($username, 1);
+            if ($phone_number == '') {
+                $phone_number = CUtils::validateMobile($username, 2);
+                if ($phone_number == '') {
+                    throw new InvalidValueException('Số điện thoại không đúng định dạng');
+                }
+            }
+        }
 
         $subscriber = Subscriber::findOne(['username' => $username]);
         $password = CUtils::generateRandomString(8);
