@@ -15,9 +15,9 @@ class WeatherController extends  Controller
 {
     public function actionGetFile(){
         // define some variables
-        $local_file = '/backend/web/filename.jpg';
-        $server_file = '/incoming/09_NIAPP/Weather';
-        $ftp_server="ftp://ftp.nelen-schuurmans.nl";
+        $local_file = 'backend/web/Weather/AccuWeather_Central_Highlands_Vietnam.csv';
+        $server_file = '/incoming/09_NIAPP/Weather/AccuWeather_Central_Highlands_Vietnam.csv';
+        $ftp_server="ftp.nelen-schuurmans.nl";
         $ftp_user_name="greencoffee";
         $ftp_user_pass="nice cup of green coffee";
 
