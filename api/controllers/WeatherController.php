@@ -54,12 +54,14 @@ class WeatherController extends ApiController
             ->andWhere(['>=', 'timestamp', $today])
             ->andWhere(['<', 'timestamp', $tomorrow])
             ->andWhere(['station_id' => $station_id])
+            ->orWhere('tmax is not null')
             ->orderBy(['timestamp' => SORT_ASC])->count();
         if ($weatherCount >= 2) {
             $weatherAll = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $today])
                 ->andWhere(['<', 'timestamp', $tomorrow])
                 ->andWhere(['station_id' => $station_id])
+                ->orWhere('tmax is not null')
                 ->orderBy(['timestamp' => SORT_DESC])->all();
             foreach ($weatherAll as $item) {
                 /** @var $item WeatherDetail */
@@ -71,6 +73,7 @@ class WeatherController extends ApiController
             $weather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $today])
                 ->andWhere(['<', 'timestamp', $tomorrow])
+                ->orWhere('tmax is not null')
                 ->andWhere(['station_id' => $station_id])
                 ->orderBy(['timestamp' => SORT_ASC])->one();
         }
@@ -79,6 +82,7 @@ class WeatherController extends ApiController
                 ->andWhere(['>=', 'timestamp', $today])
                 ->andWhere(['<', 'timestamp', $tomorrow])
                 ->andWhere(['station_id' => $station_id])
+                ->orWhere('tmax is not null')
                 ->orderBy(['timestamp' => SORT_DESC])
                 ->limit(1)
                 ->one();
@@ -88,12 +92,14 @@ class WeatherController extends ApiController
                 ->andWhere(['>=', 'timestamp', $current_time])
                 ->andWhere(['<>', 'id', $weather->id])
                 ->andWhere(['station_id' => $station_id])
+                ->orWhere('tmax is not null')
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
         } else {
             $listWeather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $current_time])
                 ->andWhere(['station_id' => $station_id])
+                ->orWhere('tmax is not null')
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
         }
@@ -102,6 +108,7 @@ class WeatherController extends ApiController
             ->andWhere(['>=', 'timestamp', $week_ago])
             ->andWhere(['<=', 'timestamp', $today])
             ->andWhere(['station_id' => $station_id])
+            ->orWhere('tmax is not null')
             ->orderBy(['timestamp' => SORT_ASC])
             ->all();
 
