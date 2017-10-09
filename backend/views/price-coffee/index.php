@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filterType' => GridView::FILTER_DATE,
                         'attribute' => 'created_at',
                         'value' => function ($model) {
-                            return date('d-m-Y H:i:s', $model->created_at);
+                            return date('d-m-Y', $model->created_at);
                         }
                     ],
                 ];
