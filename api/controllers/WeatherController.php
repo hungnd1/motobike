@@ -64,7 +64,7 @@ class WeatherController extends ApiController
                 ->andWhere(['station_id' => $station_id])
                 ->andWhere('tmax is not null')
                 ->andWhere('tmin is not null')
-                ->orderBy(['timestamp' => SORT_DESC])->all();
+                ->orderBy(['timestamp' => SORT_ASC])->all();
             foreach ($weatherAll as $item) {
                 /** @var $item WeatherDetail */
                 if ($current_time > $item->timestamp) {
