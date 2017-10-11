@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use api\models\Station;
 use common\helpers\CVietnameseTools;
+use common\models\SubscriberActivity;
 use Yii;
 use yii\data\ActiveDataProvider;
 
@@ -41,7 +42,8 @@ class StationController extends ApiController
 
     public function actionGetListStation()
     {
-
+        $subscriber = Yii::$app->user;
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber,Yii::$app->request->getUserIP(),$subscriber->authen_type);
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null');
