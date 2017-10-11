@@ -30,8 +30,8 @@ class PriceCoffee extends \yii\db\ActiveRecord
     const UNIT_VND = 1;
     const UNIT_USD = 2;
 
-    const TYPE_COFFEE_A = 'Cà phê Chè';
-    const TYPE_COFFEE_V = 'Cà phê vối';
+    const TYPE_COFFEE_A = 'Nhân xô chè';
+    const TYPE_COFFEE_V = 'Nhân xô vối';
 
     const COMPANY_AGENT = 'Đại lý';
     const COMPANY_COMPANY = 'Công ty';
