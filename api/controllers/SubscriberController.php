@@ -15,6 +15,7 @@ use api\models\Exchange;
 use api\models\ExchangeBuy;
 use common\helpers\CUtils;
 use common\models\Subscriber;
+use common\models\SubscriberActivity;
 use common\models\SubscriberToken;
 use Yii;
 use yii\base\InvalidValueException;
@@ -60,7 +61,7 @@ class SubscriberController extends ApiController
     {
         $username = $this->getParameterPost('username', '');
 //        $password = $this->getParameterPost('password', '');
-
+        $request = Yii::$app->request;
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
         }
@@ -103,6 +104,8 @@ class SubscriberController extends ApiController
 
         $subscriber->last_login_at = time();
         $subscriber->save(false);
+
+        $subscriberActivity = SubscriberActivity::addActivity($request->getUserIP(),$subscriber->authen_type);
 
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $subscriber->id,
