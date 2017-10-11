@@ -105,7 +105,7 @@ class SubscriberController extends ApiController
         $subscriber->last_login_at = time();
         $subscriber->save(false);
 
-        $subscriberActivity = SubscriberActivity::addActivity($request->getUserIP(),$subscriber->authen_type);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber,$request->getUserIP(),$subscriber->authen_type);
 
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $subscriber->id,

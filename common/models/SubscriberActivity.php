@@ -231,11 +231,11 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return $message;
     }
 
-    public static function addActivity($uid,$type ){
+    public static function addActivity($subscriber,$uid,$type ){
 
         $audit_log = new SubscriberActivity();
-        $audit_log->subscriber_id = Yii::$app->user->getId() ? Yii::$app->user->getId() : 1;
-        $audit_log->msisdn = Yii::$app->user->getId() ? Yii::$app->user->getIdentity()->username : null;
+        $audit_log->subscriber_id = $subscriber->id;
+        $audit_log->msisdn = $subscriber->username;
         $audit_log->ip_address = $uid;
         $audit_log->action = 'Vao app';
         $audit_log->target_id = isset($params['id']) ? $params['id'] : null;
