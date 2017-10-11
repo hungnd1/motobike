@@ -44,8 +44,8 @@ class WeatherController extends ApiController
         if (!$station_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
         }
-
-        $current_time = time() + 7 * 60 * 60;
+        $arr = [];
+        $current_time = time();
         $today = strtotime('today midnight') + 7 * 60 * 60;
         $tomorrow = strtotime('tomorrow') + 7 * 60 * 60;
         $week_ago = strtotime('today midnight') - 7 * 86400 + 7 * 60 * 60;
@@ -67,7 +67,7 @@ class WeatherController extends ApiController
                 ->orderBy(['timestamp' => SORT_ASC])->all();
             foreach ($weatherAll as $item) {
                 /** @var $item WeatherDetail */
-                if ($current_time > $item->timestamp) {
+                if ($current_time >= $item->timestamp) {
                     $weather = $item;
                 }
             }
@@ -100,6 +100,23 @@ class WeatherController extends ApiController
                 ->andWhere('tmin is not null')
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
+            $time = 0;
+            foreach ($listWeather as $item) {
+                /** @var $item WeatherDetail */
+                if ($time == 0) {
+                    $time = $item->timestamp;
+                    array_push($arr, $item);
+                } else {
+                    $date = date('Y-m-d', $time);
+                    $end = new \DateTime($date);
+                    $end->setTime(23, 59, 59);
+                    $toTimeDefault = $end->getTimestamp();
+                    if ($item->timestamp >= $toTimeDefault) {
+                        $time = $item->timestamp;
+                        array_push($arr, $item);
+                    }
+                }
+            }
         } else {
             $listWeather = WeatherDetail::find()
                 ->andWhere(['>=', 'timestamp', $current_time])
@@ -108,6 +125,22 @@ class WeatherController extends ApiController
                 ->andWhere('tmin is not null')
                 ->orderBy(['timestamp' => SORT_ASC])
                 ->all();
+            $time = 0;
+            foreach ($listWeather as $item) {
+                /** @var $item WeatherDetail */
+                $date = date('Y-m-d', $item->timestamp);
+                $end = new \DateTime($date);
+                $end->setTime(23, 59, 59);
+                $toTimeDefault = $end->getTimestamp();
+                if ($time == 0) {
+                    $time = $item->timestamp;
+                    array_push($arr, $item);
+                } else {
+                    if ($item->timestamp >= $toTimeDefault) {
+                        array_push($arr, $item);
+                    }
+                }
+            }
         }
 
         $weekWeatherAgo = WeatherDetail::find()
@@ -121,7 +154,7 @@ class WeatherController extends ApiController
 
         return [
             'items' => $weather,
-            'events' => $listWeather,
+            'events' => $arr,
             'weather_week_ago' => $weekWeatherAgo
         ];
     }
