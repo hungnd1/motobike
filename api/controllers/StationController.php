@@ -43,7 +43,7 @@ class StationController extends ApiController
     public function actionGetListStation()
     {
         $subscriber = Yii::$app->user;
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber,Yii::$app->request->getUserIP(),$subscriber->authen_type);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber,Yii::$app->request->getUserIP(),1);
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null');
