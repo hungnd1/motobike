@@ -41,39 +41,44 @@ class WeatherController extends Controller
             if (sizeof($sheetData) > 0) {
                 foreach ($sheetData as $row) {
                     $rowA = strtotime(str_replace('Z', '', str_replace('T', ' ', trim($row['A']))));
-                    $time = explode('+', trim($row['A']))[1];
-                    $hour = isset(explode(':', $time)[0]) ? explode(':', $time)[0] : 0;
-                    $minute = isset(explode(':', $time)[1]) ? explode(':', $time)[1] : 0;
-                    $second = isset(explode(':', $time)[2]) ? explode(':', $time)[2] : 0;
-                    $rowA += $hour * 3600 + $minute * 60 + $second;
-                    $weatherDetail = WeatherDetail::find()
-                        ->andWhere(['timestamp' => $rowA])
-                        ->andWhere(['station_code' => trim($row['D'])]);
-                    if (trim($row['B']) == 'PRCP') {
-                        $weatherDetail->andWhere(['precipitation' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'TMAX') {
-                        $weatherDetail->andWhere(['tmax' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'TMIN') {
-                        $weatherDetail->andWhere(['tmin' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'WNDDIR') {
-                        $weatherDetail->andWhere(['wnddir' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'WNDSPD') {
-                        $weatherDetail->andWhere(['wnddir' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'CLOUDC') {
-                        $weatherDetail->andWhere(['clouddc' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'HPRCP') {
-                        $weatherDetail->andWhere(['hprcp' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'HSUN') {
-                        $weatherDetail->andWhere(['hsun' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'RFTMAX') {
-                        $weatherDetail->andWhere(['RFTMAX' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'RFTMIN') {
-                        $weatherDetail->andWhere(['RFTMIN' => trim($row['C'])]);
-                    } elseif (trim($row['B']) == 'PROPRCP') {
-                        $weatherDetail->andWhere(['PROPRCP' => trim($row['C'])]);
+                    $hour = 0;
+                    $minute = 0;
+                    $second = 0;
+                    if(strpos(trim($row['A']),'+') !== false){
+                        $time = explode('+', trim($row['A']))[1];
+                        $hour = isset(explode(':', $time)[0]) ? explode(':', $time)[0] : 0;
+                        $minute = isset(explode(':', $time)[1]) ? explode(':', $time)[1] : 0;
+                        $second = isset(explode(':', $time)[2]) ? explode(':', $time)[2] : 0;
                     }
-
-                    if (!$weatherDetail->one()) {
+                    $rowA += $hour * 3600 + $minute * 60 + $second;
+//                    $weatherDetail = WeatherDetail::find()
+//                        ->andWhere(['timestamp' => $rowA])
+//                        ->andWhere(['station_code' => trim($row['D'])]);
+//                    if (trim($row['B']) == 'PRCP') {
+//                        $weatherDetail->andWhere(['precipitation' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'TMAX') {
+//                        $weatherDetail->andWhere(['tmax' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'TMIN') {
+//                        $weatherDetail->andWhere(['tmin' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'WNDDIR') {
+//                        $weatherDetail->andWhere(['wnddir' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'WNDSPD') {
+//                        $weatherDetail->andWhere(['wnddir' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'CLOUDC') {
+//                        $weatherDetail->andWhere(['clouddc' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'HPRCP') {
+//                        $weatherDetail->andWhere(['hprcp' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'HSUN') {
+//                        $weatherDetail->andWhere(['hsun' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'RFTMAX') {
+//                        $weatherDetail->andWhere(['RFTMAX' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'RFTMIN') {
+//                        $weatherDetail->andWhere(['RFTMIN' => trim($row['C'])]);
+//                    } elseif (trim($row['B']) == 'PROPRCP') {
+//                        $weatherDetail->andWhere(['PROPRCP' => trim($row['C'])]);
+//                    }
+//
+//                    if (!$weatherDetail->one()) {
                         $weatherDetail = WeatherDetail::find()
                             ->andWhere(['timestamp' => $rowA])
                             ->andWhere(['station_code' => trim($row['D'])])->one();
@@ -135,7 +140,7 @@ class WeatherController extends Controller
                             }
                             $weather->save();
                         }
-                    }
+//                    }
                 }
             }
 
