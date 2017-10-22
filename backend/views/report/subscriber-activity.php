@@ -54,14 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <div class="col-md-12">
 
-                                    <div class="col-md-2">
-                                        <?= $form->field($report, 'site_id')->dropDownList( ArrayHelper::merge(['' => ''.\Yii::t('app', 'Tất cả')],Site::listSite()), ['id'=>'site-id']); ?>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <?= $form->field($report, 'content_type')->dropDownList( ArrayHelper::merge(['' => ''.\Yii::t('app', 'Tất cả')],Content::listTypeBC()), ['id'=>'content-type']); ?>
-                                    </div>
-
                                     <div id="date">
                                         <div class="col-md-2">
                                             <?= $form->field($report, 'from_date')->widget(\kartik\widgets\DatePicker::classname(), [
@@ -135,16 +127,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     ],
                                                     [
                                                         'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'via_smb',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return $model->via_smb;
-                                                        },
-                                                        'pageSummary' => true,
-//                                                        'pageSummary' => $dataProvider->query->sum('via_smb')?$dataProvider->query->sum('via_smb'):0
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
                                                         'attribute' => 'via_android',
                                                         'value' => function ($model) {
                                                             /**  @var $model \common\models\ReportSubscriberActivity */
@@ -152,16 +134,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         },
                                                         'pageSummary' => true,
 //                                                        'pageSummary' => $dataProvider->query->sum('via_android')?$dataProvider->query->sum('via_android'):0
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'via_ios',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return $model->via_ios;
-                                                        },
-                                                        'pageSummary' => true,
-//                                                        'pageSummary' => $dataProvider->query->sum('via_ios')?$dataProvider->query->sum('via_ios'):0
                                                     ],
                                                     [
                                                         'class' => '\kartik\grid\DataColumn',

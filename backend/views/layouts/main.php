@@ -302,6 +302,22 @@ $arrlang = array();
 //                    'url' => ['weather-detail/index'],
 //                    'require_auth' => true,
 //                ],
+                [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> '.\Yii::t('app', 'Quản lý báo cáo'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Báo cáo lượng truy cập'),
+                            'url' => ['report/subscriber-activity'],
+                            'require_auth' => true,
+                        ],
+                    ]
+
+                ],
             ];
 
 

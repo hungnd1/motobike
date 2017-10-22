@@ -2,8 +2,10 @@
 
 namespace backend\controllers;
 
+use backend\models\ReportSubscriberActivityForm;
 use common\models\Subscriber;
 use common\models\SubscriberSearch;
+use DateTime;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -126,4 +128,5 @@ class SubscriberController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }
