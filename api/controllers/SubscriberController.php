@@ -105,7 +105,7 @@ class SubscriberController extends ApiController
         $subscriber->last_login_at = time();
         $subscriber->save(false);
 
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber,$request->getUserIP(),$subscriber->authen_type);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, $request->getUserIP(), $subscriber->authen_type);
 
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $subscriber->id,
@@ -215,6 +215,8 @@ class SubscriberController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = \api\models\Subscriber::findOne(Yii::$app->user->id);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), 1);
+
         if (!$subscriber) {
             throw new InvalidValueException(Message::getAccessDennyMessage());
         }
@@ -230,7 +232,7 @@ class SubscriberController extends ApiController
         $sold = $this->getParameterPost('sold_id', 0);
         $type_coffee = $this->getParameterPost('type_coffee', 0);
         $location = $this->getParameterPost('location', '');
-        $location_name = $this->getParameterPost('location_name','');
+        $location_name = $this->getParameterPost('location_name', '');
         $price = $this->getParameterPost('price', 0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
@@ -338,7 +340,7 @@ class SubscriberController extends ApiController
         $quality = $this->getParameterPost('total_quantity', 0);
         $type_coffee = $this->getParameterPost('type_coffee', 0);
         $location = $this->getParameterPost('location', '');
-        $location_name = $this->getParameterPost('location_name','');
+        $location_name = $this->getParameterPost('location_name', '');
         $price = $this->getParameterPost('price', 0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
@@ -394,7 +396,8 @@ class SubscriberController extends ApiController
 
     }
 
-    public function actionChangePassword(){
+    public function actionChangePassword()
+    {
 
         UserHelpers::manualLogin();
 
@@ -402,7 +405,7 @@ class SubscriberController extends ApiController
         $subscriber = Yii::$app->user->identity;
 
         $new_password = $this->getParameterPost('new_password', '');
-        $old_password = $this->getParameterPost('old_password','');
+        $old_password = $this->getParameterPost('old_password', '');
 
         if (!$new_password) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu cũ mới')]));
@@ -434,10 +437,11 @@ class SubscriberController extends ApiController
 
     }
 
-    public function actionResetPassword(){
+    public function actionResetPassword()
+    {
 
         $username = $this->getParameterPost('username', '');
-        $new_password = $this->getParameterPost('new_password','');
+        $new_password = $this->getParameterPost('new_password', '');
 
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
