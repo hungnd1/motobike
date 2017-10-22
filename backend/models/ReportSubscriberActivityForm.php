@@ -86,8 +86,6 @@ class ReportSubscriberActivityForm extends Model
 
         $param = Yii::$app->request->queryParams;
         $searchModel = new ReportSubscriberActivitySearch();
-        $param['ReportSubscriberActivitySearch']['site_id'] =$this->site_id;
-        $param['ReportSubscriberActivitySearch']['content_type'] =$this->content_type;
         $param['ReportSubscriberActivitySearch']['from_date'] =$from_date;
         $param['ReportSubscriberActivitySearch']['to_date'] =$to_date;
 
@@ -103,14 +101,10 @@ class ReportSubscriberActivityForm extends Model
         $dateLabel = Yii::t('app','Ngày');
         $total_via_site_label = Yii::t('app','Tổng lượt truy cập');
         $total_via_site_daily_label = Yii::t('app','Số lượt truy cập trong ngày');
-        $total_via_smb_label = Yii::t('app','Từ Smart box');
-        $total_via_android_label = Yii::t('app','Từ ứng dụng Android');
-        $total_via_ios_label = Yii::t('app','Từ ứng dụng IOS');
+        $total_via_android_label = Yii::t('app','Từ ứng dụng');
         $total_via_website_label = Yii::t('app','Từ website');
         $total_via_site_daily = 0;
-        $total_via_smb = 0;
         $total_via_android= 0;
-        $total_via_ios = 0;
         $total_via_website = 0;
         if(!empty($rawData)){
             $i=0;
@@ -119,16 +113,12 @@ class ReportSubscriberActivityForm extends Model
                 $row[$dateLabel] = date($dateFormat,$raw['report_date']);
                 $row[$total_via_site_label] = $raw['total_via_site'];
                 $row[$total_via_site_daily_label] = $raw['via_site_daily'];
-                $row[$total_via_smb_label] = $raw['via_smb'];
                 $row[$total_via_android_label] = $raw['via_android'];
-                $row[$total_via_ios_label] = $raw['via_ios'];
                 $row[$total_via_website_label] = $raw['via_website'];
                 $dataRow[] = $row;
 
                 $total_via_site_daily += $raw['via_site_daily'];
-                $total_via_smb += $raw['via_smb'];
                 $total_via_android += $raw['via_android'];
-                $total_via_ios += $raw['via_ios'];
                 $total_via_website += $raw['via_website'];
 
                 //kết thúc một ngày, khởi tạo thêm 1 dòng cho ngày tiếp theo
@@ -139,10 +129,8 @@ class ReportSubscriberActivityForm extends Model
             $row[$dateLabel] = 'Tổng';
             $row[$total_via_site_label] = '';
             $row[$total_via_site_daily_label] = $total_via_site_daily;
-            $row[$total_via_smb_label] = $total_via_smb;
             $row[$total_via_android_label] = $total_via_android;
-            $row[$total_via_ios_label] = $total_via_ios;
-            $row[$total_via_website_label] = $total_via_ios;
+            $row[$total_via_website_label] = $total_via_website;
             $dataRow[] = $row;
 
         }

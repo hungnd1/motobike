@@ -99,7 +99,7 @@ class Message
     }
     public static function getNotDateMessage()
     {
-        return Yii::t('app', 'Định dạng ngày không đúng ex: YYYY-MM-DD');
+        return Yii::t('app', 'dinh dang k dung ex: YYYY-MM-DD');
     }
     public static function getAdventismentMessage()
     {

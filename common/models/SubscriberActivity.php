@@ -39,6 +39,9 @@ class SubscriberActivity extends \yii\db\ActiveRecord
     const STATUS_SUCCESS = 10;
     const STATUS_FAIL = 0;
 
+    const CHANNEL_WEB = 7;
+    const CHANNEL_APP = 1;
+
     /**
      * @inheritdoc
      */
