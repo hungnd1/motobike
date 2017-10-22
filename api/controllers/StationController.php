@@ -42,7 +42,7 @@ class StationController extends ApiController
 
     public function actionGetListStation()
     {
-        $subscriber = Yii::$app->user;
+        $subscriber = Yii::$app->user->getIdentity();
         $subscriberActivity = SubscriberActivity::addActivity($subscriber,Yii::$app->request->getUserIP(),1);
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
