@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $province_id
- * @property integer $price_average
+ * @property string $price_average
  * @property integer $unit
  * @property string $organisation_name
  * @property integer $coffee_old_id
@@ -38,6 +38,9 @@ class PriceCoffee extends \yii\db\ActiveRecord
     const COMPANY_EXPORT = 'Xuất khẩu';
     const COMPANY_FARM_GATE = 'Cổng trại';
 
+    const TYPE_EXPORT = 2;
+    const TYPE_NORMAL = 1;
+
     /**
      * @inheritdoc
      */
@@ -45,8 +48,8 @@ class PriceCoffee extends \yii\db\ActiveRecord
     {
         return [
             [['price_average', 'province_id', 'unit'], 'required'],
-            [['coffee_old_id', 'last_time_value', 'price_average', 'unit', 'created_at', 'updated_at'], 'integer'],
-            [['province_id', 'organisation_name'], 'safe']
+            [['coffee_old_id', 'last_time_value', 'unit', 'created_at', 'updated_at'], 'integer'],
+            [['province_id', 'organisation_name', 'price_average'], 'safe']
         ];
     }
 
@@ -114,18 +117,29 @@ class PriceCoffee extends \yii\db\ActiveRecord
         return $unit;
     }
 
-    public static function getPrice($date, $province_id)
+    public static function getPrice($date, $province_id, $type = PriceCoffee::TYPE_NORMAL)
     {
         $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
-        $pricePre = \api\models\PriceCoffee::find()
-            ->innerJoin('station', 'station.station_code = price_coffee.province_id')
-            ->andWhere(['station.province_id' => $province_id])
-            ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
-            ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
-            ->andWhere(['not in','price_coffee.coffee_old_id',['201029','199811','199808','199807']])
-            ->groupBy('price_coffee.coffee_old_id')
-            ->orderBy(['price_coffee.coffee_old_id' => SORT_DESC])->all();
+        if ($type == PriceCoffee::TYPE_NORMAL) {
+            $pricePre = \api\models\PriceCoffee::find()
+                ->innerJoin('station', 'station.station_code = price_coffee.province_id')
+                ->andWhere(['station.province_id' => $province_id])
+                ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
+                ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
+                ->andWhere(['not in', 'price_coffee.coffee_old_id', ['201029', '199811', '199808', '199807']])
+                ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN']])
+                ->groupBy('price_coffee.coffee_old_id')
+                ->orderBy(['price_coffee.coffee_old_id' => SORT_DESC])->all();
+        } else {
+            $pricePre = \api\models\PriceCoffee::find()
+                ->andWhere(['in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN']])
+                ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
+                ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
+                ->groupBy('price_coffee.coffee_old_id')
+                ->orderBy(['price_coffee.coffee_old_id' => SORT_ASC])->all();
+        }
+
         return $pricePre;
     }
 
@@ -169,6 +183,18 @@ class PriceCoffee extends \yii\db\ActiveRecord
                 ];
                 break;
             case 'dACC':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_COMPANY
+                ];
+                break;
+            case 'dACN':
+                return [
+                    'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
+                    'company' => PriceCoffee::COMPANY_COMPANY
+                ];
+                break;
+            case 'dRCL':
                 return [
                     'name_coffee' => PriceCoffee::TYPE_COFFEE_A,
                     'company' => PriceCoffee::COMPANY_COMPANY

@@ -18,7 +18,6 @@ use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Sold;
-use common\models\SubscriberActivity;
 use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
@@ -102,6 +101,14 @@ class AppController extends ApiController
             $date = date('d/m/Y', time());
         }
         $arr = [];
+        $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
+        $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
+        //11_110_11000 gia san london
+        //10_100_10000 gia san neư york
+//        $arr_province = [];
+//        $arr_province['province_name'] = 'Giá sàn';
+//        $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
+//        $arr[] = $arr_province;
         $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
         foreach ($provinces as $item) {
             $arr_province = [];

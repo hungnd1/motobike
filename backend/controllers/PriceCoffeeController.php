@@ -170,9 +170,15 @@ class PriceCoffeeController extends Controller
                                 $coffee_old_id = PriceCoffee::findOne(['organisation_name'=>$row['B'],'province_id'=>$row['D']]);
                                 if($coffee_old_id){
                                     $price->coffee_old_id = $coffee_old_id->coffee_old_id;
+                                }else{
+                                    if(trim($row['D']) == '10_100_10000'){
+                                        $price->coffee_old_id = 1;
+                                    }elseif(trim($row['D']) == '11_110_11000'){
+                                        $price->coffee_old_id = 2;
+                                    }
                                 }
                                 $price->organisation_name = trim($row['B']);
-                                $price->save();
+                                $price->save(false);
                             }
 
                         }
