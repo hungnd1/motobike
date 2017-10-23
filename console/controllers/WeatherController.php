@@ -29,9 +29,9 @@ class WeatherController extends Controller
         $ftp_user_pass = "nice cup of green coffee";
 
         $conn_id = ftp_connect($ftp_server);
-
+//
         $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-
+//
         if (ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
             $this->infoLogWeather("Successfully written to $local_file\n");
             ftp_close($conn_id);
@@ -44,7 +44,7 @@ class WeatherController extends Controller
                     $hour = 0;
                     $minute = 0;
                     $second = 0;
-                    if(strpos(trim($row['A']),'+') !== false){
+                    if (strpos(trim($row['A']), '+') !== false) {
                         $time = explode('+', trim($row['A']))[1];
                         $hour = isset(explode(':', $time)[0]) ? explode(':', $time)[0] : 0;
                         $minute = isset(explode(':', $time)[1]) ? explode(':', $time)[1] : 0;
@@ -79,11 +79,13 @@ class WeatherController extends Controller
 //                    }
 //
 //                    if (!$weatherDetail->one()) {
-                        $weatherDetail = WeatherDetail::find()
-                            ->andWhere(['timestamp' => $rowA])
-                            ->andWhere(['station_code' => trim($row['D'])])->one();
-                        /** @var $weatherDetail WeatherDetail */
-                        if ($weatherDetail) {
+                    $weatherDetail = WeatherDetail::find()
+                        ->andWhere(['timestamp' => $rowA])
+//                            ->andWhere(['station_code'=>'67_663_24664'])
+                        ->andWhere(['station_code' => trim($row['D'])])
+                        ->one();
+                    /** @var $weatherDetail WeatherDetail */
+                    if ($weatherDetail) {
                             if (trim($row['B']) == 'PRCP') {
                                 $weatherDetail->precipitation = trim($row['C']);
                             } elseif (trim($row['B']) == 'TMAX') {
@@ -107,39 +109,40 @@ class WeatherController extends Controller
                             } elseif (trim($row['B']) == 'PROPRCP') {
                                 $weatherDetail->PROPRCP = trim($row['C']);
                             }
-                            $weatherDetail->save();
-                        } else {
-                            $weather = new WeatherDetail();
-                            $weather->station_code = trim($row['D']);
-                            $weather->station_id = Station::findOne(['station_code' => trim($row['D'])]) ? Station::findOne(['station_code' => trim($row['D'])])->id : 0;
-                            $weather->timestamp = $rowA;
-                            $weather->created_at = $rowA;
-                            $weather->updated_at = $rowA;
-                            if (trim($row['B']) == 'PRCP') {
-                                $weather->precipitation = trim($row['C']);
-                            } elseif (trim($row['B']) == 'TMAX') {
-                                $weather->tmax = trim($row['C']);
-                            } elseif (trim($row['B']) == 'TMIN') {
-                                $weather->tmin = trim($row['C']);
-                            } elseif (trim($row['B']) == 'WNDDIR') {
-                                $weather->wnddir = trim($row['C']);
-                            } elseif (trim($row['B']) == 'WNDSPD') {
-                                $weather->wndspd = trim($row['C']);
-                            } elseif (trim($row['B']) == 'CLOUDC') {
-                                $weather->clouddc = trim($row['C']);
-                            } elseif (trim($row['B']) == 'HPRCP') {
-                                $weather->hprcp = trim($row['C']);
-                            } elseif (trim($row['B']) == 'HSUN') {
-                                $weather->hsun = trim($row['C']);
-                            } elseif (trim($row['B']) == 'RFTMAX') {
-                                $weather->RFTMAX = trim($row['C']);
-                            } elseif (trim($row['B']) == 'RFTMIN') {
-                                $weather->RFTMIN = trim($row['C']);
-                            } elseif (trim($row['B']) == 'PROPRCP') {
-                                $weather->PROPRCP = trim($row['C']);
-                            }
-                            $weather->save();
+                            $weatherDetail->save(false);
+                            $this->infoLogWeather("Cap nhat station ".trim($row['D']) ." ngay ".date('d/m/Y',$rowA));
+                    } else {
+                        $weather = new WeatherDetail();
+                        $weather->station_code = trim($row['D']);
+                        $weather->station_id = Station::findOne(['station_code' => trim($row['D'])]) ? Station::findOne(['station_code' => trim($row['D'])])->id : 0;
+                        $weather->timestamp = $rowA;
+                        $weather->created_at = $rowA;
+                        $weather->updated_at = $rowA;
+                        if (trim($row['B']) == 'PRCP') {
+                            $weather->precipitation = trim($row['C']);
+                        } elseif (trim($row['B']) == 'TMAX') {
+                            $weather->tmax = trim($row['C']);
+                        } elseif (trim($row['B']) == 'TMIN') {
+                            $weather->tmin = trim($row['C']);
+                        } elseif (trim($row['B']) == 'WNDDIR') {
+                            $weather->wnddir = trim($row['C']);
+                        } elseif (trim($row['B']) == 'WNDSPD') {
+                            $weather->wndspd = trim($row['C']);
+                        } elseif (trim($row['B']) == 'CLOUDC') {
+                            $weather->clouddc = trim($row['C']);
+                        } elseif (trim($row['B']) == 'HPRCP') {
+                            $weather->hprcp = trim($row['C']);
+                        } elseif (trim($row['B']) == 'HSUN') {
+                            $weather->hsun = trim($row['C']);
+                        } elseif (trim($row['B']) == 'RFTMAX') {
+                            $weather->RFTMAX = trim($row['C']);
+                        } elseif (trim($row['B']) == 'RFTMIN') {
+                            $weather->RFTMIN = trim($row['C']);
+                        } elseif (trim($row['B']) == 'PROPRCP') {
+                            $weather->PROPRCP = trim($row['C']);
                         }
+                        $weather->save(false);
+                    }
 //                    }
                 }
             }
@@ -151,7 +154,7 @@ class WeatherController extends Controller
 
     public static function infoLogWeather($txt)
     {
-        FileUtils::appendToFile(Yii::getAlias('@runtime/logs/weather.log'), $txt);
+        FileUtils::appendToFile(Yii::getAlias('@runtime/logs/infoweather.log'), $txt);
     }
 
 
@@ -176,9 +179,9 @@ class WeatherController extends Controller
             $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
             if (sizeof($sheetData) > 0) {
                 foreach ($sheetData as $row) {
-                    $rowA = strtotime(str_replace('Z','',str_replace('T',' ',trim($row['A'])))) + 7 * 3600;
-                    $coffee_old= PriceCoffee::findOne(['organisation_name'=>trim($row['B']),'province_id'=>trim($row['D']),'created_at'=>$rowA]);
-                    if(!$coffee_old){
+                    $rowA = strtotime(str_replace('Z', '', str_replace('T', ' ', trim($row['A'])))) + 7 * 3600;
+                    $coffee_old = PriceCoffee::findOne(['organisation_name' => trim($row['B']), 'province_id' => trim($row['D']), 'created_at' => $rowA]);
+                    if (!$coffee_old) {
                         $price = new PriceCoffee();
                         $price->province_id = trim($row['D']);
                         $price->price_average = trim($row['C']);
@@ -186,12 +189,15 @@ class WeatherController extends Controller
                         $price->created_at = $rowA;
                         $price->updated_at = $rowA;
                         $price->last_time_value = $rowA;
-                        $coffee_old_id = PriceCoffee::findOne(['organisation_name'=>$row['B'],'province_id'=>$row['D']]);
-                        if($coffee_old_id){
+                        $coffee_old_id = PriceCoffee::findOne(['organisation_name' => $row['B'], 'province_id' => $row['D']]);
+                        if ($coffee_old_id) {
                             $price->coffee_old_id = $coffee_old_id->coffee_old_id;
                         }
                         $price->organisation_name = trim($row['B']);
                         $price->save();
+                    }else{
+                        $coffee_old->price_average = trim($row['C']);
+                        $coffee_old->save(false);
                     }
                 }
             }
