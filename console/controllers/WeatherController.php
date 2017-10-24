@@ -58,31 +58,31 @@ class WeatherController extends Controller
                         ->one();
                     /** @var $weatherDetail WeatherDetail */
                     if ($weatherDetail) {
-                            if (trim($row['B']) == 'PRCP') {
-                                $weatherDetail->precipitation = trim($row['C']);
-                            } elseif (trim($row['B']) == 'TMAX') {
-                                $weatherDetail->tmax = trim($row['C']);
-                            } elseif (trim($row['B']) == 'TMIN') {
-                                $weatherDetail->tmin = trim($row['C']);
-                            } elseif (trim($row['B']) == 'WNDDIR') {
-                                $weatherDetail->wnddir = trim($row['C']);
-                            } elseif (trim($row['B']) == 'WNDSPD') {
-                                $weatherDetail->wndspd = trim($row['C']);
-                            } elseif (trim($row['B']) == 'CLOUDC') {
-                                $weatherDetail->clouddc = trim($row['C']);
-                            } elseif (trim($row['B']) == 'HPRCP') {
-                                $weatherDetail->hprcp = trim($row['C']);
-                            } elseif (trim($row['B']) == 'HSUN') {
-                                $weatherDetail->hsun = trim($row['C']);
-                            } elseif (trim($row['B']) == 'RFTMAX') {
-                                $weatherDetail->RFTMAX = trim($row['C']);
-                            } elseif (trim($row['B']) == 'RFTMIN') {
-                                $weatherDetail->RFTMIN = trim($row['C']);
-                            } elseif (trim($row['B']) == 'PROPRCP') {
-                                $weatherDetail->PROPRCP = trim($row['C']);
-                            }
-                            $weatherDetail->save(false);
-                            $this->infoLogWeather("Cap nhat station ".trim($row['D'])  ." ngay ".date('d/m/Y',$rowA)." co gia tri la ".trim($row['C']));
+                        if (trim($row['B']) == 'PRCP') {
+                            $weatherDetail->precipitation = trim($row['C']);
+                        } elseif (trim($row['B']) == 'TMAX') {
+                            $weatherDetail->tmax = trim($row['C']);
+                        } elseif (trim($row['B']) == 'TMIN') {
+                            $weatherDetail->tmin = trim($row['C']);
+                        } elseif (trim($row['B']) == 'WNDDIR') {
+                            $weatherDetail->wnddir = trim($row['C']);
+                        } elseif (trim($row['B']) == 'WNDSPD') {
+                            $weatherDetail->wndspd = trim($row['C']);
+                        } elseif (trim($row['B']) == 'CLOUDC') {
+                            $weatherDetail->clouddc = trim($row['C']);
+                        } elseif (trim($row['B']) == 'HPRCP') {
+                            $weatherDetail->hprcp = trim($row['C']);
+                        } elseif (trim($row['B']) == 'HSUN') {
+                            $weatherDetail->hsun = trim($row['C']);
+                        } elseif (trim($row['B']) == 'RFTMAX') {
+                            $weatherDetail->RFTMAX = trim($row['C']);
+                        } elseif (trim($row['B']) == 'RFTMIN') {
+                            $weatherDetail->RFTMIN = trim($row['C']);
+                        } elseif (trim($row['B']) == 'PROPRCP') {
+                            $weatherDetail->PROPRCP = trim($row['C']);
+                        }
+                        $weatherDetail->save(false);
+                        $this->infoLogWeather(trim($row['B']) . " , " . trim($row['C']) . " , " . trim($row['C']));
                     } else {
                         $weather = new WeatherDetail();
                         $weather->station_code = trim($row['D']);
@@ -167,7 +167,7 @@ class WeatherController extends Controller
                         }
                         $price->organisation_name = trim($row['B']);
                         $price->save();
-                    }else{
+                    } else {
                         $coffee_old->price_average = trim($row['C']);
                         $coffee_old->save(false);
                     }
