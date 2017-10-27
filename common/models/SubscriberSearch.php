@@ -12,6 +12,8 @@ use common\models\Subscriber;
  */
 class SubscriberSearch extends Subscriber
 {
+    public $from_date;
+    public $to_date;
     /**
      * @inheritdoc
      */
@@ -20,6 +22,7 @@ class SubscriberSearch extends Subscriber
         return [
             [['id', 'authen_type', 'status'], 'integer'],
             [['username', 'email','created_at'], 'safe'],
+            [['from_date', 'to_date'], 'safe'],
         ];
     }
 
@@ -73,6 +76,42 @@ class SubscriberSearch extends Subscriber
         $query
             ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'password', $this->password]);
+        if ($this->from_date) {
+            $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
+        }
+        if ($this->to_date) {
+            $query->andFilterWhere(['<=', 'created_at', $this->to_date]);
+        }
+
+        return $dataProvider;
+    }
+
+    public function searchAll($params)
+    {
+        $query = Subscriber::find()->orderBy(['created_at'=>SORT_DESC]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination'=>false
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'authen_type' => $this->authen_type,
+            'status' => $this->status,
+            'updated_at' => $this->updated_at,
+        ]);
 
         return $dataProvider;
     }

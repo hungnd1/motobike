@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\ReportSubscriberActivityForm;
+use backend\models\ReportSubscriberForm;
 use common\models\ReportSubscriberActivity;
 use DateTime;
 use Yii;
@@ -140,6 +141,29 @@ class ReportController extends Controller
         $dataProvider = $report->generateReport();
         $excelDataProvider = $report->generateDetailReport($dataProvider->getModels());
         return $this->render('subscriber-activity', [
+            'report' => $report,
+            'dataProvider' => $dataProvider,
+            'excelDataProvider' => $excelDataProvider
+        ]);
+    }
+
+    public function actionSubscriberNumber()
+    {
+        $param = Yii::$app->request->queryParams;
+        $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');
+
+
+        $from_date = isset($param['ReportSubscriberForm']['from_date']) ? $param['ReportSubscriberForm']['from_date'] : $from_date_default;
+        $to_date = isset($param['ReportSubscriberForm']['to_date']) ? $param['ReportSubscriberForm']['to_date'] : $to_date_default;
+
+        $report = new ReportSubscriberForm();
+        $report->from_date = $from_date;
+        $report->to_date = $to_date;
+        $dataProvider = $report->generateReport();
+        $dataProviderAll = $report->generateReportAll();
+        $excelDataProvider = $report->generateDetailReport($dataProviderAll->getModels());
+        return $this->render('subscriber-number', [
             'report' => $report,
             'dataProvider' => $dataProvider,
             'excelDataProvider' => $excelDataProvider
