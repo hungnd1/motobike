@@ -28,7 +28,7 @@ use yii\helpers\Html;
 
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'content')->widget(\dosamigos\ckeditor\CKEditor::className(), [
+            <?= $form->field($model, 'content')->widget(\common\widgets\CKEditor::className(), [
                 'options' => ['rows' => 8],
                 'preset' => 'full'
             ]) ?>
