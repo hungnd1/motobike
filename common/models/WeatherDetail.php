@@ -24,6 +24,8 @@ use Yii;
  * @property integer $RFTMAX
  * @property integer $RFTMIN
  * @property integer $PROPRCP
+ * @property string $wnddtxt
+ * @property string $wtxt
  */
 class WeatherDetail extends \yii\db\ActiveRecord
 {
@@ -45,7 +47,7 @@ class WeatherDetail extends \yii\db\ActiveRecord
                 'clouddc', 'RFTMAX', 'RFTMIN','PROPRCP'
             ], 'integer'],
             [['station_code'], 'string', 'max' => 45],
-            [['hsun','hprcp'],'safe']
+            [['hsun','hprcp','wnddtxt','wtxt'],'safe']
         ];
     }
 

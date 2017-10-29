@@ -80,9 +80,12 @@ class WeatherController extends Controller
                             $weatherDetail->RFTMIN = trim($row['C']);
                         } elseif (trim($row['B']) == 'PROPRCP') {
                             $weatherDetail->PROPRCP = trim($row['C']);
+                        }elseif(trim($row['B'])== 'WNDDTXT'){
+                            $weatherDetail->wnddtxt = trim($row['C']);
+                        }elseif(trim($row['B']) == 'WTXT'){
+                            $weatherDetail->wtxt = trim($row['C']);
                         }
                         $weatherDetail->save(false);
-                        $this->infoLogWeather(trim($row['B']) . " , " . trim($row['C']) . " , " . trim($row['C']));
                     } else {
                         $weather = new WeatherDetail();
                         $weather->station_code = trim($row['D']);
@@ -112,6 +115,10 @@ class WeatherController extends Controller
                             $weather->RFTMIN = trim($row['C']);
                         } elseif (trim($row['B']) == 'PROPRCP') {
                             $weather->PROPRCP = trim($row['C']);
+                        }elseif(trim($row['B'])== 'WNDDTXT'){
+                            $weather->wnddtxt = trim($row['C']);
+                        }elseif(trim($row['B']) == 'WTXT'){
+                            $weather->wtxt = trim($row['C']);
                         }
                         $weather->save(false);
                     }
