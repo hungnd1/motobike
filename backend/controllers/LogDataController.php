@@ -140,6 +140,7 @@ class LogDataController extends Controller
                 if ($file->saveAs(Yii::getAlias('@webroot') . "/" . Yii::getAlias('@excel_folder') . "/" . $file_name)) {
                     $objPHPExcel = PHPExcel_IOFactory::load(Yii::getAlias('@excel_folder') . "/" . $file_name);
                     $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+                    $sheetData1 = $objPHPExcel->getActiveSheet();
                     if (sizeof($sheetData) > 0) {
                         $content = '';
                         $idx = 0;
@@ -161,7 +162,7 @@ class LogDataController extends Controller
                             = $row_fg = $row_fh = '';
                         foreach ($sheetData as $row) {
                             $idx++;
-                            if ($row['A'] == 'Identifier') {
+                            if (trim($row['B']) == 'Tên hiển thị') {
                                 $row_a = '<h3>' . $row['A'] . '</h3>';
                                 $row_b = '<h3>' . $row['B'] . '</h3>';
                                 $row_c = '<h3>' . $row['C'] . '</h3>';
@@ -285,48 +286,55 @@ class LogDataController extends Controller
                                 $row_dq = '<h3>' . $row['DQ'] . '</h3>';
                                 $row_dr = '<h3>' . $row['DR'] . '</h3>';
                                 $row_ds = '<h3>' . $row['DS'] . '</h3>';
-                                $row_dt = '<h3>' . $row['DT'] . '</h3>';
-                                $row_du = '<h3>' . $row['DU'] . '</h3>';
-                                $row_dv = '<h3>' . $row['DV'] . '</h3>';
-                                $row_dw = '<h3>' . $row['DW'] . '</h3>';
-                                $row_dx = '<h3>' . $row['DX'] . '</h3>';
-                                $row_dy = '<h3>' . $row['DY'] . '</h3>';
-                                $row_dz = '<h3>' . $row['DZ'] . '</h3>';
-                                $row_ea = '<h3>' . $row['EA'] . '</h3>';
-                                $row_eb = '<h3>' . $row['EB'] . '</h3>';
-                                $row_ec = '<h3>' . $row['EC'] . '</h3>';
-                                $row_ed = '<h3>' . $row['ED'] . '</h3>';
-                                $row_ee = '<h3>' . $row['EE'] . '</h3>';
-                                $row_ef = '<h3>' . $row['EF'] . '</h3>';
-                                $row_eg = '<h3>' . $row['EG'] . '</h3>';
-                                $row_eh = '<h3>' . $row['EH'] . '</h3>';
-                                $row_ei = '<h3>' . $row['EI'] . '</h3>';
-                                $row_ej = '<h3>' . $row['EJ'] . '</h3>';
-                                $row_ek = '<h3>' . $row['EK'] . '</h3>';
-                                $row_el = '<h3>' . $row['EL'] . '</h3>';
-                                $row_em = '<h3>' . $row['EM'] . '</h3>';
-                                $row_en = '<h3>' . $row['EN'] . '</h3>';
-                                $row_eo = '<h3>' . $row['EO'] . '</h3>';
-                                $row_ep = '<h3>' . $row['EP'] . '</h3>';
-                                $row_eq = '<h3>' . $row['EQ'] . '</h3>';
-                                $row_er = '<h3>' . $row['ER'] . '</h3>';
-                                $row_es = '<h3>' . $row['ES'] . '</h3>';
-                                $row_et = '<h3>' . $row['ET'] . '</h3>';
-                                $row_eu = '<h3>' . $row['EU'] . '</h3>';
-                                $row_ev = '<h3>' . $row['EV'] . '</h3>';
-                                $row_ew = '<h3>' . $row['EW'] . '</h3>';
-                                $row_ex = '<h3>' . $row['EX'] . '</h3>';
-                                $row_ey = '<h3>' . $row['EY'] . '</h3>';
-                                $row_ez = '<h3>' . $row['EZ'] . '</h3>';
-                                $row_fa = '<h3>' . $row['FA'] . '</h3>';
-                                $row_fb = '<h3>' . $row['FB'] . '</h3>';
-                                $row_fc = '<h3>' . $row['FC'] . '</h3>';
-                                $row_fd = '<h3>' . $row['FD'] . '</h3>';
-                                $row_fe = '<h3>' . $row['FE'] . '</h3>';
-                                $row_ff = '<h3>' . $row['FF'] . '</h3>';
-                                $row_fg = '<h3>' . $row['FG'] . '</h3>';
-                                $row_fh = '<h3>' . $row['FH'] . '</h3>';
+//                                $row_dt = '<h3>' . $row['DT'] . '</h3>';
+//                                $row_du = '<h3>' . $row['DU'] . '</h3>';
+//                                $row_dv = '<h3>' . $row['DV'] . '</h3>';
+//                                $row_dw = '<h3>' . $row['DW'] . '</h3>';
+//                                $row_dx = '<h3>' . $row['DX'] . '</h3>';
+//                                $row_dy = '<h3>' . $row['DY'] . '</h3>';
+//                                $row_dz = '<h3>' . $row['DZ'] . '</h3>';
+//                                $row_ea = '<h3>' . $row['EA'] . '</h3>';
+//                                $row_eb = '<h3>' . $row['EB'] . '</h3>';
+//                                $row_ec = '<h3>' . $row['EC'] . '</h3>';
+//                                $row_ed = '<h3>' . $row['ED'] . '</h3>';
+//                                $row_ee = '<h3>' . $row['EE'] . '</h3>';
+//                                $row_ef = '<h3>' . $row['EF'] . '</h3>';
+//                                $row_eg = '<h3>' . $row['EG'] . '</h3>';
+//                                $row_eh = '<h3>' . $row['EH'] . '</h3>';
+//                                $row_ei = '<h3>' . $row['EI'] . '</h3>';
+//                                $row_ej = '<h3>' . $row['EJ'] . '</h3>';
+//                                $row_ek = '<h3>' . $row['EK'] . '</h3>';
+//                                $row_el = '<h3>' . $row['EL'] . '</h3>';
+//                                $row_em = '<h3>' . $row['EM'] . '</h3>';
+//                                $row_en = '<h3>' . $row['EN'] . '</h3>';
+//                                $row_eo = '<h3>' . $row['EO'] . '</h3>';
+//                                $row_ep = '<h3>' . $row['EP'] . '</h3>';
+//                                $row_eq = '<h3>' . $row['EQ'] . '</h3>';
+//                                $row_er = '<h3>' . $row['ER'] . '</h3>';
+//                                $row_es = '<h3>' . $row['ES'] . '</h3>';
+//                                $row_et = '<h3>' . $row['ET'] . '</h3>';
+//                                $row_eu = '<h3>' . $row['EU'] . '</h3>';
+//                                $row_ev = '<h3>' . $row['EV'] . '</h3>';
+//                                $row_ew = '<h3>' . $row['EW'] . '</h3>';
+//                                $row_ex = '<h3>' . $row['EX'] . '</h3>';
+//                                $row_ey = '<h3>' . $row['EY'] . '</h3>';
+//                                $row_ez = '<h3>' . $row['EZ'] . '</h3>';
+//                                $row_fa = '<h3>' . $row['FA'] . '</h3>';
+//                                $row_fb = '<h3>' . $row['FB'] . '</h3>';
+//                                $row_fc = '<h3>' . $row['FC'] . '</h3>';
+//                                $row_fd = '<h3>' . $row['FD'] . '</h3>';
+//                                $row_fe = '<h3>' . $row['FE'] . '</h3>';
+//                                $row_ff = '<h3>' . $row['FF'] . '</h3>';
+//                                $row_fg = '<h3>' . $row['FG'] . '</h3>';
+//                                $row_fh = '<h3>' . $row['FH'] . '</h3>';
                             } else {
+//                                foreach ($sheetData1->getDrawingCollection() as $drawing) {
+//
+//                                }
+//                                if(key($sheetData) == 'DI'){
+//                                    var_dump(1);exit;
+//                                }
+//                                var_dump($row);exit;
                                 $content = $row_a . '<p>' . $row['A'] . '</p>' . $row_c . '<p>' . $row['C'] . '</p>' . $row_d . '<p>' . $row['D'] . '</p>' .
                                     $row_e . '<p>' . $row['E'] . '</p>' . $row_f . '<p>' . $row['F'] . '</p>' . $row_g . '<p>' . $row['G'] . '</p>' . $row_h . '<p>' . $row['H'] . '</p>' .
                                     $row_i . '<p>' . $row['I'] . '</p>' . $row_j . '<p>' . $row['J'] . '</p>' . $row_k . '<p>' . $row['K'] . '</p>' . $row_l . '<p>' . $row['L'] . '</p>' .
@@ -358,21 +366,22 @@ class LogDataController extends Controller
                                     $row_de . '<p>' . $row['DE'] . '</p>' . $row_df . '<p>' . $row['DF'] . '</p>' . $row_dg . '<p>' . $row['DG'] . '</p>' . $row_dh . '<p>' . $row['DH'] . '</p>' .
                                     $row_di . '<p>' . $row['DI'] . '</p>' . $row_dj . '<p>' . $row['DJ'] . '</p>' . $row_dk . '<p>' . $row['DK'] . '</p>' . $row_dl . '<p>' . $row['DL'] . '</p>' .
                                     $row_dm . '<p>' . $row['DM'] . '</p>' . $row_dn . '<p>' . $row['DN'] . '</p>' . $row_do . '<p>' . $row['DO'] . '</p>' . $row_dp . '<p>' . $row['DP'] . '</p>' .
-                                    $row_dq . '<p>' . $row['DQ'] . '</p>' . $row_dr . '<p>' . $row['DR'] . '</p>' . $row_ds . '<p>' . $row['DS'] . '</p>' . $row_dt . '<p>' . $row['DT'] . '</p>' .
-                                    $row_du . '<p>' . $row['DU'] . '</p>' . $row_dv . '<p>' . $row['DV'] . '</p>' . $row_dw . '<p>' . $row['DW'] . '</p>' . $row_dx . '<p>' . $row['DX'] . '</p>' .
-                                    $row_dy . '<p>' . $row['DY'] . '</p>' . $row_dz . '<p>' . $row['DZ'] .
-                                    $row_ea . '<p>' . $row['EA'] . '</p>' . $row_eb . '<p>' . $row['EB'] . '</p>' . $row_ec . '<p>' . $row['EC'] . '</p>' . $row_ed . '<p>' . $row['ED'] . '</p>' .
-                                    $row_ee . '<p>' . $row['EE'] . '</p>' . $row_ef . '<p>' . $row['EF'] . '</p>' . $row_eg . '<p>' . $row['EG'] . '</p>' . $row_eh . '<p>' . $row['EH'] . '</p>' .
-                                    $row_ei . '<p>' . $row['EI'] . '</p>' . $row_ej . '<p>' . $row['EJ'] . '</p>' . $row_ek . '<p>' . $row['EK'] . '</p>' . $row_el . '<p>' . $row['EL'] . '</p>' .
-                                    $row_em . '<p>' . $row['EM'] . '</p>' . $row_en . '<p>' . $row['EN'] . '</p>' . $row_eo . '<p>' . $row['EO'] . '</p>' . $row_ep . '<p>' . $row['EP'] . '</p>' .
-                                    $row_eq . '<p>' . $row['EQ'] . '</p>' . $row_er . '<p>' . $row['ER'] . '</p>' . $row_es . '<p>' . $row['ES'] . '</p>' . $row_et . '<p>' . $row['ET'] . '</p>' .
-                                    $row_eu . '<p>' . $row['EU'] . '</p>' . $row_ev . '<p>' . $row['EV'] . '</p>' . $row_ew . '<p>' . $row['EW'] . '</p>' . $row_ex . '<p>' . $row['EX'] . '</p>' .
-                                    $row_ey . '<p>' . $row['EY'] . '</p>' . $row_ez . '<p>' . $row['EZ'] .
-                                    $row_fa . '<p>' . $row['FA'] . '</p>' . $row_fb . '<p>' . $row['FB'] . '</p>' . $row_fc . '<p>' . $row['FC'] . '</p>' . $row_fd . '<p>' . $row['FD'] . '</p>' .
-                                    $row_fe . '<p>' . $row['FE'] . '</p>' . $row_ff . '<p>' . $row['FF'] . '</p>' . $row_fg . '<p>' . $row['FG'] . '</p>' . $row_fh . '<p>' . $row['FH'] . '</p>';
+                                    $row_dq . '<p>' . $row['DQ'] . '</p>' . $row_dr . '<p>' . $row['DR'] . '</p>' . $row_ds . '<p>' . $row['DS'] . '</p>';
+//                                    . $row_dt . '<p>' . $row['DT'] . '</p>' .
+//                                    $row_du . '<p>' . $row['DU'] . '</p>' . $row_dv . '<p>' . $row['DV'] . '</p>' . $row_dw . '<p>' . $row['DW'] . '</p>' . $row_dx . '<p>' . $row['DX'] . '</p>' .
+//                                    $row_dy . '<p>' . $row['DY'] . '</p>' . $row_dz . '<p>' . $row['DZ'] .
+//                                    $row_ea . '<p>' . $row['EA'] . '</p>' . $row_eb . '<p>' . $row['EB'] . '</p>' . $row_ec . '<p>' . $row['EC'] . '</p>' . $row_ed . '<p>' . $row['ED'] . '</p>' .
+//                                    $row_ee . '<p>' . $row['EE'] . '</p>' . $row_ef . '<p>' . $row['EF'] . '</p>' . $row_eg . '<p>' . $row['EG'] . '</p>' . $row_eh . '<p>' . $row['EH'] . '</p>' .
+//                                    $row_ei . '<p>' . $row['EI'] . '</p>' . $row_ej . '<p>' . $row['EJ'] . '</p>' . $row_ek . '<p>' . $row['EK'] . '</p>' . $row_el . '<p>' . $row['EL'] . '</p>' .
+//                                    $row_em . '<p>' . $row['EM'] . '</p>' . $row_en . '<p>' . $row['EN'] . '</p>' . $row_eo . '<p>' . $row['EO'] . '</p>' . $row_ep . '<p>' . $row['EP'] . '</p>' .
+//                                    $row_eq . '<p>' . $row['EQ'] . '</p>' . $row_er . '<p>' . $row['ER'] . '</p>' . $row_es . '<p>' . $row['ES'] . '</p>' . $row_et . '<p>' . $row['ET'] . '</p>' .
+//                                    $row_eu . '<p>' . $row['EU'] . '</p>' . $row_ev . '<p>' . $row['EV'] . '</p>' . $row_ew . '<p>' . $row['EW'] . '</p>' . $row_ex . '<p>' . $row['EX'] . '</p>' .
+//                                    $row_ey . '<p>' . $row['EY'] . '</p>' . $row_ez . '<p>' . $row['EZ'] .
+//                                    $row_fa . '<p>' . $row['FA'] . '</p>' . $row_fb . '<p>' . $row['FB'] . '</p>' . $row_fc . '<p>' . $row['FC'] . '</p>' . $row_fd . '<p>' . $row['FD'] . '</p>' .
+//                                    $row_fe . '<p>' . $row['FE'] . '</p>' . $row_ff . '<p>' . $row['FF'] . '</p>' . $row_fg . '<p>' . $row['FG'] . '</p>' . $row_fh . '<p>' . $row['FH'] . '</p>';
                                 $log = new LogData();
-                                $log->latitude = $row['EU'];
-                                $log->longitude = $row['EV'];
+                                $log->latitude = $row['DL'];
+                                $log->longitude = $row['DM'];
                                 $log->content = $this->getImportedValue(LogData::CONTENT, $content);
                                 $log->save(false);
                             }
