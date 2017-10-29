@@ -72,7 +72,7 @@
                 lat: 11.61,
                 lng: 108.04
             },
-            mapTypeId: 'satellite'
+//            mapTypeId: 'satellite'
         });
 
 
