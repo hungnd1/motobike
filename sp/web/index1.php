@@ -25,7 +25,7 @@
 <body onload="initMap()">
 <div id="map"></div>
 <script type="text/javascript">
-    let url = "http://45.32.112.173:84/log-data/log-data";
+    let url = "http://45.119.80.32:81/log-data/log-data";
     var locations = [];
 
 
