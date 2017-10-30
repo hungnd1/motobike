@@ -46,9 +46,10 @@ class WeatherController extends ApiController
         }
         $arr = [];
         $current_time = time();
-        $today = strtotime('today midnight') ;
-        $tomorrow = strtotime('tomorrow') ;
-        $week_ago = strtotime('today midnight') - 7 * 86400 + 7 * 60 * 60;
+        $today = strtotime('today midnight');
+        $tomorrow = strtotime('tomorrow');
+        $week_ago = strtotime('today midnight') - 3 * 86400 + 7 * 60 * 60;
+        $week_feature = strtotime('today midnight') + 4 * 86400 + 7 * 60 * 60;
         $weather = null;
         $weatherCount = WeatherDetail::find()
             ->andWhere(['>=', 'timestamp', $today])
@@ -145,15 +146,27 @@ class WeatherController extends ApiController
 
         $weekWeatherAgo = WeatherDetail::find()
             ->andWhere(['>=', 'timestamp', $week_ago])
-            ->andWhere(['<=', 'timestamp', $today])
+            ->andWhere(['<=', 'timestamp', $week_feature])
             ->andWhere(['station_id' => $station_id])
             ->andWhere('tmax is not null')
             ->andWhere('tmin is not null')
-            ->orderBy(['timestamp' => SORT_ASC])
-            ->all();
+            ->orderBy(['timestamp' => SORT_ASC]);
+        $temperature = 0;
+        $precipitation = 0;
+        foreach ($weekWeatherAgo->all() as $item) {
+            /** @var $item WeatherDetail */
+            $temperature += ($item->tmax + $item->tmin) / 2;
+            $precipitation += $item->precipitation;
+        }
+        if ($weekWeatherAgo->count() > 0) {
+            $temperature = $temperature / $weekWeatherAgo->count();
+            $precipitation = $precipitation / $weekWeatherAgo->count();
+        }
 
         return [
             'items' => $weather,
+            'temperature' => $temperature,
+            'precipitation' => $precipitation,
             'events' => $arr,
             'weather_week_ago' => $weekWeatherAgo
         ];

@@ -75,6 +75,13 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <?php  echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->asArray()->all(),'id','display_name'));
+            ?>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-md-12">
