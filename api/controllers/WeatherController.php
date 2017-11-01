@@ -168,7 +168,7 @@ class WeatherController extends ApiController
             'temperature' => $temperature,
             'precipitation' => $precipitation,
             'events' => $arr,
-            'weather_week_ago' => $weekWeatherAgo
+            'weather_week_ago' => $weekWeatherAgo->all()
         ];
     }
 }

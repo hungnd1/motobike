@@ -56,19 +56,12 @@ class WeatherDetail extends \common\models\WeatherDetail
             /* @var $model \common\models\WeatherDetail */
             return 'mm';
         };
-        $fields['precipitation_max'] = function ($model) {
-            /* @var $model \common\models\WeatherDetail */
-            if ($model->precipitation >= 1) {
-                return $model->precipitation + 2;
-            }
-            return $model->precipitation;
-        };
-        $fields['precipitation_min'] = function ($model) {
+        $fields['precipitation_average'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
             if ($model->precipitation > 2) {
-                return $model->precipitation - 2;
-            } elseif ($model->precipitation >= 1 && $model->precipitation <= 2) {
-                return 1;
+                return ($model->precipitation - 2).' - '.($model->precipitation + 2);
+            }elseif($model->precipitation == 2){
+                return ($model->precipitation - 1).' - '.($model->precipitation + 2);
             }
             return $model->precipitation;
         };
