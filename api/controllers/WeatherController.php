@@ -48,7 +48,7 @@ class WeatherController extends ApiController
         $current_time = time();
         $today = strtotime('today midnight');
         $tomorrow = strtotime('tomorrow');
-        $week_ago = strtotime('today midnight') - 3 * 86400 + 7 * 60 * 60;
+        $week_ago = strtotime('today midnight') - 4 * 86400 + 7 * 60 * 60;
         $week_feature = strtotime('today midnight') + 4 * 86400 + 7 * 60 * 60;
         $weather = null;
         $weatherCount = WeatherDetail::find()
