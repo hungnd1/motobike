@@ -10,6 +10,14 @@ use yii\helpers\Url;
  *
  * @property integer $id
  * @property string $gap
+ * @property string $content_2
+ * @property string $content_3
+ * @property string $content_4
+ * @property string $content_5
+ * @property string $content_6
+ * @property string $content_7
+ * @property string $content_8
+ * @property string $content_9
  * @property string $title
  * @property string $image
  * @property integer $status
@@ -45,8 +53,12 @@ class GapGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gap', 'title'], 'required'],
+            [['gap', 'title','content_2','content_3','content_4','content_5','content_6','content_7',
+                'content_8','content_9'], 'required'],
             [['gap', 'title', 'image'], 'string'],
+            [['content_2','content_3','content_4','content_5','content_6','content_7',
+                'content_8','content_9'
+            ], 'string'],
             [['status', 'created_at', 'updated_at', 'type'], 'integer'],
             [['temperature_max', 'temperature_min','windspeed_min','windspeed_max','precipitation_max','precipitation_min'], 'safe']
         ];
@@ -59,7 +71,15 @@ class GapGeneral extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'gap' => 'Nội dung',
+            'gap' => 'Làm đất',
+            'content_2' => 'Trồng mới, trồng dặm, tái canh',
+            'content_3' => 'Bón phân',
+            'content_4' => 'Tưới nước',
+            'content_5' => 'Phun thuốc',
+            'content_6' => 'Thu hái',
+            'content_7' => 'Sơ chế',
+            'content_8' => 'Làm vươn ươm',
+            'content_9' => 'Tạo hình',
             'status' => 'Trạng thái',
             'title' => 'Tiêu đề',
             'created_at' => 'Created At',

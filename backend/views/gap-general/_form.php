@@ -49,7 +49,77 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     <div class="row">
         <div class="col-md-12">
             <?php echo $form->field($model, 'gap')->widget(CKEditor::className(), [
-                'options' => ['rows' => 8],
+                'options' => ['rows' => 2],
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_2')->widget(CKEditor::className(), [
+                'options' => ['rows' =>2 ],
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_3')->widget(CKEditor::className(), [
+                'options' => ['rows' => 2],
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_4')->widget(CKEditor::className(), [
+                'options' => ['rows' => 2],
+                'preset' => 'full'
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_5')->widget(CKEditor::className(), [
+                'options' => ['rows' => 2],
+                'preset' => 'full'
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_6')->widget(CKEditor::className(), [
+                'options' => ['rows' => 2],
+                'preset' => 'full'
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_7')->widget(CKEditor::className(), [
+                'options' => ['rows' => 2],
+                'preset' => 'full'
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_8')->widget(CKEditor::className(), [
+                'options' => ['rows' => 4],
+                'preset' => 'full'
+            ]);
+            ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'content_9')->widget(CKEditor::className(), [
+                'options' => ['rows' => 2],
                 'preset' => 'full'
             ]);
             ?>
