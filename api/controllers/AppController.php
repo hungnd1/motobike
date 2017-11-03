@@ -276,7 +276,7 @@ class AppController extends ApiController
             $res = array();
             $res['Làm đất'] = ['content' => $gapAdvice->gap];
             $res['Trồng mới, trồng dặm, tái canh'] = ['content' => $gapAdvice->content_2];
-            $res['Bón phân'] = ['content' => $gapAdvice->content_3, 'is_popup' => true];
+            $res['Bón phân'] = ['content' => $gapAdvice->content_3, 'is_answer' => true];
             $res['Tưới nước'] = ['content' => $gapAdvice->content_4];
             $res['Phun thuốc'] = ['content' => $gapAdvice->content_5];
             $res['Thu hái'] = ['content' => $gapAdvice->content_6];

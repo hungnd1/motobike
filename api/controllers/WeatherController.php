@@ -150,25 +150,25 @@ class WeatherController extends ApiController
             ->andWhere(['station_id' => $station_id])
             ->andWhere('tmax is not null')
             ->andWhere('tmin is not null')
-            ->orderBy(['timestamp' => SORT_ASC]);
+            ->orderBy(['timestamp' => SORT_ASC])->all();
         $temperature = 0;
         $precipitation = 0;
-        foreach ($weekWeatherAgo->all() as $item) {
-            /** @var $item WeatherDetail */
-            $temperature += ($item->tmax + $item->tmin) / 2;
-            $precipitation += $item->precipitation;
-        }
-        if ($weekWeatherAgo->count() > 0) {
-            $temperature = $temperature / $weekWeatherAgo->count();
-            $precipitation = $precipitation / $weekWeatherAgo->count();
-        }
+//        foreach ($weekWeatherAgo->all() as $item) {
+//            /** @var $item WeatherDetail */
+//            $temperature += ($item->tmax + $item->tmin) / 2;
+//            $precipitation += $item->precipitation;
+//        }
+//        if ($weekWeatherAgo->count() > 0) {
+//            $temperature = $temperature / $weekWeatherAgo->count();
+//            $precipitation = $precipitation / $weekWeatherAgo->count();
+//        }
 
         return [
             'items' => $weather,
-            'temperature' => $temperature,
-            'precipitation' => $precipitation,
+//            'temperature' => $temperature,
+//            'precipitation' => $precipitation,
             'events' => $arr,
-            'weather_week_ago' => $weekWeatherAgo->all()
+            'weather_week_ago' => $weekWeatherAgo
         ];
     }
 }
