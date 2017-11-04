@@ -274,15 +274,53 @@ class AppController extends ApiController
         /** @var $gapAdvice GapGeneral */
         if ($gapAdvice) {
             $res = array();
-            $res['Làm đất'] = ['content' => $gapAdvice->gap];
-            $res['Trồng mới, trồng dặm, tái canh'] = ['content' => $gapAdvice->content_2];
-            $res['Bón phân'] = ['content' => $gapAdvice->content_3, 'is_answer' => true];
-            $res['Tưới nước'] = ['content' => $gapAdvice->content_4];
-            $res['Phun thuốc'] = ['content' => $gapAdvice->content_5];
-            $res['Thu hái'] = ['content' => $gapAdvice->content_6];
-            $res['Sơ chế'] = ['content' => $gapAdvice->content_7];
-            $res['Làm vươn ươm'] = ['content' => $gapAdvice->content_8];
-            $res['Tạo hình'] = ['content' => $gapAdvice->content_9];
+            $arr_item = array();
+            array_push($arr_item, [
+                'content' => $gapAdvice->gap,
+                'tag' => 'Làm đất'
+            ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_2,
+                    'tag' => 'Trồng mới, trồng dặm, tái canh'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_3,
+                    'tag' => 'Bón phân'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_4,
+                    'tag' => 'Tưới nước'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_5,
+                    'tag' => 'Phun thuốc'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_6,
+                    'tag' => 'Thu hái'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_7,
+                    'tag' => 'Sơ chế'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_8,
+                    'tag' => 'Làm vươn ươm'
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_9,
+                    'tag' => 'Tạo hình'
+                ]);
+            $res['items'] = $arr_item;
+
             return $res;
         } else {
             throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
