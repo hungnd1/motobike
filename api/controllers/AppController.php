@@ -12,11 +12,13 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\models\LogData;
 use api\models\PriceCoffeeDetail;
+use common\models\Answer;
 use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
+use common\models\Question;
 use common\models\Sold;
 use common\models\Term;
 use common\models\TotalQuality;
@@ -48,7 +50,8 @@ class AppController extends ApiController
             'term',
             'log-data',
             'version-app',
-            'gap-advice'
+            'gap-advice',
+            'get-question'
         ];
 
         return $behaviors;
@@ -65,7 +68,8 @@ class AppController extends ApiController
             'get-category' => ['GET'],
             'term' => ['GET'],
             'check-device-token' => ['POST'],
-            'log-data' => ['GET']
+            'log-data' => ['GET'],
+            'get-question' => ['GET']
         ];
     }
 
@@ -101,14 +105,15 @@ class AppController extends ApiController
             $date = date('d/m/Y', time());
         }
         $arr = [];
-        $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
-        $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
+//        $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
+//        $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
         //11_110_11000 gia san london
         //10_100_10000 gia san neư york
-//        $arr_province = [];
-//        $arr_province['province_name'] = 'Giá sàn';
-//        $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
-//        $arr[] = $arr_province;
+        $arr_province = [];
+        $arr_province['province_name'] = 'Giá sàn';
+        $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
+        $arr[] = $arr_province;
+
         $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
         foreach ($provinces as $item) {
             $arr_province = [];
@@ -154,11 +159,17 @@ class AppController extends ApiController
 
     public function actionGetPriceDetail()
     {
-        $coffee_old_id = $this->getParameter('coffee_old_id', '');
+        $organisation_name = $this->getParameter('organisation_name', '');
+        $province_id = $this->getParameter('province_id','');
         $date = $this->getParameter('date', 0);
-        if (!$coffee_old_id) {
+        if (!$organisation_name) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'coffee_old_id')]));
         }
+
+        if (!$province_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'coffee_old_id')]));
+        }
+
         if (!$date) {
             $date = date('d/m/Y', time());
         }
@@ -168,7 +179,8 @@ class AppController extends ApiController
         $pricePre = PriceCoffeeDetail::find()
             ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
             ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
-            ->andWhere(['coffee_old_id' => $coffee_old_id])
+            ->andWhere(['province_id' => $province_id])
+            ->andWhere(['organisation_name' => $organisation_name])
             ->groupBy('created_at')
             ->orderBy(['created_at' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
@@ -325,5 +337,33 @@ class AppController extends ApiController
         } else {
             throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
         }
+    }
+
+    public function actionGetQuestion()
+    {
+        $listQuestion = Question::find()->all();
+        $arrRes = [];
+        $res = [];
+        $arrQues = [];
+        foreach ($listQuestion as $question) {
+            /** @var $question Question */
+            $arrAnswer = [];
+            $resAnswer = [];
+            if ($question->is_dropdown_list) {
+                $listAnswer = Answer::find()->andWhere(['question_id' => $question->id])->all();
+                foreach ($listAnswer as $answer) {
+                    /** @var $answer Answer */
+                    array_push($arrAnswer, $answer);
+                }
+                $resAnswer['items'] = $arrAnswer;
+            }
+            $arrRes['id'] = $question->id;
+            $arrRes['question'] = $question->question;
+            $arrRes['is_dropdown_list'] = $question->is_dropdown_list;
+            $arrRes['answer'] = $resAnswer;
+            array_push($arrQues, $arrRes);
+        }
+        $res['items'] = $arrQues;
+        return $res;
     }
 }

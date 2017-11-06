@@ -9,6 +9,8 @@
 namespace api\models;
 
 
+use common\helpers\CUtils;
+
 class PriceCoffeeDetail extends \common\models\PriceCoffee
 {
     public function fields()
@@ -27,7 +29,10 @@ class PriceCoffeeDetail extends \common\models\PriceCoffee
         };
         $fields['price_average'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
-            return $model->price_average;
+            if($model->province_id != '10_100_10000' && $model->province_id != '11_110_11000'){
+                return $model->price_average;
+            }
+            return CUtils::formatPrice($model->price_average);
         };
 
         $fields['unit'] = function ($model) {
