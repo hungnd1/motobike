@@ -289,47 +289,56 @@ class AppController extends ApiController
             $arr_item = array();
             array_push($arr_item, [
                 'content' => $gapAdvice->gap,
-                'tag' => 'Làm đất'
+                'tag' => 'Làm đất',
+                'is_question'=>false
             ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_2,
-                    'tag' => 'Trồng mới, trồng dặm, tái canh'
+                    'tag' => 'Trồng mới, trồng dặm, tái canh',
+                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_3,
-                    'tag' => 'Bón phân'
+                    'tag' => 'Bón phân',
+                    'is_question'=>true
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_4,
-                    'tag' => 'Tưới nước'
+                    'tag' => 'Tưới nước',
+                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_5,
-                    'tag' => 'Phun thuốc'
+                    'tag' => 'Phun thuốc',
+                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_6,
-                    'tag' => 'Thu hái'
+                    'tag' => 'Thu hái',
+                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_7,
-                    'tag' => 'Sơ chế'
+                    'tag' => 'Sơ chế',
+                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_8,
-                    'tag' => 'Làm vươn ươm'
+                    'tag' => 'Làm vươn ươm',
+                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_9,
-                    'tag' => 'Tạo hình'
+                    'tag' => 'Tạo hình',
+                    'is_question'=>false
                 ]);
             $res['items'] = $arr_item;
 
