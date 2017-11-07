@@ -369,7 +369,11 @@ class AppController extends ApiController
             $arrRes['id'] = $question->id;
             $arrRes['question'] = $question->question;
             $arrRes['is_dropdown_list'] = $question->is_dropdown_list;
-            $arrRes['answer'] = $resAnswer;
+            if(empty($resAnswer['items'])){
+                $arrRes['answer'] = null;
+            }else{
+                $arrRes['answer'] = $resAnswer;
+            }
             array_push($arrQues, $arrRes);
         }
         $res['items'] = $arrQues;
