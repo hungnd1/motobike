@@ -269,6 +269,12 @@ $arrlang = array();
                             'url' => ['gap-general/index','type'=>GapGeneral::GAP_DETAIL],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Quản lý ma trận phân bón'),
+                            'url' => ['matrix-fertilizing/index'],
+                            'require_auth' => true,
+                        ],
                     ]
 
                 ],
