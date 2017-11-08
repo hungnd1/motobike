@@ -294,21 +294,21 @@ class AppController extends ApiController
             ]);
             array_push($arr_item,
                 [
+                    'content' => $gapAdvice->content_8,
+                    'tag' => 'Chuẩn bị giống - vườn ươm',
+                    'is_question'=>false
+                ]);
+            array_push($arr_item,
+                [
                     'content' => $gapAdvice->content_2,
-                    'tag' => 'Trồng mới, trồng dặm, tái canh',
+                    'tag' => 'Trồng mới, trồng lại và chăm sóc cà phê',
                     'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_3,
-                    'tag' => 'Bón phân',
+                    'tag' => 'Phân bón',
                     'is_question'=>true
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_4,
-                    'tag' => 'Tưới nước',
-                    'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
@@ -318,26 +318,26 @@ class AppController extends ApiController
                 ]);
             array_push($arr_item,
                 [
-                    'content' => $gapAdvice->content_6,
-                    'tag' => 'Thu hái',
-                    'is_question'=>false
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_7,
-                    'tag' => 'Sơ chế',
-                    'is_question'=>false
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_8,
-                    'tag' => 'Làm vươn ươm',
+                    'content' => $gapAdvice->content_4,
+                    'tag' => 'Tưới nước',
                     'is_question'=>false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_9,
                     'tag' => 'Tạo hình',
+                    'is_question'=>false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_6,
+                    'tag' => 'Thu hoạch',
+                    'is_question'=>false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_7,
+                    'tag' => 'Sơ chế',
                     'is_question'=>false
                 ]);
             $res['items'] = $arr_item;

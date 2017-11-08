@@ -5,7 +5,7 @@
 /* @var $model common\models\MatrixFertilizing */
 
 $this->title = '' . \Yii::t('app', 'Tạp ma trận phân bón');
-$this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/gap-general/index', 'type' => $type])];
+$this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/matrix-fertilizing/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="portlet-body form">
                 <?= $this->render('_form', [
                     'model' => $model,
-                    'type' => $type
                 ]) ?>
             </div>
         </div>
