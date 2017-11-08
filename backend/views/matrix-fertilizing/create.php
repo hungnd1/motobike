@@ -4,7 +4,7 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\MatrixFertilizing */
 
-$this->title = '' . \Yii::t('app', 'Tạp ma trận phân bón');
+$this->title = '' . \Yii::t('app', 'Tạo ma trận phân bón');
 $this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/matrix-fertilizing/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

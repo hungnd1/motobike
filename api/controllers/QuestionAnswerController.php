@@ -12,6 +12,7 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\QuestionAnswer;
+use common\models\MatrixFertilizing;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -30,7 +31,8 @@ class QuestionAnswerController extends ApiController
         $behaviors['authenticator']['except'] = [
             'get-list-question-answer',
             'search',
-            'detail-question'
+            'detail-question',
+            'fertilizing'
         ];
 
         return $behaviors;
@@ -39,7 +41,8 @@ class QuestionAnswerController extends ApiController
     protected function verbs()
     {
         return [
-            'question-and-answer' => ['POST']
+            'question-and-answer' => ['POST'],
+            'fertilizing' => ['POST']
         ];
     }
 
@@ -125,6 +128,22 @@ class QuestionAnswerController extends ApiController
             return [
                 'message' => 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời',
             ];
+        }
+        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
+
+    public function actionFertilizing(){
+        $answer = $this->getParameterPost('answer','');
+        if (!$answer) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
+        }
+        $answer_1 = explode(':',explode(',',$answer)[0])[1];
+        $answer_2 = explode(':',explode(',',$answer)[1])[1];
+        $matrix = MatrixFertilizing::find()
+            ->andWhere(['id_answer_1'=>$answer_1])
+            ->andWhere(['id_answer_2'=>$answer_2])->one();
+        if($matrix){
+            return $matrix->content;
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
