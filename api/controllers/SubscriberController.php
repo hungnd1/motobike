@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\Exchange;
 use api\models\ExchangeBuy;
 use common\helpers\CUtils;
+use common\models\PriceCoffee;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
 use common\models\SubscriberToken;
@@ -252,23 +253,39 @@ class SubscriberController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giá')]));
         }
 
+        $today = strtotime('today midnight');
+        $tomorrow = strtotime('tomorrow');
 
-        $exchange = new Exchange();
-        $exchange->total_quality_id = $quality;
-        $exchange->sold_id = $sold;
-        $exchange->type_coffee = $type_coffee;
-        $exchange->location = $location;
-        $exchange->location_name = $location_name;
-        $exchange->subscriber_id = Yii::$app->user->id;
-        $exchange->price = $price;
-        $exchange->created_at = time();
-        $exchange->updated_at = time();
-        if ($exchange->save(false)) {
-            return ['message' => 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+        $maxPrice = PriceCoffee::find()
+            ->andWhere(['>=', 'price_coffee.created_at', $today])
+            ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
+            ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
+            ->max('price_average');
+        $minPrice = PriceCoffee::find()
+            ->andWhere(['>=', 'price_coffee.created_at', $today])
+            ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
+            ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
+            ->min('price_average');
+
+
+        if ($price >= $minPrice && $price <= $maxPrice) {
+            $exchange = new Exchange();
+            $exchange->total_quality_id = $quality;
+            $exchange->sold_id = $sold;
+            $exchange->type_coffee = $type_coffee;
+            $exchange->location = $location;
+            $exchange->location_name = $location_name;
+            $exchange->subscriber_id = Yii::$app->user->id;
+            $exchange->price = $price;
+            $exchange->created_at = time();
+            $exchange->updated_at = time();
+            if ($exchange->save(false)) {
+                return ['message' => 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+            }
+            throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException('Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay');
     }
-
     public function actionTransactionSold()
     {
 
@@ -295,9 +312,9 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
-
+        $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = Exchange::find();
+        $query = Exchange::find()->andWhere(['>=', 'created_at', $timeExpired]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -316,9 +333,11 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
+        $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = ExchangeBuy::find();
+        $query = ExchangeBuy::find()
+            ->andWhere(['>=', 'created_at', $timeExpired]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -356,22 +375,39 @@ class SubscriberController extends ApiController
         if (!$price) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giá')]));
         }
+        $today = strtotime('today midnight') ;
+        $tomorrow = strtotime('tomorrow') ;
+
+        $maxPrice = PriceCoffee::find()
+            ->andWhere(['>=', 'price_coffee.created_at', $today ])
+            ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
+            ->andWhere(['not in','price_coffee.organisation_name',['dRCL','dACN']])
+            ->max('price_average');
 
 
-        $exchange = new ExchangeBuy();
-        $exchange->total_quantity = $quality;
-        $exchange->type_coffee_id = $type_coffee;
-        $exchange->location = $location;
-        $exchange->location_name = $location_name;
-        $exchange->type_coffee_id = $type_coffee;
-        $exchange->subscriber_id = Yii::$app->user->id;
-        $exchange->price_buy = $price;
-        $exchange->created_at = time();
-        $exchange->updated_at = time();
-        if ($exchange->save(false)) {
-            return ['message' => 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+        $minPrice = PriceCoffee::find()
+            ->andWhere(['>=', 'price_coffee.created_at', $today ])
+            ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
+            ->andWhere(['not in','price_coffee.organisation_name',['dRCL','dACN']])
+            ->min('price_average');
+
+        if($price >= $minPrice && $price <= $maxPrice ) {
+            $exchange = new ExchangeBuy();
+            $exchange->total_quantity = $quality;
+            $exchange->type_coffee_id = $type_coffee;
+            $exchange->location = $location;
+            $exchange->location_name = $location_name;
+            $exchange->type_coffee_id = $type_coffee;
+            $exchange->subscriber_id = Yii::$app->user->id;
+            $exchange->price_buy = $price;
+            $exchange->created_at = time();
+            $exchange->updated_at = time();
+            if ($exchange->save(false)) {
+                return ['message' => 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'];
+            }
+            throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException('Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay');
     }
 
     public function actionTransactionBuy()
