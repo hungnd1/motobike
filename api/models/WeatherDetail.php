@@ -40,8 +40,7 @@ class WeatherDetail extends \common\models\WeatherDetail
         };
         $fields['content'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            $message = Common::precipitation($model->precipitation, $model->tmax,trim($model->wtxt));
-            return $message['message'];
+            return $model->wtxt;
         };
         $fields['t_average'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
