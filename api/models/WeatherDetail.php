@@ -31,7 +31,7 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['wnddir'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            return Common::windir($model->wnddir);
+            return Common::windir($model->wnddtxt);
         };
 
         $fields['wndspd_km_h'] = function ($model) {

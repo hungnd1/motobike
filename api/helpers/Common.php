@@ -28,23 +28,23 @@ class Common
     const MUADONG = 11;
 
     //ham lay huong gio
-    public static function windir($windir)
+    public static function windir($wnddtxt)
     {
-        if ($windir >= 337.5 || $windir < 22.5) {
+        if ($wnddtxt == 'N') {
             return 'Hướng Bắc (N)';
-        } elseif (22.5 <= $windir && $windir < 67.5) {
+        } elseif ($wnddtxt == 'NE') {
             return 'Hướng Đông Bắc (NE)';
-        } elseif (67.5 <= $windir && $windir < 112.5) {
+        } elseif ($wnddtxt == 'E') {
             return 'Hướng Đông (E)';
-        } elseif (112.5 <= $windir && $windir < 157.5) {
+        } elseif ($wnddtxt == 'SE') {
             return 'Hướng Đông Nam (SE)';
-        } elseif (157.5 <= $windir && $windir < 202.5) {
+        } elseif ($wnddtxt == 'S') {
             return 'Hướng Nam (S)';
-        } elseif (202.5 <= $windir && $windir < 247.5) {
+        } elseif ($wnddtxt == 'SW') {
             return 'Hướng Tây Nam (SW)';
-        } elseif (247.5 <= $windir && $windir < 292.5) {
+        } elseif ($wnddtxt == 'W') {
             return 'Hướng Tây (W)';
-        } elseif (292.5 <= $windir && $windir < 337.5) {
+        } elseif ($wnddtxt == 'NW') {
             return 'Hướng Tây Bắc (NW)';
         }
         return 'Hướng Bắc (N)';
