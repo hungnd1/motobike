@@ -21,7 +21,7 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['image'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            $message = Common::precipitation($model->precipitation, $model->tmax);
+            $message = Common::precipitation($model->precipitation, $model->tmax,$model->wtxt);
             return $message['image'];
         };
         $fields['station_name'] = function ($model) {
@@ -36,11 +36,11 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['wndspd_km_h'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            return floor($model->wndspd * 1000 / 60) . ' Km/h';
+            return floor($model->wndspd * 1000 / 60) . ' Km/h'.' ('.WeatherDetail::convertWind($model->wndspd).')';
         };
         $fields['content'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            $message = Common::precipitation($model->precipitation, $model->tmax);
+            $message = Common::precipitation($model->precipitation, $model->tmax,trim($model->wtxt));
             return $message['message'];
         };
         $fields['t_average'] = function ($model) {
