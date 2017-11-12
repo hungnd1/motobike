@@ -41,6 +41,10 @@ class WeatherDetail extends \common\models\WeatherDetail
         };
         $fields['content'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
+            $txt = explode('_',$model->wtxt);
+            if(isset($txt['0'])){
+                return $txt['0'];
+            }
             return $model->wtxt;
         };
         $fields['t_average'] = function ($model) {
