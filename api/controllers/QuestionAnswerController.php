@@ -32,7 +32,8 @@ class QuestionAnswerController extends ApiController
             'get-list-question-answer',
             'search',
             'detail-question',
-            'fertilizing'
+            'fertilizing',
+            'get-feedback'
         ];
 
         return $behaviors;
@@ -132,19 +133,34 @@ class QuestionAnswerController extends ApiController
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
     }
 
-    public function actionFertilizing(){
-        $answer = $this->getParameterPost('answer','');
+    public function actionFertilizing()
+    {
+        $answer = $this->getParameterPost('answer', '');
         if (!$answer) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
         }
-        $answer_1 = explode(':',explode(',',$answer)[0])[1];
-        $answer_2 = explode(':',explode(',',$answer)[1])[1];
+        $answer_1 = explode(':', explode(',', $answer)[0])[1];
+        $answer_2 = explode(':', explode(',', $answer)[1])[1];
         $matrix = MatrixFertilizing::find()
-            ->andWhere(['id_answer_1'=>$answer_1])
-            ->andWhere(['id_answer_2'=>$answer_2])->one();
-        if($matrix){
+            ->andWhere(['id_answer_1' => $answer_1])
+            ->andWhere(['id_answer_2' => $answer_2])->one();
+        if ($matrix) {
             return $matrix->content;
         }
         throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+    }
+
+    public function actionGetFeedback()
+    {
+        $arr = [];
+        array_push($arr, array('id' => '1', 'content' => 'Mưa'));
+        array_push($arr, array('id' => '2', 'content' => 'Mưa nhỏ'));
+        array_push($arr, array('id' => '3', 'content' => 'Nắng'));
+        array_push($arr, array('id' => '4', 'content' => 'Mưa to'));
+        array_push($arr, array('id' => '5', 'content' => 'Mát ít mây'));
+        array_push($arr, array('id' => '6', 'content' => 'Mát nhiều mây'));
+        return [
+            'items' => $arr
+        ];
     }
 }

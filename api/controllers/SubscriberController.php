@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\Exchange;
 use api\models\ExchangeBuy;
 use common\helpers\CUtils;
+use common\models\Feedback;
 use common\models\PriceCoffee;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
@@ -286,6 +287,7 @@ class SubscriberController extends ApiController
         }
         throw new ServerErrorHttpException('Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay');
     }
+
     public function actionTransactionSold()
     {
 
@@ -375,23 +377,23 @@ class SubscriberController extends ApiController
         if (!$price) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giá')]));
         }
-        $today = strtotime('today midnight') ;
-        $tomorrow = strtotime('tomorrow') ;
+        $today = strtotime('today midnight');
+        $tomorrow = strtotime('tomorrow');
 
         $maxPrice = PriceCoffee::find()
-            ->andWhere(['>=', 'price_coffee.created_at', $today ])
+            ->andWhere(['>=', 'price_coffee.created_at', $today])
             ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
-            ->andWhere(['not in','price_coffee.organisation_name',['dRCL','dACN']])
+            ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
             ->max('price_average');
 
 
         $minPrice = PriceCoffee::find()
-            ->andWhere(['>=', 'price_coffee.created_at', $today ])
+            ->andWhere(['>=', 'price_coffee.created_at', $today])
             ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
-            ->andWhere(['not in','price_coffee.organisation_name',['dRCL','dACN']])
+            ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
             ->min('price_average');
 
-        if($price >= $minPrice && $price <= $maxPrice ) {
+        if ($price >= $minPrice && $price <= $maxPrice) {
             $exchange = new ExchangeBuy();
             $exchange->total_quantity = $quality;
             $exchange->type_coffee_id = $type_coffee;
@@ -516,6 +518,29 @@ class SubscriberController extends ApiController
         }
         return ['message' => Message::getChangePassSuccessMessage()];
 
+    }
+
+    public function actionFeedback()
+    {
+
+        UserHelpers::manualLogin();
+
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        $question_id = $this->getParameterPost('id_question', '');
+        if ($question_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'question_id')]));
+        }
+
+        $feedback = new Feedback();
+        $feedback->user_id = $subscriber->id;
+        $feedback->id_question = $question_id;
+        $feedback->created_at = time();
+        $feedback->save();
+        return [
+            'success' => true,
+            'message' => 'Tra loi thanh cong'
+            ];
     }
 
 }

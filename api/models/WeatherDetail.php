@@ -10,6 +10,7 @@ namespace api\models;
 
 
 use api\helpers\Common;
+use common\models\Feedback;
 use common\models\Province;
 use common\models\Station;
 
@@ -21,7 +22,7 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['image'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            $message = Common::precipitation($model->precipitation, $model->tmax,$model->wtxt);
+            $message = Common::precipitation($model->precipitation, $model->tmax, $model->wtxt);
             return $message['image'];
         };
         $fields['station_name'] = function ($model) {
@@ -36,7 +37,7 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['wndspd_km_h'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            return floor($model->wndspd * 1000 / 60) . ' Km/h'.' ('.WeatherDetail::convertWind($model->wndspd).')';
+            return floor($model->wndspd * 1000 / 60) . ' Km/h' . ' (' . WeatherDetail::convertWind($model->wndspd) . ')';
         };
         $fields['content'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
@@ -58,11 +59,20 @@ class WeatherDetail extends \common\models\WeatherDetail
         $fields['precipitation_average'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
             if ($model->precipitation > 2) {
-                return ($model->precipitation - 2).' - '.($model->precipitation + 2);
-            }elseif($model->precipitation == 2){
-                return ($model->precipitation - 1).' - '.($model->precipitation + 2);
+                return ($model->precipitation - 2) . ' - ' . ($model->precipitation + 2);
+            } elseif ($model->precipitation == 2) {
+                return ($model->precipitation - 1) . ' - ' . ($model->precipitation + 2);
             }
             return $model->precipitation;
+        };
+        $fields['is_feedback'] = function ($model) {
+            $feedback = Feedback::find()->andWhere(['user_id' => \Yii::$app->user->id])->orderBy(['created_at' => SORT_DESC])->one();
+            if ($feedback) {
+                if ($feedback->created_at < time() - 12 * 60 * 60) {
+                    return true;
+                }
+            }
+            return false;
         };
 
 
