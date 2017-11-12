@@ -71,8 +71,9 @@ class WeatherDetail extends \common\models\WeatherDetail
                 if ($feedback->created_at < time() - 12 * 60 * 60) {
                     return true;
                 }
+                return false;
             }
-            return false;
+            return true;
         };
 
 
