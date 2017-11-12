@@ -22,8 +22,8 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['image'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            $message = Common::precipitation($model->precipitation, $model->tmax, $model->wtxt);
-            return $message['image'];
+            $message = Common::precipitation($model->wtxt);
+            return $message;
         };
         $fields['station_name'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
