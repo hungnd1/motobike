@@ -55,7 +55,8 @@ class SubscriberController extends ApiController
             'change-info' => ['POST'],
             'exchange-coffee' => ['POST'],
             'exchange-buy' => ['POST'],
-            'change-password' => ['POST']
+            'change-password' => ['POST'],
+            'feedback' => ['POST']
         ];
     }
 
