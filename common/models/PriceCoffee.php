@@ -31,6 +31,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
     const UNIT_USD = 2;
 
     const TYPE_COFFE_TUOI = 'Quả tươi vối';
+    const TYPE_QUA_TUOI = 'Quả tươi chè';
     const TYPE_COFFE_CHE = 'Cafe chè';
     const TYPE_COFFEE_A = 'Nhân xô chè';
     const TYPE_COFFEE_V = 'Nhân xô vối';
@@ -193,13 +194,13 @@ class PriceCoffee extends \yii\db\ActiveRecord
                 break;
             case 'dACA':
                 return [
-                    'name_coffee' => PriceCoffee::TYPE_COFFE_CHE,
+                    'name_coffee' => PriceCoffee::TYPE_QUA_TUOI,
                     'company' => PriceCoffee::COMPANY_AGENT
                 ];
                 break;
             case 'dACC':
                 return [
-                    'name_coffee' => PriceCoffee::TYPE_COFFE_CHE,
+                    'name_coffee' => PriceCoffee::TYPE_QUA_TUOI,
                     'company' => PriceCoffee::COMPANY_COMPANY
                 ];
                 break;
