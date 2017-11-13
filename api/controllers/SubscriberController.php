@@ -528,7 +528,7 @@ class SubscriberController extends ApiController
 
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
-        $question_id = $this->getParameterPost('id_question', '');
+        $question_id = $this->getParameterPost('question_id', '');
         if ($question_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'question_id')]));
         }
