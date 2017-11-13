@@ -77,7 +77,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 
     <div class="row">
         <div class="col-md-12">
-            <?php  echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->asArray()->all(),'id','display_name'));
+            <?php  echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->andWhere(['status'=>Category::STATUS_ACTIVE])->asArray()->all(),'id','display_name'));
             ?>
         </div>
     </div>
