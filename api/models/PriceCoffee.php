@@ -21,13 +21,13 @@ class PriceCoffee extends \common\models\PriceCoffee
 
         $fields['province_name'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
-            if($model->organisation_name == 'dRCL'){
+            if ($model->organisation_name == 'dRCL') {
                 return 'London';
-            }elseif($model->organisation_name == 'dACN'){
+            } elseif ($model->organisation_name == 'dACN') {
                 return 'New york';
             }
             $province_name = Station::findOne(['station_code' => $model->province_id]);
-            if($province_name){
+            if ($province_name) {
                 return $province_name->station_name;
             }
             return $model->province_id;
@@ -39,14 +39,12 @@ class PriceCoffee extends \common\models\PriceCoffee
 
         $fields['unit'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
-            if($model->organisation_name == 'dRCL'){
-                return '$/tấn';
-            }elseif($model->organisation_name == 'dACN'){
-                return '$/tấn';
+            if ($model->organisation_name == 'dRCL' || $model->organisation_name == 'dACN') {
+                return 'USD/tấn';
             }
             return $model->getListStatusNameByUnit($model->unit);
         };
-        $fields['type_coffee'] = function($model){
+        $fields['type_coffee'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
             return $model->getPriceCode($model->organisation_name);
         };
