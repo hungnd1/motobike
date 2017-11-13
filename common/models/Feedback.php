@@ -11,6 +11,7 @@ use Yii;
  * @property integer $user_id
  * @property integer $id_question
  * @property integer $created_at
+ * @property integer $station_id
  */
 class Feedback extends \yii\db\ActiveRecord
 {
@@ -28,7 +29,7 @@ class Feedback extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'id_question', 'created_at'], 'integer'],
+            [['user_id', 'id_question', 'created_at','station_id'], 'integer'],
         ];
     }
 

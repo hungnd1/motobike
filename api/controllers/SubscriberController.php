@@ -529,14 +529,20 @@ class SubscriberController extends ApiController
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         $question_id = $this->getParameterPost('question_id', '');
-        if ($question_id) {
+        $station_id = $this->getParameterPost('station_id','');
+        if (!$question_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'question_id')]));
+        }
+
+        if (!$station_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'station_id')]));
         }
 
         $feedback = new Feedback();
         $feedback->user_id = $subscriber->id;
         $feedback->id_question = $question_id;
         $feedback->created_at = time();
+        $feedback->station_id = $station_id;
         $feedback->save(false);
         return [
             'success' => true,
