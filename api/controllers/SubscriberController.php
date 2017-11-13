@@ -537,7 +537,7 @@ class SubscriberController extends ApiController
         $feedback->user_id = $subscriber->id;
         $feedback->id_question = $question_id;
         $feedback->created_at = time();
-        $feedback->save();
+        $feedback->save(false);
         return [
             'success' => true,
             'message' => 'Tra loi thanh cong'
