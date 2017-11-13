@@ -49,6 +49,22 @@ class PriceCoffee extends \common\models\PriceCoffee
             return $model->getPriceCode($model->organisation_name);
         };
 
+        $fields['exchange'] = function ($model) {
+            /* @var $model \common\models\PriceCoffee */
+
+            $pricePre = PriceCoffee::find()
+                ->andWhere(['price_coffee.province_id' => $model->province_id])
+                ->andWhere(['organisation_name' => $model->organisation_name])
+                ->orderBy(['id'=>SORT_DESC])
+                ->one();
+
+            /** @var $pricePre PriceCoffee */
+            if($model->price_average >= $pricePre->price_average){
+                return '+ '.$model->price_average - $pricePre->price_average;
+            }
+            return '- '.$pricePre->price_average - $model->price_average;
+        };
+
         return $fields;
     }
 }
