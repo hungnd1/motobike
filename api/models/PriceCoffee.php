@@ -55,7 +55,7 @@ class PriceCoffee extends \common\models\PriceCoffee
             $pricePre = PriceCoffee::find()
                 ->andWhere(['price_coffee.province_id' => $model->province_id])
                 ->andWhere(['organisation_name' => $model->organisation_name])
-                ->andWhere(['<>','id',$model->id])
+                ->andWhere(['<','id',$model->id])
                 ->orderBy(['id'=>SORT_DESC])
                 ->one();
 
