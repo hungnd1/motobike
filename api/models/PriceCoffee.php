@@ -61,9 +61,9 @@ class PriceCoffee extends \common\models\PriceCoffee
 
             /** @var $pricePre PriceCoffee */
             if($model->price_average >= $pricePre->price_average){
-                return '+ '.( $model->price_average - $pricePre->price_average);
+                return '+'.round($model->price_average - $pricePre->price_average,2);
             }
-            return '- '.( $pricePre->price_average - $model->price_average) ;
+            return '-'.round($pricePre->price_average - $model->price_average,2) ;
         };
 
         return $fields;
