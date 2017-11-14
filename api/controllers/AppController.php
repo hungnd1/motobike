@@ -99,7 +99,7 @@ class AppController extends ApiController
         return true;
     }
 
-    public function actionGetPrice($date = 0)
+    public function actionGetPrice($date = 0, $coffee = PriceCoffee::TYPE_GIASAN)
     {
         if (!$date) {
             $date = date('d/m/Y', time());
@@ -109,17 +109,28 @@ class AppController extends ApiController
 //        $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
         //11_110_11000 gia san london
         //10_100_10000 gia san neư york
-        $arr_province = [];
-        $arr_province['province_name'] = 'Giá sàn';
-        $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
-        $arr[] = $arr_province;
-
-        $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
-        foreach ($provinces as $item) {
+        if($coffee == PriceCoffee::TYPE_GIASAN){
             $arr_province = [];
-            $arr_province['province_name'] = $item->province_name;
-            $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date, $item->id);
+            $arr_province['province_name'] = 'Giá sàn';
+            $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
             $arr[] = $arr_province;
+        }else{
+            if($coffee ==  PriceCoffee::TYPE_QUATUOIVOI){
+                $key  = ['dRCA','dRCF','dRCC'];
+            }elseif($coffee == PriceCoffee::TYPE_QUATUOICHE) {
+                $key = ['dACF', 'dACC', 'dACA'];
+            }elseif($coffee == PriceCoffee::TYPE_NHANXOCHE){
+                $key = ['dABA', 'dABC', 'dABF'];
+            }else{
+                $key = ['dRBA', 'dRBC', 'dRBF'];
+            }
+            $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
+            foreach ($provinces as $item) {
+                $arr_province = [];
+                $arr_province['province_name'] = $item->province_name;
+                $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date, $item->id,PriceCoffee::TYPE_NORMAL,$key);
+                $arr[] = $arr_province;
+            }
         }
         return $arr['items'] = $arr;
     }

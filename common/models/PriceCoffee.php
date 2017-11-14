@@ -45,6 +45,12 @@ class PriceCoffee extends \yii\db\ActiveRecord
     const TYPE_EXPORT = 2;
     const TYPE_NORMAL = 1;
 
+    const TYPE_QUATUOIVOI  = 1;
+    const TYPE_QUATUOICHE = 2;
+    const TYPE_NHANXOCHE = 3;
+    const TYPE_NHANXOVOI = 4;
+    const TYPE_GIASAN = 5;
+
     /**
      * @inheritdoc
      */
@@ -121,7 +127,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
         return $unit;
     }
 
-    public static function getPrice($date, $province_id, $type = PriceCoffee::TYPE_NORMAL)
+    public static function getPrice($date, $province_id, $type = PriceCoffee::TYPE_NORMAL,$key = null)
     {
         $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
         $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
@@ -131,7 +137,8 @@ class PriceCoffee extends \yii\db\ActiveRecord
                 ->andWhere(['station.province_id' => $province_id])
                 ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
                 ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
-                ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN']])
+                ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
+                ->andWhere(['in','price_coffee.organisation_name',$key])
                 ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
             if(!$pricePre){
                 $pricePre = \api\models\PriceCoffee::find()
@@ -139,18 +146,19 @@ class PriceCoffee extends \yii\db\ActiveRecord
                     ->andWhere(['station.province_id' => $province_id])
                     ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60 - 86400])
                     ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 86400])
-                    ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN']])
+                    ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
+                    ->andWhere(['in','price_coffee.organisation_name',$key])
                     ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
             }
         } else {
             $pricePre = \api\models\PriceCoffee::find()
-                ->andWhere(['in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN']])
+                ->andWhere(['in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                 ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60])
                 ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
                 ->orderBy(['price_coffee.province_id' => SORT_ASC])->all();
             if(!$pricePre){
                 $pricePre = \api\models\PriceCoffee::find()
-                    ->andWhere(['in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN']])
+                    ->andWhere(['in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                     ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60 - 86400])
                     ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 86400])
                     ->orderBy(['price_coffee.province_id' => SORT_ASC])->all();

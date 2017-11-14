@@ -34,13 +34,20 @@ class PriceCoffee extends \common\models\PriceCoffee
         };
         $fields['price_average'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
+//            if ($model->organisation_name == 'dRCL') {
+//                return ceil($model->price_average * 22675 / 1000);
+//            }elseif($model->organisation_name == 'dACN'){
+//                return ceil($model->price_average)
+//            }
             return $model->price_average;
         };
 
         $fields['unit'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
-            if ($model->organisation_name == 'dRCL' || $model->organisation_name == 'dACN') {
+            if ($model->organisation_name == 'dACN') {
                 return 'USD/tấn';
+            }elseif($model->organisation_name == 'dRCL'){
+                return 'cent/lb';
             }
             return $model->getListStatusNameByUnit($model->unit);
         };
