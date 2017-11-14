@@ -42,6 +42,7 @@ class AppController extends ApiController
         $behaviors['authenticator']['except'] = [
             'check-device-token',
             'get-price',
+            'get-price-mobile',
             'total-quality',
             'sold',
             'get-price-detail',
@@ -109,26 +110,26 @@ class AppController extends ApiController
 //        $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
         //11_110_11000 gia san london
         //10_100_10000 gia san neư york
-        if($coffee == PriceCoffee::TYPE_GIASAN){
+        if ($coffee == PriceCoffee::TYPE_GIASAN) {
             $arr_province = [];
             $arr_province['province_name'] = 'Giá sàn';
             $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
             $arr[] = $arr_province;
-        }else{
-            if($coffee ==  PriceCoffee::TYPE_QUATUOIVOI){
-                $key  = ['dRCA','dRCF','dRCC'];
-            }elseif($coffee == PriceCoffee::TYPE_QUATUOICHE) {
+        } else {
+            if ($coffee == PriceCoffee::TYPE_QUATUOIVOI) {
+                $key = ['dRCA', 'dRCF', 'dRCC'];
+            } elseif ($coffee == PriceCoffee::TYPE_QUATUOICHE) {
                 $key = ['dACF', 'dACC', 'dACA'];
-            }elseif($coffee == PriceCoffee::TYPE_NHANXOCHE){
+            } elseif ($coffee == PriceCoffee::TYPE_NHANXOCHE) {
                 $key = ['dABA', 'dABC', 'dABF'];
-            }else{
+            } else {
                 $key = ['dRBA', 'dRBC', 'dRBF'];
             }
             $provinces = Province::find()->andWhere('province_code <> :province_code', ['province_code' => 62])->all();
             foreach ($provinces as $item) {
                 $arr_province = [];
                 $arr_province['province_name'] = $item->province_name;
-                $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date, $item->id,PriceCoffee::TYPE_NORMAL,$key);
+                $arr_province['price'] = $listPrice = PriceCoffee::getPrice($date, $item->id, PriceCoffee::TYPE_NORMAL, $key);
                 $arr[] = $arr_province;
             }
         }
@@ -171,7 +172,7 @@ class AppController extends ApiController
     public function actionGetPriceDetail()
     {
         $organisation_name = $this->getParameter('organisation_name', '');
-        $province_id = $this->getParameter('province_id','');
+        $province_id = $this->getParameter('province_id', '');
         $date = $this->getParameter('date', 0);
         if (!$organisation_name) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'coffee_old_id')]));
@@ -302,55 +303,55 @@ class AppController extends ApiController
             array_push($arr_item, [
                 'content' => $gapAdvice->gap,
                 'tag' => 'Làm đất',
-                'is_question'=>false
+                'is_question' => false
             ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_8,
                     'tag' => 'Chuẩn bị giống - vườn ươm',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_2,
                     'tag' => 'Trồng mới, trồng lại và chăm sóc cà phê',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_3,
                     'tag' => 'Phân bón',
-                    'is_question'=>true
+                    'is_question' => true
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_5,
                     'tag' => 'Phun thuốc',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_4,
                     'tag' => 'Tưới nước',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_9,
                     'tag' => 'Tạo hình',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_6,
                     'tag' => 'Thu hoạch',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_7,
                     'tag' => 'Sơ chế',
-                    'is_question'=>false
+                    'is_question' => false
                 ]);
             $res['items'] = $arr_item;
 
@@ -381,9 +382,9 @@ class AppController extends ApiController
             $arrRes['id'] = $question->id;
             $arrRes['question'] = $question->question;
             $arrRes['is_dropdown_list'] = $question->is_dropdown_list;
-            if(empty($resAnswer['items'])){
+            if (empty($resAnswer['items'])) {
                 $arrRes['answer'] = null;
-            }else{
+            } else {
                 $arrRes['answer'] = $resAnswer;
             }
             array_push($arrQues, $arrRes);

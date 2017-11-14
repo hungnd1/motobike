@@ -64,6 +64,7 @@ class PriceCoffee extends \common\models\PriceCoffee
                 ->andWhere(['organisation_name' => $model->organisation_name])
                 ->andWhere(['<','id',$model->id])
                 ->orderBy(['id'=>SORT_DESC])
+                ->limit(1)
                 ->one();
 
             /** @var $pricePre PriceCoffee */
