@@ -546,7 +546,7 @@ class SubscriberController extends ApiController
         $feedback->save(false);
         return [
             'success' => true,
-            'message' => 'Tra loi thanh cong'
+            'message' => 'Phản hồi thành công'
             ];
     }
 
