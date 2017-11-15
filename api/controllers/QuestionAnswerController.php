@@ -160,7 +160,7 @@ class QuestionAnswerController extends ApiController
         array_push($arr, array('id' => '5', 'content' => 'Mát ít mây'));
         array_push($arr, array('id' => '6', 'content' => 'Mát nhiều mây'));
         return [
-            'title'=>'Để kiểm tra thời tiết tại vị trí của bạn. Vui lòng chọn thời tiết hiện tại của bạn như thế nào?',
+            'title'=>'Để xác minh thời tiết tại vị trí của bạn. Vui lòng chọn từ miêu tả phù hợp với thời tiết hiện tại của bạn?',
             'items' => $arr
         ];
     }
