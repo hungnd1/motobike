@@ -23,6 +23,7 @@ use yii\helpers\Url;
  * @property integer $comment_count
  * @property integer $is_slide
  * @property integer $category_id
+ * @property integer $order
  */
 class News extends \yii\db\ActiveRecord
 {
@@ -46,7 +47,7 @@ class News extends \yii\db\ActiveRecord
             [['title', 'short_description'], 'required'],
             [['image'], 'required', 'on' => 'admin_create_update'],
             [['description', 'image', 'content'], 'string'],
-            [['created_at', 'updated_at', 'status','category_id','is_slide','comment_count','like_count','view_count'], 'integer'],
+            [['order','created_at', 'updated_at', 'status','category_id','is_slide','comment_count','like_count','view_count'], 'integer'],
             [['title','video_url', 'short_description'], 'string', 'max' => 500],
         ];
     }
@@ -68,6 +69,7 @@ class News extends \yii\db\ActiveRecord
             'status' => 'Trạng thái',
             'category_id' => 'Danh mục',
             'is_slide' => 'Là slide',
+            'order' => 'Sắp xếp',
         ];
     }
 

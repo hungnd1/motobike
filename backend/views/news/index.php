@@ -72,6 +72,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
+                            'class' => 'kartik\grid\EditableColumn',
+                            'attribute' => 'order',
+                            'refreshGrid' => true,
+                            'editableOptions' => function ($model, $key, $index) {
+                                return [
+                                    'header' => \Yii::t('app', 'Thứ tự'),
+                                    'size' => 'md',
+                                    'inputType' => \kartik\editable\Editable::INPUT_TEXT,
+                                    'placement' => \kartik\popover\PopoverX::ALIGN_LEFT,
+                                    'formOptions' => [
+                                        'action' => ['news/update-order', 'id' => $model->id]
+                                    ],
+                                ];
+                            },
+                        ],
+                        [
                             'class' => '\kartik\grid\DataColumn',
                             'attribute' => 'status',
                             'label' => '' . \Yii::t('app', 'Trạng thái'),

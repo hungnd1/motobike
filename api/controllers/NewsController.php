@@ -50,7 +50,9 @@ class NewsController extends ApiController
         }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 //        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
-        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->andWhere(['category_id' => (int)$id])->orderBy(['created_at' => SORT_DESC]);
+        $query = News::find()
+            ->andWhere(['status' => News::STATUS_ACTIVE])
+            ->andWhere(['category_id' => (int)$id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -59,7 +61,7 @@ class NewsController extends ApiController
                 'page' => $page
             ],
             'sort' => [
-                'defaultOrder' => ['created_at' => SORT_DESC],
+                'defaultOrder' => ['order' => SORT_DESC],
             ],
         ]);
         return $dataProvider;
