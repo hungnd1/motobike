@@ -81,7 +81,7 @@ class GapGeneralController extends Controller
             $model->type = $type;
             $model->created_at = time();
             $model->updated_at = time();
-            $model->save();
+            $model->save(false);
             \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
             return $this->redirect(['index','type'=>$type]);
         } else {

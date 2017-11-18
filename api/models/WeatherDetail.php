@@ -13,6 +13,7 @@ use api\helpers\Common;
 use common\models\Feedback;
 use common\models\Province;
 use common\models\Station;
+use Yii;
 
 class WeatherDetail extends \common\models\WeatherDetail
 {
@@ -70,7 +71,10 @@ class WeatherDetail extends \common\models\WeatherDetail
             return $model->precipitation;
         };
         $fields['is_feedback'] = function ($model) {
-            $feedback = Feedback::find()->andWhere(['user_id' => \Yii::$app->user->id])->orderBy(['created_at' => SORT_DESC])->one();
+
+            /** @var  $subscriber Subscriber */
+            $subscriber = Yii::$app->user->identity;
+            $feedback = Feedback::find()->andWhere(['user_id' => $subscriber->id])->orderBy(['created_at' => SORT_DESC])->one();
             if ($feedback) {
                 if ($feedback->created_at < time() - 12 * 60 * 60) {
                     return true;
