@@ -10,6 +10,7 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\helpers\UserHelpers;
 use api\models\WeatherDetail;
 use Yii;
 use yii\base\InvalidValueException;
@@ -40,6 +41,8 @@ class WeatherController extends ApiController
 
     public function actionGetWeatherDetail()
     {
+        UserHelpers::manualLogin();
+
         $station_id = $this->getParameter('station_id', '');
         if (!$station_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));

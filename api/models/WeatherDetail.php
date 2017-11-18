@@ -72,7 +72,6 @@ class WeatherDetail extends \common\models\WeatherDetail
             return $model->precipitation;
         };
         $fields['is_feedback'] = function ($model) {
-            UserHelpers::manualLogin();
             /** @var  $subscriber Subscriber */
             $subscriber = Yii::$app->user->identity;
             $feedback = Feedback::find()->andWhere(['user_id' => $subscriber->id])->orderBy(['created_at' => SORT_DESC])->one();
