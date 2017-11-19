@@ -78,32 +78,30 @@ class WeatherDetail extends \yii\db\ActiveRecord
             $levelWind = 'Cấp 0';
         } elseif ($wind >= 0.3 && $wind <= 1.5) {
             $levelWind = 'Cấp 1';
-        }elseif ($wind >= 0.3 && $wind <= 1.5) {
-            $levelWind = 'Cấp 2';
         }elseif ($wind >= 1.6 && $wind <= 3.3) {
-            $levelWind = 'Cấp 3';
+            $levelWind = 'Cấp 2';
         }elseif ($wind >= 3.4 && $wind <= 5.4) {
-            $levelWind = 'Cấp 4';
+            $levelWind = 'Cấp 3';
         }elseif ($wind >= 5.5 && $wind <= 7.9) {
-            $levelWind = 'Cấp 5';
+            $levelWind = 'Cấp 3';
         }elseif ($wind >= 8 && $wind <= 10.7) {
-            $levelWind = 'Cấp 6';
+            $levelWind = 'Cấp 5';
         }elseif ($wind >= 10.8 && $wind <= 13.8) {
-            $levelWind = 'Cấp 7';
+            $levelWind = 'Cấp 6';
         }elseif ($wind >= 13.9 && $wind <= 17.1) {
-            $levelWind = 'Cấp 8';
+            $levelWind = 'Cấp 7';
         }elseif ($wind >= 17.2 && $wind <= 20.7) {
-            $levelWind = 'Cấp 9';
+            $levelWind = 'Cấp 8';
         }elseif ($wind >= 20.8 && $wind <= 24.4) {
-            $levelWind = 'Cấp 10';
+            $levelWind = 'Cấp 9';
         }elseif ($wind >= 24.5 && $wind <= 28.4) {
-            $levelWind = 'Cấp 11';
+            $levelWind = 'Cấp 10';
         }elseif ($wind >= 28.5 && $wind <= 32.6) {
-            $levelWind = 'Cấp 12';
+            $levelWind = 'Cấp 11';
         }elseif ($wind >= 32.7 && $wind <= 36.9) {
-            $levelWind = 'Cấp 13';
+            $levelWind = 'Cấp 12';
         }else{
-            $levelWind = 'Cấp 14';
+            $levelWind = 'Cấp 13';
         }
         return $levelWind;
     }
