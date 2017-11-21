@@ -249,7 +249,7 @@ class AppController extends ApiController
 
     public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
     {
-        $wind = floor($wind * 1000 / 60);
+        $wind = $wind * 3.6;
 
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
