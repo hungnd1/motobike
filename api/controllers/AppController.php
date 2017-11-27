@@ -265,9 +265,9 @@ class AppController extends ApiController
                 ->andWhere(['type' => GapGeneral::GAP_DETAIL])
                 ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
                 ->andWhere('temperature_max > :temp', [':temp' => $tem])
-                ->andWhere('precipitation_max <= :pre', [':pre' => $pre])
-                ->andWhere('precipitation_max != :pre1', [':pre1' => 0])
-                ->andWhere(['precipitation_min' => 0])
+                ->andWhere('precipitation_min >= :pre', [':pre' => $pre])
+                ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                ->andWhere(['precipitation_max' => 0])
                 ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
                 ->andWhere('windspeed_max > :wind1', [':wind1' => $wind])->one();
 
@@ -278,20 +278,20 @@ class AppController extends ApiController
                     ->andWhere('temperature_max > :temp', [':temp' => $tem])
                     ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
                     ->andWhere('precipitation_max > :prep', [':prep' => $pre])
-                    ->andWhere('windspeed_max <= :wind', [':wind' => $wind])
-                    ->andWhere('windspeed_max !=  :wind1', [':wind1' => 0])
-                    ->andWhere(['windspeed_min' => 0])->one();
+                    ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                    ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                    ->andWhere(['windspeed_max' => 0])->one();
                 if (!$gapAdvice) {
                     $gapAdvice = GapGeneral::find()
                         ->andWhere(['type' => GapGeneral::GAP_DETAIL])
                         ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
                         ->andWhere('temperature_max > :temp', [':temp' => $tem])
-                        ->andWhere('precipitation_max != :pre1', [':pre1' => 0])
-                        ->andWhere('precipitation_max <= :pre', [':pre' => $pre])
-                        ->andWhere(['precipitation_min' => 0])
-                        ->andWhere('windspeed_max <= :wind', [':wind' => $wind])
-                        ->andWhere('windspeed_max !=  :wind1', [':wind1' => 0])
-                        ->andWhere(['windspeed_min' => 0])->one();
+                        ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                        ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                        ->andWhere(['precipitation_max' => 0])
+                        ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                        ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                        ->andWhere(['windspeed_max' => 0])->one();
 
                 }
             }
