@@ -265,7 +265,7 @@ class AppController extends ApiController
                 ->andWhere(['type' => GapGeneral::GAP_DETAIL])
                 ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
                 ->andWhere('temperature_max > :temp', [':temp' => $tem])
-                ->andWhere('precipitation_min < :pre', [':pre' => $pre])
+                ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
                 ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
                 ->andWhere(['precipitation_max' => 0])
                 ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
@@ -278,7 +278,7 @@ class AppController extends ApiController
                     ->andWhere('temperature_max > :temp', [':temp' => $tem])
                     ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
                     ->andWhere('precipitation_max > :prep', [':prep' => $pre])
-                    ->andWhere('windspeed_min < :wind', [':wind' => $wind])
+                    ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
                     ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
                     ->andWhere(['windspeed_max' => 0])->one();
                 if (!$gapAdvice) {
