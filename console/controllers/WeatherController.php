@@ -80,9 +80,9 @@ class WeatherController extends Controller
                             $weatherDetail->RFTMIN = trim($row['C']);
                         } elseif (trim($row['B']) == 'PROPRCP') {
                             $weatherDetail->PROPRCP = trim($row['C']);
-                        }elseif(trim($row['B'])== 'WNDDTXT'){
+                        } elseif (trim($row['B']) == 'WNDDTXT') {
                             $weatherDetail->wnddtxt = trim($row['C']);
-                        }elseif(trim($row['B']) == 'WTXT'){
+                        } elseif (trim($row['B']) == 'WTXT') {
                             $weatherDetail->wtxt = trim($row['C']);
                         }
                         $weatherDetail->save(false);
@@ -115,9 +115,9 @@ class WeatherController extends Controller
                             $weather->RFTMIN = trim($row['C']);
                         } elseif (trim($row['B']) == 'PROPRCP') {
                             $weather->PROPRCP = trim($row['C']);
-                        }elseif(trim($row['B'])== 'WNDDTXT'){
+                        } elseif (trim($row['B']) == 'WNDDTXT') {
                             $weather->wnddtxt = trim($row['C']);
-                        }elseif(trim($row['B']) == 'WTXT'){
+                        } elseif (trim($row['B']) == 'WTXT') {
                             $weather->wtxt = trim($row['C']);
                         }
                         $weather->save(false);
@@ -185,4 +185,73 @@ class WeatherController extends Controller
             $this->infoLogWeather("Have problem price");
         }
     }
+
+    public function actionMigrateText()
+    {
+        // define some variables
+        $local_file = Yii::$app->params['folder'] . 'backend/web/AccuWeather_Central_Highlands_Vietnam_Text.csv';
+        $server_file = '/incoming/09_NIAPP/Weather/AccuWeather_Central_Highlands_Vietnam_Text.csv';
+        $ftp_server = "ftp.nelen-schuurmans.nl";
+        $ftp_user_name = "greencoffee";
+        $ftp_user_pass = "nice cup of green coffee";
+
+        $conn_id = ftp_connect($ftp_server);
+//
+        $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+//
+        if (ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
+            $this->infoLogWeather("Successfully written to $local_file\n");
+            ftp_close($conn_id);
+            $this->infoLogWeather("Start update weather");
+            $objPHPExcel = PHPExcel_IOFactory::load($local_file);
+            $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+            if (sizeof($sheetData) > 0) {
+                foreach ($sheetData as $row) {
+                    $rowA = strtotime(str_replace('Z', '', str_replace('T', ' ', trim($row['A']))));
+                    $hour = 0;
+                    $minute = 0;
+                    $second = 0;
+                    if (strpos(trim($row['A']), '+') !== false) {
+                        $time = explode('+', trim($row['A']))[1];
+                        $hour = isset(explode(':', $time)[0]) ? explode(':', $time)[0] : 0;
+                        $minute = isset(explode(':', $time)[1]) ? explode(':', $time)[1] : 0;
+                        $second = isset(explode(':', $time)[2]) ? explode(':', $time)[2] : 0;
+                    }
+                    $rowA += $hour * 3600 + $minute * 60 + $second;
+                    $weatherDetail = WeatherDetail::find()
+                        ->andWhere(['timestamp' => $rowA])
+//                            ->andWhere(['station_code'=>'67_663_24664'])
+                        ->andWhere(['station_code' => trim($row['D'])])
+                        ->one();
+                    /** @var $weatherDetail WeatherDetail */
+                    if ($weatherDetail) {
+                        if (trim($row['B']) == 'WNDDTXT') {
+                            $weatherDetail->wnddtxt = trim($row['C']);
+                        } elseif (trim($row['B']) == 'WTXT') {
+                            $weatherDetail->wtxt = trim($row['C']);
+                        }
+                        $weatherDetail->save(false);
+                    } else {
+                        $weather = new WeatherDetail();
+                        $weather->station_code = trim($row['D']);
+                        $weather->station_id = Station::findOne(['station_code' => trim($row['D'])]) ? Station::findOne(['station_code' => trim($row['D'])])->id : 0;
+                        $weather->timestamp = $rowA;
+                        $weather->created_at = $rowA;
+                        $weather->updated_at = $rowA;
+                        if (trim($row['B']) == 'WNDDTXT') {
+                            $weather->wnddtxt = trim($row['C']);
+                        } elseif (trim($row['B']) == 'WTXT') {
+                            $weather->wtxt = trim($row['C']);
+                        }
+                        $weather->save(false);
+                    }
+//                    }
+                }
+            }
+
+        } else {
+            $this->infoLogWeather("Have problem");
+        }
+    }
+
 }
