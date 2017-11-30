@@ -66,6 +66,14 @@ class PriceCoffee extends \common\models\PriceCoffee
                 ->orderBy(['id'=>SORT_DESC])
                 ->limit(1)
                 ->one();
+            if(!$pricePre){
+                $pricePre = PriceCoffee::find()
+                    ->andWhere(['price_coffee.province_id' => $model->province_id])
+                    ->andWhere(['organisation_name' => $model->organisation_name])
+                    ->orderBy(['id'=>SORT_DESC])
+                    ->limit(1)
+                    ->one();
+            }
 
             /** @var $pricePre PriceCoffee */
             if($model->price_average >= $pricePre->price_average){
