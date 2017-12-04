@@ -149,6 +149,16 @@ class PriceCoffee extends \yii\db\ActiveRecord
                     ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                     ->andWhere(['in','price_coffee.organisation_name',$key])
                     ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
+                if(!$pricePre){
+                    $pricePre = \api\models\PriceCoffee::find()
+                        ->innerJoin('station', 'station.station_code = price_coffee.province_id')
+                        ->andWhere(['station.province_id' => $province_id])
+                        ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60 - 86400])
+                        ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 86400])
+                        ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
+                        ->andWhere(['in','price_coffee.organisation_name',$key])
+                        ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
+                }
             }
         } else {
             $pricePre = \api\models\PriceCoffee::find()
@@ -162,6 +172,13 @@ class PriceCoffee extends \yii\db\ActiveRecord
                     ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60 - 86400])
                     ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 86400])
                     ->orderBy(['price_coffee.province_id' => SORT_ASC])->all();
+                if(!$pricePre){
+                    $pricePre = \api\models\PriceCoffee::find()
+                        ->andWhere(['in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
+                        ->andWhere(['>=', 'price_coffee.created_at', $from_time + 7 * 60 * 60 - 86400])
+                        ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 86400])
+                        ->orderBy(['price_coffee.province_id' => SORT_ASC])->all();
+                }
             }
         }
 
