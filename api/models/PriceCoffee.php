@@ -45,9 +45,9 @@ class PriceCoffee extends \common\models\PriceCoffee
         $fields['unit'] = function ($model) {
             /* @var $model \common\models\PriceCoffee */
             if ($model->organisation_name == 'dACN') {
-                return 'USD/tấn';
+                return 'usc/lbs';
             }elseif($model->organisation_name == 'dRCL'){
-                return 'cent/lb';
+                return 'usd/tấn';
             }
             return $model->getListStatusNameByUnit($model->unit);
         };
