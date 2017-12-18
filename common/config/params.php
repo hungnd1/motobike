@@ -62,5 +62,9 @@ return [
     'username' =>'duc.dame',
     'password'=>'Kopainfo2017',
     'price_detail'=>'https://greencoffee.lizard.net/api/v2/timeseries/?end=1690171661710&min_points=320&start=1488521600001&format=json&uuid=',
-    'timeExpired'=> 7
+    'timeExpired'=> 7,
+    'key_cache' => [
+        'Introduce' => 'Introduce',
+    ],
+    'time_expire_cache' => 24 * 3600,
 ];

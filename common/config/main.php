@@ -15,7 +15,7 @@ $config = [
     ],
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\ApcCache',
+            'class' => 'yii\caching\FileCache',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

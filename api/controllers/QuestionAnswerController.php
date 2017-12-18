@@ -153,14 +153,14 @@ class QuestionAnswerController extends ApiController
     public function actionGetFeedback()
     {
         $arr = [];
-        array_push($arr, array('id' => '1', 'content' => 'Mưa'));
-        array_push($arr, array('id' => '2', 'content' => 'Mưa nhỏ'));
-        array_push($arr, array('id' => '3', 'content' => 'Nắng'));
-        array_push($arr, array('id' => '4', 'content' => 'Mưa to'));
-        array_push($arr, array('id' => '5', 'content' => 'Mát ít mây'));
-        array_push($arr, array('id' => '6', 'content' => 'Mát nhiều mây'));
+        array_push($arr, array('id' => '1', 'content' => Yii::t('app','Mưa')));
+        array_push($arr, array('id' => '2', 'content' => Yii::t('app','Mưa nhỏ')));
+        array_push($arr, array('id' => '3', 'content' => Yii::t('app','Nắng')));
+        array_push($arr, array('id' => '4', 'content' => Yii::t('app','Mưa to')));
+        array_push($arr, array('id' => '5', 'content' => Yii::t('app','Mát ít mây')));
+        array_push($arr, array('id' => '6', 'content' => Yii::t('app','Mát nhiều mây')));
         return [
-            'title'=>'Để xác minh thời tiết tại vị trí của bạn. Vui lòng chọn từ miêu tả phù hợp với thời tiết hiện tại của bạn?',
+            'title'=>Yii::t('app','Để xác minh thời tiết tại vị trí của bạn. Vui lòng chọn từ miêu tả phù hợp với thời tiết hiện tại của bạn?'),
             'items' => $arr
         ];
     }

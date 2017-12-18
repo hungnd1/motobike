@@ -59,6 +59,14 @@ class ApiController extends Controller
     public function beforeAction($action)
     {
 
+        $language = Yii::$app->request->headers->get(static::HEADER_LANGUAGE);
+
+//        if (!array_key_exists($language, Languages::$language)) {
+//            throw new UnauthorizedHttpException(Yii::t('app', 'Không hỗ trợ ngôn ngữ : ') . $language);
+//        }
+        $this->language = $language;
+        Yii::$app->language = $this->language;
+
         /** Sửa lại phần beforeAction vì code đang sai */
         $api_key = Yii::$app->request->headers->get(static::HEADER_API_KEY);
         if (!$api_key) {

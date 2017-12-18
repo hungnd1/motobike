@@ -26,6 +26,7 @@ use common\models\TypeCoffee;
 use common\models\Version;
 use Yii;
 use yii\base\InvalidValueException;
+use yii\caching\TagDependency;
 use yii\data\ActiveDataProvider;
 use yii\web\ServerErrorHttpException;
 
@@ -52,7 +53,8 @@ class AppController extends ApiController
             'log-data',
             'version-app',
             'gap-advice',
-            'get-question'
+            'get-question',
+            'get-introduce'
         ];
 
         return $behaviors;
@@ -70,7 +72,8 @@ class AppController extends ApiController
             'term' => ['GET'],
             'check-device-token' => ['POST'],
             'log-data' => ['GET'],
-            'get-question' => ['GET']
+            'get-question' => ['GET'],
+            'get-introduce'=>['GET']
         ];
     }
 
@@ -240,7 +243,7 @@ class AppController extends ApiController
         $version = Version::find()->andWhere(['type' => $type])->orderBy(['created_at' => SORT_DESC])->one();
         if ($version) {
             return [
-                'message' => 'Hiện tại app đã ra phiển bản mới bạn vui lòng cập nhật để tiếp tục sử dụng',
+                'message' => Yii::t('app', 'Hiện tại app đã ra phiển bản mới bạn vui lòng cập nhật để tiếp tục sử dụng'),
                 'items' => $version
             ];
         }
@@ -391,5 +394,29 @@ class AppController extends ApiController
         }
         $res['items'] = $arrQues;
         return $res;
+    }
+
+    public function actionGetIntroduce($type = 1)
+    {
+        $cache = Yii::$app->cache;
+        $key = Yii::$app->params['key_cache']['Introduce'] . $type;
+        $introduce = $cache->get($key);
+        if($introduce === false){
+            if ($type == 2) {
+                $introduce = Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn như sau:');
+            } elseif ($type == 3) {
+                $introduce = Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:');
+            } elseif ($type == 4) {
+                $introduce = Yii::t('app', 'Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây. Bạn muốn biết thông tin nào dưới đây?');
+            } elseif ($type == 5) {
+                $introduce =  Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:');
+            } elseif ($type == 6) {
+                $introduce =  Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:');
+            } else {
+                $introduce = Yii::t('app', 'Greencoffee xin chào, chúc một ngày tốt lành! Bạn muốn biết những thông tin nào dưới đây?');
+            }
+            $cache->set($key, $introduce, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
+        }
+        return $introduce;
     }
 }
