@@ -115,7 +115,7 @@ class AppController extends ApiController
         //10_100_10000 gia san neư york
         if ($coffee == PriceCoffee::TYPE_GIASAN) {
             $arr_province = [];
-            $arr_province['province_name'] = 'Giá sàn';
+            $arr_province['province_name'] = Yii::t('app','Giá sàn');
             $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
             $arr[] = $arr_province;
         } else {
@@ -247,7 +247,7 @@ class AppController extends ApiController
                 'items' => $version
             ];
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
@@ -305,62 +305,62 @@ class AppController extends ApiController
             $arr_item = array();
             array_push($arr_item, [
                 'content' => $gapAdvice->gap,
-                'tag' => 'Làm đất',
+                'tag' => Yii::t('app','Làm đất'),
                 'is_question' => false
             ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_8,
-                    'tag' => 'Chuẩn bị giống - vườn ươm',
+                    'tag' => Yii::t('app','Chuẩn bị giống - vườn ươm'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_2,
-                    'tag' => 'Trồng mới, trồng lại và chăm sóc cà phê',
+                    'tag' => Yii::t('app','Trồng mới, trồng lại và chăm sóc cà phê'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_3,
-                    'tag' => 'Phân bón',
+                    'tag' => Yii::t('app','Phân bón'),
                     'is_question' => true
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_5,
-                    'tag' => 'Phun thuốc',
+                    'tag' => Yii::t('app','Phun thuốc'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_4,
-                    'tag' => 'Tưới nước',
+                    'tag' => Yii::t('app','Tưới nước'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_9,
-                    'tag' => 'Tạo hình',
+                    'tag' => Yii::t('app','Tạo hình'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_6,
-                    'tag' => 'Thu hoạch',
+                    'tag' => Yii::t('app','Thu hoạch'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_7,
-                    'tag' => 'Sơ chế',
+                    'tag' => Yii::t('app','Sơ chế'),
                     'is_question' => false
                 ]);
             $res['items'] = $arr_item;
 
             return $res;
         } else {
-            throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+            throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
         }
     }
 
