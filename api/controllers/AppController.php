@@ -396,27 +396,41 @@ class AppController extends ApiController
         return $res;
     }
 
-    public function actionGetIntroduce($type = 1)
+    public function actionGetIntroduce()
     {
+        $res = array();
         $cache = Yii::$app->cache;
-        $key = Yii::$app->params['key_cache']['Introduce'] . $type;
-        $introduce = $cache->get($key);
-        if($introduce === false){
-            if ($type == 2) {
-                $introduce = Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn như sau:');
-            } elseif ($type == 3) {
-                $introduce = Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:');
-            } elseif ($type == 4) {
-                $introduce = Yii::t('app', 'Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây. Bạn muốn biết thông tin nào dưới đây?');
-            } elseif ($type == 5) {
-                $introduce =  Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:');
-            } elseif ($type == 6) {
-                $introduce =  Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:');
-            } else {
-                $introduce = Yii::t('app', 'Greencoffee xin chào, chúc một ngày tốt lành! Bạn muốn biết những thông tin nào dưới đây?');
-            }
-            $cache->set($key, $introduce, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
+        $key = Yii::$app->params['key_cache']['Introduce'] . $this->language;
+        $res = $cache->get($key);
+        if($res === false){
+            $arr_item = array();
+            array_push($arr_item,[
+                'content'=> Yii::t('app', 'Greencoffee xin chào, chúc một ngày tốt lành! Bạn muốn biết những thông tin nào dưới đây?'),
+                'type' => 1
+            ]);
+            array_push($arr_item,[
+                'content'=> Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn như sau:'),
+                'type' => 2
+            ]);
+            array_push($arr_item,[
+                'content'=> Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:'),
+                'type' => 3
+            ]);
+            array_push($arr_item,[
+                'content'=> Yii::t('app', 'Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây. Bạn muốn biết thông tin nào dưới đây?'),
+                'type' => 4
+            ]);
+            array_push($arr_item,[
+                'content'=> Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'),
+                'type' => 5
+            ]);
+            array_push($arr_item,[
+                'content'=> Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:'),
+                'type' => 6
+            ]);
+            $res['items'] = $arr_item;
+            $cache->set($key, $res, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
         }
-        return $introduce;
+        return $res;
     }
 }
