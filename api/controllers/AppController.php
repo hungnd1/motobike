@@ -405,7 +405,7 @@ class AppController extends ApiController
         if($res === false){
             $arr_item = array();
             array_push($arr_item,[
-                'content'=> Yii::t('app', 'Greencoffee xin chào, chúc một ngày tốt lành! \n Bạn muốn biết những thông tin nào dưới đây?'),
+                'content'=> Yii::t('app', "Greencoffee xin chào, chúc một ngày tốt lành!\n Bạn muốn biết những thông tin nào dưới đây?"),
                 'type' => 1
             ]);
             array_push($arr_item,[
