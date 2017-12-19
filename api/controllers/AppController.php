@@ -417,7 +417,7 @@ class AppController extends ApiController
                 'type' => 3
             ]);
             array_push($arr_item,[
-                'content'=> Yii::t('app', 'Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây.\n Bạn muốn biết thông tin nào dưới đây?'),
+                'content'=> Yii::t('app', "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây.\n Bạn muốn biết thông tin nào dưới đây?"),
                 'type' => 4
             ]);
             array_push($arr_item,[
