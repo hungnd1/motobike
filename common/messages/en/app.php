@@ -1552,7 +1552,7 @@ return [
     'Mát ít mây'=>'Little Cloud',
     'Mát nhiều mây' =>'Cloudy',
     'Để xác minh thời tiết tại vị trí của bạn. Vui lòng chọn từ miêu tả phù hợp với thời tiết hiện tại của bạn?'=>'To verify the weather at your location. Please choose the appropriate description for your current weather?',
-    'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn như sau:'=>'We would like to send you the weather forecast in your area as follows:',
+    'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn hôm nay như sau:'=>'We would like to send you the weather forecast in your area of the day as follows:',
     'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:'=>'We would like to send you detailed weather forecasts in the area of ​​the week as follows:',
     "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây.\n Bạn muốn biết thông tin nào dưới đây?"=>"In today\'s weather, we would like to send you some reference advice on the main tasks in the garden.\n Want to know what information below?",
     'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'=>'With this kind of soil and yield, we would like to send you some suggestions on effective fertilizer management and use below:',
@@ -1568,5 +1568,18 @@ return [
     'Tưới nước'=>'Sprinklers',
     'Tạo hình'=>'Shaping',
     'Thu hoạch'=>'Harvest',
-    'Sơ chế'=>'Preliminary treatment'
+    'Sơ chế'=>'Preliminary treatment',
+    'Số điện thoại không đúng định dạng'=>'Phone number invalid',
+    'Đăng ký tài khoản thành công, quý khách có thể đăng nhập hệ thống để sử dụng các dịch vụ'=> 'Successful account registration, you can login system to use the service',
+    'Cập nhật thông tin thành công!!!'=>'Update info successfully',
+    'Tổng sản lượng'=>'Total output',
+    'Sản lượng  bán'=>'Selling output',
+    'Loại cafe'=>'Type coffee',
+    'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết'=>'Your transaction has been posted, see transaction history for more details',
+    'Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay'=>'Import prices should not exceed the highest and lowest prices of today',
+    'Mật khẩu cũ mới'=>'Mật khẩu mới',
+    'Thông tin tài khoản  không hợp lệ'=>'Account information is invalid',
+    'Phản hồi thành công'=>'Feedback successully',
+    'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'=>'You have successfully asked the question, the system will notify you when there is an answer',
+    ''
 ];

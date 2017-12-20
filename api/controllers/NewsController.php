@@ -97,6 +97,6 @@ class NewsController extends ApiController
         if ($gap) {
             return $gap;
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
     }
 }

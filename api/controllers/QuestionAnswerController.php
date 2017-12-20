@@ -93,7 +93,7 @@ class QuestionAnswerController extends ApiController
         if ($question) {
             return $question;
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionQuestionAndAnswer()
@@ -127,10 +127,10 @@ class QuestionAnswerController extends ApiController
         $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
         if ($question_answer->save(false)) {
             return [
-                'message' => 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời',
+                'message' => Yii::t('app','Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
             ];
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionFertilizing()
@@ -147,7 +147,7 @@ class QuestionAnswerController extends ApiController
         if ($matrix) {
             return $matrix->content;
         }
-        throw new ServerErrorHttpException('Lỗi hệ thống, vui lòng thử lại sau');
+        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionGetFeedback()

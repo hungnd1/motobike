@@ -31,23 +31,23 @@ class Common
     public static function windir($wnddtxt)
     {
         if ($wnddtxt == 'N') {
-            return 'Hướng Bắc (N)';
+            return 'Hướng Bắc (B)';
         } elseif ($wnddtxt == 'NE') {
-            return 'Hướng Đông Bắc (NE)';
+            return 'Hướng Đông Bắc (ĐB)';
         } elseif ($wnddtxt == 'E') {
-            return 'Hướng Đông (E)';
+            return 'Hướng Đông (Đ)';
         } elseif ($wnddtxt == 'SE') {
-            return 'Hướng Đông Nam (SE)';
+            return 'Hướng Đông Nam (ĐN)';
         } elseif ($wnddtxt == 'S') {
-            return 'Hướng Nam (S)';
+            return 'Hướng Nam (N)';
         } elseif ($wnddtxt == 'SW') {
-            return 'Hướng Tây Nam (SW)';
+            return 'Hướng Tây Nam (TN)';
         } elseif ($wnddtxt == 'W') {
-            return 'Hướng Tây (W)';
+            return 'Hướng Tây (T)';
         } elseif ($wnddtxt == 'NW') {
-            return 'Hướng Tây Bắc (NW)';
+            return 'Hướng Tây Bắc (TB)';
         }
-        return 'Hướng Bắc (N)';
+        return 'Hướng Bắc (B)';
     }
 
     //ham lay luong mua
