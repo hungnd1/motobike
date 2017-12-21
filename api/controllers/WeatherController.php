@@ -26,7 +26,7 @@ class WeatherController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-weather-detail'
+//            'get-weather-detail'
         ];
 
         return $behaviors;
@@ -41,6 +41,7 @@ class WeatherController extends ApiController
 
     public function actionGetWeatherDetail()
     {
+        UserHelpers::manualLogin();
 
         $station_id = $this->getParameter('station_id', '');
         if (!$station_id) {
