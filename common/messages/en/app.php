@@ -1557,7 +1557,7 @@ return [
     "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây."=>"In today\'s weather, we would like to send you some reference advice on the main tasks in the garden.",
     'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'=>'With this kind of soil and yield, we would like to send you some suggestions on effective fertilizer management and use below:',
     'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:'=>'We would like to send you the pest situation in the Central Highlands provinces in the week as follows:',
-    "Greencoffee xin chào, chúc một ngày tốt lành!"=>"Greencoffee hello, have a nice day!",
+    "Greencoffee xin chào,\n chúc một ngày tốt lành!"=>"Greencoffee hello,\n have a nice day!",
     'Giá sàn'=>'Floor price',
     'Hiện tại app đã ra phiển bản mới bạn vui lòng cập nhật để tiếp tục sử dụng'=>'Currently the app has released a new version you please update to continue using',
     'Làm đất'=>'Land preparation',
