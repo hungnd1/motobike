@@ -41,7 +41,7 @@ class WeatherController extends ApiController
 
     public function actionGetWeatherDetail()
     {
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
 
         $station_id = $this->getParameter('station_id', '');
         if (!$station_id) {
