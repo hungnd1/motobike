@@ -270,7 +270,7 @@ class SubscriberController extends ApiController
             ->min('price_average');
 
 
-        if ($price >= $minPrice && $price <= $maxPrice) {
+        if (!$minPrice || !$maxPrice || $price >= $minPrice && $price <= $maxPrice) {
             $exchange = new Exchange();
             $exchange->total_quality_id = $quality;
             $exchange->sold_id = $sold;
