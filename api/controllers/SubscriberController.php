@@ -386,6 +386,12 @@ class SubscriberController extends ApiController
             ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
             ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
             ->max('price_average');
+        if(!$maxPrice){
+            $maxPrice = PriceCoffee::find()
+                ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
+                ->orderBy(['id'=>SORT_DESC])
+                ->max('price_average');
+        }
 
 
         $minPrice = PriceCoffee::find()
@@ -394,7 +400,7 @@ class SubscriberController extends ApiController
             ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
             ->min('price_average');
 
-        if ($price >= $minPrice && $price <= $maxPrice) {
+        if (!$minPrice || !$maxPrice || $price >= $minPrice && $price <= $maxPrice) {
             $exchange = new ExchangeBuy();
             $exchange->total_quantity = $quality;
             $exchange->type_coffee_id = $type_coffee;
