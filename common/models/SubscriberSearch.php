@@ -88,7 +88,7 @@ class SubscriberSearch extends Subscriber
 
     public function searchAll($params)
     {
-        $query = Subscriber::find()->orderBy(['created_at'=>SORT_DESC]);
+        $query = Subscriber::find()->orderBy(['created_at'=>SORT_ASC]);
 
         // add conditions that should always apply here
 
