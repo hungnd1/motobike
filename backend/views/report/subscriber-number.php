@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'width' => '250px',
                                                         'value' => function ($model) {
                                                             /**  @var $model \common\models\SubscriberSearch */
-                                                            return !empty($model->created_at) ? date('d-m-Y', $model->created_at) : '';
+                                                            return !empty($model->created_at) ? date('d-m-Y H:i:s', $model->created_at) : '';
                                                         },
                                                     ],
                                                     [
