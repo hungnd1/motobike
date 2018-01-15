@@ -144,6 +144,7 @@ class ReportSubscriberForm extends Model
         }
         $excelDataProvider = new ArrayDataProvider([
             'allModels' => $dataRow,
+            'pagination'=>false
         ]);
         return $excelDataProvider;
     }
