@@ -1,20 +1,16 @@
 <?php
 
-use common\models\Site;
 use common\models\Content;
 use kartik\export\ExportMenu;
 use kartik\form\ActiveForm;
 use kartik\grid\GridView;
 use kartik\helpers\Html;
-use kartik\widgets\Select2;
-use kartik\widgets\DepDrop;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /* @var $report \backend\models\ReportSubscriberActivityForm */
 /* @var $this yii\web\View */
 
-$this->title = ''.\Yii::t('app', 'Báo cáo số lượng thuê bao');
+$this->title = '' . \Yii::t('app', 'Báo cáo số lượng thuê bao');
 $this->params['breadcrumbs'][] = $this->title;
 
 //$js = <<<JS
@@ -57,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div id="date">
                                         <div class="col-md-2">
                                             <?= $form->field($report, 'from_date')->widget(\kartik\widgets\DatePicker::classname(), [
-                                                'options' => ['placeholder' => ''.\Yii::t('app', 'Ngày bắt đầu')],
+                                                'options' => ['placeholder' => '' . \Yii::t('app', 'Ngày bắt đầu')],
                                                 'type' => \kartik\widgets\DatePicker::TYPE_INPUT,
                                                 'pluginOptions' => [
                                                     'autoclose' => true,
@@ -69,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
                                         <div class="col-md-2">
                                             <?= $form->field($report, 'to_date')->widget(\kartik\widgets\DatePicker::classname(), [
-                                                'options' => ['placeholder' => ''.\Yii::t('app', 'Ngày kết thúc')],
+                                                'options' => ['placeholder' => '' . \Yii::t('app', 'Ngày kết thúc')],
                                                 'type' => \kartik\widgets\DatePicker::TYPE_INPUT,
                                                 'pluginOptions' => [
                                                     'autoclose' => true,
@@ -82,12 +78,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <div class="col-md-2">
                                         <div style="margin-top: 25px"></div>
-                                        <?= \yii\helpers\Html::submitButton(''.\Yii::t('app', 'Xem báo cáo'), ['class' => 'btn btn-primary']) ?>
+                                        <?= \yii\helpers\Html::submitButton('' . \Yii::t('app', 'Xem báo cáo'), ['class' => 'btn btn-primary']) ?>
                                     </div>
 
                                 </div>
                             </div>
-
 
 
                             <?php ActiveForm::end(); ?>
@@ -96,27 +91,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?php if ($dataProvider) { ?>
                         <?php
-                            $gridColumns = [
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'created_at',
-                                                        'label'=>'Ngày đăng ký',
-                                                        'width' => '250px',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\SubscriberSearch */
-                                                            return !empty($model->created_at) ? date('d-m-Y H:i:s', $model->created_at) : '';
-                                                        },
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'username',
-                                                        'label'=>'Tên tài khoản',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\SubscriberSearch */
-                                                            return $model->username;
-                                                        },
-                                                    ],
-                                            ]
+                        $gridColumns = [
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'created_at',
+                                'label' => 'Ngày đăng ký',
+                                'width' => '250px',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    return !empty($model->created_at) ? date('d-m-Y', $model->created_at) : '';
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Giờ đăng ký',
+                                'width' => '250px',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    return !empty($model->created_at) ? date('H:i:s', $model->created_at) : '';
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'username',
+                                'label' => 'Tên tài khoản',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    return $model->username;
+                                },
+                            ],
+                        ]
                         ?>
 
                         <?php
@@ -127,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'fontAwesome' => true,
                             'showColumnSelector' => true,
                             'dropdownOptions' => [
-                                'label' => ''.\Yii::t('app', 'All'),
+                                'label' => '' . \Yii::t('app', 'All'),
                                 'class' => 'btn btn-default'
                             ],
                             'exportConfig' => [
@@ -158,11 +162,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'toolbar' => [
                                 '{export}',
                                 $expMenu,
-                                ['content'=>
+                                ['content' =>
                                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['subscriber-activity'], [
-                                        'data-pjax'=>0,
+                                        'data-pjax' => 0,
                                         'class' => 'btn btn-default',
-                                        'title'=>Yii::t('kvgrid', 'Reset Grid')
+                                        'title' => Yii::t('kvgrid', 'Reset Grid')
                                     ])
                                 ],
                             ],
@@ -174,10 +178,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             ],
                             'exportConfig' => [
-                                GridView::EXCEL => ['label' => 'Excel','filename' => "Report"],
+                                GridView::EXCEL => ['label' => 'Excel', 'filename' => "Report"],
                             ],
                         ]); ?>
-                    <?php }else{ ?>
+                    <?php } else { ?>
                         <div class="portlet-body">
                             <div class="well well-sm">
                                 <p><?= \Yii::t('app', 'Không có dữ liệu') ?></p>

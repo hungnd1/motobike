@@ -162,7 +162,7 @@ class ReportController extends Controller
         $report->to_date = $to_date;
         $dataProvider = $report->generateReport();
         $dataProviderAll = $report->generateReportAll();
-        $excelDataProvider = $report->generateDetailReport($dataProviderAll->getModels());
+        $excelDataProvider = $report->generateDetailReport($dataProvider->getModels());
         return $this->render('subscriber-number', [
             'report' => $report,
             'dataProvider' => $dataProvider,
