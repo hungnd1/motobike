@@ -24,6 +24,7 @@ use yii\helpers\Url;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $type
+ * @property integer $order
  * @property float $temperature_max
  * @property float $temperature_min
  * @property float $precipitation_max
@@ -53,14 +54,14 @@ class GapGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gap', 'title','content_2','content_3','content_4','content_5','content_6','content_7',
-                'content_8','content_9'], 'required'],
+            [['gap', 'title', 'content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
+                'content_8', 'content_9'], 'required'],
             [['gap', 'title', 'image'], 'string'],
-            [['content_2','content_3','content_4','content_5','content_6','content_7',
-                'content_8','content_9'
+            [['content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
+                'content_8', 'content_9'
             ], 'string'],
-            [['status', 'created_at', 'updated_at', 'type'], 'integer'],
-            [['temperature_max', 'temperature_min','windspeed_min','windspeed_max','precipitation_max','precipitation_min'], 'safe']
+            [['status', 'created_at', 'updated_at', 'type', 'order'], 'integer'],
+            [['temperature_max', 'temperature_min', 'windspeed_min', 'windspeed_max', 'precipitation_max', 'precipitation_min'], 'safe']
         ];
     }
 
@@ -91,6 +92,7 @@ class GapGeneral extends \yii\db\ActiveRecord
             'precipitation_max' => 'Lượng mưa lớn nhất (mm)',
             'precipitation_min' => 'Lượn mưa nhỏ nhất (mm)',
             'image' => 'Ảnh đại diện',
+            'order' => 'Sắp xếp'
         ];
     }
 

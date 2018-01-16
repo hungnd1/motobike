@@ -55,6 +55,12 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
                 ?>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo $form->field($model, 'order')->textInput(['maxlength' => 255, 'class' => 'input-circle']);
+                ?>
+            </div>
+        </div>
     <?php }else{ ?>
         <div class="row">
             <div class="col-md-12">
