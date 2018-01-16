@@ -55,7 +55,7 @@ class GapController extends ApiController
                 'page' => $page
             ],
             'sort' => [
-                'defaultOrder' => ['order' => SORT_DESC],
+                'defaultOrder' => ['order' => SORT_DESC,'created_at' => SORT_DESC],
             ],
         ]);
         return $dataProvider;
@@ -67,7 +67,7 @@ class GapController extends ApiController
         $query = GapGeneral::find()->andWhere(['like', 'lower(gap)', strtolower($keyword)])
             ->andWhere(['type'=>GapGeneral::GAP_GENERAL])
             ->andWhere(['status' => GapGeneral::STATUS_ACTIVE]);
-        $defaultSort = ['order' => SORT_DESC];
+        $defaultSort = ['order' => SORT_DESC,'created_at' => SORT_DESC];
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
