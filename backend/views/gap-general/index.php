@@ -53,14 +53,26 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
-                            'class' => '\kartik\grid\DataColumn',
-                            'format'=>'raw',
-                            'label'=>'Ảnh đại diện',
-                            'attribute' => 'image',
-                            'value'=>function ($model, $key, $index, $widget) {
-                                /** @var $model \common\models\GapGeneral */
-                                $cat_image=  Yii::getAlias('@news_image');
-                                return $model->image ? Html::img('@web/'.$cat_image.'/'.$model->image, ['alt' => 'Thumbnail','width'=>'70','height'=>'70']) :  Html::img(Url::to("@web/img/blank.jpg"),['alt' => 'Thumbnail','width'=>'70','height'=>'70']);
+                            'attribute' => 'order',
+                            'label'=>'Sắp xếp',
+                            'format' => 'html',
+                            'width' => '30%',
+                            'visible' => function ($model, $key, $index, $widget) {
+                                /**
+                                 * @var $model \common\models\GapGeneral
+                                 */
+                                if($model->type == GapGeneral::GAP_GENERAL){
+                                    return true;
+                                }
+                                return false;
+
+                            },
+                            'value' => function ($model, $key, $index, $widget) {
+                                /**
+                                 * @var $model \common\models\GapGeneral
+                                 */
+                                return $model->order;
+
                             },
                         ],
                         [
