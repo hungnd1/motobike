@@ -118,7 +118,7 @@ class GapGeneralController extends Controller
                 $model->image = $oldImg;
             }
             $model->updated_at = time();
-            $model->save();
+            $model->save(false);
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {
