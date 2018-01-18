@@ -113,13 +113,6 @@ class ReportSubscriberActivitySearch extends ReportSubscriberActivity
         );
 
 
-
-        if ($this->from_date) {
-            $query->andFilterWhere(['>=', 'report_date', $this->from_date]);
-        }
-        if ($this->to_date) {
-            $query->andFilterWhere(['<=', 'report_date', $this->to_date]);
-        }
         $query->groupBy('report_date');
         return $dataProvider;
     }
