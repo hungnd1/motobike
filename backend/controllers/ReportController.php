@@ -139,7 +139,8 @@ class ReportController extends Controller
         $report->from_date = $from_date;
         $report->to_date = $to_date;
         $dataProvider = $report->generateReport();
-        $excelDataProvider = $report->generateDetailReport($dataProvider->getModels());
+        $dataProviderAll = $report->generateReportAll1();
+        $excelDataProvider = $report->generateDetailReport($dataProviderAll->getModels());
         return $this->render('subscriber-activity', [
             'report' => $report,
             'dataProvider' => $dataProvider,

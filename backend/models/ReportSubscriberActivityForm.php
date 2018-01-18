@@ -94,6 +94,33 @@ class ReportSubscriberActivityForm extends Model
 
     }
 
+    public function generateReportAll1()
+    {
+        if ($this->from_date != '' && DateTime::createFromFormat("d/m/Y", $this->from_date)) {
+            $from_date = DateTime::createFromFormat("d/m/Y", $this->from_date)->setTime(0, 0)->format('Y-m-d H:i:s');
+        } else {
+            $from_date = (new DateTime('now'))->setTime(0, 0)->format('Y-m-d H:i:s');
+        }
+
+        if ($this->to_date != '' && DateTime::createFromFormat("d/m/Y", $this->to_date)) {
+            $to_date = DateTime::createFromFormat("d/m/Y", $this->to_date)->setTime(0, 0)->format('Y/m/d H:i:s');
+        } else {
+            $to_date = (new DateTime('now'))->setTime(0, 0)->format('Y-m-d H:i:s');
+        }
+
+        $from_date = strtotime(str_replace('/', '-', $this->from_date) . ' 00:00:00');
+        $to_date = strtotime(str_replace('/', '-', $this->to_date) . ' 23:59:59');
+
+        $param = Yii::$app->request->queryParams;
+        $searchModel = new ReportSubscriberActivitySearch();
+        $param['ReportSubscriberActivitySearch']['from_date'] =$from_date;
+        $param['ReportSubscriberActivitySearch']['to_date'] =$to_date;
+
+        $dataProvider = $searchModel->searchAll($param);
+        return  $dataProvider;
+
+    }
+
     public function generateDetailReport($rawData,$dateFormat = 'd/m/Y'){
         $dataRow = [];
         //label header
