@@ -143,7 +143,7 @@ class QuestionAnswerController extends ApiController
         if (!$answer_1) {
             throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
         }
-        $answer_2 = isset(explode(':', explode(',', $answer)[1])[1]) ? explode(':', explode(',', $answer)[1])[1] : 0;
+        $answer_2 = isset(explode(',', $answer)[1]) ? explode(':', explode(',', $answer)[1])[1] : 0;
         if (!$answer_2) {
             throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
         }
