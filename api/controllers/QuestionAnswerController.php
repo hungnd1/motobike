@@ -93,7 +93,7 @@ class QuestionAnswerController extends ApiController
         if ($question) {
             return $question;
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionQuestionAndAnswer()
@@ -127,10 +127,10 @@ class QuestionAnswerController extends ApiController
         $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
         if ($question_answer->save(false)) {
             return [
-                'message' => Yii::t('app','Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
+                'message' => Yii::t('app', 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
             ];
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionFertilizing()
@@ -139,28 +139,34 @@ class QuestionAnswerController extends ApiController
         if (!$answer) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
         }
-        $answer_1 = explode(':', explode(',', $answer)[0])[1];
-        $answer_2 = explode(':', explode(',', $answer)[1])[1];
+        $answer_1 = isset(explode(':', explode(',', $answer)[0])[1]) ? explode(':', explode(',', $answer)[0])[1] : 0;
+        if (!$answer_1) {
+            throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
+        }
+        $answer_2 = isset(explode(':', explode(',', $answer)[1])[1]) ? explode(':', explode(',', $answer)[1])[1] : 0;
+        if (!$answer_2) {
+            throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
+        }
         $matrix = MatrixFertilizing::find()
             ->andWhere(['id_answer_1' => $answer_1])
             ->andWhere(['id_answer_2' => $answer_2])->one();
         if ($matrix) {
             return $matrix->content;
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionGetFeedback()
     {
         $arr = [];
-        array_push($arr, array('id' => '1', 'content' => Yii::t('app','Mưa')));
-        array_push($arr, array('id' => '2', 'content' => Yii::t('app','Mưa nhỏ')));
-        array_push($arr, array('id' => '3', 'content' => Yii::t('app','Nắng')));
-        array_push($arr, array('id' => '4', 'content' => Yii::t('app','Mưa to')));
-        array_push($arr, array('id' => '5', 'content' => Yii::t('app','Mát ít mây')));
-        array_push($arr, array('id' => '6', 'content' => Yii::t('app','Mát nhiều mây')));
+        array_push($arr, array('id' => '1', 'content' => Yii::t('app', 'Mưa')));
+        array_push($arr, array('id' => '2', 'content' => Yii::t('app', 'Mưa nhỏ')));
+        array_push($arr, array('id' => '3', 'content' => Yii::t('app', 'Nắng')));
+        array_push($arr, array('id' => '4', 'content' => Yii::t('app', 'Mưa to')));
+        array_push($arr, array('id' => '5', 'content' => Yii::t('app', 'Mát ít mây')));
+        array_push($arr, array('id' => '6', 'content' => Yii::t('app', 'Mát nhiều mây')));
         return [
-            'title'=>Yii::t('app','Để xác minh thời tiết tại vị trí của bạn. Vui lòng chọn từ miêu tả phù hợp với thời tiết hiện tại của bạn?'),
+            'title' => Yii::t('app', 'Để xác minh thời tiết tại vị trí của bạn. Vui lòng chọn từ miêu tả phù hợp với thời tiết hiện tại của bạn?'),
             'items' => $arr
         ];
     }
