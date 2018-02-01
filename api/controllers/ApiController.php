@@ -34,6 +34,7 @@ class ApiController extends Controller
 
     public $site;
     public $language;
+    public $type;
 
     public function behaviors()
     {
@@ -78,6 +79,7 @@ class ApiController extends Controller
         if (!$credential) {
             throw new UnauthorizedHttpException(Yii::t('app','Không tồn tại API key'));
         }
+        $this->type = $credential->type;
         /** Set site_id để dùng cho tiện */
         switch ($credential->type) {
             case SiteApiCredential::TYPE_WEB_APPLICATION:

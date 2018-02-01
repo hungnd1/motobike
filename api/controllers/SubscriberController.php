@@ -108,7 +108,7 @@ class SubscriberController extends ApiController
         $subscriber->last_login_at = time();
         $subscriber->save(false);
 
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, $request->getUserIP(), $subscriber->authen_type);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, $request->getUserIP(), $this->type);
 
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $subscriber->id,
@@ -218,7 +218,7 @@ class SubscriberController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = \api\models\Subscriber::findOne(Yii::$app->user->id);
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), 1);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type);
 
         if (!$subscriber) {
             throw new InvalidValueException(Message::getAccessDennyMessage());
