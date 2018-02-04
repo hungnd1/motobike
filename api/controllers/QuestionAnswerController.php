@@ -13,6 +13,7 @@ use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\QuestionAnswer;
 use common\models\MatrixFertilizing;
+use common\models\Subscriber;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -102,6 +103,8 @@ class QuestionAnswerController extends ApiController
         UserHelpers::manualLogin();
         $question = $this->getParameterPost('question', null);
         $base = $this->getParameterPost('image', '');
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
 
         if (!$question) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
@@ -123,6 +126,7 @@ class QuestionAnswerController extends ApiController
         $question_answer->question = $question;
         $question_answer->image = $file_name;
         $question_answer->created_at = time();
+        $question_answer->subscriber_id = $subscriber->id;
         $question_answer->updated_at = time();
         $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
         if ($question_answer->save(false)) {

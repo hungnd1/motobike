@@ -9,6 +9,8 @@
 namespace api\models;
 
 
+use common\models\Subscriber;
+
 class QuestionAnswer extends \common\models\QuestionAnswer
 {
     public function fields()
@@ -21,6 +23,28 @@ class QuestionAnswer extends \common\models\QuestionAnswer
                 return $model->getImageLink();
             }
             return '';
+        };
+
+        $fields['subscriber_name'] = function ($model) {
+            /* @var $model \common\models\QuestionAnswer */
+            if($model->subscriber_id){
+                $subscriber = Subscriber::findOne($model->subscriber_id);
+                if($subscriber){
+                    return $subscriber->username;
+                }
+            }
+            return 'Chưa cập nhật';
+        };
+
+        $fields['full_name'] = function ($model) {
+            /* @var $model \common\models\QuestionAnswer */
+            if($model->subscriber_id){
+                $subscriber = Subscriber::findOne($model->subscriber_id);
+                if($subscriber){
+                    return $subscriber->full_name ? $subscriber->full_name : $subscriber->username;
+                }
+            }
+            return 'Chưa cập nhật';
         };
 
         return $fields;
