@@ -9,6 +9,7 @@
 namespace api\models;
 
 
+use common\models\Province;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
 
@@ -45,6 +46,23 @@ class ExchangeBuy extends \common\models\ExchangeBuy
         $fields['price'] = function ($model) {
             /* @var $model \common\models\ExchangeBuy */
             return $model->price_buy;
+        };
+        $fields['full_name'] = function ($model) {
+            /* @var $model \common\models\Exchange */
+            $subscriber = Subscriber::findOne($model->subscriber_id);
+            if($subscriber){
+                return $subscriber->full_name ? $subscriber->full_name : 'Chưa cập nhật';
+            }
+            return '';
+        };
+
+        $fields['province'] = function ($model) {
+            /* @var $model \common\models\Exchange */
+            $province = Province::findOne($model->province_id);
+            if($province){
+                return $province->province_name ? $province->province_name : 'Chưa cập nhật';
+            }
+            return '';
         };
 
 

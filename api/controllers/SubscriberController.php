@@ -364,12 +364,16 @@ class SubscriberController extends ApiController
         $location = $this->getParameterPost('location', '');
         $location_name = $this->getParameterPost('location_name', '');
         $price = $this->getParameterPost('price', 0);
+        $province_id = $this->getParameterPost('province_id',0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Người dùng chưa đăng nhập')]));
         }
         if (!$quality) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tổng sản lượng mua')]));
+        }
+        if (!$province_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tỉnh')]));
         }
 
         if (!$type_coffee) {
@@ -408,6 +412,7 @@ class SubscriberController extends ApiController
             $exchange->location_name = $location_name;
             $exchange->type_coffee_id = $type_coffee;
             $exchange->subscriber_id = Yii::$app->user->id;
+            $exchange->province_id = $province_id;
             $exchange->price_buy = $price;
             $exchange->created_at = time();
             $exchange->updated_at = time();
