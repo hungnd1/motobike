@@ -245,10 +245,10 @@ class SubscriberController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tổng sản lượng')]));
         }
 
-        if (!$province_id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng  bán')]));
+        if (!$province_id || $province_id <= 0) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tỉnh')]));
         }
-        if (!$type_coffee) {
+        if (!$type_coffee || $type_coffee <= 0) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại cafe')]));
         }
         if (!$price) {
@@ -372,11 +372,11 @@ class SubscriberController extends ApiController
         if (!$quality) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tổng sản lượng mua')]));
         }
-        if (!$province_id) {
+        if (!$province_id || $province_id <= 0) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tỉnh')]));
         }
 
-        if (!$type_coffee) {
+        if (!$type_coffee || $type_coffee <= 0) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại cafe')]));
         }
         if (!$price) {
