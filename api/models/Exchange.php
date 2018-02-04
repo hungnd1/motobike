@@ -47,7 +47,7 @@ class Exchange extends \common\models\Exchange
             /* @var $model \common\models\Exchange */
             $subscriber = Subscriber::findOne($model->subscriber_id);
             if($subscriber){
-                return $subscriber->full_name;
+                return $subscriber->full_name ? $subscriber->full_name : 'Chưa cập nhật';
             }
             return '';
         };
