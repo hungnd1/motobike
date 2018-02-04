@@ -1,20 +1,16 @@
 <?php
 
-use common\models\Site;
 use common\models\Content;
 use kartik\export\ExportMenu;
 use kartik\form\ActiveForm;
 use kartik\grid\GridView;
 use kartik\helpers\Html;
-use kartik\widgets\Select2;
-use kartik\widgets\DepDrop;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /* @var $report \backend\models\ReportSubscriberActivityForm */
 /* @var $this yii\web\View */
 
-$this->title = ''.\Yii::t('app', 'Báo cáo số lượt truy cập');
+$this->title = '' . \Yii::t('app', 'Báo cáo số lượt truy cập');
 $this->params['breadcrumbs'][] = $this->title;
 
 //$js = <<<JS
@@ -57,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div id="date">
                                         <div class="col-md-2">
                                             <?= $form->field($report, 'from_date')->widget(\kartik\widgets\DatePicker::classname(), [
-                                                'options' => ['placeholder' => ''.\Yii::t('app', 'Ngày bắt đầu')],
+                                                'options' => ['placeholder' => '' . \Yii::t('app', 'Ngày bắt đầu')],
                                                 'type' => \kartik\widgets\DatePicker::TYPE_INPUT,
                                                 'pluginOptions' => [
                                                     'autoclose' => true,
@@ -69,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
                                         <div class="col-md-2">
                                             <?= $form->field($report, 'to_date')->widget(\kartik\widgets\DatePicker::classname(), [
-                                                'options' => ['placeholder' => ''.\Yii::t('app', 'Ngày kết thúc')],
+                                                'options' => ['placeholder' => '' . \Yii::t('app', 'Ngày kết thúc')],
                                                 'type' => \kartik\widgets\DatePicker::TYPE_INPUT,
                                                 'pluginOptions' => [
                                                     'autoclose' => true,
@@ -82,12 +78,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <div class="col-md-2">
                                         <div style="margin-top: 25px"></div>
-                                        <?= \yii\helpers\Html::submitButton(''.\Yii::t('app', 'Xem báo cáo'), ['class' => 'btn btn-primary']) ?>
+                                        <?= \yii\helpers\Html::submitButton('' . \Yii::t('app', 'Xem báo cáo'), ['class' => 'btn btn-primary']) ?>
                                     </div>
 
                                 </div>
                             </div>
-
 
 
                             <?php ActiveForm::end(); ?>
@@ -96,56 +91,66 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?php if ($dataProvider) { ?>
                         <?php
-                            $gridColumns = [
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'report_date',
-                                                        'width' => '150px',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return !empty($model->report_date) ? date('d-m-Y', $model->report_date) : '';
-                                                        },
-                                                        'pageSummary' => "".\Yii::t('app', 'Tổng số')
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'total_via_site',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return $model->total_via_site;
-                                                        },
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'via_site_daily',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return $model->via_site_daily;
-                                                        },
-                                                        'pageSummary' => true,
+                        $gridColumns = [
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'report_date',
+                                'width' => '150px',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\ReportSubscriberActivity */
+                                    return !empty($model->report_date) ? date('d-m-Y', $model->report_date) : '';
+                                },
+                                'pageSummary' => "" . \Yii::t('app', 'Tổng số')
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'total_via_site',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\ReportSubscriberActivity */
+                                    return $model->total_via_site;
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'via_site_daily',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\ReportSubscriberActivity */
+                                    return $model->via_site_daily;
+                                },
+                                'pageSummary' => true,
 //                                                        'pageSummary' => $dataProvider->query->sum('via_site_daily')?$dataProvider->query->sum('via_site_daily'):0
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'via_android',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return $model->via_android;
-                                                        },
-                                                        'pageSummary' => true,
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'via_android',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\ReportSubscriberActivity */
+                                    return $model->via_android;
+                                },
+                                'pageSummary' => true,
 //                                                        'pageSummary' => $dataProvider->query->sum('via_android')?$dataProvider->query->sum('via_android'):0
-                                                    ],
-                                                    [
-                                                        'class' => '\kartik\grid\DataColumn',
-                                                        'attribute' => 'via_website',
-                                                        'value' => function ($model) {
-                                                            /**  @var $model \common\models\ReportSubscriberActivity */
-                                                            return $model->via_website;
-                                                        },
-                                                        'pageSummary' => true,
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'via_ios',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\ReportSubscriberActivity */
+                                    return $model->via_ios;
+                                },
+                                'pageSummary' => true,
+//                                                        'pageSummary' => $dataProvider->query->sum('via_android')?$dataProvider->query->sum('via_android'):0
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'attribute' => 'via_website',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\ReportSubscriberActivity */
+                                    return $model->via_website;
+                                },
+                                'pageSummary' => true,
 //                                                        'pageSummary' => $dataProvider->query->sum('via_website')?$dataProvider->query->sum('via_website'):0
-                                                    ],
-                                            ]
+                            ],
+                        ]
                         ?>
 
                         <?php
@@ -156,7 +161,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'fontAwesome' => true,
                             'showColumnSelector' => true,
                             'dropdownOptions' => [
-                                'label' => ''.\Yii::t('app', 'All'),
+                                'label' => '' . \Yii::t('app', 'All'),
                                 'class' => 'btn btn-default'
                             ],
                             'exportConfig' => [
@@ -187,11 +192,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'toolbar' => [
                                 '{export}',
                                 $expMenu,
-                                ['content'=>
+                                ['content' =>
                                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['subscriber-activity'], [
-                                        'data-pjax'=>0,
+                                        'data-pjax' => 0,
                                         'class' => 'btn btn-default',
-                                        'title'=>Yii::t('kvgrid', 'Reset Grid')
+                                        'title' => Yii::t('kvgrid', 'Reset Grid')
                                     ])
                                 ],
                             ],
@@ -203,10 +208,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             ],
                             'exportConfig' => [
-                                GridView::EXCEL => ['label' => 'Excel','filename' => "Report"],
+                                GridView::EXCEL => ['label' => 'Excel', 'filename' => "Report"],
                             ],
                         ]); ?>
-                    <?php }else{ ?>
+                    <?php } else { ?>
                         <div class="portlet-body">
                             <div class="well well-sm">
                                 <p><?= \Yii::t('app', 'Không có dữ liệu') ?></p>

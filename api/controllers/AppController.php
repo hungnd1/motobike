@@ -54,7 +54,8 @@ class AppController extends ApiController
             'version-app',
             'gap-advice',
             'get-question',
-            'get-introduce'
+            'get-introduce',
+            'get-province',
         ];
 
         return $behaviors;
@@ -73,7 +74,7 @@ class AppController extends ApiController
             'check-device-token' => ['POST'],
             'log-data' => ['GET'],
             'get-question' => ['GET'],
-            'get-introduce'=>['GET']
+            'get-introduce' => ['GET']
         ];
     }
 
@@ -115,7 +116,7 @@ class AppController extends ApiController
         //10_100_10000 gia san neư york
         if ($coffee == PriceCoffee::TYPE_GIASAN) {
             $arr_province = [];
-            $arr_province['province_name'] = Yii::t('app','Giá sàn');
+            $arr_province['province_name'] = Yii::t('app', 'Giá sàn');
             $arr_province['price'] = PriceCoffee::getPrice($date, null, PriceCoffee::TYPE_EXPORT);
             $arr[] = $arr_province;
         } else {
@@ -154,6 +155,17 @@ class AppController extends ApiController
     {
         $query = Sold::find();
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionGetProvince()
+    {
+        $query = Province::find()
+            ->andWhere(['<>', 'id', 4]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
@@ -247,7 +259,7 @@ class AppController extends ApiController
                 'items' => $version
             ];
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
@@ -305,62 +317,62 @@ class AppController extends ApiController
             $arr_item = array();
             array_push($arr_item, [
                 'content' => $gapAdvice->gap,
-                'tag' => Yii::t('app','Làm đất'),
+                'tag' => Yii::t('app', 'Làm đất'),
                 'is_question' => false
             ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_8,
-                    'tag' => Yii::t('app','Chuẩn bị giống - vườn ươm'),
+                    'tag' => Yii::t('app', 'Chuẩn bị giống - vườn ươm'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_2,
-                    'tag' => Yii::t('app','Trồng mới, trồng lại và chăm sóc cà phê'),
+                    'tag' => Yii::t('app', 'Trồng mới, trồng lại và chăm sóc cà phê'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_3,
-                    'tag' => Yii::t('app','Phân bón'),
+                    'tag' => Yii::t('app', 'Phân bón'),
                     'is_question' => true
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_5,
-                    'tag' => Yii::t('app','Phun thuốc'),
+                    'tag' => Yii::t('app', 'Phun thuốc'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_4,
-                    'tag' => Yii::t('app','Tưới nước'),
+                    'tag' => Yii::t('app', 'Tưới nước'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_9,
-                    'tag' => Yii::t('app','Tạo hình'),
+                    'tag' => Yii::t('app', 'Tạo hình'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_6,
-                    'tag' => Yii::t('app','Thu hoạch'),
+                    'tag' => Yii::t('app', 'Thu hoạch'),
                     'is_question' => false
                 ]);
             array_push($arr_item,
                 [
                     'content' => $gapAdvice->content_7,
-                    'tag' => Yii::t('app','Sơ chế'),
+                    'tag' => Yii::t('app', 'Sơ chế'),
                     'is_question' => false
                 ]);
             $res['items'] = $arr_item;
 
             return $res;
         } else {
-            throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+            throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
         }
     }
 
@@ -402,30 +414,30 @@ class AppController extends ApiController
         $cache = Yii::$app->cache;
         $key = Yii::$app->params['key_cache']['Introduce'] . $this->language;
         $res = $cache->get($key);
-        if($res === false){
+        if ($res === false) {
             $arr_item = array();
-            array_push($arr_item,[
-                'content'=> Yii::t('app', "Greencoffee xin chào,\n chúc một ngày tốt lành!"),
+            array_push($arr_item, [
+                'content' => Yii::t('app', "Greencoffee xin chào,\n chúc một ngày tốt lành!"),
                 'type' => 1
             ]);
-            array_push($arr_item,[
-                'content'=> Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn hôm nay như sau:'),
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn hôm nay như sau:'),
                 'type' => 2
             ]);
-            array_push($arr_item,[
-                'content'=> Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:'),
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:'),
                 'type' => 3
             ]);
-            array_push($arr_item,[
-                'content'=> Yii::t('app', "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây."),
+            array_push($arr_item, [
+                'content' => Yii::t('app', "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây."),
                 'type' => 4
             ]);
-            array_push($arr_item,[
-                'content'=> Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'),
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'),
                 'type' => 5
             ]);
-            array_push($arr_item,[
-                'content'=> Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:'),
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:'),
                 'type' => 6
             ]);
             $res['items'] = $arr_item;

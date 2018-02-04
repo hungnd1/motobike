@@ -55,17 +55,22 @@ class ReportController extends Controller
                 ->andWhere(['channel' => SubscriberActivity::CHANNEL_APP])
                 ->andWhere('created_at between :beginPreDay and :endPreDay')->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
                 ->count();
+            $via_ios = SubscriberActivity::find()
+                ->andWhere(['channel' => SubscriberActivity::CHANNEL_IOS])
+                ->andWhere('created_at between :beginPreDay and :endPreDay')->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
+                ->count();
 
             $via_website = SubscriberActivity::find()
                 ->andWhere(['channel' => SubscriberActivity::CHANNEL_WEB])
                 ->andWhere('created_at between :beginPreDay and :endPreDay')->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
                 ->count();
-            $via_site_daily = $via_android  + $via_website;
+            $via_site_daily = $via_android  + $via_website + $via_ios;
             $r = new ReportSubscriberActivity();
             $r->report_date = $beginPreDay;
             $r->via_site_daily = $via_site_daily;
             $r->total_via_site = $total_via_site;
             $r->via_android = $via_android;
+            $r->via_ios = $via_ios;
             $r->via_website = $via_website;
             if (!$r->save()) {
                 echo '****** ERROR! Report Subscriber Activity Fail ******';

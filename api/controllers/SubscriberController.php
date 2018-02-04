@@ -231,8 +231,8 @@ class SubscriberController extends ApiController
     {
         UserHelpers::manualLogin();
 
-        $quality = $this->getParameterPost('total_quality_id', 0);
-        $sold = $this->getParameterPost('sold_id', 0);
+        $quality = $this->getParameterPost('total_quantity', 0);
+        $province_id = $this->getParameterPost('province_id', 0);
         $type_coffee = $this->getParameterPost('type_coffee', 0);
         $location = $this->getParameterPost('location', '');
         $location_name = $this->getParameterPost('location_name', '');
@@ -245,7 +245,7 @@ class SubscriberController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tổng sản lượng')]));
         }
 
-        if (!$sold) {
+        if (!$province_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Sản lượng  bán')]));
         }
         if (!$type_coffee) {
@@ -272,8 +272,8 @@ class SubscriberController extends ApiController
 
         if (!$minPrice || !$maxPrice || $price >= $minPrice && $price <= $maxPrice) {
             $exchange = new Exchange();
-            $exchange->total_quality_id = $quality;
-            $exchange->sold_id = $sold;
+            $exchange->total_quantity = $quality;
+            $exchange->province_id = $province_id;
             $exchange->type_coffee = $type_coffee;
             $exchange->location = $location;
             $exchange->location_name = $location_name;

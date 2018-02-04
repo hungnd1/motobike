@@ -12,6 +12,7 @@ use Yii;
  * @property integer $via_site_daily
  * @property integer $total_via_site
  * @property integer $via_android
+ * @property integer $via_ios
  * @property integer $via_website
  */
 class ReportSubscriberActivity extends \yii\db\ActiveRecord
@@ -30,7 +31,7 @@ class ReportSubscriberActivity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['report_date', 'via_site_daily', 'total_via_site','via_android','via_website'], 'integer'],
+            [['report_date', 'via_site_daily', 'total_via_site','via_android','via_website','via_ios'], 'integer'],
         ];
     }
 
@@ -50,10 +51,6 @@ class ReportSubscriberActivity extends \yii\db\ActiveRecord
             'via_ios' => \Yii::t('app', 'Từ ứng dụng IOS'),
             'via_website' => \Yii::t('app', 'Từ website'),
             'content_type' => \Yii::t('app', 'loại nội dung'),
-
-
-
-
         ];
     }
 

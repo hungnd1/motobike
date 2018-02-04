@@ -69,6 +69,7 @@ class ReportSubscriberActivitySearch extends ReportSubscriberActivity
                         sum(total_via_site) as total_via_site,
                         sum(via_site_daily) as via_site_daily,
                         sum(via_android) as via_android,
+                        sum(via_ios) as via_ios,
                         sum(via_website) as via_website'
         );
 
@@ -109,6 +110,7 @@ class ReportSubscriberActivitySearch extends ReportSubscriberActivity
                         sum(total_via_site) as total_via_site,
                         sum(via_site_daily) as via_site_daily,
                         sum(via_android) as via_android,
+                        sum(via_ios) as via_ios,
                         sum(via_website) as via_website'
         );
 

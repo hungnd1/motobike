@@ -61,13 +61,53 @@ class ExchangeBuySearch extends ExchangeBuy
         $query->andFilterWhere([
             'id' => $this->id,
             'subscriber_id' => $this->subscriber_id,
-            'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-
+        if ($this->created_at !== '' && $this->created_at !== null) {
+            $from_time = strtotime(str_replace('/', '-', $this->created_at) . ' 00:00:00');
+            $to_time = strtotime(str_replace('/', '-', $this->created_at) . ' 23:59:59');
+            $query->andFilterWhere(['>=', 'created_at', $from_time]);
+            $query->andFilterWhere(['<=', 'created_at', $to_time]);
+        }
         $query->andFilterWhere(['like', 'price_buy', $this->price_buy])
             ->andFilterWhere(['like', 'total_quantity', $this->total_quantity]);
 
         return $dataProvider;
     }
+
+    public function searchAll($params)
+    {
+        $query = ExchangeBuy::find()->orderBy(['created_at'=>SORT_ASC]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination'=>false
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        if ($this->created_at !== '' && $this->created_at !== null) {
+            $from_time = strtotime(str_replace('/', '-', $this->created_at) . ' 00:00:00');
+            $to_time = strtotime(str_replace('/', '-', $this->created_at) . ' 23:59:59');
+            $query->andFilterWhere(['>=', 'created_at', $from_time]);
+            $query->andFilterWhere(['<=', 'created_at', $to_time]);
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'updated_at' => $this->updated_at,
+        ]);
+
+        return $dataProvider;
+    }
+
+
 }

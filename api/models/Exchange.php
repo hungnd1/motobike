@@ -19,18 +19,7 @@ class Exchange extends \common\models\Exchange
     public function fields()
     {
         $fields = parent::fields();
-        unset($fields['sold_id']);
         unset($fields['type_coffee']);
-        unset($fields['total_quality_id']);
-
-        $fields['sold'] = function ($model) {
-            /* @var $model \common\models\Exchange */
-            $sold = Sold::findOne($model->sold_id);
-            if($sold){
-                return $sold->min_sold.'-'.$sold->max_sold.' tấn';
-            }
-            return '';
-        };
 
         $fields['coffee'] = function ($model) {
             /* @var $model \common\models\Exchange */
@@ -43,17 +32,22 @@ class Exchange extends \common\models\Exchange
 
         $fields['total_quantity'] = function ($model) {
             /* @var $model \common\models\Exchange */
-            $quantity = TotalQuality::findOne($model->total_quality_id);
-            if($quantity){
-                return $quantity->min_total_quality.'-'.$quantity->max_total_quality.' tấn';
-            }
-            return '';
+           return $model->total_quantity;
         };
         $fields['subscriber_name'] = function ($model) {
             /* @var $model \common\models\Exchange */
             $subscriber = Subscriber::findOne($model->subscriber_id);
             if($subscriber){
                 return $subscriber->username;
+            }
+            return '';
+        };
+
+        $fields['full_name'] = function ($model) {
+            /* @var $model \common\models\Exchange */
+            $subscriber = Subscriber::findOne($model->subscriber_id);
+            if($subscriber){
+                return $subscriber->full_name;
             }
             return '';
         };

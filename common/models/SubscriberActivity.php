@@ -41,6 +41,7 @@ class SubscriberActivity extends \yii\db\ActiveRecord
 
     const CHANNEL_WEB = 7;
     const CHANNEL_APP = 1;
+    const CHANNEL_IOS = 2;
 
     /**
      * @inheritdoc
