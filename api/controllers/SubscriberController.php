@@ -38,7 +38,9 @@ class SubscriberController extends ApiController
             'login',
             'register',
             'run',
-            'reset-password'
+            'reset-password',
+            'transaction-buy',
+            'transaction-sold'
         ];
 
         return $behaviors;
@@ -292,10 +294,8 @@ class SubscriberController extends ApiController
     public function actionTransactionSold()
     {
 
-        UserHelpers::manualLogin();
-
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = Exchange::find()->andWhere(['subscriber_id' => Yii::$app->user->id]);
+        $query = Exchange::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -427,10 +427,8 @@ class SubscriberController extends ApiController
     public function actionTransactionBuy()
     {
 
-        UserHelpers::manualLogin();
-
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = ExchangeBuy::find()->andWhere(['subscriber_id' => Yii::$app->user->id]);
+        $query = ExchangeBuy::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -560,5 +558,7 @@ class SubscriberController extends ApiController
             'message' => Yii::t('app','Phản hồi thành công')
             ];
     }
+
+
 
 }
