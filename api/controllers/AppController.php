@@ -111,8 +111,12 @@ class AppController extends ApiController
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
         if($subscriber){
-            $description = 'Nguoi dung vao gia';
-            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+            /** @var  $lastActivity SubscriberActivity */
+            $lastActivity = SubscriberActivity::find()->andWhere(['action'=>SubscriberActivity::ACTION_PRICE])->orderBy(['id'=>SORT_DESC])->one();
+            if(time() - $lastActivity->created_at >= 5 * 60){
+                $description = 'Nguoi dung vao gia';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+            }
         }
         if (!$date) {
             $date = date('d/m/Y', time());

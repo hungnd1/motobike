@@ -68,7 +68,9 @@ class NewsController extends ApiController
                 'defaultOrder' => ['order' => SORT_DESC],
             ],
         ]);
-        if($subscriber){
+        /** @var  $lastActivity SubscriberActivity */
+        $lastActivity = SubscriberActivity::find()->andWhere(['action'=>SubscriberActivity::ACTION_GAP])->orderBy(['id'=>SORT_DESC])->one();
+        if(time() - $lastActivity->created_at >= 5 * 60){
             $description = 'Nguoi dung vao gap';
             $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
         }
