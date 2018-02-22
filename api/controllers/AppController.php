@@ -385,12 +385,6 @@ class AppController extends ApiController
 
     public function actionGetQuestion()
     {
-        UserHelpers::manualLogin();
-        $subscriber = Yii::$app->user->identity;
-        if($subscriber){
-            $description = 'Nguoi dung vao hoi dap';
-            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_ANSWER, $description);
-        }
         $listQuestion = Question::find()->all();
         $arrRes = [];
         $res = [];

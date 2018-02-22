@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\QuestionAnswer;
 use common\models\MatrixFertilizing;
 use common\models\Subscriber;
+use common\models\SubscriberActivity;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -50,6 +51,12 @@ class QuestionAnswerController extends ApiController
 
     public function actionGetListQuestionAnswer()
     {
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        if($subscriber){
+            $description = 'Nguoi dung vao hoi dap';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_ANSWER, $description);
+        }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = QuestionAnswer::find();
         $dataProvider = new ActiveDataProvider([

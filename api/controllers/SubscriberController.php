@@ -317,7 +317,7 @@ class SubscriberController extends ApiController
         UserHelpers::manualLogin();
 
         $subscriber = Yii::$app->user->identity;
-        $description = 'Nguoi dung vao danh sach ban';
+        $description = 'Nguoi dung vao danh sach mua';
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
 
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
@@ -342,7 +342,7 @@ class SubscriberController extends ApiController
 
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
-        $description = 'Nguoi dung vao danh sach mua';
+        $description = 'Nguoi dung vao danh sach ban';
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
 
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
