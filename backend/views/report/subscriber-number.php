@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Content;
+use common\models\SubscriberActivity;
 use kartik\export\ExportMenu;
 use kartik\form\ActiveForm;
 use kartik\grid\GridView;
@@ -118,6 +119,69 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => function ($model) {
                                     /**  @var $model \common\models\SubscriberSearch */
                                     return $model->username;
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Thời gian đăng nhập IOS lần cuối',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    $subscriber_ios = SubscriberActivity::find()->andWhere(['subscriber_id'=>$model->id])->andWhere(['channel'=>SubscriberActivity::CHANNEL_IOS])->orderBy(['id'=>SORT_DESC])->one();
+                                    if($subscriber_ios){
+                                        return date('d/m/Y H:i:s',$subscriber_ios->created_at);
+                                    }
+                                    return '';
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Thời gian đăng nhập Android lần cuối',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    $subscriber_ios = SubscriberActivity::find()->andWhere(['subscriber_id'=>$model->id])->andWhere(['channel'=>SubscriberActivity::CHANNEL_APP])->orderBy(['id'=>SORT_DESC])->one();
+                                    if($subscriber_ios){
+                                        return date('d/m/Y H:i:s',$subscriber_ios->created_at);
+                                    }
+                                    return '';
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Thời gian đăng nhập Website lần cuối',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    $subscriber_ios = SubscriberActivity::find()->andWhere(['subscriber_id'=>$model->id])->andWhere(['channel'=>SubscriberActivity::CHANNEL_WEB])->orderBy(['id'=>SORT_DESC])->one();
+                                    if($subscriber_ios){
+                                        return date('d/m/Y H:i:s',$subscriber_ios->created_at);
+                                    }
+                                    return '';
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Tên người dùng',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    return $model->full_name;
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Địa chỉ',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    return $model->address;
+                                },
+                            ],
+                            [
+                                'class' => '\kartik\grid\DataColumn',
+                                'label' => 'Giới tính',
+                                'value' => function ($model) {
+                                    /**  @var $model \common\models\SubscriberSearch */
+                                    if($model->sex){
+                                        return  $model->sex == 2 ? 'Nữ' : 'Nam';
+                                    }
+                                    return 'Chưa xác định';
                                 },
                             ],
                         ]

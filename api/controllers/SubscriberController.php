@@ -79,7 +79,7 @@ class SubscriberController extends ApiController
             if ($phone_number == '') {
                 $phone_number = CUtils::validateMobile($username, 2);
                 if ($phone_number == '') {
-                    throw new InvalidValueException(Yii::t('app','Số điện thoại không đúng định dạng'));
+                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
                 }
             }
         }
@@ -109,8 +109,8 @@ class SubscriberController extends ApiController
 
         $subscriber->last_login_at = time();
         $subscriber->save(false);
-
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, $request->getUserIP(), $this->type);
+        $description = 'Nguoi dung dang nhap';
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, $request->getUserIP(), $this->type, SubscriberActivity::ACTION_LOGIN, $description);
 
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $subscriber->id,
@@ -151,7 +151,7 @@ class SubscriberController extends ApiController
             if ($phone_number == '') {
                 $phone_number = CUtils::validateMobile($username, 2);
                 if ($phone_number == '') {
-                    throw new InvalidValueException(Yii::t('app','Số điện thoại không đúng định dạng'));
+                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
                 }
             }
         }
@@ -169,10 +169,10 @@ class SubscriberController extends ApiController
         $subscriber->authen_type = $channel;
         if ($subscriber->save(false)) {
             return [
-                'message' => Yii::t('app','Đăng ký tài khoản thành công, quý khách có thể đăng nhập hệ thống để sử dụng các dịch vụ'),
+                'message' => Yii::t('app', 'Đăng ký tài khoản thành công, quý khách có thể đăng nhập hệ thống để sử dụng các dịch vụ'),
             ];
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
     public function actionChangeInfo()
@@ -209,9 +209,9 @@ class SubscriberController extends ApiController
         $subscriber->sex = $sex;
         $subscriber->address = $address;
         if ($subscriber->save(false)) {
-            return ['message' => Yii::t('app','Cập nhật thông tin thành công!!!')];
+            return ['message' => Yii::t('app', 'Cập nhật thông tin thành công!!!')];
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
 
 
     }
@@ -284,11 +284,11 @@ class SubscriberController extends ApiController
             $exchange->created_at = time();
             $exchange->updated_at = time();
             if ($exchange->save(false)) {
-                return ['message' => Yii::t('app','Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết')];
+                return ['message' => Yii::t('app', 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết')];
             }
-            throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+            throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
         }
-        throw new ServerErrorHttpException(Yii::t('app','Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay'));
     }
 
     public function actionTransactionSold()
@@ -315,6 +315,11 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
+
+        $subscriber = Yii::$app->user->identity;
+        $description = 'Nguoi dung vao danh sach ban';
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
+
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = Exchange::find()->andWhere(['>=', 'created_at', $timeExpired]);
@@ -336,6 +341,10 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        $description = 'Nguoi dung vao danh sach mua';
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
+
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -364,7 +373,7 @@ class SubscriberController extends ApiController
         $location = $this->getParameterPost('location', '');
         $location_name = $this->getParameterPost('location_name', '');
         $price = $this->getParameterPost('price', 0);
-        $province_id = $this->getParameterPost('province_id',0);
+        $province_id = $this->getParameterPost('province_id', 0);
         $subscriber = Yii::$app->user->id;
         if (!$subscriber) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Người dùng chưa đăng nhập')]));
@@ -390,10 +399,10 @@ class SubscriberController extends ApiController
             ->andWhere(['<=', 'price_coffee.created_at', $tomorrow])
             ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
             ->max('price_average');
-        if(!$maxPrice){
+        if (!$maxPrice) {
             $maxPrice = PriceCoffee::find()
                 ->andWhere(['not in', 'price_coffee.organisation_name', ['dRCL', 'dACN']])
-                ->orderBy(['id'=>SORT_DESC])
+                ->orderBy(['id' => SORT_DESC])
                 ->max('price_average');
         }
 
@@ -417,11 +426,11 @@ class SubscriberController extends ApiController
             $exchange->created_at = time();
             $exchange->updated_at = time();
             if ($exchange->save(false)) {
-                return ['message' => Yii::t('app','Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết')];
+                return ['message' => Yii::t('app', 'Giao dịch của bạn đã được  đưa lên sàn, Xem lịch sử giao dịch để biết thêm chi tiết')];
             }
-            throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+            throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
         }
-        throw new ServerErrorHttpException(Yii::t('app','Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Giá nhập vào không được quá giá cao nhất và thấp nhất của ngày hôm nay'));
     }
 
     public function actionTransactionBuy()
@@ -503,14 +512,14 @@ class SubscriberController extends ApiController
             if ($phone_number == '') {
                 $phone_number = CUtils::validateMobile($username, 2);
                 if ($phone_number == '') {
-                    throw new InvalidValueException(Yii::t('app','Số điện thoại không đúng định dạng'));
+                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
                 }
             }
         }
 
         $subscriber = Subscriber::findOne(['username' => $phone_number]);
         if (!$subscriber) {
-            throw new InvalidValueException(Yii::t('app','Thông tin tài khoản  không hợp lệ'));
+            throw new InvalidValueException(Yii::t('app', 'Thông tin tài khoản  không hợp lệ'));
         }
 
         $subscriber->password = $new_password;
@@ -538,7 +547,7 @@ class SubscriberController extends ApiController
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         $question_id = $this->getParameterPost('question_id', '');
-        $station_id = $this->getParameterPost('station_id','');
+        $station_id = $this->getParameterPost('station_id', '');
         if (!$question_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'question_id')]));
         }
@@ -555,10 +564,9 @@ class SubscriberController extends ApiController
         $feedback->save(false);
         return [
             'success' => true,
-            'message' => Yii::t('app','Phản hồi thành công')
-            ];
+            'message' => Yii::t('app', 'Phản hồi thành công')
+        ];
     }
-
 
 
 }

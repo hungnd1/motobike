@@ -3,6 +3,8 @@ namespace backend\models;
 
 use common\models\ReportSubscriberActivitySearch;
 use common\models\ReportSubscriberDailySearch;
+use common\models\Subscriber;
+use common\models\SubscriberActivity;
 use common\models\SubscriberSearch;
 use DateTime;
 use Yii;
@@ -122,18 +124,40 @@ class ReportSubscriberForm extends Model
         return  $dataProvider;
 
     }
-    public function generateDetailReport($rawData,$dateFormat = 'd/m/Y'){
+    public function generateDetailReport($rawData,$dateFormat = 'd/m/Y H:i:s'){
         $dataRow = [];
         //label header
         $sttLabel = Yii::t('app','STT');
-        $dateLabel = Yii::t('app','Ngày');
+        $dateLabel = Yii::t('app','Thời gian đăng ký');
         $total_via_site_label = Yii::t('app','Tên tài khoản');
+        $time_android  = Yii::t('app','Thời gian đăng nhập Android lần cuối');
+        $time_ios = Yii::t('app','Thời gian đăng nhập IOS lần cuối');
+        $full_name = Yii::t('app','Tên người dùng');
+        $sex = Yii::t('app','Giới tính');
+        $time_website = Yii::t('app','Thời gian đăng nhập Website lần cuối');
+        $address = Yii::t('app','Địa chỉ');
         if(!empty($rawData)){
             $i=0;
             foreach ($rawData as $raw){
                 $row[$sttLabel] = ++$i;
                 $row[$dateLabel] = date($dateFormat,$raw['created_at']);
                 $row[$total_via_site_label] = $raw['username'];
+                /** @var  $subscriber_ios SubscriberActivity */
+                /** @var  $subscriber_android SubscriberActivity */
+                /** @var  $subscriber_web SubscriberActivity */
+                $subscriber_ios = SubscriberActivity::find()->andWhere(['subscriber_id'=>$raw['id']])->andWhere(['channel'=>SubscriberActivity::CHANNEL_IOS])->orderBy(['id'=>SORT_DESC])->one();
+                $subscriber_android = SubscriberActivity::find()->andWhere(['subscriber_id'=>$raw['id']])->andWhere(['channel'=>SubscriberActivity::CHANNEL_APP])->orderBy(['id'=>SORT_DESC])->one();
+                $subscriber_web = SubscriberActivity::find()->andWhere(['subscriber_id'=>$raw['id']])->andWhere(['channel'=>SubscriberActivity::CHANNEL_WEB])->orderBy(['id'=>SORT_DESC])->one();
+                $row[$time_ios] = $subscriber_ios ? date($dateFormat,$subscriber_ios->created_at) : '';
+                $row[$time_android] = $subscriber_android ? date($dateFormat,$subscriber_android->created_at) : '';
+                $row[$time_website] = $subscriber_web ? date($dateFormat,$subscriber_web->created_at) : '';
+                $row[$full_name] = $raw['full_name'];
+                $row[$address] = $raw['address'];
+                if($raw['sex']){
+                    $row[$sex] = $raw['sex'] == 2 ? 'Nữ' : 'Nam';
+                }else{
+                    $row[$sex] = 'Chưa xác định';
+                }
                 $dataRow[] = $row;
 
                 //kết thúc một ngày, khởi tạo thêm 1 dòng cho ngày tiếp theo

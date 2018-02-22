@@ -9,6 +9,7 @@
 namespace api\controllers;
 
 
+use api\helpers\UserHelpers;
 use api\models\Station;
 use common\helpers\CVietnameseTools;
 use common\models\SubscriberActivity;
@@ -26,7 +27,6 @@ class StationController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-station',
             'search'
         ];
 
@@ -42,7 +42,10 @@ class StationController extends ApiController
 
     public function actionGetListStation()
     {
+        UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
+        $description = 'Nguoi dung vao thoi tiet';
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null');

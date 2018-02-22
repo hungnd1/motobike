@@ -10,7 +10,9 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\helpers\UserHelpers;
 use common\models\GapGeneral;
+use common\models\SubscriberActivity;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -27,7 +29,6 @@ class GapController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-gap',
             'search',
             'detail-gap'
         ];
@@ -44,6 +45,8 @@ class GapController extends ApiController
 
     public function actionGetListGap()
     {
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
         $page = $this->getParameter('page',0);
         $page = $page > 1 ? $page - 1 : 0;
 
@@ -58,6 +61,10 @@ class GapController extends ApiController
                 'defaultOrder' => ['order' => SORT_DESC,'created_at' => SORT_DESC],
             ],
         ]);
+        if($subscriber){
+            $description = 'Nguoi dung vao sau benh';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
+        }
         return $dataProvider;
 
     }

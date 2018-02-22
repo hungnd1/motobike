@@ -45,7 +45,7 @@ class GapGeneral extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 10;
     const STATUS_INACTIVE = 0;
 
-    const GAP_GENERAL = 1;
+    const GAP_GENERAL = 1; // sau benh
     const GAP_DETAIL = 2;
 
     /**

@@ -34,6 +34,13 @@ class SubscriberActivity extends \yii\db\ActiveRecord
 
     const ACTION_LOGIN = 1;
     const ACTION_LOGOUT = 2;
+    const ACTION_GAP_DISEASE = 9;
+    const ACTION_WEATHER = 3;
+    const ACTION_PRICE = 4;
+    const ACTION_BUY = 5;
+    const ACTION_SELL = 6;
+    const ACTION_GAP = 7;
+    const ACTION_ANSWER = 8;
 //    const ACTION_REGISTER = 3;
 
     const STATUS_SUCCESS = 10;
@@ -235,18 +242,19 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return $message;
     }
 
-    public static function addActivity($subscriber,$uid,$type ){
+    public static function addActivity($subscriber,$uid,$type,$action, $description = ''){
 
         $audit_log = new SubscriberActivity();
         $audit_log->subscriber_id = $subscriber->id;
         $audit_log->msisdn = $subscriber->username;
         $audit_log->ip_address = $uid;
-        $audit_log->action = 'Vao app';
+        $audit_log->action = $action;
         $audit_log->target_id = isset($params['id']) ? $params['id'] : null;
-        $audit_log->description = 'Truy cap app';
-        $audit_log->status = 'Waiting response';
+        $audit_log->description = $description;
+        $audit_log->status = SubscriberActivity::STATUS_SUCCESS;
         $audit_log->channel = $type;
         $audit_log->save(false);
+        return true;
     }
 
 }

@@ -47,7 +47,7 @@ class ReportSubscriberActivity extends \yii\db\ActiveRecord
             'via_site_daily' => \Yii::t('app', 'Số lượt truy cập trong ngày'),
             'total_via_site' => \Yii::t('app', 'Tổng lượt truy cập'),
             'via_smb' => \Yii::t('app', 'Từ Smart box'),
-            'via_android' => \Yii::t('app', 'Từ ứng dụng'),
+            'via_android' => \Yii::t('app', 'Từ android'),
             'via_ios' => \Yii::t('app', 'Từ ứng dụng IOS'),
             'via_website' => \Yii::t('app', 'Từ website'),
             'content_type' => \Yii::t('app', 'loại nội dung'),

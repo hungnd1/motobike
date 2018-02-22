@@ -10,7 +10,9 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\helpers\UserHelpers;
 use api\models\News;
+use common\models\SubscriberActivity;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -27,7 +29,7 @@ class NewsController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-news',
+//            'get-list-news',
             'search',
             'detail-news'
         ];
@@ -44,6 +46,8 @@ class NewsController extends ApiController
 
     public function actionGetListNews()
     {
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
         $id = $this->getParameter('id', '');
         if (!$id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
@@ -64,6 +68,10 @@ class NewsController extends ApiController
                 'defaultOrder' => ['order' => SORT_DESC],
             ],
         ]);
+        if($subscriber){
+            $description = 'Nguoi dung vao gap';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
+        }
         return $dataProvider;
 
     }

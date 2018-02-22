@@ -10,6 +10,7 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\helpers\UserHelpers;
 use api\models\LogData;
 use api\models\PriceCoffeeDetail;
 use common\models\Answer;
@@ -20,6 +21,7 @@ use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Question;
 use common\models\Sold;
+use common\models\SubscriberActivity;
 use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
@@ -106,6 +108,11 @@ class AppController extends ApiController
 
     public function actionGetPrice($date = 0, $coffee = PriceCoffee::TYPE_GIASAN)
     {
+        $subscriber = Yii::$app->user->identity;
+        if($subscriber){
+            $description = 'Nguoi dung vao gia';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+        }
         if (!$date) {
             $date = date('d/m/Y', time());
         }
@@ -378,6 +385,12 @@ class AppController extends ApiController
 
     public function actionGetQuestion()
     {
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        if($subscriber){
+            $description = 'Nguoi dung vao hoi dap';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_ANSWER, $description);
+        }
         $listQuestion = Question::find()->all();
         $arrRes = [];
         $res = [];
