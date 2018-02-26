@@ -81,8 +81,8 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'subscriber_id' => Yii::t('app', 'Subscriber ID'),
-            'msisdn' => Yii::t('app', 'Msisdn'),
-            'action' => Yii::t('app', 'Action'),
+            'msisdn' => Yii::t('app', 'Số điện thoại'),
+            'action' => Yii::t('app', 'Hành động'),
             'params' => Yii::t('app', 'Params'),
             'created_at' => Yii::t('app', 'Ngày tạo'),
             'ip_address' => Yii::t('app', 'Ip Address'),
@@ -170,29 +170,38 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return $lst;
     }
 
+    public static function listChannel()
+    {
+        $lst = [
+//            self::ACTION_REGISTER => 'Register',
+            self::CHANNEL_IOS => \Yii::t('app', 'IOS'),
+            self::CHANNEL_WEB => \Yii::t('app', 'Web'),
+            self::CHANNEL_APP => \Yii::t('app', 'Android'),
+        ];
+        return $lst;
+    }
+
     /**
      * @return int
      */
     public function getActionName()
     {
-        $lst = self::listActions();
+        $lst = self::listAction();
         if (array_key_exists($this->action, $lst)) {
             return $lst[$this->action];
         }
         return $this->action;
     }
 
-    /**
-     * @return int
-     */
     public function getChannelName()
     {
-        $lst = SubscriberTransaction::listChannelType();
+        $lst = self::listChannel();
         if (array_key_exists($this->channel, $lst)) {
             return $lst[$this->channel];
         }
         return $this->channel;
     }
+
 
     /**
      * @param $subscriber
@@ -257,4 +266,18 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return true;
     }
 
+    public static function listAction()
+    {
+        $lst = [
+            self::ACTION_LOGIN => 'Đăng nhập',
+            self::ACTION_PRICE => 'Giá',
+            self::ACTION_GAP_DISEASE => 'Sâu bệnh',
+            self::ACTION_WEATHER => 'Thời tiết',
+            self::ACTION_BUY => 'Cần mua',
+            self::ACTION_SELL => 'Cần bán',
+            self::ACTION_GAP => 'Gap',
+            self::ACTION_ANSWER => 'Hỏi và trả lời',
+        ];
+        return $lst;
+    }
 }

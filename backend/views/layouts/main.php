@@ -327,6 +327,12 @@ $arrlang = array();
                             'url' => ['report/subscriber-number'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> '.\Yii::t('app', 'Báo cáo hành vi người dùng'),
+                            'url' => ['report/subscriber-action'],
+                            'require_auth' => true,
+                        ],
 
                     ]
 
