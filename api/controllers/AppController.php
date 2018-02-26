@@ -45,6 +45,7 @@ class AppController extends ApiController
         $behaviors['authenticator']['except'] = [
             'check-device-token',
 //            'get-price',
+            'get-price-web',
             'get-price-mobile',
             'total-quality',
             'sold',
