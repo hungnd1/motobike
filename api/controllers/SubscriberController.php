@@ -221,8 +221,6 @@ class SubscriberController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = \api\models\Subscriber::findOne(Yii::$app->user->id);
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type);
-
         if (!$subscriber) {
             throw new InvalidValueException(Message::getAccessDennyMessage());
         }

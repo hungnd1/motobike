@@ -70,9 +70,11 @@ class NewsController extends ApiController
         ]);
         /** @var  $lastActivity SubscriberActivity */
         $lastActivity = SubscriberActivity::find()->andWhere(['action'=>SubscriberActivity::ACTION_GAP])->orderBy(['id'=>SORT_DESC])->one();
-        if(time() - $lastActivity->created_at >= 5 * 60){
-            $description = 'Nguoi dung vao gap';
-            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
+        if($lastActivity) {
+            if (time() - $lastActivity->created_at >= 5 * 60) {
+                $description = 'Nguoi dung vao gap';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
+            }
         }
         return $dataProvider;
 
