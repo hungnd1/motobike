@@ -33,7 +33,7 @@ class Exchange extends \common\models\Exchange
 
         $fields['total_quantity'] = function ($model) {
             /* @var $model \common\models\Exchange */
-           return $model->total_quantity;
+           return $model->total_quantity.' '. \Yii::t('app','tấn');
         };
         $fields['subscriber_name'] = function ($model) {
             /* @var $model \common\models\Exchange */
