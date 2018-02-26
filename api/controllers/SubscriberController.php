@@ -19,6 +19,7 @@ use common\models\PriceCoffee;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
 use common\models\SubscriberToken;
+use DateTime;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -293,9 +294,10 @@ class SubscriberController extends ApiController
 
     public function actionTransactionSold()
     {
-
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = Exchange::find();
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-12 days')->format('d/m/Y');
+        $query = Exchange::find()
+            ->andWhere(['>=', 'created_at', $from_date_default]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -435,9 +437,10 @@ class SubscriberController extends ApiController
 
     public function actionTransactionBuy()
     {
-
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-12 days')->format('d/m/Y');
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = ExchangeBuy::find();
+        $query = ExchangeBuy::find()
+            ->andWhere(['>=', 'created_at', $from_date_default]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
