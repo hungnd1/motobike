@@ -297,6 +297,7 @@ class SubscriberController extends ApiController
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-12 days')->format('d/m/Y');
         $query = Exchange::find()
+            ->andWhere('total_quantity is not null ')
             ->andWhere(['>=', 'created_at', $from_date_default]);
 
         $dataProvider = new ActiveDataProvider([
@@ -440,6 +441,7 @@ class SubscriberController extends ApiController
         $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-12 days')->format('d/m/Y');
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = ExchangeBuy::find()
+            ->andWhere('total_quantity is not null ')
             ->andWhere(['>=', 'created_at', $from_date_default]);
 
         $dataProvider = new ActiveDataProvider([
