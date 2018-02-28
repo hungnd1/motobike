@@ -44,7 +44,8 @@ class SubscriberActivitySearch extends SubscriberActivity
      */
     public function search($params)
     {
-        $query = SubscriberActivity::find();
+        $query = SubscriberActivity::find()
+        ->andWhere(['<>','action',0]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -92,7 +93,9 @@ class SubscriberActivitySearch extends SubscriberActivity
 
     public function searchAll($params)
     {
-        $query = SubscriberActivity::find()->orderBy(['created_at'=>SORT_DESC]);
+        $query = SubscriberActivity::find()
+            ->andWhere(['<>','action',0])
+            ->orderBy(['created_at'=>SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
