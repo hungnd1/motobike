@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     /**  @var $model \common\models\SubscriberActivity */
                                     $subscriber = Subscriber::findOne($model->subscriber_id);
                                     if($subscriber){
-                                        return $subscriber->full_name;
+                                        return $subscriber->full_name ? $subscriber->full_name : 'Chưa cập nhật';
                                     }
                                     return $model->msisdn;
                                 },

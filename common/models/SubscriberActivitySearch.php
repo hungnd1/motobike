@@ -80,11 +80,11 @@ class SubscriberActivitySearch extends SubscriberActivity
 //            $query->andFilterWhere(['>=', 'created_at', strtotime($this->created_at)]);
 //        }
 
-        if ($this->created_at !== '' && $this->created_at !== null) {
-            $from_time = strtotime(str_replace('/', '-', $this->created_at) . ' 00:00:00');
-            $to_time = strtotime(str_replace('/', '-', $this->created_at) . ' 23:59:59');
-            $query->andFilterWhere(['>=', 'created_at', $from_time]);
-            $query->andFilterWhere(['<=', 'created_at', $to_time]);
+        if ($this->from_date) {
+            $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
+        }
+        if ($this->to_date) {
+            $query->andFilterWhere(['<=', 'created_at', $this->to_date]);
         }
 
         return $dataProvider;
@@ -129,11 +129,11 @@ class SubscriberActivitySearch extends SubscriberActivity
 //            $query->andFilterWhere(['>=', 'created_at', strtotime($this->created_at)]);
 //        }
 
-        if ($this->created_at !== '' && $this->created_at !== null) {
-            $from_time = strtotime(str_replace('/', '-', $this->created_at) . ' 00:00:00');
-            $to_time = strtotime(str_replace('/', '-', $this->created_at) . ' 23:59:59');
-            $query->andFilterWhere(['>=', 'created_at', $from_time]);
-            $query->andFilterWhere(['<=', 'created_at', $to_time]);
+        if ($this->from_date) {
+            $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
+        }
+        if ($this->to_date) {
+            $query->andFilterWhere(['<=', 'created_at', $this->to_date]);
         }
 
         return $dataProvider;

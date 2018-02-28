@@ -113,6 +113,13 @@ class SubscriberSearch extends Subscriber
             'updated_at' => $this->updated_at,
         ]);
 
+        if ($this->from_date) {
+            $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
+        }
+        if ($this->to_date) {
+            $query->andFilterWhere(['<=', 'created_at', $this->to_date]);
+        }
+
         return $dataProvider;
     }
 }

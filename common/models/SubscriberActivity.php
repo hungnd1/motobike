@@ -96,6 +96,7 @@ class SubscriberActivity extends \yii\db\ActiveRecord
             'site_id' => Yii::t('app', 'Service Provider ID'),
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -109,6 +110,7 @@ class SubscriberActivity extends \yii\db\ActiveRecord
             ],
         ];
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -193,6 +195,15 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return $this->action;
     }
 
+    public static function getAction($action)
+    {
+        $lst = self::listAction();
+        if (array_key_exists($action, $lst)) {
+            return $lst[$action];
+        }
+        return $action;
+    }
+
     public function getChannelName()
     {
         $lst = self::listChannel();
@@ -200,6 +211,15 @@ class SubscriberActivity extends \yii\db\ActiveRecord
             return $lst[$this->channel];
         }
         return $this->channel;
+    }
+
+    public static function getChannel($channel)
+    {
+        $lst = self::listChannel();
+        if (array_key_exists($channel, $lst)) {
+            return $lst[$channel];
+        }
+        return $channel;
     }
 
 
@@ -212,7 +232,8 @@ class SubscriberActivity extends \yii\db\ActiveRecord
      * @param int $status
      * @return array
      */
-    public static function createSubscriberActivity($subscriber, $description, $channel_type, $site_id, $action = SubscriberActivity::ACTION_LOGIN, $status = SubscriberActivity::STATUS_SUCCESS){
+    public static function createSubscriberActivity($subscriber, $description, $channel_type, $site_id, $action = SubscriberActivity::ACTION_LOGIN, $status = SubscriberActivity::STATUS_SUCCESS)
+    {
         $res = [];
 
         $r = new SubscriberActivity();
@@ -241,7 +262,8 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return $res;
     }
 
-    private function getFirstMessageError(){
+    private function getFirstMessageError()
+    {
         $error = $this->firstErrors;
         $message = "";
         foreach ($error as $key => $value) {
@@ -251,7 +273,8 @@ class SubscriberActivity extends \yii\db\ActiveRecord
         return $message;
     }
 
-    public static function addActivity($subscriber,$uid,$type,$action, $description = ''){
+    public static function addActivity($subscriber, $uid, $type, $action, $description = '')
+    {
 
         $audit_log = new SubscriberActivity();
         $audit_log->subscriber_id = $subscriber->id;

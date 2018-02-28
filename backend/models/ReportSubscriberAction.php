@@ -1,10 +1,9 @@
 <?php
 namespace backend\models;
 
-use common\models\ExchangeBuySearch;
-use common\models\ReportSubscriberActivitySearch;
+use common\models\Subscriber;
+use common\models\SubscriberActivity;
 use common\models\SubscriberActivitySearch;
-use common\models\SubscriberSearch;
 use DateTime;
 use Yii;
 use yii\base\Model;
@@ -35,18 +34,18 @@ class ReportSubscriberAction extends Model
     public function rules()
     {
         return [
-            [['from_date', 'to_date', 'to_month', 'from_month','phone_number'], 'safe'],
+            [['from_date', 'to_date', 'to_month', 'from_month', 'phone_number'], 'safe'],
             [['from_date'], 'required',
 //                'when' => function($model) {
 //                    return $model->type == self::TYPE_DATE;
 //                },
-                'message' => Yii::t('app','Thông tin không hợp lệ, Ngày bắt đầu không được để trống'),
+                'message' => Yii::t('app', 'Thông tin không hợp lệ, Ngày bắt đầu không được để trống'),
             ],
             [['to_date'], 'required',
 //                'when' => function($model) {
 //                    return $model->type == self::TYPE_DATE;
 //                },
-                'message' => Yii::t('app','Thông tin không hợp lệ, Ngày kết thúc không được để trống'),
+                'message' => Yii::t('app', 'Thông tin không hợp lệ, Ngày kết thúc không được để trống'),
             ]
         ];
     }
@@ -54,11 +53,11 @@ class ReportSubscriberAction extends Model
     public function attributeLabels()
     {
         return [
-            'to_date' => Yii::t('app','Đến ngày'),
-            'from_date' => Yii::t('app','Từ ngày'),
-            'to_month' => Yii::t('app','Đến tháng'),
-            'from_month' => Yii::t('app','Từ tháng'),
-            'type' => Yii::t('app','Loại báo cáo'),
+            'to_date' => Yii::t('app', 'Đến ngày'),
+            'from_date' => Yii::t('app', 'Từ ngày'),
+            'to_month' => Yii::t('app', 'Đến tháng'),
+            'from_month' => Yii::t('app', 'Từ tháng'),
+            'type' => Yii::t('app', 'Loại báo cáo'),
         ];
     }
 
@@ -84,11 +83,11 @@ class ReportSubscriberAction extends Model
 
         $param = Yii::$app->request->queryParams;
         $searchModel = new SubscriberActivitySearch();
-        $param['SubscriberActivitySearch']['from_date'] =$from_date;
-        $param['SubscriberActivitySearch']['to_date'] =$to_date;
+        $param['SubscriberActivitySearch']['from_date'] = $from_date;
+        $param['SubscriberActivitySearch']['to_date'] = $to_date;
 
         $dataProvider = $searchModel->search($param);
-        return  $dataProvider;
+        return $dataProvider;
 
     }
 
@@ -112,25 +111,38 @@ class ReportSubscriberAction extends Model
 
         $param = Yii::$app->request->queryParams;
         $searchModel = new SubscriberActivitySearch();
-        $param['SubscriberActivitySearch']['from_date'] =$from_date;
-        $param['SubscriberActivitySearch']['to_date'] =$to_date;
+        $param['SubscriberActivitySearch']['from_date'] = $from_date;
+        $param['SubscriberActivitySearch']['to_date'] = $to_date;
 
         $dataProvider = $searchModel->searchAll($param);
-        return  $dataProvider;
+        return $dataProvider;
 
     }
-    public function generateDetailReport($rawData,$dateFormat = 'd/m/Y'){
+
+    public function generateDetailReport($rawData, $dateFormat = 'd/m/Y')
+    {
         $dataRow = [];
         //label header
-        $sttLabel = Yii::t('app','STT');
-        $dateLabel = Yii::t('app','Ngày');
-        $total_via_site_label = Yii::t('app','Tên tài khoản');
-        if(!empty($rawData)){
-            $i=0;
-            foreach ($rawData as $raw){
+        $sttLabel = Yii::t('app', 'STT');
+        $dateLabel = Yii::t('app', 'Ngày tạo');
+        $channel = Yii::t('app', 'Channel');
+        $total_via_site_label = Yii::t('app', 'Tên tài khoản');
+        $action = Yii::t('app', 'Hành động');
+        $phone = Yii::t('app', 'Số điện thoại');
+        if (!empty($rawData)) {
+            $i = 0;
+            foreach ($rawData as $raw) {
                 $row[$sttLabel] = ++$i;
-                $row[$dateLabel] = date($dateFormat,$raw['created_at']);
-                $row[$total_via_site_label] = $raw['id'];
+                $row[$phone] = $raw['msisdn'];
+                $subscriber = Subscriber::findOne($raw['subscriber_id']);
+                if ($subscriber) {
+                    $row[$total_via_site_label] = $subscriber->full_name;
+                } else {
+                    $row[$total_via_site_label] = $raw['msisdn'];
+                }
+                $row[$action] = SubscriberActivity::getAction($raw['action']);
+                $row[$dateLabel] = date($dateFormat, $raw['created_at']);
+                $row[$channel] = SubscriberActivity::getChannel($raw['channel']);
                 $dataRow[] = $row;
 
                 //kết thúc một ngày, khởi tạo thêm 1 dòng cho ngày tiếp theo
@@ -141,7 +153,7 @@ class ReportSubscriberAction extends Model
         }
         $excelDataProvider = new ArrayDataProvider([
             'allModels' => $dataRow,
-            'pagination'=>false
+            'pagination' => false
         ]);
         return $excelDataProvider;
     }

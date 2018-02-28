@@ -113,7 +113,12 @@ class ReportSubscriberActivitySearch extends ReportSubscriberActivity
                         sum(via_ios) as via_ios,
                         sum(via_website) as via_website'
         );
-
+        if ($this->from_date) {
+            $query->andFilterWhere(['>=', 'report_date', $this->from_date]);
+        }
+        if ($this->to_date) {
+            $query->andFilterWhere(['<=', 'report_date', $this->to_date]);
+        }
 
         $query->groupBy('report_date');
         return $dataProvider;
