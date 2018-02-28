@@ -5,7 +5,6 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\SubscriberActivity;
 
 /**
  * SubscriberActivitySearch represents the model behind the search form about `common\models\SubscriberActivity`.
@@ -45,7 +44,8 @@ class SubscriberActivitySearch extends SubscriberActivity
     public function search($params)
     {
         $query = SubscriberActivity::find()
-        ->andWhere(['<>','action',0]);
+            ->andWhere(['<>', 'action', 0])
+            ->orderBy(['created_at' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -94,12 +94,12 @@ class SubscriberActivitySearch extends SubscriberActivity
     public function searchAll($params)
     {
         $query = SubscriberActivity::find()
-            ->andWhere(['<>','action',0])
-            ->orderBy(['created_at'=>SORT_DESC]);
+            ->andWhere(['<>', 'action', 0])
+            ->orderBy(['created_at' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>false
+            'pagination' => false
         ]);
 
         $this->load($params);
