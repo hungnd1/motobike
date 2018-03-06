@@ -1,5 +1,6 @@
 <?php
 
+use common\widgets\CKEditor;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
 use yii\helpers\Html;
@@ -25,7 +26,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'answer')->widget(\dosamigos\ckeditor\CKEditor::className(), [
+            <?= $form->field($model, 'answer')->widget(CKEditor::className(), [
                 'options' => ['rows' => 8],
                 'preset' => 'full'
             ]) ?>
