@@ -11,8 +11,13 @@ namespace console\controllers;
 
 use api\helpers\Message;
 use common\helpers\CUtils;
+use common\models\Exchange;
+use common\models\ExchangeBuy;
+use common\models\Province;
+use common\models\ReportBuySell;
 use common\models\ReportSubscriberActivity;
 use common\models\SubscriberActivity;
+use common\models\TypeCoffee;
 use DateTime;
 use Exception;
 use Yii;
@@ -84,5 +89,124 @@ class ReportController extends Controller
             echo '****** ERROR! Report Subscriber Activity Fail Exception ******' . $e->getMessage();
         }
 
+    }
+
+    public function actionReportBuySell($start_day = ''){
+        // 2/7/2017
+        if ($start_day) {
+            if (!CUtils::validateDate($start_day)) {
+                throw new InvalidValueException(Message::getNotDateMessage());
+            }
+            for($i = 0; $i <= 200; $i++){
+                $beginFirst =  date('Y-m-d',strtotime($start_day."+".$i." days"));
+                $begin = new \DateTime($beginFirst);
+                $begin->setTime(0, 0, 0);
+                $beginPreDay = $begin->getTimestamp();
+                $end = new \DateTime($beginFirst);
+                $end->setTime(23, 59, 59);
+                $endPreDay = $end->getTimestamp();
+
+                //list province
+                $listProvince = Province::find()->all();
+                foreach($listProvince as $province){
+                    /** @var $province Province */
+                    //list type coffee
+                    $listTypeCoffee = TypeCoffee::find()->all();
+                    foreach($listTypeCoffee as $typeCoffee){
+                        /** @var $typeCoffee TypeCoffee */
+
+                        $total_buy = 0;
+                        $total_sell = 0;
+                        //list buy
+                        $listExchangeBuy = ExchangeBuy::find()
+                            ->andWhere(['province_id'=>$province->id])
+                            ->andWhere(['type_coffee_id'=>$typeCoffee->id])
+                            ->andWhere('created_at between :beginPreDay and :endPreDay')
+                            ->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
+                            ->all();
+                        foreach ($listExchangeBuy as $exchangeBuy){
+                            /** @var $exchangeBuy ExchangeBuy */
+                            $total_buy += $exchangeBuy->total_quantity;
+                        }
+
+                        $listExchangeSell = Exchange::find()
+                            ->andWhere(['province_id'=>$province->id])
+                            ->andWhere('total_quantity is not null')
+                            ->andWhere(['type_coffee'=>$typeCoffee->id])
+                            ->andWhere('created_at between :beginPreDay and :endPreDay')
+                            ->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
+                            ->all();
+
+                        foreach ($listExchangeSell as $exchangeSell){
+                            /** @var $exchangeSell Exchange */
+                            $total_sell += $exchangeSell->total_quantity;
+                        }
+                        if($total_buy > 0 || $total_sell > 0){
+                            $reportNew = new ReportBuySell();
+                            $reportNew->report_date = $beginPreDay;
+                            $reportNew->type_coffee = $typeCoffee->id;
+                            $reportNew->province_id = $province->id;
+                            $reportNew->total_buy = $total_buy;
+                            $reportNew->total_sell = $total_sell;
+                            $reportNew->save();
+                        }
+                    }
+                }
+            }
+        } else {
+            $beginFirst = strtotime("midnight", time());
+            $begin = new \DateTime($beginFirst);
+            $begin->setTime(0, 0, 0);
+            $beginPreDay = $begin->getTimestamp();
+            $end = new \DateTime($beginFirst);
+            $end->setTime(23, 59, 59);
+            $endPreDay = $end->getTimestamp();
+            //list province
+            $listProvince = Province::find()->all();
+            foreach($listProvince as $province){
+                /** @var $province Province */
+                //list type coffee
+                $listTypeCoffee = TypeCoffee::find()->all();
+                foreach($listTypeCoffee as $typeCoffee){
+                    /** @var $typeCoffee TypeCoffee */
+
+                    $total_buy = 0;
+                    $total_sell = 0;
+                    //list buy
+                    $listExchangeBuy = ExchangeBuy::find()
+                        ->andWhere(['province_id'=>$province->id])
+                        ->andWhere(['type_coffee_id'=>$typeCoffee->id])
+                        ->andWhere('created_at between :beginPreDay and :endPreDay')
+                        ->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
+                        ->all();
+                    foreach ($listExchangeBuy as $exchangeBuy){
+                        /** @var $exchangeBuy ExchangeBuy */
+                        $total_buy += $exchangeBuy->total_quantity;
+                    }
+
+                    $listExchangeSell = Exchange::find()
+                        ->andWhere(['province_id'=>$province->id])
+                        ->andWhere('total_quantity is not null')
+                        ->andWhere(['type_coffee'=>$typeCoffee->id])
+                        ->andWhere('created_at between :beginPreDay and :endPreDay')
+                        ->addParams([':beginPreDay' => $beginPreDay, ':endPreDay' => $endPreDay])
+                        ->all();
+
+                    foreach ($listExchangeSell as $exchangeSell){
+                        /** @var $exchangeSell Exchange */
+                        $total_sell += $exchangeSell->total_quantity;
+                    }
+                    if($total_buy > 0 || $total_sell > 0){
+                        $reportNew = new ReportBuySell();
+                        $reportNew->report_date = $beginPreDay;
+                        $reportNew->type_coffee = $typeCoffee->id;
+                        $reportNew->province_id = $province->id;
+                        $reportNew->total_buy = $total_buy;
+                        $reportNew->total_sell = $total_sell;
+                        $reportNew->save();
+                    }
+                }
+            }
+        }
     }
 }
