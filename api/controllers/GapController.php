@@ -120,7 +120,7 @@ class GapController extends ApiController
         }
 
         $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
-        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-7 days')->format('d/m/Y');
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');
 
         $fromDate = $fromDate ? $fromDate : $from_date_default;
         $toDate = $toDate ? $toDate : $to_date_default;
