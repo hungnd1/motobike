@@ -50,6 +50,9 @@ class ReportBuySellSearch extends ReportBuySell
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
         ]);
 
         $this->load($params);
