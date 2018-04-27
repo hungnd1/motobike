@@ -97,7 +97,7 @@ class ReportController extends Controller
             if (!CUtils::validateDate($start_day)) {
                 throw new InvalidValueException(Message::getNotDateMessage());
             }
-            for($i = 0; $i <= 200; $i++){
+            for($i = 0; $i <= 365; $i++){
                 $beginFirst =  date('Y-m-d',strtotime($start_day."+".$i." days"));
                 $begin = new \DateTime($beginFirst);
                 $begin->setTime(0, 0, 0);
