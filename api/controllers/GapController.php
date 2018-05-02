@@ -118,6 +118,7 @@ class GapController extends ApiController
                 throw new InvalidValueException(Message::getNotDateMessage());
             }
         }
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 
         $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
         $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');
@@ -130,6 +131,6 @@ class GapController extends ApiController
         $searchModel->province_id = $province_id;
         $searchModel->type_coffee = $coffee_type;
 //        $searchModel->search($searchModel);
-        return $searchModel->search($searchModel);
+        return $searchModel->search($searchModel,$page);
     }
 }

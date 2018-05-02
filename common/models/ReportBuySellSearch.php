@@ -42,7 +42,7 @@ class ReportBuySellSearch extends ReportBuySell
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $page)
     {
         $query = \api\models\ReportBuySell::find();
 
@@ -50,6 +50,10 @@ class ReportBuySellSearch extends ReportBuySell
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 25,
+                'page' => $page
+            ],
             'sort' => [
                 'defaultOrder' => ['report_date' => SORT_DESC],
             ],
