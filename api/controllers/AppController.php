@@ -20,8 +20,11 @@ use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Question;
+use common\models\SiteApiCredential;
 use common\models\Sold;
+use common\models\Subscriber;
 use common\models\SubscriberActivity;
+use common\models\SubscriberServiceAsm;
 use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
@@ -111,11 +114,11 @@ class AppController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
-        if($subscriber){
+        if ($subscriber) {
             /** @var  $lastActivity SubscriberActivity */
-            $lastActivity = SubscriberActivity::find()->andWhere(['action'=>SubscriberActivity::ACTION_PRICE])->orderBy(['id'=>SORT_DESC])->one();
-            if($lastActivity){
-                if(time() - $lastActivity->created_at >= 5 * 60){
+            $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_PRICE])->orderBy(['id' => SORT_DESC])->one();
+            if ($lastActivity) {
+                if (time() - $lastActivity->created_at >= 5 * 60) {
                     $description = 'Nguoi dung vao gia';
                     $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
                 }
@@ -315,8 +318,29 @@ class AppController extends ApiController
 
     public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
     {
-        $wind = $wind * 3.6;
 
+        $wind = $wind * 3.6;
+        if ($this->type != SiteApiCredential::TYPE_WEB_APPLICATION) {
+            UserHelpers::manualLogin();
+            /** @var  $subscriber Subscriber */
+            /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
+            $subscriberServiceAsm = SubscriberServiceAsm::find()
+                ->andWhere(['subscriber_id' => $subscriber->id])
+                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
+                ->orderBy(['updated_at' => SORT_DESC])->one();
+            if (!$subscriberServiceAsm) {
+                if($subscriberServiceAsm->time_expired - time() < 0){
+                    $this->setStatusCode(201);
+                    return [
+                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
+                    ];
+                }
+            }
+            $this->setStatusCode(201);
+            return [
+                'message' => 'Bạn chưa đăng ký mua gói'
+            ];
+        }
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
             ->andWhere('temperature_min <= :tem ', [':tem' => $tem])

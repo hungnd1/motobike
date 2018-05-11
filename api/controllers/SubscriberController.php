@@ -603,6 +603,9 @@ class SubscriberController extends ApiController
             $subscriber->coin = $subscriber->coin - $service->price;
             $subscriber->save();
             //luu log transaction
+            $subscriber->newTransaction($subscriber->id,SubscriberTransaction::TYPE_REGISTER,
+                $service->id,SubscriberTransaction::STATUS_SUCCESS,
+                $service->price,'Mua goi cuoc',0,$subscriberServiceAsm->id, $subscriberServiceAsm->time_expired);
             return [
                 'success' => true,
                 'message' => Yii::t('app', 'Mua gói thành công')

@@ -253,4 +253,27 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return $message;
     }
+
+    public function newTransaction($subscriber_id, $type = SubscriberTransaction::TYPE_REGISTER, $service_id,$status = SubscriberTransaction::STATUS_SUCCESS,$balance,$description,$error_code,$subscriber_service_asm_id, $expired_time)
+    {
+        $tr = new SubscriberTransaction();
+        $tr->subscriber_id = $subscriber_id;
+        $tr->type = $type;
+        $tr->service_id = $service_id;
+        $tr->transaction_time = time();
+        $tr->created_at = time();
+        $tr->updated_at = time();
+        $tr->status = $status;
+        $tr->balance = $balance;
+        $tr->description = $description;
+        $tr->error_code = $error_code;
+        $tr->subscriber_service_asm_id = $subscriber_service_asm_id;
+        $tr->expired_time = $expired_time;
+        if ($tr->save()) {
+            return $tr;
+        } else {
+            Yii::error($tr->getErrors());
+            return null;
+        }
+    }
 }
