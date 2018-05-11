@@ -32,6 +32,7 @@ use yii\web\IdentityInterface;
  * @property string $verification_code
  * @property string $address
  * @property string $user_agent
+ * @property integer $coin
  */
 class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -56,7 +57,7 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion'], 'integer'],
+            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin'], 'integer'],
             [['msisdn'], 'required'],
             [['msisdn'], 'string', 'max' => 45],
             [['username', 'email'], 'string', 'max' => 100],
@@ -95,6 +96,7 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
             'using_promotion' => 'Using Promotion',
             'verification_code' => 'Verification Code',
             'user_agent' => 'User Agent',
+            'coin' => 'Tiền'
         ];
     }
 
