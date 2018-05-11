@@ -320,27 +320,27 @@ class AppController extends ApiController
     {
 
         $wind = $wind * 3.6;
-        if ($this->type != SiteApiCredential::TYPE_WEB_APPLICATION) {
-            UserHelpers::manualLogin();
-            /** @var  $subscriber Subscriber */
-            /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
-            $subscriberServiceAsm = SubscriberServiceAsm::find()
-                ->andWhere(['subscriber_id' => $subscriber->id])
-                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
-                ->orderBy(['updated_at' => SORT_DESC])->one();
-            if (!$subscriberServiceAsm) {
-                if($subscriberServiceAsm->time_expired - time() < 0){
-                    $this->setStatusCode(201);
-                    return [
-                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
-                    ];
-                }
-            }
-            $this->setStatusCode(201);
-            return [
-                'message' => 'Bạn chưa đăng ký mua gói'
-            ];
-        }
+//        if ($this->type != SiteApiCredential::TYPE_WEB_APPLICATION) {
+//            UserHelpers::manualLogin();
+//            /** @var  $subscriber Subscriber */
+//            /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
+//            $subscriberServiceAsm = SubscriberServiceAsm::find()
+//                ->andWhere(['subscriber_id' => $subscriber->id])
+//                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
+//                ->orderBy(['updated_at' => SORT_DESC])->one();
+//            if (!$subscriberServiceAsm) {
+//                if($subscriberServiceAsm->time_expired - time() < 0){
+//                    $this->setStatusCode(201);
+//                    return [
+//                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
+//                    ];
+//                }
+//            }
+//            $this->setStatusCode(201);
+//            return [
+//                'message' => 'Bạn chưa đăng ký mua gói'
+//            ];
+//        }
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
             ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
