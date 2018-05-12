@@ -322,6 +322,7 @@ class AppController extends ApiController
         $wind = $wind * 3.6;
         if ($this->type != SiteApiCredential::TYPE_WEB_APPLICATION) {
             UserHelpers::manualLogin();
+            $subscriber = Yii::$app->user->identity;
             /** @var  $subscriber Subscriber */
             /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
             $subscriberServiceAsm = SubscriberServiceAsm::find()
