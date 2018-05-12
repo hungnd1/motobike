@@ -329,7 +329,7 @@ class AppController extends ApiController
                 ->andWhere(['subscriber_id' => $subscriber->id])
                 ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
                 ->orderBy(['updated_at' => SORT_DESC])->one();
-            if (!$subscriberServiceAsm) {
+            if ($subscriberServiceAsm) {
                 if($subscriberServiceAsm->time_expired - time() < 0){
                     $this->setStatusCode(201);
                     return [
