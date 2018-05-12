@@ -601,7 +601,7 @@ class SubscriberController extends ApiController
         //gia han goi
         if ($subscriberServiceAsm) {
             if ($subscriberServiceAsm->time_expired - time() >= 0) {
-                $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 3600;
+                $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 24 * 3600;
                 $subscriberServiceAsm->updated_at = time();
                 if ($subscriberServiceAsm->save()) {
                     $subscriber->coin = $subscriber->coin - $service->price;
@@ -621,7 +621,7 @@ class SubscriberController extends ApiController
             $subscriberServiceAsm = new SubscriberServiceAsm();
             $subscriberServiceAsm->service_id = $service->id;
             $subscriberServiceAsm->subscriber_id = $subscriber->id;
-            $subscriberServiceAsm->time_expired = time() + $service->time_expired * 3600;
+            $subscriberServiceAsm->time_expired = time() + $service->time_expired * 24 * 3600;
             $subscriberServiceAsm->status = SubscriberServiceAsm::STATUS_ACTIVE;
             $subscriberServiceAsm->created_at = time();
             $subscriberServiceAsm->updated_at = time();

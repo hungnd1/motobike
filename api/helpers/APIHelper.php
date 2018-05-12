@@ -15,7 +15,7 @@ use yii\web\UrlManager;
  */
 class APIHelper
 {
-    const API_CHECK_VOUCHER = '/SMPService/card_chargin_api';
+    const API_ANSWER = 'http://45.119.80.32:7070/questions/answer';
     const API_CHECK_VOUCHER_PHONE = '/TopupAPI/ScratchCard';
     // gọi sang bên nạp thẻ điện thoại
     public static function CallAPI($method, $url, $data = null)
