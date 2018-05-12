@@ -21,6 +21,7 @@ use common\models\Subscriber;
 use common\models\SubscriberActivity;
 use common\models\SubscriberServiceAsm;
 use common\models\SubscriberToken;
+use common\models\SubscriberTransaction;
 use DateTime;
 use Yii;
 use yii\base\InvalidValueException;
@@ -588,29 +589,56 @@ class SubscriberController extends ApiController
         if (!$service) {
             throw new InvalidValueException($this->replaceParam(Message::getNotFoundServiceMessage()));
         }
-        if($subscriber->coin < $service->price){
+        if ($subscriber->coin < $service->price) {
             throw new InvalidValueException('Bạn không đủ coin để mua gói cước này. Vui lòng nạp thêm coin vào tài khoản');
         }
-        //add vao bang mua goi
-        $subscriberServiceAsm = new SubscriberServiceAsm();
-        $subscriberServiceAsm->service_id = $service->id;
-        $subscriberServiceAsm->subscriber_id = $subscriber->id;
-        $subscriberServiceAsm->time_expired = time() + 7 * 3600;
-        $subscriberServiceAsm->status = SubscriberServiceAsm::STATUS_ACTIVE;
-        $subscriberServiceAsm->created_at = time();
-        $subscriberServiceAsm->updated_at = time();
-        if ($subscriberServiceAsm->save()) {
-            $subscriber->coin = $subscriber->coin - $service->price;
-            $subscriber->save();
-            //luu log transaction
-            $subscriber->newTransaction($subscriber->id,SubscriberTransaction::TYPE_REGISTER,
-                $service->id,SubscriberTransaction::STATUS_SUCCESS,
-                $service->price,'Mua goi cuoc',0,$subscriberServiceAsm->id, $subscriberServiceAsm->time_expired);
-            return [
-                'success' => true,
-                'message' => Yii::t('app', 'Mua gói thành công')
-            ];
+        /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+        $subscriberServiceAsm = SubscriberServiceAsm::find()
+            ->andWhere(['service_id' => $service->id])
+            ->andWhere(['subscriber_id' => $subscriber->id])
+            ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
+            ->orderBy(['updated_at' => SORT_DESC])->one();
+        //gia han goi
+        if ($subscriberServiceAsm) {
+            if ($subscriberServiceAsm->time_expired - time() >= 0) {
+                $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 3600;
+                $subscriberServiceAsm->updated_at = time();
+                if ($subscriberServiceAsm->save()) {
+                    $subscriber->coin = $subscriber->coin - $service->price;
+                    $subscriber->save();
+                    //luu log transaction
+                    $subscriber->newTransaction($subscriber->id, SubscriberTransaction::TYPE_RENEW,
+                        $service->id, SubscriberTransaction::STATUS_SUCCESS,
+                        $service->price, 'Gia han goi cuoc', '0', $subscriberServiceAsm->id, $subscriberServiceAsm->time_expired);
+                    return [
+                        'success' => true,
+                        'message' => Yii::t('app', 'Gia hạn gói thành công')
+                    ];
+                }
+            }
+        } else {
+            //add vao bang mua goi
+            $subscriberServiceAsm = new SubscriberServiceAsm();
+            $subscriberServiceAsm->service_id = $service->id;
+            $subscriberServiceAsm->subscriber_id = $subscriber->id;
+            $subscriberServiceAsm->time_expired = time() + $service->time_expired * 3600;
+            $subscriberServiceAsm->status = SubscriberServiceAsm::STATUS_ACTIVE;
+            $subscriberServiceAsm->created_at = time();
+            $subscriberServiceAsm->updated_at = time();
+            if ($subscriberServiceAsm->save()) {
+                $subscriber->coin = $subscriber->coin - $service->price;
+                $subscriber->save();
+                //luu log transaction
+                $subscriber->newTransaction($subscriber->id, SubscriberTransaction::TYPE_REGISTER,
+                    $service->id, SubscriberTransaction::STATUS_SUCCESS,
+                    $service->price, 'Mua goi cuoc', '0', $subscriberServiceAsm->id, $subscriberServiceAsm->time_expired);
+                return [
+                    'success' => true,
+                    'message' => Yii::t('app', 'Mua gói thành công')
+                ];
+            }
         }
+
         return [
             'success' => false,
             'message' => Yii::t('app', 'Mua gói thất bại')
