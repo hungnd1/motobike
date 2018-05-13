@@ -375,6 +375,12 @@ $arrlang = array();
                             'url' => ['report/subscriber-action'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Báo cáo tổng doanh thu mua bán'),
+                            'url' => ['report/report-buy-sell'],
+                            'require_auth' => true,
+                        ],
 
                     ]
 

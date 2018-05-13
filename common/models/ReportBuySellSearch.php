@@ -84,4 +84,79 @@ class ReportBuySellSearch extends ReportBuySell
 
         return $dataProvider;
     }
+
+    public function searchReport($params)
+    {
+        $query = \api\models\ReportBuySell::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['report_date' => SORT_DESC],
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'province_id' => $this->province_id,
+            'type_coffee' => $this->type_coffee,
+            'total_buy' => $this->total_buy,
+            'total_sell' => $this->total_sell,
+        ]);
+        if ($this->from_date !== '' && $this->from_date !== null && $this->to_date !== '' && $this->to_date !== null) {
+            $query->andFilterWhere(['>=', 'report_date', $this->from_date]);
+            $query->andFilterWhere(['<=', 'report_date', $this->to_date]);
+        }
+
+        return $dataProvider;
+    }
+
+    public function searchReportAll($params)
+    {
+        $query = \api\models\ReportBuySell::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+            'sort' => [
+                'defaultOrder' => ['report_date' => SORT_DESC],
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'province_id' => $this->province_id,
+            'type_coffee' => $this->type_coffee,
+            'total_buy' => $this->total_buy,
+            'total_sell' => $this->total_sell,
+        ]);
+        if ($this->from_date !== '' && $this->from_date !== null && $this->to_date !== '' && $this->to_date !== null) {
+            $query->andFilterWhere(['>=', 'report_date', $this->from_date]);
+            $query->andFilterWhere(['<=', 'report_date', $this->to_date]);
+        }
+
+        return $dataProvider;
+    }
 }

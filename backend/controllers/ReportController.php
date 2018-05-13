@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\ReportBuyForm;
+use backend\models\ReportBuySell;
 use backend\models\ReportSubscriberAction;
 use backend\models\ReportSubscriberActivityForm;
 use backend\models\ReportSubscriberForm;
@@ -217,4 +218,30 @@ class ReportController extends Controller
             'excelDataProvider' => $excelDataProvider
         ]);
     }
+
+    public function actionReportBuySell(){
+        $param = Yii::$app->request->queryParams;
+        $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');
+
+        $from_date = isset($param['ReportBuySell']['from_date']) ? $param['ReportBuySell']['from_date'] : $from_date_default;
+        $to_date = isset($param['ReportBuySell']['to_date']) ? $param['ReportBuySell']['to_date'] : $to_date_default;
+        $province_id = isset($param['ReportBuySell']['province_id']) ? $param['ReportBuySell']['province_id'] : 1;
+        $type_coffee = isset($param['ReportBuySell']['type_coffee']) ? $param['ReportBuySell']['type_coffee'] : 0;
+
+        $report = new ReportBuySell();
+        $report->from_date = $from_date;
+        $report->to_date = $to_date;
+        $report->province_id = $province_id;
+        $report->type_coffee = $type_coffee;
+        $dataProvider = $report->generateReport();
+        $dataProviderAll = $report->generateReportAll();
+        $excelDataProvider = $report->generateDetailReport($dataProviderAll->getModels());
+        return $this->render('report-buy-sell', [
+            'report' => $report,
+            'dataProvider' => $dataProvider,
+            'excelDataProvider' => $excelDataProvider
+        ]);
+
+     }
 }
