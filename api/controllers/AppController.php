@@ -325,22 +325,25 @@ class AppController extends ApiController
             $subscriber = Yii::$app->user->identity;
             /** @var  $subscriber Subscriber */
             /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
-            $subscriberServiceAsm = SubscriberServiceAsm::find()
-                ->andWhere(['subscriber_id' => $subscriber->id])
-                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
-                ->orderBy(['updated_at' => SORT_DESC])->one();
-            if ($subscriberServiceAsm) {
-                if($subscriberServiceAsm->time_expired - time() < 0){
-                    $this->setStatusCode(201);
-                    return [
-                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
-                    ];
+            if($subscriber){
+                $subscriberServiceAsm = SubscriberServiceAsm::find()
+                    ->andWhere(['subscriber_id' => $subscriber->id])
+                    ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
+                    ->orderBy(['updated_at' => SORT_DESC])->one();
+                if ($subscriberServiceAsm) {
+                    if($subscriberServiceAsm->time_expired - time() < 0){
+                        $this->setStatusCode(406);
+                        return [
+                            'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
+                        ];
+                    }
                 }
+                $this->setStatusCode(405);
+                return [
+                    'message' => 'Bạn chưa đăng ký mua gói'
+                ];
             }
-            $this->setStatusCode(201);
-            return [
-                'message' => 'Bạn chưa đăng ký mua gói'
-            ];
+
         }
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
