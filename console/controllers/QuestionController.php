@@ -61,11 +61,10 @@ class QuestionController extends Controller
                         $question->save(false);
                         /** @var  $device_token DeviceInfo */
                         $device_token = DeviceInfo::find()
-                            ->innerJoin('device_subscriber_asm','device_subscriber_asm.device_id = device_info.id')
-                            ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = question_answer.subscriber_id')
-                            ->andWhere(['device_subscriber_asm.subscriber_id'=>$question->subscriber_id])
+                            ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
+                            ->andWhere(['device_subscriber_asm.subscriber_id' => $question->subscriber_id])
                             ->one();
-                        CUtils::sendNotify($device_token->device_uid,CUtils::subString($question->answer,30,'...'),'Hệ thống trả lời')
+                        CUtils::sendNotify($device_token->device_uid, CUtils::subString($question->answer, 30, '...'), 'Hệ thống trả lời');
                     }
                 }
             }
