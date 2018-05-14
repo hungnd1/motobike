@@ -10,6 +10,7 @@ namespace console\controllers;
 
 use api\helpers\APIHelper;
 use common\auth\helpers\AuthHelper;
+use common\helpers\FileUtils;
 use common\helpers\StringUtils;
 use common\models\AuthItem;
 use common\models\Site;
