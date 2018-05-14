@@ -137,7 +137,7 @@ class QuestionAnswerController extends ApiController
         $question_answer->updated_at = time();
         $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
         if ($question_answer->save(false)) {
-            shell_exec("nohup  ./auto-answer.sh $question_answer->id > /dev/null 2>&1 &");
+            shell_exec("nohup  ./auto-answer.sh $question_answer->id > /dev/null 3>&1 &");
             return [
                 'message' => Yii::t('app', 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
             ];
