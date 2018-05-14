@@ -905,8 +905,42 @@ class CUtils
         return $randomString;
     }
 
-    public static function sendNotify($){
+    public static function sendNotify($device_token,$msg,$title, $action = ''){
+        define( 'API_ACCESS_KEY', Yii::$app->params['firebaseMessage'] );
+        $msg = array(
+            'body' => $msg,
+            'title' => $title,
+            'vibrate'	=> 1,
+            'sound'		=> 1,
+            'largeIcon'	=> 'large_icon',
+            'smallIcon'	=> 'small_icon',
+            'click_action' =>$action
+        );
+        $fields = array
+        (
+            'to' 	=> $device_token,
+            'notification'			=> $msg
+        );
+        $headers = array
+        (
+            'Authorization: key=' . API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
 
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        curl_close( $ch );
+        $result = json_decode($result);
+        if($result->success){
+            return true;
+        }
+        return false;
     }
 }
 

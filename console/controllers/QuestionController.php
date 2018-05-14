@@ -10,9 +10,11 @@ namespace console\controllers;
 
 use api\helpers\APIHelper;
 use common\auth\helpers\AuthHelper;
+use common\helpers\CUtils;
 use common\helpers\FileUtils;
 use common\helpers\StringUtils;
 use common\models\AuthItem;
+use common\models\DeviceInfo;
 use common\models\Site;
 use common\models\User;
 use ReflectionClass;
@@ -57,6 +59,13 @@ class QuestionController extends Controller
                         $question->updated_at = time();
                         $question->status = QuestionAnswer::STATUS_ACTIVE;
                         $question->save(false);
+                        /** @var  $device_token DeviceInfo */
+                        $device_token = DeviceInfo::find()
+                            ->innerJoin('device_subscriber_asm','device_subscriber_asm.device_id = device_info.id')
+                            ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = question_answer.subscriber_id')
+                            ->andWhere(['device_subscriber_asm.subscriber_id'=>$question->subscriber_id])
+                            ->one();
+                        CUtils::sendNotify($device_token->device_uid,CUtils::subString($question->answer,30,'...'),'Hệ thống trả lời')
                     }
                 }
             }
