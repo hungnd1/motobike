@@ -118,11 +118,11 @@ class AppController extends ApiController
             $deviceSubscriberAsm->save();
         } else {
             $deviceSubscriberAsm = DeviceSubscriberAsm::find()
-                ->andWhere(['device_id' => $device->id])
+                ->andWhere(['device_id' => $deviceInfo->id])
                 ->andWhere(['subscriber_id' => $subscriber->id])->one();
             if ($deviceSubscriberAsm) {
                 $deviceSub = DeviceSubscriberAsm::find()
-                    ->andWhere(['device_id' => $device->id])
+                    ->andWhere(['device_id' => $deviceInfo->id])
                     ->andWhere(['<>', 'id', $deviceSubscriberAsm->id])
                     ->all();
                 foreach ($deviceSub as $deviceS) {

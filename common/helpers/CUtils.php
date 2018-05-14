@@ -904,6 +904,10 @@ class CUtils
         }
         return $randomString;
     }
+
+    public static function sendNotify($){
+
+    }
 }
 
 
