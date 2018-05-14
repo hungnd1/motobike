@@ -16,6 +16,7 @@ use api\models\PriceCoffeeDetail;
 use common\models\Answer;
 use common\models\Category;
 use common\models\DeviceInfo;
+use common\models\DeviceSubscriberAsm;
 use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
@@ -46,7 +47,7 @@ class AppController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'check-device-token',
+//            'check-device-token',
 //            'get-price',
             'get-price-web',
             'get-price-mobile',
@@ -77,7 +78,7 @@ class AppController extends ApiController
             'type-coffee' => ['GET'],
             'get-category' => ['GET'],
             'term' => ['GET'],
-            'check-device-token' => ['POST'],
+//            'check-device-token' => ['POST'],
             'log-data' => ['GET'],
             'get-question' => ['GET'],
             'get-introduce' => ['GET']
@@ -86,8 +87,12 @@ class AppController extends ApiController
 
     public function actionCheckDeviceToken()
     {
+        UserHelpers::manualLogin();
+
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
         $uid = $this->getParameterPost('device_token', '');
-        $type = $this->getParameterPost('channel', DeviceInfo::TYPE_ANDROID);
         $mac = $this->getParameterPost('mac', '');
         if (!$uid) {
             throw new InvalidValueException('Device token không được để trống');
@@ -95,7 +100,7 @@ class AppController extends ApiController
         if (!$mac) {
             throw new InvalidValueException('mac không được để trống');
         }
-        $deviceInfo = DeviceInfo::findOne(['device_type' => $type, 'device_uid' => $uid]);
+        $deviceInfo = DeviceInfo::findOne(['device_type' => $this->type, 'device_uid' => $uid]);
         if (!$deviceInfo) {
             $device = new DeviceInfo();
             $device->device_uid = $uid;
@@ -105,6 +110,26 @@ class AppController extends ApiController
             $device->mac = $mac;
             $device->status = DeviceInfo::STATUS_ACTIVE;
             $device->save();
+            $deviceSubscriberAsm = new DeviceSubscriberAsm();
+            $deviceSubscriberAsm->device_id = $device->id;
+            $deviceSubscriberAsm->subscriber_id = $subscriber->id;
+            $deviceSubscriberAsm->created_at = time();
+            $deviceSubscriberAsm->updated_at = time();
+            $deviceSubscriberAsm->save();
+        } else {
+            $deviceSubscriberAsm = DeviceSubscriberAsm::find()
+                ->andWhere(['device_id' => $device->id])
+                ->andWhere(['subscriber_id' => $subscriber->id])->one();
+            if ($deviceSubscriberAsm) {
+                $deviceSub = DeviceSubscriberAsm::find()
+                    ->andWhere(['device_id' => $device->id])
+                    ->andWhere(['<>', 'id', $deviceSubscriberAsm->id])
+                    ->all();
+                foreach ($deviceSub as $deviceS) {
+                    /** @var $deviceS DeviceSubscriberAsm */
+                    $deviceS->delete();
+                }
+            }
         }
 
         return true;
@@ -324,20 +349,20 @@ class AppController extends ApiController
             UserHelpers::manualLogin();
             $subscriber = Yii::$app->user->identity;
             /** @var  $subscriber Subscriber */
-            /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
-            if($subscriber){
+            /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+            if ($subscriber) {
                 $subscriberServiceAsm = SubscriberServiceAsm::find()
                     ->andWhere(['subscriber_id' => $subscriber->id])
                     ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
                     ->orderBy(['updated_at' => SORT_DESC])->one();
                 if ($subscriberServiceAsm) {
-                    if($subscriberServiceAsm->time_expired - time() < 0){
+                    if ($subscriberServiceAsm->time_expired - time() < 0) {
                         $this->setStatusCode(406);
                         return [
                             'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
                         ];
                     }
-                }else{
+                } else {
                     $this->setStatusCode(405);
                     return [
                         'message' => 'Bạn chưa đăng ký mua gói'
