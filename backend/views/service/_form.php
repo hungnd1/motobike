@@ -26,6 +26,11 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     </div>
     <div class="row">
         <div class="col-md-12">
+            <?= $form->field($model, 'order')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <?= $form->field($model, 'price')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
         </div>
     </div>

@@ -46,7 +46,7 @@ class ServiceController extends ApiController
     public function actionListPackage()
     {
         $query = \api\models\Service::find()->andWhere(['status' => Service::STATUS_ACTIVE]);
-        $defaultSort = [ 'created_at' => SORT_DESC];
+        $defaultSort = [ 'order' => SORT_ASC];
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
