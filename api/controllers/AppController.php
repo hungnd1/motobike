@@ -337,11 +337,12 @@ class AppController extends ApiController
                             'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
                         ];
                     }
+                }else{
+                    $this->setStatusCode(405);
+                    return [
+                        'message' => 'Bạn chưa đăng ký mua gói'
+                    ];
                 }
-                $this->setStatusCode(405);
-                return [
-                    'message' => 'Bạn chưa đăng ký mua gói'
-                ];
             }
 
         }
