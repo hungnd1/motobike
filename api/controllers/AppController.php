@@ -104,7 +104,7 @@ class AppController extends ApiController
         if (!$deviceInfo) {
             $device = new DeviceInfo();
             $device->device_uid = $uid;
-            $device->device_type = $type;
+            $device->device_type = $this->type;
             $device->created_at = time();
             $device->updated_at = time();
             $device->mac = $mac;
