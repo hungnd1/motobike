@@ -30,16 +30,16 @@ use common\models\QuestionAnswer;
  */
 class QuestionController extends Controller
 {
-    public function actionAutoAnswer($id)
+    public function actionAutoAnswer()
     {
         $this->infoLogAnswer("Start answer");
         $listQuestion = QuestionAnswer::find()
             ->andWhere(['status' => QuestionAnswer::STATUS_INACTIVE])
             ->andWhere('answer is null')
-            ->andWhere(['id' => $id])
+//            ->andWhere(['id' => $id])
             ->andWhere('question is not null')
-//            ->andWhere('image is null')
-//            ->andWhere(['>=', 'created_at', time() - 5 * 3600])
+            ->andWhere('image is null')
+            ->andWhere(['>=', 'created_at', time() - 5 * 3600])
             ->all();
         if ($listQuestion) {
             foreach ($listQuestion as $question) {
