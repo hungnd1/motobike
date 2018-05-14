@@ -38,7 +38,7 @@ class QuestionController extends Controller
             ->andWhere('answer is null')
             ->andWhere(['id' => $id])
             ->andWhere('question is not null')
-            ->andWhere('image is null')
+//            ->andWhere('image is null')
 //            ->andWhere(['>=', 'created_at', time() - 5 * 3600])
             ->all();
         if ($listQuestion) {
@@ -56,7 +56,7 @@ class QuestionController extends Controller
                         $question->answer = $answer;
                         $question->updated_at = time();
                         $question->status = QuestionAnswer::STATUS_ACTIVE;
-                        $question->save();
+                        $question->save(false);
                     }
                 }
             }
@@ -70,6 +70,7 @@ class QuestionController extends Controller
         $error_code = $error_code[1];
         return $error_code;
     }
+
     private function infoLogAnswer($txt)
     {
         FileUtils::appendToFile(Yii::getAlias('@runtime/logs/infoAnswer.log'), $txt);
