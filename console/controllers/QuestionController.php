@@ -39,7 +39,7 @@ class QuestionController extends Controller
 //            ->andWhere(['id' => $id])
             ->andWhere('question is not null')
             ->andWhere('image is null')
-            ->andWhere(['>=', 'created_at', time() - 5 * 3600])
+            ->andWhere(['<=', 'created_at', time() - 5 * 3600])
             ->all();
         if ($listQuestion) {
             foreach ($listQuestion as $question) {
