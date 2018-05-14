@@ -29,11 +29,13 @@ use common\models\QuestionAnswer;
  */
 class QuestionController extends Controller
 {
-    public function actionAutoAnswer()
+    public function actionAutoAnswer($id)
     {
+        $this->infoLogAnswer("Start answer");
         $listQuestion = QuestionAnswer::find()
             ->andWhere(['status' => QuestionAnswer::STATUS_INACTIVE])
             ->andWhere('answer is null')
+            ->andWhere(['id' => $id])
             ->andWhere('question is not null')
             ->andWhere('image is null')
             ->andWhere(['>=', 'created_at', time() - 5 * 3600])
@@ -43,13 +45,13 @@ class QuestionController extends Controller
                 /** @var $question QuestionAnswer */
                 $data = '
                     {
-                      "id": '.$question->id.',
-                      "question": "'.$question->question.'"
+                      "id": ' . $question->id . ',
+                      "question": "' . $question->question . '"
                      }';
-                $result = APIHelper::apiQuery('POST',APIHelper::API_ANSWER,$data);
-                if(isset($result)){
-                    $answer  = $this->getAnswerResult($result);
-                    if($answer){
+                $result = APIHelper::apiQuery('POST', APIHelper::API_ANSWER, $data);
+                if (isset($result)) {
+                    $answer = $this->getAnswerResult($result);
+                    if ($answer) {
                         $question->answer = $answer;
                         $question->updated_at = time();
                         $question->status = QuestionAnswer::STATUS_ACTIVE;
@@ -66,5 +68,9 @@ class QuestionController extends Controller
         $error_code = explode(':"', $chuoi[2]);
         $error_code = $error_code[1];
         return $error_code;
+    }
+    private function infoLogAnswer($txt)
+    {
+        FileUtils::appendToFile(Yii::getAlias('@runtime/logs/infoAnswer.log'), $txt);
     }
 }
