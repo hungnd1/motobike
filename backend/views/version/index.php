@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 /**
                                  * @var $model \common\models\Version
                                  */
-                                if ($model->status == QuestionAnswer::STATUS_ACTIVE) {
+                                if ($model->type == \common\models\Version::TYPE_ANDROID) {
                                     return '<span class="label label-success">' . $model->getStatusName() . '</span>';
                                 } else {
                                     return '<span class="label label-danger">' . $model->getStatusName() . '</span>';
