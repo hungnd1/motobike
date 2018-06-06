@@ -47,14 +47,14 @@ class GapController extends ApiController
         ];
     }
 
-    public function actionGetListGap()
+    public function actionGetListGap($type = GapGeneral::GAP_GENERAL)
     {
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
         $page = $this->getParameter('page', 0);
         $page = $page > 1 ? $page - 1 : 0;
 
-        $query = GapGeneral::find()->andWhere(['status' => GapGeneral::STATUS_ACTIVE])->andWhere(['type' => GapGeneral::GAP_GENERAL]);
+        $query = GapGeneral::find()->andWhere(['status' => GapGeneral::STATUS_ACTIVE])->andWhere(['type' => $type]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -66,7 +66,11 @@ class GapController extends ApiController
             ],
         ]);
         if ($subscriber) {
-            $description = 'Nguoi dung vao sau benh';
+            if($type == GapGeneral::GAP_GENERAL){
+                $description = 'Nguoi dung vao sau benh';
+            }else{
+                $description = 'Nguoi dung vao biến đổi khí hậu';
+            }
             $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
         }
         return $dataProvider;
@@ -131,6 +135,6 @@ class GapController extends ApiController
         $searchModel->province_id = $province_id;
         $searchModel->type_coffee = $coffee_type;
 //        $searchModel->search($searchModel);
-        return $searchModel->search($searchModel,$page);
+        return $searchModel->search($searchModel, $page);
     }
 }

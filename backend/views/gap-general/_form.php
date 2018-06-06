@@ -46,7 +46,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             ]); ?>
         </div>
     </div>
-    <?php if($type == GapGeneral::GAP_GENERAL){ ?>
+    <?php if($type == GapGeneral::GAP_GENERAL || $type == GapGeneral::CLIMATE_CHANGE){ ?>
         <div class="row">
             <div class="col-md-12">
                 <?php echo $form->field($model, 'gap')->widget(CKEditor::className(), [

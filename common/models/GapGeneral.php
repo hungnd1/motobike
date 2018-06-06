@@ -46,7 +46,8 @@ class GapGeneral extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 0;
 
     const GAP_GENERAL = 1; // sau benh
-    const GAP_DETAIL = 2;
+    const GAP_DETAIL = 2; // chi tiet gap
+    const CLIMATE_CHANGE = 3; //bien doi khi hau
 
     /**
      * @inheritdoc

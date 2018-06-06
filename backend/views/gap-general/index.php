@@ -11,8 +11,10 @@ use yii\helpers\Url;
 
 if($type == GapGeneral::GAP_GENERAL ){
     $this->title = '' . \Yii::t('app', 'Quản lý tin sâu bệnh');
-}else{
+}elseif($type == GapGeneral::GAP_DETAIL){
     $this->title = '' . \Yii::t('app', 'Quản lý GAP chi tiết');
+}else{
+    $this->title = ''. Yii::t('app','Quản lý biến đổi thời tiết');
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -61,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 /**
                                  * @var $model \common\models\GapGeneral
                                  */
-                                if($model->type == GapGeneral::GAP_GENERAL){
+                                if($model->type == GapGeneral::GAP_GENERAL || $model->type == GapGeneral::CLIMATE_CHANGE){
                                     return true;
                                 }
                                 return false;
