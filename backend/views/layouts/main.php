@@ -258,12 +258,12 @@ $arrlang = array();
                     'url' => ['service/index'],
                     'require_auth' => true,
                 ],
-//                [
-//                    'encode' => false,
-//                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý giá'),
-//                    'url' => ['price-coffee/index'],
-//                    'require_auth' => true,
-//                ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý giá'),
+                    'url' => ['price-coffee/index'],
+                    'require_auth' => true,
+                ],
                 [
                     'encode' => false,
                     'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý hỏi đáp'),
