@@ -2,6 +2,7 @@
 
 use common\models\Category;
 use kartik\widgets\ActiveForm;
+use common\models\Fruit;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -27,11 +28,10 @@ use yii\helpers\Html;
     <?= $form->field($model, 'display_name')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
     <?= $form->field($model, 'order_number')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
     <?= $form->field($model, 'status')->dropDownList(
         Category::getListStatus(), ['class' => 'input-circle']
     ) ?>
-
+    <?= $form->field($model, 'fruit_id')->dropDownList(\yii\helpers\ArrayHelper::map(Fruit::find()->asArray()->all(), 'id', 'name')) ?>
 
 </div>
 <div class="form-actions">

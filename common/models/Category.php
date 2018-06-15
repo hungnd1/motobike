@@ -14,6 +14,7 @@ use Yii;
  * @property integer $order_number
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $fruit_id
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -36,7 +37,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             [['display_name'], 'required'],
             [['description'], 'string'],
-            [['status', 'order_number', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
             [['display_name'], 'string', 'max' => 200],
         ];
     }
@@ -54,6 +55,7 @@ class Category extends \yii\db\ActiveRecord
             'order_number' => 'Sắp xếp',
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Updated At',
+            'fruit_id' => 'Cây trồng'
         ];
     }
 
@@ -78,5 +80,25 @@ class Category extends \yii\db\ActiveRecord
                 self::STATUS_ACTIVE => Yii::t('app','Hoạt động'),
                 self::STATUS_INACTIVE => Yii::t('app','Tạm dừng'),
             ];
+    }
+
+    public static function getFruits()
+    {
+        $arrFruit = [];
+        $listFruit  = Fruit::find()->all();
+        foreach ($listFruit as $item) {
+            /** @var $item Fruit */
+            $arrFruit[$item->id] = $item->name;
+        }
+        return $arrFruit;
+    }
+
+    public function getFruitName($fruit_id)
+    {
+        $lst = self::getFruits();
+        if (array_key_exists($fruit_id, $lst)) {
+            return $lst[$fruit_id];
+        }
+        return $fruit_id;
     }
 }

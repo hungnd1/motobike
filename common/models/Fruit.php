@@ -22,6 +22,8 @@ class Fruit extends \yii\db\ActiveRecord
         return 'fruit';
     }
 
+    const COFFEE = 1;
+
     /**
      * @inheritdoc
      */

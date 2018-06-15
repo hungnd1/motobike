@@ -17,6 +17,7 @@ use common\models\Answer;
 use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\DeviceSubscriberAsm;
+use common\models\Fruit;
 use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
@@ -297,9 +298,12 @@ class AppController extends ApiController
 
     }
 
-    public function actionGetCategory()
+    public function actionGetCategory($fruit_id = Fruit::COFFEE)
     {
-        $query = Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->orderBy(['order_number' => SORT_DESC]);
+        $query = Category::find()
+            ->andWhere(['status' => Category::STATUS_ACTIVE])
+            ->andWhere(['fruit_id' => $fruit_id])
+            ->orderBy(['order_number' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
