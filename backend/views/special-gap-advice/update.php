@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Category */
+/* @var $model common\models\SpecialGapAdvice */
 
-$this->title = Yii::t('app','Cập nhật danh mục');
-$this->params['breadcrumbs'][] = ['label' => 'Danh mục ', 'url' => Yii::$app->urlManager->createUrl(['/category/index'])];
+$this->title = Yii::t('app','Cập nhật khuyến cáo thông minh');
+$this->params['breadcrumbs'][] = ['label' => 'Khuyến cáo thông minh ', 'url' => Yii::$app->urlManager->createUrl(['/special-gap-advice/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

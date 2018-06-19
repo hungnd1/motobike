@@ -385,6 +385,12 @@ $arrlang = array();
                     ]
 
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý khuyến cáo thông minh'),
+                    'url' => ['special-gap-advice/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 
