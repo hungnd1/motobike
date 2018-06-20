@@ -599,8 +599,7 @@ class SubscriberController extends ApiController
             ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
             ->orderBy(['updated_at' => SORT_DESC])->one();
         //gia han goi
-        if ($subscriberServiceAsm) {
-            if ($subscriberServiceAsm->time_expired - time() <= 0) {
+        if ($subscriberServiceAsm && $subscriberServiceAsm->time_expired - time() > 0) {
                 $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 24 * 3600;
                 $subscriberServiceAsm->updated_at = time();
                 if ($subscriberServiceAsm->save()) {
@@ -615,7 +614,6 @@ class SubscriberController extends ApiController
                         'message' => Yii::t('app', 'Gia hạn gói thành công')
                     ];
                 }
-            }
         } else {
             //add vao bang mua goi
             $subscriberServiceAsm = new SubscriberServiceAsm();
