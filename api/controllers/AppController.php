@@ -31,6 +31,7 @@ use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
 use common\models\Version;
+use common\models\WeatherDetail;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\caching\TagDependency;
@@ -61,6 +62,7 @@ class AppController extends ApiController
             'log-data',
             'version-app',
             'gap-advice',
+            'gap-advice-except',
             'get-question',
             'get-introduce',
             'get-province',
@@ -345,20 +347,22 @@ class AppController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
+    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0,$id = 0)
     {
 
-        $wind = $wind * 3.6;
-        if ($this->type != SiteApiCredential::TYPE_WEB_APPLICATION) {
-            UserHelpers::manualLogin();
-            $subscriber = Yii::$app->user->identity;
-            /** @var  $subscriber Subscriber */
-            /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
-            if ($subscriber) {
-                $subscriberServiceAsm = SubscriberServiceAsm::find()
-                    ->andWhere(['subscriber_id' => $subscriber->id])
-                    ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
-                    ->orderBy(['updated_at' => SORT_DESC])->one();
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+        /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+        $weatherDetail = WeatherDetail::findOne($subscriber->weather_detail_id);
+        $wind = 3.6 * $weatherDetail->wndspd;
+        $tem = round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1);
+        $pre = $weatherDetail->precipitation;
+        if ($subscriber) {
+            $subscriberServiceAsm = SubscriberServiceAsm::find()
+                ->andWhere(['subscriber_id' => $subscriber->id])
+                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
+                ->orderBy(['updated_at' => SORT_DESC])->one();
                 if ($subscriberServiceAsm) {
                     if ($subscriberServiceAsm->time_expired - time() < 0) {
                         $this->setStatusCode(406);
@@ -372,9 +376,8 @@ class AppController extends ApiController
                         'message' => 'Bạn chưa đăng ký mua gói'
                     ];
                 }
-            }
-
         }
+
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
             ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
@@ -553,5 +556,120 @@ class AppController extends ApiController
             $cache->set($key, $res, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
         }
         return $res;
+    }
+
+    public function actionGapAdviceExcept($tem = 0, $pre = 0, $wind = 0)
+    {
+
+        $wind = 3.6 * $wind;
+
+        $gapAdvice = GapGeneral::find()
+            ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+            ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+            ->andWhere('temperature_max > :temp', [':temp' => $tem])
+            ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+            ->andWhere('precipitation_max >= :prep', [':prep' => $pre])
+            ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+            ->andWhere('windspeed_max >= :wind1', [':wind1' => $wind])->one();
+
+        if (!$gapAdvice) {
+            $gapAdvice = GapGeneral::find()
+                ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                ->andWhere(['precipitation_max' => 0])
+                ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                ->andWhere('windspeed_max >= :wind1', [':wind1' => $wind])->one();
+
+            if (!$gapAdvice) {
+                $gapAdvice = GapGeneral::find()
+                    ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                    ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                    ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                    ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                    ->andWhere('precipitation_max >= :prep', [':prep' => $pre])
+                    ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                    ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                    ->andWhere(['windspeed_max' => 0])->one();
+                if (!$gapAdvice) {
+                    $gapAdvice = GapGeneral::find()
+                        ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                        ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                        ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                        ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                        ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                        ->andWhere(['precipitation_max' => 0])
+                        ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                        ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                        ->andWhere(['windspeed_max' => 0])->one();
+
+                }
+            }
+        }
+        /** @var $gapAdvice GapGeneral */
+        if ($gapAdvice) {
+            $res = array();
+            $arr_item = array();
+            array_push($arr_item, [
+                'content' => $gapAdvice->gap,
+                'tag' => Yii::t('app', 'Làm đất'),
+                'is_question' => false
+            ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_8,
+                    'tag' => Yii::t('app', 'Chuẩn bị giống - vườn ươm'),
+                    'is_question' => false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_2,
+                    'tag' => Yii::t('app', 'Trồng mới, trồng lại và chăm sóc cà phê'),
+                    'is_question' => false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_3,
+                    'tag' => Yii::t('app', 'Phân bón'),
+                    'is_question' => true
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_5,
+                    'tag' => Yii::t('app', 'Phun thuốc'),
+                    'is_question' => false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_4,
+                    'tag' => Yii::t('app', 'Tưới nước'),
+                    'is_question' => false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_9,
+                    'tag' => Yii::t('app', 'Tạo hình'),
+                    'is_question' => false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_6,
+                    'tag' => Yii::t('app', 'Thu hoạch'),
+                    'is_question' => false
+                ]);
+            array_push($arr_item,
+                [
+                    'content' => $gapAdvice->content_7,
+                    'tag' => Yii::t('app', 'Sơ chế'),
+                    'is_question' => false
+                ]);
+            $res['items'] = $arr_item;
+
+            return $res;
+        } else {
+            throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+        }
     }
 }

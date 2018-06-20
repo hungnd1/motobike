@@ -600,7 +600,7 @@ class SubscriberController extends ApiController
             ->orderBy(['updated_at' => SORT_DESC])->one();
         //gia han goi
         if ($subscriberServiceAsm) {
-            if ($subscriberServiceAsm->time_expired - time() >= 0) {
+            if ($subscriberServiceAsm->time_expired - time() <= 0) {
                 $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 24 * 3600;
                 $subscriberServiceAsm->updated_at = time();
                 if ($subscriberServiceAsm->save()) {
