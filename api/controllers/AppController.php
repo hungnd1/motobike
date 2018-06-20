@@ -347,7 +347,7 @@ class AppController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0,$id = 0)
+    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0, $id = 0)
     {
 
         UserHelpers::manualLogin();
@@ -355,27 +355,27 @@ class AppController extends ApiController
         /** @var  $subscriber Subscriber */
         /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
         $weatherDetail = WeatherDetail::findOne($subscriber->weather_detail_id);
-        $wind = 3.6 * $weatherDetail->wndspd;
-        $tem = round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1);
-        $pre = $weatherDetail->precipitation;
+        $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
+        $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
+        $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
         if ($subscriber) {
             $subscriberServiceAsm = SubscriberServiceAsm::find()
                 ->andWhere(['subscriber_id' => $subscriber->id])
                 ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
                 ->orderBy(['updated_at' => SORT_DESC])->one();
-                if ($subscriberServiceAsm) {
-                    if ($subscriberServiceAsm->time_expired - time() < 0) {
-                        $this->setStatusCode(406);
-                        return [
-                            'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
-                        ];
-                    }
-                } else {
-                    $this->setStatusCode(405);
+            if ($subscriberServiceAsm) {
+                if ($subscriberServiceAsm->time_expired - time() < 0) {
+                    $this->setStatusCode(406);
                     return [
-                        'message' => 'Bạn chưa đăng ký mua gói'
+                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
                     ];
                 }
+            } else {
+                $this->setStatusCode(405);
+                return [
+                    'message' => 'Bạn chưa đăng ký mua gói'
+                ];
+            }
         }
 
         $gapAdvice = GapGeneral::find()
