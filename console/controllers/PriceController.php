@@ -349,7 +349,7 @@ class PriceController extends Controller
         $arr_price_name = ['dABA', 'dABC', 'dABE', 'dABF', 'dACA', 'dACC', 'dACE', 'dACF', 'dRBF', 'dRCA', 'dRCC', 'dRCE', 'dRCF', 'dRBA', 'dRBC', 'dRBE'];
         foreach ($listStation as $station) {
             /** @var $station Station */
-            $url = "https://greencoffee.lizard.net/api/v3/timeseries/?end=1601545600000&format=json&start=1498802400000&search=" . $station->station_code;
+            $url = "https://greencoffee.lizard.net/api/v3/timeseries/?end=1501545600000&format=json&page_size=17&start=1498802400000&search=" . $station->station_code;
             $this->infoLogWeather("****START WEATHER URL " . $url . "******* /n");
             $this->infoLogWeather("****STATION " . $station->id . "*******");
 //            $url = "https://greencoffee.lizard.net/api/v3/timeseries/?end=1601545600000&format=json&search=67_663_24667&start=1498802400000";
@@ -412,7 +412,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'TMAX') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->tmax = $array_event[$j]['max'];
@@ -421,7 +421,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'TMIN') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->tmin = $array_event[$j]['max'];
@@ -430,7 +430,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'WNDDIR') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->wnddir = $array_event[$j]['max'];
@@ -439,7 +439,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'WNDSPD') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->wndspd = $array_event[$j]['max'];
@@ -448,7 +448,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'CLOUDC') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->clouddc = $array_event[$j]['max'];
@@ -457,7 +457,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'HPRCP') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->hprcp = $array_event[$j]['max'];
@@ -466,7 +466,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'HSUN') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->hsun = $array_event[$j]['max'];
@@ -475,7 +475,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'RFTMAX') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->RFTMAX = $array_event[$j]['max'];
@@ -484,7 +484,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         } elseif ($code == 'RFTMIN') {
                                             $weather_detail = new WeatherDetail();
                                             $weather_detail->RFTMIN = $array_event[$j]['max'];
@@ -493,7 +493,7 @@ class PriceController extends Controller
                                             $weather_detail->updated_at = time();
                                             $weather_detail->station_id = $station->id;
                                             $weather_detail->station_code = $station->station_code;
-                                            $weather_detail->save();
+//                                            $weather_detail->save();
                                         }
 
 
@@ -502,52 +502,52 @@ class PriceController extends Controller
                                         if ($code == 'PRCP') {
                                             if ($checkDetail->precipitation != $array_event[$j]['max'] || !$checkDetail->precipitation) {
                                                 $checkDetail->precipitation = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'TMAX') {
                                             if ($checkDetail->tmax != $array_event[$j]['max'] || !$checkDetail->tmax) {
                                                 $checkDetail->tmax = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'TMIN') {
                                             if ($checkDetail->tmin != $array_event[$j]['max'] || !$checkDetail->tmin) {
                                                 $checkDetail->tmin = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'WNDDIR') {
                                             if ($checkDetail->wnddir != $array_event[$j]['max'] || !$checkDetail->wnddir) {
                                                 $checkDetail->wnddir = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'WNDSPD') {
                                             if ($checkDetail->wndspd != $array_event[$j]['max'] || !$checkDetail->wndspd) {
                                                 $checkDetail->wndspd = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'CLOUDC') {
                                             if ($checkDetail->clouddc != $array_event[$j]['max'] || !$checkDetail->clouddc) {
                                                 $checkDetail->clouddc = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'HPRCP') {
                                             if ($checkDetail->hprcp != $array_event[$j]['max'] || !$checkDetail->hprcp) {
                                                 $checkDetail->hprcp = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'HSUN') {
                                             if ($checkDetail->hsun != $array_event[$j]['max'] || !$checkDetail->hsun) {
                                                 $checkDetail->hsun = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'RFTMAX') {
                                             if ($checkDetail->RFTMAX != $array_event[$j]['max'] || !$checkDetail->RFTMAX) {
                                                 $checkDetail->RFTMAX = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         } elseif ($code == 'RFTMIN') {
                                             if ($checkDetail->RFTMIN != $array_event[$j]['max'] || !$checkDetail->RFTMIN) {
                                                 $checkDetail->RFTMIN = $array_event[$j]['max'];
-                                                $checkDetail->save();
+//                                                $checkDetail->save();
                                             }
                                         }
                                     }
