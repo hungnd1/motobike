@@ -316,4 +316,14 @@ class WeatherController extends ApiController
             'weather_week_ago' => $weekWeatherAgo
         ];
     }
+
+    public function actionGetDetail()
+    {
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+
+        $weatherDetail = WeatherDetail::findOne(['id' => $subscriber->weather_detail_id]);
+        return $weatherDetail;
+    }
 }
