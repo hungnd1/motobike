@@ -8,6 +8,7 @@ use common\models\GroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * GroupController implements the CRUD actions for Group model.
@@ -66,6 +67,17 @@ class GroupController extends Controller
         $model = new Group();
 
         if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            }
             $model->save();
             Yii::$app->session->setFlash('success', 'Tạo mới thành công');
             return $this->redirect(['index']);
@@ -85,10 +97,24 @@ class GroupController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $old_image = $model->image;
 
         if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            }else{
+                $model->image = $old_image;
+            }
             $model->save();
-            Yii::$app->session->setFlash('success', 'Tạo mới thành công');
+            Yii::$app->session->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
