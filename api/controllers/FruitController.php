@@ -60,7 +60,7 @@ class FruitController extends ApiController
 
     public function actionGetGroup()
     {
-        $query = Group::find()->orderBy(['id' => SORT_ASC]);
+        $query = \api\models\Group::find()->orderBy(['id' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
