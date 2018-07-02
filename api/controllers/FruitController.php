@@ -98,7 +98,7 @@ class FruitController extends ApiController
             ->andWhere([
                 'and',
                 ['fruit_id' => $fruit_id],
-                ['feature_id' => $feature_id],
+                ['IN', 'feature_id', $feature_id],
                 ['group_id' => $group_id]
             ])
             ->orWhere([
@@ -109,12 +109,12 @@ class FruitController extends ApiController
             ->orWhere([
                 'and',
                 ['fruit_id' => $fruit_id],
-                ['feature_id' => $feature_id]
+                ['IN', 'feature_id', $feature_id]
             ])
             ->orWhere([
                 'and',
                 ['group_id' => $group_id],
-                ['feature_id' => $feature_id]
+                ['IN', 'feature_id', $feature_id]
             ])
             ->one();
         if (!$detail) {
