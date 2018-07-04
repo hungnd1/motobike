@@ -11,9 +11,7 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\models\Fruit;
-use common\models\Detail;
 use common\models\Feature;
-use common\models\Group;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
 
@@ -94,6 +92,8 @@ class FruitController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'feature_id')]));
         }
 
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+
         $detail = \api\models\Detail::find()
             ->andWhere([
                 'and',
@@ -115,12 +115,17 @@ class FruitController extends ApiController
                 'and',
                 ['group_id' => $group_id],
                 ['IN', 'feature_id', $feature_id]
-            ])
-            ->one();
-        if (!$detail) {
-            throw new InvalidValueException(Message::getNotFoundContentMessage());
-        }
-        return $detail;
+            ]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $detail,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+        ]);
+
+        return $dataProvider;
 
     }
 }
