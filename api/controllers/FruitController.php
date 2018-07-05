@@ -79,7 +79,7 @@ class FruitController extends ApiController
         return $dataProvider;
     }
 
-    public function actionGetDetail($fruit_id, $group_id, $feature_id)
+    public function actionGetDetail($fruit_id, $group_id, $feature_id = '')
     {
         if (!$fruit_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'fruit_id')]));
@@ -88,18 +88,14 @@ class FruitController extends ApiController
         if (!$group_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
         }
-
-        if (!$feature_id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'feature_id')]));
-        }
-
+        $arr_feature = explode(',', $feature_id);
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 
         $detail = \api\models\Detail::find()
             ->andWhere([
                 'and',
                 ['fruit_id' => $fruit_id],
-                (['IN', 'feature_id', $feature_id]),
+                (['IN', 'feature_id', $arr_feature]),
                 ['group_id' => $group_id]
             ])
             ->orWhere([
@@ -110,12 +106,12 @@ class FruitController extends ApiController
             ->orWhere([
                 'and',
                 ['fruit_id' => $fruit_id],
-                (['IN', 'feature_id', $feature_id])
+                (['IN', 'feature_id', $arr_feature])
             ])
             ->orWhere([
                 'and',
                 ['group_id' => $group_id],
-                (['IN', 'feature_id', $feature_id])
+                (['IN', 'feature_id', $arr_feature])
             ]);
 
         $dataProvider = new ActiveDataProvider([
