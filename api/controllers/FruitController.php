@@ -12,6 +12,7 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\models\Fruit;
 use common\models\Feature;
+use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
 
@@ -98,7 +99,7 @@ class FruitController extends ApiController
             ->andWhere([
                 'and',
                 ['fruit_id' => $fruit_id],
-                ['IN', 'feature_id', $feature_id],
+                (['IN', 'feature_id', $feature_id]),
                 ['group_id' => $group_id]
             ])
             ->orWhere([
@@ -109,12 +110,12 @@ class FruitController extends ApiController
             ->orWhere([
                 'and',
                 ['fruit_id' => $fruit_id],
-                ['IN', 'feature_id', $feature_id]
+                (['IN', 'feature_id', $feature_id])
             ])
             ->orWhere([
                 'and',
                 ['group_id' => $group_id],
-                ['IN', 'feature_id', $feature_id]
+                (['IN', 'feature_id', $feature_id])
             ]);
 
         $dataProvider = new ActiveDataProvider([
