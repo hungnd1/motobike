@@ -10,11 +10,14 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\models\Detail;
 use api\models\Fruit;
 use common\models\Feature;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
+use yii\web\ServerErrorHttpException;
 
 class FruitController extends ApiController
 {
@@ -30,6 +33,7 @@ class FruitController extends ApiController
             'get-fruit',
             'get-group',
             'get-feature',
+            'get-list-detail',
             'get-detail'
         ];
 
@@ -42,6 +46,7 @@ class FruitController extends ApiController
             'get-fruit' => ['GET'],
             'get-group' => ['GET'],
             'get-feature' => ['GET'],
+            'get-list-detail' => ['GET'],
             'get-detail' => ['GET']
         ];
     }
@@ -79,7 +84,7 @@ class FruitController extends ApiController
         return $dataProvider;
     }
 
-    public function actionGetDetail($fruit_id, $group_id, $feature_id = '')
+    public function actionGetListDetail($fruit_id, $group_id, $feature_id = '')
     {
         if (!$fruit_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'fruit_id')]));
@@ -123,6 +128,18 @@ class FruitController extends ApiController
         ]);
 
         return $dataProvider;
+    }
+
+    public function actionGetDetail($id)
+    {
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $detail = Detail::findOne($id);
+        if (!$detail) {
+            throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+        }
+        return $detail;
 
     }
 }
