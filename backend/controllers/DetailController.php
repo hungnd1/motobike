@@ -65,7 +65,7 @@ class DetailController extends Controller
     public function actionCreate()
     {
         $model = new Detail();
-
+        $model->setScenario('admin_create_update');
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'image');
             if ($image) {
