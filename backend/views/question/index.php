@@ -6,10 +6,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\FruitSearch */
+/* @var $searchModel common\models\QuestionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '' . \Yii::t('app', 'Quản lý loại cây trồng');
+$this->title = '' . \Yii::t('app', 'Quản lý câu hỏi phân bón');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p><?= Html::a('' . \Yii::t('app', 'Tạo loại cây trồng'), ['create'], ['class' => 'btn btn-success']) ?> </p>
+                <p><?= Html::a('' . \Yii::t('app', 'Tạo câu hỏi phân bón'), ['create'], ['class' => 'btn btn-success']) ?> </p>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -35,31 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'class' => 'yii\grid\SerialColumn',
                         ],
-                        'name',
+                        'question',
                         [
                             'class' => '\kartik\grid\DataColumn',
                             'format' => 'raw',
-                            'label' => 'Ảnh đại diện',
-                            'attribute' => 'image',
+                            'label' => 'Cây trồng',
+                            'attribute' => 'fruit_id',
                             'value' => function ($model, $key, $index, $widget) {
-                                /** @var $model \common\models\Fruit */
-                                $cat_image = Yii::getAlias('@news_image');
-                                return $model->image ? Html::img('@web/' . $cat_image . '/' . $model->image, ['alt' => 'Thumbnail', 'width' => '250', 'height' => '150']) : '';
-                            },
-                        ],
-                        [
-                            'class' => '\kartik\grid\DataColumn',
-                            'format' => 'raw',
-                            'label' => 'Cây cha',
-                            'attribute' => 'parent_id',
-                            'value' => function ($model, $key, $index, $widget) {
-                                /** @var $model \common\models\Fruit */
-                                if ($model->parent_id) {
-                                    return Fruit::findOne($model->parent_id)->name;
-                                }
-                            },
-                        ],
+                                /** @var $model \common\models\Question */
 
+                                    return Fruit::findOne($model->fruit_id)->name;
+                            },
+                        ],
                         ['class' => 'kartik\grid\ActionColumn',
                             'template' => '{view} {update} {delete}',
                             'buttons' => [

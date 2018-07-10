@@ -31,6 +31,7 @@ use yii\helpers\Url;
  * @property float $precipitation_min
  * @property float $windspeed_max
  * @property float $windspeed_min
+ * @property integer $fruit_id
  */
 class GapGeneral extends \yii\db\ActiveRecord
 {
@@ -56,12 +57,12 @@ class GapGeneral extends \yii\db\ActiveRecord
     {
         return [
             [['gap', 'title', 'content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
-                'content_8', 'content_9'], 'required'],
+                'content_8', 'content_9','fruit_id'], 'required'],
             [['gap', 'title', 'image'], 'string'],
             [['content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
                 'content_8', 'content_9'
             ], 'string'],
-            [['status', 'created_at', 'updated_at', 'type', 'order'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'type', 'order','fruit_id'], 'integer'],
             [['temperature_max', 'temperature_min', 'windspeed_min', 'windspeed_max', 'precipitation_max', 'precipitation_min'], 'safe']
         ];
     }
@@ -93,7 +94,8 @@ class GapGeneral extends \yii\db\ActiveRecord
             'precipitation_max' => 'Lượng mưa lớn nhất (mm)',
             'precipitation_min' => 'Lượn mưa nhỏ nhất (mm)',
             'image' => 'Ảnh đại diện',
-            'order' => 'Sắp xếp'
+            'order' => 'Sắp xếp',
+            'fruit_id' => 'Cây trồng'
         ];
     }
 

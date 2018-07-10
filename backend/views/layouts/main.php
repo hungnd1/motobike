@@ -313,7 +313,13 @@ $arrlang = array();
                         ],
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý ma trận phân bón'),
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý câu hỏi phân bón'),
+                            'url' => ['question/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý tư vấn phân bón'),
                             'url' => ['matrix-fertilizing/index'],
                             'require_auth' => true,
                         ],

@@ -64,6 +64,20 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     <?php }else{ ?>
         <div class="row">
             <div class="col-md-12">
+                <?= $form->field($model, 'fruit_id')->widget(\kartik\select2\Select2::classname(), [
+                    'data' => \yii\helpers\ArrayHelper::map(
+                        \common\models\Fruit::find()
+                            ->andWhere('parent_id is null ')
+                            ->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Chọn cây trồng'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ]]);
+                ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <?php echo $form->field($model, 'gap')->widget(CKEditor::className(), [
                     'options' => ['rows' => 2],
                 ]);

@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $question
  * @property integer $is_dropdown_list
+ * @property integer $fruit_id
  */
 class Question extends \yii\db\ActiveRecord
 {
@@ -28,7 +29,8 @@ class Question extends \yii\db\ActiveRecord
     {
         return [
             [['question'], 'string'],
-            [['is_dropdown_list'], 'integer'],
+            [['question','fruit_id'], 'required'],
+            [['is_dropdown_list','fruit_id'], 'integer'],
         ];
     }
 
@@ -39,8 +41,9 @@ class Question extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'question' => 'Question',
+            'question' => 'Câu hỏi',
             'is_dropdown_list' => 'Is Dropdown List',
+            'fruit_id' => 'Cây trồng'
         ];
     }
 }

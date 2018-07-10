@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property integer $id_answer_1
  * @property integer $id_answer_2
+ * @property integer $question_id
  * @property string $content
  */
 class MatrixFertilizing extends \yii\db\ActiveRecord
@@ -28,7 +29,7 @@ class MatrixFertilizing extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_answer_1', 'id_answer_2'], 'integer'],
+            [['id_answer_1', 'id_answer_2','question_id'], 'integer'],
             [['content'], 'string'],
         ];
     }
@@ -43,6 +44,7 @@ class MatrixFertilizing extends \yii\db\ActiveRecord
             'id_answer_1' => 'Đáp án 1',
             'id_answer_2' => 'Đáp án 2',
             'content' => 'Nội dung',
+            'question_id' => 'Câu hỏi'
         ];
     }
 }

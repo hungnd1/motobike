@@ -11,6 +11,8 @@ use yii\helpers\Url;
  * @property integer $id
  * @property string $name
  * @property string $image
+ * @property integer $parent_id
+ * @property integer $have_child
  */
 class Fruit extends \yii\db\ActiveRecord
 {
@@ -31,7 +33,8 @@ class Fruit extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'image'], 'string', 'max' => 255],
-            [['name'],'required']
+            [['name'], 'required'],
+            [['parent_id', 'have_child'], 'integer']
         ];
     }
 
@@ -44,8 +47,10 @@ class Fruit extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Tên loại cây trồng',
             'image' => 'Hình ảnh',
+            'parent_id' => 'Cây cha'
         ];
     }
+
     public function getImageLink()
     {
         return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';

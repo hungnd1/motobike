@@ -53,7 +53,9 @@ class FruitController extends ApiController
 
     public function actionGetFruit()
     {
-        $query = Fruit::find()->orderBy(['id' => SORT_ASC]);
+        $query = Fruit::find()
+            ->andWhere('parent_id is null')
+            ->orderBy(['id' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

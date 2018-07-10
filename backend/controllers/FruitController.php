@@ -78,10 +78,20 @@ class FruitController extends Controller
                     $model->image = $file_name;
                 }
             }
-            $model->save();
-            \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
+            if ($model->save()) {
+                if ($model->parent_id) {
+                    $fruitParent = Fruit::findOne($model->parent_id);
+                    $fruitParent->have_child = 1;
+                    $fruitParent->save();
+                }
+                \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
 
-            return $this->redirect(['index']);
+                return $this->redirect(['index']);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -111,14 +121,27 @@ class FruitController extends Controller
                 if ($image->saveAs($tmp . $file_name)) {
                     $model->image = $file_name;
                 }
-            }else{
+            } else {
                 $model->image = $image_old;
             }
-            $model->save();
+            if ($model->save()) {
+                if ($model->parent_id) {
+                    $fruitParent = Fruit::findOne($model->parent_id);
+                    $fruitParent->have_child = 1;
+                    $fruitParent->save();
+                }
+                $model->save();
 
-            \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
-            return $this->redirect(['index']);
+                \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
+                return $this->redirect(['index']);
+            } else {
+                \Yii::$app->getSession()->setFlash('success', 'Cập nhật thất bại');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
+            \Yii::$app->getSession()->setFlash('success', 'Cập nhật thất bại');
             return $this->render('update', [
                 'model' => $model,
             ]);
