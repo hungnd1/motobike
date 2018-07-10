@@ -17,6 +17,7 @@ class Question extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $answer;
     public static function tableName()
     {
         return 'question';
@@ -28,8 +29,8 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question'], 'string'],
-            [['question','fruit_id'], 'required'],
+            [['question','answer'], 'string'],
+            [['question','fruit_id','answer'], 'required'],
             [['is_dropdown_list','fruit_id'], 'integer'],
         ];
     }
@@ -43,7 +44,8 @@ class Question extends \yii\db\ActiveRecord
             'id' => 'ID',
             'question' => 'Câu hỏi',
             'is_dropdown_list' => 'Is Dropdown List',
-            'fruit_id' => 'Cây trồng'
+            'fruit_id' => 'Cây trồng',
+            'answer' => 'Câu trả lời'
         ];
     }
 }

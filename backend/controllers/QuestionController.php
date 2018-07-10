@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Answer;
 use Yii;
 use common\models\Question;
 use common\models\QuestionSearch;
@@ -67,11 +68,17 @@ class QuestionController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
-            \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
+            $answerStr = explode(";" , $model->answer);
+            for ($i = 0; $i < sizeof($answerStr); $i++){
+                $answer = new Answer();
+                $answer->answer = $answerStr[$i];
+                $answer->question_id = $model->id;
+                $answer->save();
+            }
+                \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
 
             return $this->redirect(['index']);
         } else {
-            \Yii::$app->getSession()->setFlash('success', 'Thêm mới thất bại');
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -87,14 +94,35 @@ class QuestionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $listAnswer = Answer::find()->andWhere(['question_id' => $id])->all();
+        $listAnswerCount = Answer::find()->andWhere(['question_id' => $id])->count();
+        $answerStr = '';
+        foreach ($listAnswer as $item) {
+            /** @var $item Answer */
+            $answerStr .= $item->id . ":" . $item->answer . ";";
+        }
+        $model->answer = rtrim($answerStr, ";");
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
-
+            $listArrAnser = explode(";", $model->answer);
+            for ($i = 0; $i < sizeof($listArrAnser); $i++) {
+                $answerEx = explode(":", $listArrAnser[$i]);
+                for ($j = 1; $j < sizeof($answerEx); $j++) {
+                    $answer = Answer::findOne($answerEx[0]);
+                    if ($answer) {
+                        $answer->answer = $answerEx[1];
+                        $answer->save();
+                    } else {
+                        $answerNew = new Answer();
+                        $answerNew->answer = $answerEx[1];
+                        $answerNew->question_id = $id;
+                        $answerNew->save();
+                    }
+                }
+            }
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {
-            \Yii::$app->getSession()->setFlash('success', 'Cập nhật thất bại');
             return $this->render('update', [
                 'model' => $model,
             ]);

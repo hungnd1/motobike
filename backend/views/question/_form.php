@@ -36,6 +36,13 @@ use yii\helpers\Html;
             ?>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p style="color: red;padding-left: 220px;">Mỗi câu trả lời cách nhau bởi dấu ; và không được thay đổi số trong câu trả lời</p>
+            <?= $form->field($model, 'answer')->textarea(['rows'=>6]) ?>
+        </div>
+    </div>
 </div>
 <div class="form-actions">
     <div class="row">
