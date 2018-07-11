@@ -494,10 +494,10 @@ class AppController extends ApiController
         }
     }
 
-    public function actionGetQuestion($fruit = 5)
+    public function actionGetQuestion($fruit_id = 5)
     {
         $listQuestion = Question::find()
-            ->andWhere(['fruit_id' => $fruit])
+            ->andWhere(['fruit_id' => $fruit_id])
             ->all();
         $arrRes = [];
         $res = [];
