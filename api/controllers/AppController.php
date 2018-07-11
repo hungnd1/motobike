@@ -355,7 +355,7 @@ class AppController extends ApiController
         /** @var  $subscriber Subscriber */
         /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
         $weatherDetail = WeatherDetail::findOne($subscriber->weather_detail_id);
-        if(!$weatherDetail){
+        if (!$weatherDetail) {
             $this->setStatusCode(407);
             return [
                 'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
@@ -494,9 +494,11 @@ class AppController extends ApiController
         }
     }
 
-    public function actionGetQuestion()
+    public function actionGetQuestion($fruit = 5)
     {
-        $listQuestion = Question::find()->all();
+        $listQuestion = Question::find()
+            ->andWhere(['fruit_id' => $fruit])
+            ->all();
         $arrRes = [];
         $res = [];
         $arrQues = [];
@@ -504,14 +506,12 @@ class AppController extends ApiController
             /** @var $question Question */
             $arrAnswer = [];
             $resAnswer = [];
-            if ($question->is_dropdown_list) {
-                $listAnswer = Answer::find()->andWhere(['question_id' => $question->id])->all();
-                foreach ($listAnswer as $answer) {
-                    /** @var $answer Answer */
-                    array_push($arrAnswer, $answer);
-                }
-                $resAnswer['items'] = $arrAnswer;
+            $listAnswer = Answer::find()->andWhere(['question_id' => $question->id])->all();
+            foreach ($listAnswer as $answer) {
+                /** @var $answer Answer */
+                array_push($arrAnswer, $answer);
             }
+            $resAnswer['items'] = $arrAnswer;
             $arrRes['id'] = $question->id;
             $arrRes['question'] = $question->question;
             $arrRes['is_dropdown_list'] = $question->is_dropdown_list;

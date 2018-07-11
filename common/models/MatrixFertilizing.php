@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property integer $id_answer_1
  * @property integer $id_answer_2
+ * @property integer $fruit_id
  * @property string $answer
  * @property string $content
  */
@@ -30,7 +31,7 @@ class MatrixFertilizing extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_answer_1', 'id_answer_2','id_answer_3'], 'integer'],
+            [['id_answer_1', 'id_answer_2','id_answer_3','fruit_id'], 'integer'],
             [['content','answer'], 'string'],
         ];
     }

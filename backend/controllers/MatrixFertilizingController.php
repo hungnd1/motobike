@@ -35,7 +35,7 @@ class MatrixFertilizingController extends Controller
      * Lists all MatrixFertilizing models.
      * @return mixed
      */
-    public function actionIndex($question_id)
+    public function actionIndex()
     {
         $searchModel = new MatrixFertilizingSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -76,6 +76,7 @@ class MatrixFertilizingController extends Controller
             if ($model->id_answer_3) {
                 $model->answer .= "-" . $model->id_answer_3;
             }
+            $model->fruit_id = $fruit_id;
             $model->save();
             Yii::$app->session->setFlash('success', 'Thêm mới thành công');
             return $this->redirect(['index']);
@@ -94,16 +95,27 @@ class MatrixFertilizingController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $fruit_id)
     {
         $model = $this->findModel($id);
+        $listQuestion = Question::find()
+            ->andWhere(['fruit_id' => $fruit_id])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->id_answer_1 && $model->id_answer_2) {
+                $model->answer = $model->id_answer_1 . "-" . $model->id_answer_2;
+            }
+            if ($model->id_answer_3) {
+                $model->answer .= "-" . $model->id_answer_3;
+            }
+            $model->save();
             Yii::$app->session->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'fruit_id' => $fruit_id,
+                'listQuestion' => $listQuestion
             ]);
         }
     }
