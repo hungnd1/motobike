@@ -9,7 +9,7 @@ class m180710_141403_alter_table_fruit extends Migration
         $this->addColumn('fruit', 'parent_id', $this->integer(11));
         $this->addColumn('fruit', 'have_child', $this->integer(11));
         $this->addColumn('question', 'fruit_id', $this->integer(11));
-        $this->addColumn('matrix_fertilizing', 'question_id', $this->integer(11));
+        $this->addColumn('matrix_fertilizing', 'answer', $this->string(255));
     }
 
     public function down()

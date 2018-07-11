@@ -141,7 +141,6 @@ class FruitController extends Controller
                 ]);
             }
         } else {
-            \Yii::$app->getSession()->setFlash('success', 'Cập nhật thất bại');
             return $this->render('update', [
                 'model' => $model,
             ]);

@@ -51,12 +51,17 @@ class FruitController extends ApiController
         ];
     }
 
-    public function actionGetFruit()
+    public function actionGetFruit($type = Fruit::CAPHE_VOI)
     {
-        $query = Fruit::find()
-            ->andWhere('parent_id is null')
-            ->orderBy(['id' => SORT_ASC]);
-
+        if($type == Fruit::CAPHE_VOI){
+            $query = Fruit::find()
+                ->andWhere('parent_id is null')
+                ->orderBy(['id' => SORT_ASC]);
+        }else{
+            $query = Fruit::find()
+                ->andWhere('have_child is null')
+                ->orderBy(['id' => SORT_ASC]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,

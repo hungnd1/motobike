@@ -48,8 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         ['class' => 'kartik\grid\ActionColumn',
-                            'template' => '{view} {update} {delete}',
+                            'template' => '{answer}  {view} {update} {delete}',
                             'buttons' => [
+                                'answer' => function ($url, $model) {
+                                    return Html::a('<span class="	glyphicon glyphicon-plus"></span>', Url::toRoute(['matrix-fertilizing/create', 'fruit_id' => $model->fruit_id]), [
+                                        'title' => '' . \Yii::t('app', 'Thêm khuyến cáo'),
+                                    ]);
+
+                                },
                                 'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute(['fruit/view', 'id' => $model->id]), [
                                         'title' => '' . \Yii::t('app', 'Thông tin chi tiết'),

@@ -95,7 +95,6 @@ class QuestionController extends Controller
     {
         $model = $this->findModel($id);
         $listAnswer = Answer::find()->andWhere(['question_id' => $id])->all();
-        $listAnswerCount = Answer::find()->andWhere(['question_id' => $id])->count();
         $answerStr = '';
         foreach ($listAnswer as $item) {
             /** @var $item Answer */
@@ -107,18 +106,26 @@ class QuestionController extends Controller
             $listArrAnser = explode(";", $model->answer);
             for ($i = 0; $i < sizeof($listArrAnser); $i++) {
                 $answerEx = explode(":", $listArrAnser[$i]);
-                for ($j = 1; $j < sizeof($answerEx); $j++) {
-                    $answer = Answer::findOne($answerEx[0]);
-                    if ($answer) {
-                        $answer->answer = $answerEx[1];
-                        $answer->save();
-                    } else {
-                        $answerNew = new Answer();
-                        $answerNew->answer = $answerEx[1];
-                        $answerNew->question_id = $id;
-                        $answerNew->save();
+                if(is_int($answerEx[0])){
+                    for ($j = 1; $j < sizeof($answerEx); $j++) {
+                        $answer = Answer::findOne($answerEx[0]);
+                        if ($answer) {
+                            $answer->answer = $answerEx[1];
+                            $answer->save();
+                        } else {
+                            $answerNew = new Answer();
+                            $answerNew->answer = $answerEx[1];
+                            $answerNew->question_id = $id;
+                            $answerNew->save();
+                        }
                     }
+                }else{
+                    $answerNew = new Answer();
+                    $answerNew->answer = $answerEx[0];
+                    $answerNew->question_id = $id;
+                    $answerNew->save();
                 }
+
             }
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);

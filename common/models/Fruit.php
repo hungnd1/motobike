@@ -25,6 +25,8 @@ class Fruit extends \yii\db\ActiveRecord
     }
 
     const COFFEE = 1;
+    const CAPHE_VOI = 1;
+    const CAPHE_CHE = 2;
 
     /**
      * @inheritdoc
