@@ -67,6 +67,7 @@ class QuestionController extends Controller
         $model = new Question();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->is_dropdown_list = 1;
             $model->save();
             $answerStr = explode(";" , $model->answer);
             for ($i = 0; $i < sizeof($answerStr); $i++){
