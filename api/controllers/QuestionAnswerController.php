@@ -53,7 +53,7 @@ class QuestionAnswerController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
-        if($subscriber){
+        if ($subscriber) {
             $description = 'Nguoi dung vao hoi dap';
             $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_ANSWER, $description);
         }
@@ -151,21 +151,34 @@ class QuestionAnswerController extends ApiController
         if (!$answer) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
         }
+        $answerStr = "";
         $answer_1 = isset(explode(':', explode(',', $answer)[0])[1]) ? explode(':', explode(',', $answer)[0])[1] : 0;
         if (!$answer_1) {
             throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
         }
-        $answer_2 = isset(explode(',', $answer)[1]) ? explode(':', explode(',', $answer)[1])[1] : 0;
-        if (!$answer_2) {
-            throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
+        $answerStr .= $answer_1;
+
+        if (isset(explode(',', $answer)[1])) {
+            $answer_2 = isset(explode(',', $answer)[1]) ? explode(':', explode(',', $answer)[1])[1] : 0;
+            if (!$answer_2) {
+                throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
+            }
+            $answerStr .= "-" . $answer_2;
+        }
+        if (isset(explode(',', $answer)[2])) {
+            $answer_3 = isset(explode(',', $answer)[2]) ? explode(':', explode(',', $answer)[2])[1] : 0;
+            if (!$answer_3) {
+                throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
+            }
+            $answerStr .= "-" . $answer_3;
         }
         $matrix = MatrixFertilizing::find()
-            ->andWhere(['id_answer_1' => $answer_1])
-            ->andWhere(['id_answer_2' => $answer_2])->one();
+            ->andWhere(['answer' => $answerStr])
+            ->one();
         if ($matrix) {
             return $matrix->content;
         }
-        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Không có khuyến cáo cho lựa chọn này'));
     }
 
     public function actionGetFeedback()
