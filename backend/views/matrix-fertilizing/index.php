@@ -53,7 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 /**
                                  * @var $model \common\models\MatrixFertilizing
                                  */
-                                return Answer::find()->andWhere(['id' => $model->id_answer_2])->one()->answer;
+                                if($model->id_answer_2){
+                                    return Answer::find()->andWhere(['id' => $model->id_answer_2])->one()->answer;
+                                }
+                                return "Không có đáp án";
 
                             },
                         ],
