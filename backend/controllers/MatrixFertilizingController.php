@@ -105,8 +105,11 @@ class MatrixFertilizingController extends Controller
             ->andWhere(['fruit_id' => $fruit_id])->all();
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->id_answer_1 && $model->id_answer_2) {
-                $model->answer = $model->id_answer_1 . "-" . $model->id_answer_2;
+            if($model->id_answer_1){
+                $model->answer = $model->id_answer_1;
+            }
+            if ($model->id_answer_2) {
+                $model->answer .= "-" . $model->id_answer_2;
             }
             if ($model->id_answer_3) {
                 $model->answer .= "-" . $model->id_answer_3;
