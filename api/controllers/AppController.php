@@ -347,7 +347,7 @@ class AppController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0, $id = 0)
+    public function actionGapAdvice($fruit_id = 5)
     {
 
         UserHelpers::manualLogin();
@@ -386,6 +386,7 @@ class AppController extends ApiController
 
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+            ->andWhere(['fruit_id' => $fruit_id])
             ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
             ->andWhere('temperature_max > :temp', [':temp' => $tem])
             ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
@@ -396,6 +397,7 @@ class AppController extends ApiController
         if (!$gapAdvice) {
             $gapAdvice = GapGeneral::find()
                 ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                ->andWhere(['fruit_id' => $fruit_id])
                 ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
                 ->andWhere('temperature_max > :temp', [':temp' => $tem])
                 ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
@@ -406,6 +408,7 @@ class AppController extends ApiController
 
             if (!$gapAdvice) {
                 $gapAdvice = GapGeneral::find()
+                    ->andWhere(['fruit_id' => $fruit_id])
                     ->andWhere(['type' => GapGeneral::GAP_DETAIL])
                     ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
                     ->andWhere('temperature_max > :temp', [':temp' => $tem])
@@ -416,6 +419,7 @@ class AppController extends ApiController
                     ->andWhere(['windspeed_max' => 0])->one();
                 if (!$gapAdvice) {
                     $gapAdvice = GapGeneral::find()
+                        ->andWhere(['fruit_id' => $fruit_id])
                         ->andWhere(['type' => GapGeneral::GAP_DETAIL])
                         ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
                         ->andWhere('temperature_max > :temp', [':temp' => $tem])
