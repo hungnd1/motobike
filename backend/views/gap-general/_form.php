@@ -67,7 +67,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
                 <?= $form->field($model, 'fruit_id')->widget(\kartik\select2\Select2::classname(), [
                     'data' => \yii\helpers\ArrayHelper::map(
                         \common\models\Fruit::find()
-                            ->andWhere('parent_id is null ')
+                            ->andWhere('have_child is null ')
                             ->all(), 'id', 'name'),
                     'options' => ['placeholder' => 'Chọn cây trồng'],
                     'pluginOptions' => [
