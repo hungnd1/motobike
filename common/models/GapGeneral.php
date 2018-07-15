@@ -57,7 +57,7 @@ class GapGeneral extends \yii\db\ActiveRecord
     {
         return [
             [['gap', 'title', 'content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
-                'content_8', 'content_9','fruit_id'], 'required'],
+                'content_8','fruit_id'], 'required'],
             [['gap', 'title', 'image'], 'string'],
             [['content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
                 'content_8', 'content_9'
