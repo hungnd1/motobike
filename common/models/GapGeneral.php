@@ -56,8 +56,7 @@ class GapGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gap', 'title', 'content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
-                'content_8','fruit_id'], 'required'],
+            [['gap', 'title','fruit_id'], 'required'],
             [['gap', 'title', 'image'], 'string'],
             [['content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
                 'content_8', 'content_9'
@@ -75,14 +74,14 @@ class GapGeneral extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'gap' => 'Làm đất/Làm đất, chuẩn bị hố và trồng tiêu',
-            'content_2' => 'Trồng cà phê hoặc các cây trồng khác/Chọn lựa và trồng choái cho tiêu leo',
-            'content_3' => 'Bón phân/Chăm sóc thường xuyên tiêu từ năm một đến năm ba',
-            'content_4' => 'Tưới nước/Chăm sóc thường xuyên tiêu kinh doanh',
+            'content_2' => 'Trồng mới, trồng lại và chăm sóc cà phê/Chăm sóc thường xuyên tiêu từ năm một đến năm ba',
+            'content_3' => 'Phân bón/Chăm sóc thường xuyên tiêu kinh doanh',
+            'content_4' => 'Tưới nước/Phòng trừ sâu bệnh cho tiêu kinh doanh',
             'content_5' => 'Phun thuốc/Đôn tiêu',
-            'content_6' => 'Thu hái/Phòng trừ sâu bệnh cho tiêu kinh doanh',
-            'content_7' => 'Sơ chế/Thu hái',
-            'content_8' => 'Làm vươn ươm giống/Sơ chế bảo quản',
-            'content_9' => 'Tạo hình',
+            'content_6' => 'Thu hoạch/Sơ chế bảo quản',
+            'content_7' => 'Sơ chế',
+            'content_8' => 'Chuẩn bị giống - vườn ươm/Chọn lựa và trồng choái cho tiêu leo',
+            'content_9' => 'Tạo hình/Thu hái',
             'status' => 'Trạng thái',
             'title' => 'Tiêu đề',
             'created_at' => 'Created At',
