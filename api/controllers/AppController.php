@@ -437,59 +437,109 @@ class AppController extends ApiController
         if ($gapAdvice) {
             $res = array();
             $arr_item = array();
-            array_push($arr_item, [
-                'content' => $gapAdvice->gap,
-                'tag' => Yii::t('app', 'Làm đất'),
-                'is_question' => false
-            ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_8,
-                    'tag' => Yii::t('app', 'Chuẩn bị giống - vườn ươm'),
+            if ($fruit_id == 5 || $fruit_id == 6) {
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Làm đất'),
                     'is_question' => false
                 ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_2,
-                    'tag' => Yii::t('app', 'Trồng mới, trồng lại và chăm sóc cà phê'),
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_8,
+                        'tag' => Yii::t('app', 'Chuẩn bị giống - vườn ươm'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Trồng mới, trồng lại và chăm sóc cà phê'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Phân bón'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Phun thuốc'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Tưới nước'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Tạo hình'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Thu hoạch'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_7,
+                        'tag' => Yii::t('app', 'Sơ chế'),
+                        'is_question' => false
+                    ]);
+            }elseif($fruit_id == 2){
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Làm đất, chuẩn bị hố và trồng tiêu'),
                     'is_question' => false
                 ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_3,
-                    'tag' => Yii::t('app', 'Phân bón'),
-                    'is_question' => true
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_5,
-                    'tag' => Yii::t('app', 'Phun thuốc'),
-                    'is_question' => false
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_4,
-                    'tag' => Yii::t('app', 'Tưới nước'),
-                    'is_question' => false
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_9,
-                    'tag' => Yii::t('app', 'Tạo hình'),
-                    'is_question' => false
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_6,
-                    'tag' => Yii::t('app', 'Thu hoạch'),
-                    'is_question' => false
-                ]);
-            array_push($arr_item,
-                [
-                    'content' => $gapAdvice->content_7,
-                    'tag' => Yii::t('app', 'Sơ chế'),
-                    'is_question' => false
-                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_8,
+                        'tag' => Yii::t('app', 'Chọn lựa và trồng choái cho tiêu leo'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Chăm sóc thường xuyên tiêu từ năm một đến năm ba.'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Chăm sóc thường xuyên tiêu kinh doanh'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Đôn tiêu'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Phòng trừ sâu bệnh cho tiêu kinh doanh'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Thu hái'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Sơ chế bảo quản'),
+                        'is_question' => false
+                    ]);
+            }
             $res['items'] = $arr_item;
 
             return $res;
