@@ -365,23 +365,23 @@ class AppController extends ApiController
         $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
         $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
         if ($subscriber) {
-            $subscriberServiceAsm = SubscriberServiceAsm::find()
-                ->andWhere(['subscriber_id' => $subscriber->id])
-                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
-                ->orderBy(['updated_at' => SORT_DESC])->one();
-            if ($subscriberServiceAsm) {
-                if ($subscriberServiceAsm->time_expired - time() < 0) {
-                    $this->setStatusCode(406);
-                    return [
-                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
-                    ];
-                }
-            } else {
-                $this->setStatusCode(405);
-                return [
-                    'message' => 'Bạn chưa đăng ký mua gói'
-                ];
-            }
+//            $subscriberServiceAsm = SubscriberServiceAsm::find()
+//                ->andWhere(['subscriber_id' => $subscriber->id])
+//                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
+//                ->orderBy(['updated_at' => SORT_DESC])->one();
+//            if ($subscriberServiceAsm) {
+//                if ($subscriberServiceAsm->time_expired - time() < 0) {
+//                    $this->setStatusCode(406);
+//                    return [
+//                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
+//                    ];
+//                }
+//            } else {
+//                $this->setStatusCode(405);
+//                return [
+//                    'message' => 'Bạn chưa đăng ký mua gói'
+//                ];
+//            }
         }
 
         $gapAdvice = GapGeneral::find()
