@@ -619,6 +619,13 @@ class PriceController extends Controller
                                 $priceCoffee->organisation_name = $code;
                                 $priceCoffee->save(false);
                                 $this->infoLogPrice("**** Save price " . $station->station_code . " price la " . $last_value);
+                            }else{
+                                if($checkStart->price_average != $last_value){
+                                    $checkStart->price_average = $last_value;
+                                    $checkStart->last_time_value = $end;
+                                    $checkStart ->updated_at = time();
+                                    $checkStart->save(false);
+                                }
                             }
                         }
                     }
