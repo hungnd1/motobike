@@ -587,7 +587,7 @@ class PriceController extends Controller
     public function actionRunPrice()
     {
 
-        $this->infoLogPrice("**** TIME START PRICE" . date('d/m/Y', time()));
+        $this->infoLogPrice("**** TIME START PRICE " . date('d/m/Y', time()));
         $listStation = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
 //            ->andWhere(['station_code'=>'67_665_24728'])
@@ -618,13 +618,15 @@ class PriceController extends Controller
                                 $priceCoffee->coffee_old_id = $id;
                                 $priceCoffee->organisation_name = $code;
                                 $priceCoffee->save(false);
-                                $this->infoLogPrice("**** Save price " . $station->station_code . " price la " . $last_value);
-                            }else{
-                                if($checkStart->price_average != $last_value){
+                                $this->infoLogPrice("**** Save new price " . $station->station_code . " " . $code . " price la " . $last_value);
+                            } else {
+                                if ($checkStart->price_average != $last_value) {
                                     $checkStart->price_average = $last_value;
                                     $checkStart->last_time_value = $end;
-                                    $checkStart ->updated_at = time();
+                                    $checkStart->updated_at = time();
                                     $checkStart->save(false);
+                                    $this->infoLogPrice("**** Save old price " . $station->station_code . " " . $code . " price la " . $last_value);
+
                                 }
                             }
                         }
