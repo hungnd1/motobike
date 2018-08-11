@@ -302,7 +302,7 @@ class AppController extends ApiController
 
     public function actionGetCategory($fruit_id = Fruit::COFFEE)
     {
-        $query = Category::find()
+        $query = \api\models\Category::find()
             ->andWhere(['status' => Category::STATUS_ACTIVE])
             ->andWhere(['fruit_id' => $fruit_id])
             ->orderBy(['order_number' => SORT_DESC]);

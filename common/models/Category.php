@@ -36,9 +36,9 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['display_name'], 'required'],
-            [['description'], 'string'],
+            [['description','image'], 'string'],
             [['status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
-            [['display_name'], 'string', 'max' => 200],
+            [['display_name'], 'string', 'max' => 200]
         ];
     }
 
@@ -55,7 +55,8 @@ class Category extends \yii\db\ActiveRecord
             'order_number' => 'Sắp xếp',
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Updated At',
-            'fruit_id' => 'Cây trồng'
+            'fruit_id' => 'Cây trồng',
+            'image' => 'Ảnh đại diện'
         ];
     }
 
