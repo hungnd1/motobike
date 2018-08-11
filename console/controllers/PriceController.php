@@ -613,8 +613,8 @@ class PriceController extends Controller
                                 $priceCoffee->province_id = $station->station_code;
                                 $priceCoffee->price_average = $last_value;
                                 $priceCoffee->unit = 1;
-                                $priceCoffee->created_at = time();
-                                $priceCoffee->updated_at = time();
+                                $priceCoffee->created_at = $end;
+                                $priceCoffee->updated_at = $end;
                                 $priceCoffee->last_time_value = $end;
                                 $priceCoffee->coffee_old_id = $id;
                                 $priceCoffee->organisation_name = $code;
@@ -624,7 +624,7 @@ class PriceController extends Controller
                                 if ($checkStart->price_average != $last_value) {
                                     $checkStart->price_average = $last_value;
                                     $checkStart->last_time_value = $end;
-                                    $checkStart->updated_at = time();
+                                    $checkStart->updated_at = $end;
                                     $checkStart->save(false);
                                     $this->infoLogPrice("**** Save old price " . $station->station_code . " " . $code . " price la " . $last_value);
 
