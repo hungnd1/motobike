@@ -584,6 +584,7 @@ class PriceController extends Controller
         $this->infoLogWeather("**** TIME END" . time());
     }
 
+    // ket noi api lay gia
     public function actionRunPrice()
     {
 
