@@ -130,4 +130,24 @@ class GapGeneral extends \yii\db\ActiveRecord
         return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';
         // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
+
+    public static function getFruits()
+    {
+        $arrFruit = [];
+        $listFruit  = Fruit::find()->all();
+        foreach ($listFruit as $item) {
+            /** @var $item Fruit */
+            $arrFruit[$item->id] = $item->name;
+        }
+        return $arrFruit;
+    }
+
+    public function getFruitName($fruit_id)
+    {
+        $lst = self::getFruits();
+        if (array_key_exists($fruit_id, $lst)) {
+            return $lst[$fruit_id];
+        }
+        return $fruit_id;
+    }
 }
