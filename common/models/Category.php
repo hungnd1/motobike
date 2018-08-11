@@ -15,6 +15,7 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $fruit_id
+ * @property string $image
  */
 class Category extends \yii\db\ActiveRecord
 {
