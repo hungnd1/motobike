@@ -30,7 +30,7 @@ class Category extends \common\models\Category
         $fields['image'] = function ($model) {
             /* @var $model \common\models\Category */
             if($model->image){
-                return "";
+                return $model->getImageLink();
             }
             return '';
         };
