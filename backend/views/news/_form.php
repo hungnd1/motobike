@@ -29,6 +29,18 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             <?= $form->field($model, 'is_slide')->checkbox()->label('Hiển thị slide') ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->asArray()->all(), 'id', 'display_name'), ['prompt' => ' -- Chọn danh mục --']);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php echo $form->field($model, 'fruit_id')->dropDownList(ArrayHelper::map(\common\models\Fruit::find()->asArray()->all(), 'id', 'name'), ['prompt' => ' -- Chọn cây trồng --']);
+            ?>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -68,16 +80,9 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
 
     <div class="row">
         <div class="col-md-12">
-            <?php  echo $form->field($model, 'content')->widget(\common\widgets\CKEditor::className(), [
+            <?php echo $form->field($model, 'content')->widget(\common\widgets\CKEditor::className(), [
                 'preset' => 'full',
             ]);
-            ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <?php  echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->andWhere(['status'=>Category::STATUS_ACTIVE])->asArray()->all(),'id','display_name'));
             ?>
         </div>
     </div>

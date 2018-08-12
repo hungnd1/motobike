@@ -8,7 +8,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Category */
 /* @var $form yii\widgets\ActiveForm */
-
+$showPreview = !$model->isNewRecord && !empty($model->image);
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -32,7 +32,28 @@ use yii\helpers\Html;
         Category::getListStatus(), ['class' => 'input-circle']
     ) ?>
     <?= $form->field($model, 'fruit_id')->dropDownList(\yii\helpers\ArrayHelper::map(Fruit::find()->asArray()->all(), 'id', 'name')) ?>
+    <div class="row">
+        <div class="col-md-12">
 
+            <?php if ($showPreview) { ?>
+                <div class="form-group field-category-icon">
+                    <div class="col-sm-offset-3 col-sm-5">
+                        <?php echo Html::img($model->getImageLink(), ['class' => 'file-preview-image']) ?>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="col-md-12">
+            <?= $form->field($model, 'image')->widget(\kartik\widgets\FileInput::classname(), [
+                'options' => ['multiple' => true, 'accept' => 'image/*'],
+                'pluginOptions' => [
+                    'previewFileType' => 'image',
+                    'showUpload' => false,
+                    'showPreview' => (!$showPreview) ? true : false,
+                ]
+            ]); ?>
+        </div>
+    </div>
 </div>
 <div class="form-actions">
     <div class="row">

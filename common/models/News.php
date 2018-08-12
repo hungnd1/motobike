@@ -24,6 +24,7 @@ use yii\helpers\Url;
  * @property integer $is_slide
  * @property integer $category_id
  * @property integer $order
+ * @property integer $fruit_id
  */
 class News extends \yii\db\ActiveRecord
 {
@@ -47,8 +48,8 @@ class News extends \yii\db\ActiveRecord
             [['title', 'short_description'], 'required'],
             [['image'], 'required', 'on' => 'admin_create_update'],
             [['description', 'image', 'content'], 'string'],
-            [['order','created_at', 'updated_at', 'status','category_id','is_slide','comment_count','like_count','view_count'], 'integer'],
-            [['title','video_url', 'short_description'], 'string', 'max' => 500],
+            [['order', 'created_at', 'updated_at', 'status', 'category_id', 'is_slide', 'comment_count', 'like_count', 'view_count', 'fruit_id'], 'integer'],
+            [['title', 'video_url', 'short_description'], 'string', 'max' => 500],
         ];
     }
 
@@ -70,6 +71,7 @@ class News extends \yii\db\ActiveRecord
             'category_id' => 'Danh mục',
             'is_slide' => 'Là slide',
             'order' => 'Sắp xếp',
+            'fruit_id' => 'Cây trồng'
         ];
     }
 
@@ -96,11 +98,33 @@ class News extends \yii\db\ActiveRecord
         return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';
         // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
-    public static function getListStatusNameByStatus($status){
+
+    public static function getListStatusNameByStatus($status)
+    {
         $lst = self::listStatus();
         if (array_key_exists($status, $lst)) {
             return $lst[$status];
         }
         return $status;
+    }
+
+    public static function getFruits()
+    {
+        $arrFruit = [];
+        $listFruit  = Fruit::find()->all();
+        foreach ($listFruit as $item) {
+            /** @var $item Fruit */
+            $arrFruit[$item->id] = $item->name;
+        }
+        return $arrFruit;
+    }
+
+    public function getFruitName($fruit_id)
+    {
+        $lst = self::getFruits();
+        if (array_key_exists($fruit_id, $lst)) {
+            return $lst[$fruit_id];
+        }
+        return $fruit_id;
     }
 }

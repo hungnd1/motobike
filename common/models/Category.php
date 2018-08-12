@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "category".
@@ -39,7 +40,8 @@ class Category extends \yii\db\ActiveRecord
             [['display_name'], 'required'],
             [['description','image'], 'string'],
             [['status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
-            [['display_name'], 'string', 'max' => 200]
+            [['display_name'], 'string', 'max' => 200],
+            [['image'], 'required', 'on' => 'admin_create_update']
         ];
     }
 
@@ -102,5 +104,11 @@ class Category extends \yii\db\ActiveRecord
             return $lst[$fruit_id];
         }
         return $fruit_id;
+    }
+
+    public function getImageLink()
+    {
+        return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }
