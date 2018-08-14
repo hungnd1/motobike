@@ -556,6 +556,90 @@ class AppController extends ApiController
                         'tag' => Yii::t('app', 'Sơ chế bảo quản'),
                         'is_question' => false
                     ]);
+            }else if($fruit_id == 3){
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Chọn đất, mật độ, đào hố, bón lót'),
+                    'is_question' => false
+                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Trồng sầu riêng'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Bón phân'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Phun thuốc'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Tưới nước'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Tỉa cành, tạo hình'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Thu hái, bảo quản'),
+                        'is_question' => false
+                    ]);
+            }else if($fruit_id == 4){
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Chọn đất, mật độ, đào hố, bón lót'),
+                    'is_question' => false
+                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Trồng bơ'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Bón phân'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Phun thuốc'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Tưới nước'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Tỉa cành, tạo hình'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Thu hái, bảo quản'),
+                        'is_question' => false
+                    ]);
             }
             $res['items'] = $arr_item;
 
