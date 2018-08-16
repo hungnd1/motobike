@@ -13,6 +13,8 @@ use yii\helpers\Url;
  * @property string $image
  * @property integer $parent_id
  * @property integer $have_child
+ * @property integer $is_primary
+ * @property integer $order
  */
 class Fruit extends \yii\db\ActiveRecord
 {
@@ -28,6 +30,8 @@ class Fruit extends \yii\db\ActiveRecord
     const CAPHE_VOI = 1;
     const CAPHE_CHE = 2;
 
+    const IS_PRIMARY = 1;
+
     /**
      * @inheritdoc
      */
@@ -36,7 +40,7 @@ class Fruit extends \yii\db\ActiveRecord
         return [
             [['name', 'image'], 'string', 'max' => 255],
             [['name'], 'required'],
-            [['parent_id', 'have_child'], 'integer']
+            [['parent_id', 'have_child','is_primary','order'], 'integer']
         ];
     }
 
@@ -49,7 +53,9 @@ class Fruit extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Tên loại cây trồng',
             'image' => 'Hình ảnh',
-            'parent_id' => 'Cây cha'
+            'parent_id' => 'Cây cha',
+            'is_primary' => 'Cây trồng chính',
+            'order' => 'Sắp xếp'
         ];
     }
 

@@ -58,6 +58,16 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'is_primary')->checkbox() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'order')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
+        </div>
+    </div>
 </div>
 <div class="form-actions">
     <div class="row">

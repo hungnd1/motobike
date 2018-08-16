@@ -39,6 +39,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'class' => '\kartik\grid\DataColumn',
                             'format' => 'raw',
+                            'label' => 'Loại cây trồng',
+                            'attribute' => 'is_primary',
+                            'value' => function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\Fruit */
+                                return $model->is_primary ? "Cây trồng chính" : "Cây trồng phụ";
+                            },
+                        ],
+                        'order',
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format' => 'raw',
                             'label' => 'Ảnh đại diện',
                             'attribute' => 'image',
                             'value' => function ($model, $key, $index, $widget) {
