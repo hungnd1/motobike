@@ -13,6 +13,7 @@ use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\WeatherDetail;
 use common\models\Subscriber;
+use common\models\SubscriberServiceAsm;
 use Yii;
 use yii\base\InvalidValueException;
 
@@ -323,7 +324,29 @@ class WeatherController extends ApiController
         $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 
-        $weatherDetail = WeatherDetail::findOne(['id' => $subscriber->weather_detail_id]);
+        $today = strtotime('today midnight');
+        $tomorrow = strtotime('tomorrow');
+
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+        /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+        $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
+            sin((`latitude`*pi()/180))+cos((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) *
+            cos((`latitude`*pi()/180)) * cos(((" . Yii::$app->request->headers->get(static::HEADER_LONGITUDE) . "- `longtitude`)*pi()/180))))*180/pi())*60*1.1515) 
+            as distance
+            FROM station where latitude is not null and longtitude is not null  order by distance asc limit 1";
+        $connect = Yii::$app->getDb();
+        $command = $connect->createCommand($sql);
+        $result = $command->queryAll();
+        $stationCode = $result[0]['station_code'];
+        /** @var  $weatherDetail WeatherDetail */
+        $weatherDetail = WeatherDetail::find()
+            ->andWhere(['station_code' => $stationCode])
+            ->andWhere(['>=', 'timestamp', $today])
+            ->andWhere(['<', 'timestamp', $tomorrow])
+            ->one();
+
+        $weatherDetail = WeatherDetail::findOne(['id' => $weatherDetail->id]);
         return $weatherDetail;
     }
 }

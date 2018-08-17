@@ -353,26 +353,26 @@ class AppController extends ApiController
         UserHelpers::manualLogin();
 
         $today = strtotime('today midnight');
-        $tomorrow = strtotime('tomorrow');
+            $tomorrow = strtotime('tomorrow');
 
-        $subscriber = Yii::$app->user->identity;
-        /** @var  $subscriber Subscriber */
-        /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
-        $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
+            $subscriber = Yii::$app->user->identity;
+            /** @var  $subscriber Subscriber */
+            /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+            $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
             sin((`latitude`*pi()/180))+cos((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) *
             cos((`latitude`*pi()/180)) * cos(((" . Yii::$app->request->headers->get(static::HEADER_LONGITUDE) . "- `longtitude`)*pi()/180))))*180/pi())*60*1.1515) 
             as distance
             FROM station where latitude is not null and longtitude is not null  order by distance asc limit 1";
-        $connect = Yii::$app->getDb();
-        $command = $connect->createCommand($sql);
-        $result = $command->queryAll();
-        $stationCode = $result[0]['station_code'];
-        $weatherDetail = WeatherDetail::find()
-            ->andWhere(['station_code' => $stationCode])
-            ->andWhere(['>=', 'timestamp', $today])
-            ->andWhere(['<', 'timestamp', $tomorrow])
-            ->one();
-        if (!$weatherDetail) {
+            $connect = Yii::$app->getDb();
+            $command = $connect->createCommand($sql);
+            $result = $command->queryAll();
+            $stationCode = $result[0]['station_code'];
+            $weatherDetail = WeatherDetail::find()
+                ->andWhere(['station_code' => $stationCode])
+                ->andWhere(['>=', 'timestamp', $today])
+                ->andWhere(['<', 'timestamp', $tomorrow])
+                ->one();
+            if (!$weatherDetail) {
             $this->setStatusCode(407);
             return [
                 'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
