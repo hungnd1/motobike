@@ -347,17 +347,21 @@ class AppController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGapAdvice($fruit_id = 5)
+    public function actionGapAdvice($fruit_id = 5, $tem = 0, $pre = 0, $wind = 0)
     {
 
         UserHelpers::manualLogin();
 
         $today = strtotime('today midnight');
-            $tomorrow = strtotime('tomorrow');
+        $tomorrow = strtotime('tomorrow');
 
-            $subscriber = Yii::$app->user->identity;
-            /** @var  $subscriber Subscriber */
-            /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+        /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+
+        if ($tem || $pre || $wind) {
+            $wind = $wind * 3.6;
+        } else {
             $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
             sin((`latitude`*pi()/180))+cos((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) *
             cos((`latitude`*pi()/180)) * cos(((" . Yii::$app->request->headers->get(static::HEADER_LONGITUDE) . "- `longtitude`)*pi()/180))))*180/pi())*60*1.1515) 
@@ -373,15 +377,17 @@ class AppController extends ApiController
                 ->andWhere(['<', 'timestamp', $tomorrow])
                 ->one();
             if (!$weatherDetail) {
-            $this->setStatusCode(407);
-            return [
-                'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
-            ];
+                $this->setStatusCode(407);
+                return [
+                    'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
+                ];
+            }
+            $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
+            $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
+            $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
         }
-        $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
-        $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
-        $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
-        if ($subscriber) {
+
+//        if ($subscriber) {
 //            $subscriberServiceAsm = SubscriberServiceAsm::find()
 //                ->andWhere(['subscriber_id' => $subscriber->id])
 //                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
@@ -399,7 +405,7 @@ class AppController extends ApiController
 //                    'message' => 'Bạn chưa đăng ký mua gói'
 //                ];
 //            }
-        }
+//        }
 
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
@@ -556,7 +562,7 @@ class AppController extends ApiController
                         'tag' => Yii::t('app', 'Sơ chế bảo quản'),
                         'is_question' => false
                     ]);
-            }else if($fruit_id == 3){
+            } else if ($fruit_id == 3) {
                 array_push($arr_item, [
                     'content' => $gapAdvice->gap,
                     'tag' => Yii::t('app', 'Chọn đất, mật độ, đào hố, bón lót'),
@@ -598,7 +604,7 @@ class AppController extends ApiController
                         'tag' => Yii::t('app', 'Thu hái, bảo quản'),
                         'is_question' => false
                     ]);
-            }else if($fruit_id == 4){
+            } else if ($fruit_id == 4) {
                 array_push($arr_item, [
                     'content' => $gapAdvice->gap,
                     'tag' => Yii::t('app', 'Chọn đất, mật độ, đào hố, bón lót'),
