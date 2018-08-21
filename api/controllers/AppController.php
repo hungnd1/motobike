@@ -103,7 +103,10 @@ class AppController extends ApiController
         if (!$mac) {
             throw new InvalidValueException('mac không được để trống');
         }
-        $deviceInfo = DeviceInfo::findOne(['device_type' => $this->type, 'device_uid' => $uid]);
+        $deviceInfo = DeviceInfo::findOne(['device_uid' => $uid]);
+        //kiem tra neu device map voi subcriber roi
+        /** @var  $deviceSubscriberAsm DeviceSubscriberAsm */
+        $deviceSubscriberAsm = DeviceSubscriberAsm::find()->andWhere(['subscriber_id' => $subscriber->id])->one();
         if (!$deviceInfo) {
             $device = new DeviceInfo();
             $device->device_uid = $uid;
@@ -113,24 +116,24 @@ class AppController extends ApiController
             $device->mac = $mac;
             $device->status = DeviceInfo::STATUS_ACTIVE;
             $device->save();
-            $deviceSubscriberAsm = new DeviceSubscriberAsm();
-            $deviceSubscriberAsm->device_id = $device->id;
-            $deviceSubscriberAsm->subscriber_id = $subscriber->id;
-            $deviceSubscriberAsm->created_at = time();
-            $deviceSubscriberAsm->updated_at = time();
-            $deviceSubscriberAsm->save();
-        } else {
-            $deviceSubscriberAsm = DeviceSubscriberAsm::find()
-                ->andWhere(['device_id' => $deviceInfo->id])
-                ->andWhere(['subscriber_id' => $subscriber->id])->one();
             if ($deviceSubscriberAsm) {
-                $deviceSub = DeviceSubscriberAsm::find()
-                    ->andWhere(['device_id' => $deviceInfo->id])
-                    ->andWhere(['<>', 'id', $deviceSubscriberAsm->id])
-                    ->all();
-                foreach ($deviceSub as $deviceS) {
-                    /** @var $deviceS DeviceSubscriberAsm */
-                    $deviceS->delete();
+                $deviceSubscriberAsm->device_id = $device->id;
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            } else {
+                $deviceSubscriberAsm = new DeviceSubscriberAsm();
+                $deviceSubscriberAsm->device_id = $device->id;
+                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
+                $deviceSubscriberAsm->created_at = time();
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            }
+        } else {
+            if ($deviceSubscriberAsm) {
+                if($deviceSubscriberAsm->device_id != $deviceInfo->id){
+                    $deviceSubscriberAsm->device_id = $deviceInfo->id;
+                    $deviceSubscriberAsm->updated_at = time();
+                    $deviceSubscriberAsm->save();
                 }
             }
         }
