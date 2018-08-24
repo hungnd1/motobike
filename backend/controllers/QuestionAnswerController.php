@@ -37,11 +37,14 @@ class QuestionAnswerController extends Controller
     public function actionIndex()
     {
         $searchModel = new QuestionAnswerSearch();
+        $dataProviderAll = $searchModel->generateReportAll1(Yii::$app->request->queryParams);
+        $excelDataProvider = $searchModel->generateDetailReport($dataProviderAll->getModels());
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'excelDataProvider' => $excelDataProvider
         ]);
     }
 
