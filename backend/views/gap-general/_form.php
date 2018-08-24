@@ -80,6 +80,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             <div class="col-md-12">
                 <?php echo $form->field($model, 'gap')->widget(CKEditor::className(), [
                     'options' => ['rows' => 2],
+                    'preset' => 'full'
                 ]);
                 ?>
             </div>
@@ -88,6 +89,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             <div class="col-md-12">
                 <?php echo $form->field($model, 'content_8')->widget(CKEditor::className(), [
                     'options' => ['rows' =>2 ],
+                    'preset' => 'full'
                 ]);
                 ?>
             </div>
@@ -96,6 +98,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             <div class="col-md-12">
                 <?php echo $form->field($model, 'content_2')->widget(CKEditor::className(), [
                     'options' => ['rows' => 2],
+                    'preset' => 'full'
                 ]);
                 ?>
             </div>
