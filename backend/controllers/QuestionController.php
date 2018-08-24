@@ -69,14 +69,14 @@ class QuestionController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->is_dropdown_list = 1;
             $model->save();
-            $answerStr = explode(";" , $model->answer);
-            for ($i = 0; $i < sizeof($answerStr); $i++){
+            $answerStr = explode(";", $model->answer);
+            for ($i = 0; $i < sizeof($answerStr); $i++) {
                 $answer = new Answer();
                 $answer->answer = $answerStr[$i];
                 $answer->question_id = $model->id;
                 $answer->save();
             }
-                \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
+            \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
 
             return $this->redirect(['index']);
         } else {
@@ -97,37 +97,41 @@ class QuestionController extends Controller
         $model = $this->findModel($id);
         $listAnswer = Answer::find()->andWhere(['question_id' => $id])->all();
         $answerStr = '';
+        $listAns = [];
         foreach ($listAnswer as $item) {
             /** @var $item Answer */
             $answerStr .= $item->id . ":" . $item->answer . ";";
+            $listAns[] = $item->id;
         }
         $model->answer = rtrim($answerStr, ";");
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
-            $listArrAnser = explode(";", $model->answer);
-            for ($i = 0; $i < sizeof($listArrAnser); $i++) {
-                $answerEx = explode(":", $listArrAnser[$i]);
-                if(is_int($answerEx[0])){
+            $listArrAnswer = explode(";", $model->answer);
+            for ($i = 0; $i < sizeof($listArrAnswer); $i++) {
+                $answerEx = explode(":", $listArrAnswer[$i]);
+                if (sizeof($answerEx) > 0) {
                     for ($j = 1; $j < sizeof($answerEx); $j++) {
                         $answer = Answer::findOne($answerEx[0]);
                         if ($answer) {
+                            if (($key = array_search($answerEx[0], $listAns)) !== false) {
+                                unset($listAns[$key]);
+                            }
                             $answer->answer = $answerEx[1];
                             $answer->save();
                         } else {
                             $answerNew = new Answer();
+                            if ($answerEx[0]) {
+                                $answerNew->id = $answerEx[0];
+                            }
                             $answerNew->answer = $answerEx[1];
                             $answerNew->question_id = $id;
                             $answerNew->save();
                         }
                     }
-                }else{
-                    $answerNew = new Answer();
-                    $answerNew->answer = $answerEx[0];
-                    $answerNew->question_id = $id;
-                    $answerNew->save();
                 }
-
             }
+            //xoa cau tra loi cua cau hoi
+            $answerDelete = Answer::deleteAll(['in', 'id', $listAns]);
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {
