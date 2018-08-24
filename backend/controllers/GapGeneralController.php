@@ -37,7 +37,7 @@ class GapGeneralController extends Controller
     public function actionIndex($type = GapGeneral::GAP_GENERAL)
     {
         $searchModel = new GapGeneralSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$type);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $type);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -83,7 +83,7 @@ class GapGeneralController extends Controller
             $model->updated_at = time();
             $model->save(false);
             \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
-            return $this->redirect(['index','type'=>$type]);
+            return $this->redirect(['index', 'type' => $type]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -120,7 +120,7 @@ class GapGeneralController extends Controller
             $model->updated_at = time();
             $model->save(false);
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'type' => $model->type]);
         } else {
             return $this->render('update', [
                 'model' => $model,
