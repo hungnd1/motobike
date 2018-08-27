@@ -46,12 +46,14 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             ]); ?>
         </div>
     </div>
-    <?php if($type == GapGeneral::GAP_GENERAL || $type == GapGeneral::CLIMATE_CHANGE){ ?>
+    <?php if ($type == GapGeneral::GAP_GENERAL || $type == GapGeneral::CLIMATE_CHANGE) { ?>
         <div class="row">
             <div class="col-md-12">
-                <?php echo $form->field($model, 'gap')->widget(CKEditor::className(), [
-                    'options' => ['rows' => 2],
-                ])->label('Nội dung');
+                <?php echo $form->field($model, 'gap')->widget(CKEditor::className(),
+                    [
+                        'options' => ['rows' => 2],
+                        'preset' => 'full'
+                    ])->label('Nội dung');
                 ?>
             </div>
         </div>
@@ -61,7 +63,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
                 ?>
             </div>
         </div>
-    <?php }else{ ?>
+    <?php } else { ?>
         <div class="row">
             <div class="col-md-12">
                 <?= $form->field($model, 'fruit_id')->widget(\kartik\select2\Select2::classname(), [
@@ -88,7 +90,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
         <div class="row">
             <div class="col-md-12">
                 <?php echo $form->field($model, 'content_8')->widget(CKEditor::className(), [
-                    'options' => ['rows' =>2 ],
+                    'options' => ['rows' => 2],
                     'preset' => 'full'
                 ]);
                 ?>
@@ -158,7 +160,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
                 ?>
             </div>
         </div>
-    <?php   } ?>
+    <?php } ?>
 
 
     <div class="row">
@@ -168,8 +170,8 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             ) ?>
         </div>
     </div>
-    <?= $form->field($model,'type')->hiddenInput(['value'=> $type])->label(false) ?>
-    <?php if($type == \common\models\GapGeneral::GAP_DETAIL){ ?>
+    <?= $form->field($model, 'type')->hiddenInput(['value' => $type])->label(false) ?>
+    <?php if ($type == \common\models\GapGeneral::GAP_DETAIL) { ?>
         <div class="row">
             <div class="col-sm-12">
                 <?= $form->field($model, 'temperature_max')->textInput() ?>
@@ -192,7 +194,7 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
         </div>
         <div class="row">
             <div class="col-md-12">
-                <?= $form->field($model, 'precipitation_max')->textInput()?>
+                <?= $form->field($model, 'precipitation_max')->textInput() ?>
             </div>
         </div>
         <div class="row">

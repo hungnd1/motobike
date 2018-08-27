@@ -15,6 +15,7 @@ use common\helpers\CVietnameseTools;
 use common\models\SubscriberActivity;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\web\ServerErrorHttpException;
 
 class StationController extends ApiController
 {
@@ -78,5 +79,15 @@ class StationController extends ApiController
             ],
         ]);
         return $dataProvider;
+    }
+
+    public function actionGetLocation($id)
+    {
+        UserHelpers::manualLogin();
+        $location = Station::findOne($id);
+        if (!$location) {
+            throw new ServerErrorHttpException(Yii::t('app', 'Không có vị trí này'));
+        }
+        return $location;
     }
 }
