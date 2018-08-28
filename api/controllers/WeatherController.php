@@ -51,15 +51,7 @@ class WeatherController extends ApiController
         /** @var  $subscriber Subscriber */
         $station_id = $this->getParameter('station_id', '');
         if (!$station_id) {
-            $id = $this->getParameter('id', '');
-            if(!$id){
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
-            }
-            $station = Station::findOne($id);
-            if(!$station){
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
-            }
-            $station_id = $station->station_code;
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
 
         }
         $arr = [];
