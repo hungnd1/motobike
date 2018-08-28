@@ -180,8 +180,8 @@ class WeatherController extends ApiController
 //            $temperature = $temperature / $weekWeatherAgo->count();
 //            $precipitation = $precipitation / $weekWeatherAgo->count();
 //        }
-        $subscriber->weather_detail_id = $weather->id;
-        $subscriber->save();
+//        $subscriber->weather_detail_id = $weather->id;
+//        $subscriber->save();
         return [
             'items' => $weather,
 //            'temperature' => $temperature,
