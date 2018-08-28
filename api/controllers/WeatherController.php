@@ -12,6 +12,7 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\WeatherDetail;
+use common\models\Station;
 use common\models\Subscriber;
 use common\models\SubscriberServiceAsm;
 use Yii;
@@ -48,10 +49,18 @@ class WeatherController extends ApiController
 
         $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
-
         $station_id = $this->getParameter('station_id', '');
         if (!$station_id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
+            $id = $this->getParameter('id', '');
+            if(!$id){
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
+            }
+            $station = Station::findOne($id);
+            if(!$station){
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
+            }
+            $station_id = $station->station_code;
+
         }
         $arr = [];
         $current_time = time();
