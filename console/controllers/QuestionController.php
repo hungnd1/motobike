@@ -99,8 +99,19 @@ class QuestionController extends Controller
                 ->andWhere(['device_subscriber_asm.subscriber_id' => $question->subscriber_id])
                 ->one();
             $clickAction = Yii::$app->params['action_android'];
-            $content = iconv(mb_detect_encoding($question->answer, mb_detect_order(), true), "UTF-8", $question->answer);
-            CUtils::sendNotify($device_token->device_uid, CUtils::subString($content ? $content : '....', 100, '...'), "Green Coffee hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id);
+            CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem chi tiết chuyên gia trả lời câu hỏi của bạn", "Hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id, DeviceInfo::TARGET_TYPE_QUESTION);
+        }
+    }
+
+    public function actionNotifyPest($id)
+    {
+        $device_token = DeviceInfo::find()
+            ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
+            ->all();
+        $clickAction = Yii::$app->params['action_android'];
+        foreach ($device_token as $token) {
+            /** @var $token DeviceInfo */
+            CUtils::sendNotify($token->device_uid, "Bấm vào để xem chi tiết thông tin sâu bệnh", "Sâu bệnh", $clickAction, DeviceInfo::TYPE_PETS, $id, DeviceInfo::TARGET_TYPE_PEST);
         }
     }
 }

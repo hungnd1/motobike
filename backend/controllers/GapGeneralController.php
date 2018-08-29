@@ -82,6 +82,9 @@ class GapGeneralController extends Controller
             $model->created_at = time();
             $model->updated_at = time();
             $model->save(false);
+            if($model->type == GapGeneral::GAP_GENERAL){
+                $message = shell_exec("nohup  ./notify_pest.sh $model->id > /dev/null 2>&1 &");
+            }
             \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
             return $this->redirect(['index', 'type' => $type]);
         } else {

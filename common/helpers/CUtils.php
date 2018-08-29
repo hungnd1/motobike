@@ -911,9 +911,8 @@ class CUtils
         return $randomString;
     }
 
-    public static function sendNotify($device_token, $msg, $title, $action = '', $type = DeviceInfo::TYPE_PRICE, $id)
+    public static function sendNotify($device_token, $msg, $title, $action = '', $type = DeviceInfo::TYPE_PRICE, $id, $targetType = DeviceInfo::TARGET_TYPE_WEATHER)
     {
-        define('API_ACCESS_KEY', Yii::$app->params['firebaseMessage']);
         $msg = array(
             'body' => $msg,
             'title' => $title,
@@ -926,7 +925,8 @@ class CUtils
         $data = array(
             'type' => $type,
             'id' => $id,
-            'targetType' => 'weather'
+            'target_type' => $targetType,
+            'target_id' => $id
         );
         $fields = array
         (
@@ -936,7 +936,7 @@ class CUtils
         );
         $headers = array
         (
-            'Authorization: key=' . API_ACCESS_KEY,
+            'Authorization: key=' . Yii::$app->params['firebaseMessage'],
             'Content-Type: application/json'
         );
 
