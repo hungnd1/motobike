@@ -925,7 +925,8 @@ class CUtils
         );
         $data = array(
             'type' => $type,
-            'id' => $id
+            'id' => $id,
+            'targetType' => 'weather'
         );
         $fields = array
         (

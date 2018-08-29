@@ -99,7 +99,8 @@ class QuestionController extends Controller
                 ->andWhere(['device_subscriber_asm.subscriber_id' => $question->subscriber_id])
                 ->one();
             $clickAction = Yii::$app->params['action_android'];
-            CUtils::sendNotify($device_token->device_uid, CUtils::subString($question->answer ? strip_tags($question->answer) : '....', 20, '...'), "Green Coffee hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id);
+            $content = iconv(mb_detect_encoding($question->answer, mb_detect_order(), true), "UTF-8", $question->answer);
+            CUtils::sendNotify($device_token->device_uid, CUtils::subString($content ? $content : '....', 100, '...'), "Green Coffee hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id);
         }
     }
 }
