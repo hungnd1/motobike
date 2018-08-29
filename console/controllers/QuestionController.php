@@ -90,7 +90,7 @@ class QuestionController extends Controller
         /** @var  $question  QuestionAnswer */
         $question = QuestionAnswer::find()
             ->andWhere(['id' => $id])
-            ->andWhere(['status' => QuestionAnswer::STATUS_INACTIVE])
+//            ->andWhere(['status' => QuestionAnswer::STATUS_INACTIVE])
             ->one();
         if ($question) {
             /** @var  $device_token DeviceInfo */
