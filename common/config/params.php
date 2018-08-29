@@ -67,5 +67,6 @@ return [
         'Introduce' => 'Introduce',
     ],
     'time_expire_cache' => 24 * 3600,
-    'firebaseMessage' => 'AAAARjwDLSc:APA91bHKJbj57sC1LcnBQqKMNbbN6P4-eNZwzUta5CwVGWCGxpNC3BtozHolgDJiLUOBYR6eki3hL64-tG2Tofs1cU7YLW0pgV_h_FajAdp1zoCRNY9l_F1f91eQ3l4y965AY3Q0IW2d'
+    'firebaseMessage' => 'AAAARjwDLSc:APA91bHKJbj57sC1LcnBQqKMNbbN6P4-eNZwzUta5CwVGWCGxpNC3BtozHolgDJiLUOBYR6eki3hL64-tG2Tofs1cU7YLW0pgV_h_FajAdp1zoCRNY9l_F1f91eQ3l4y965AY3Q0IW2d',
+    'action_android' => 'vn.monkey.icco.activity.NotificationActivity'
 ];

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\helpers\CUtils;
 use common\models\QuestionAnswer;
 use common\models\QuestionAnswerSearch;
 use Yii;
@@ -117,6 +118,7 @@ class QuestionAnswerController extends Controller
             }
             $model->updated_at = time();
             $model->save();
+            $message = shell_exec("nohup  ./notify_question.sh $id > /dev/null 2>&1 &");
             \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {

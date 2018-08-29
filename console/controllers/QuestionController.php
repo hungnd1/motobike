@@ -15,6 +15,7 @@ use common\helpers\FileUtils;
 use common\helpers\StringUtils;
 use common\models\AuthItem;
 use common\models\DeviceInfo;
+use common\models\DeviceSubscriberAsm;
 use common\models\Site;
 use common\models\User;
 use ReflectionClass;
@@ -64,7 +65,7 @@ class QuestionController extends Controller
                             ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
                             ->andWhere(['device_subscriber_asm.subscriber_id' => $question->subscriber_id])
                             ->one();
-                        CUtils::sendNotify($device_token->device_uid, CUtils::subString($question->answer, 30, '...'), 'Hệ thống trả lời');
+//                        CUtils::sendNotify($device_token->device_uid, CUtils::subString($question->answer, 30, '...'), 'Hệ thống trả lời');
                     }
                 }
             }
@@ -82,5 +83,23 @@ class QuestionController extends Controller
     private function infoLogAnswer($txt)
     {
         FileUtils::appendToFile(Yii::getAlias('@runtime/logs/infoAnswer.log'), $txt);
+    }
+
+    public function actionNotifyQuestion($id)
+    {
+        /** @var  $question  QuestionAnswer */
+        $question = QuestionAnswer::find()
+            ->andWhere(['id' => $id])
+            ->andWhere(['status' => QuestionAnswer::STATUS_INACTIVE])
+            ->one();
+        if ($question) {
+            /** @var  $device_token DeviceInfo */
+            $device_token = DeviceInfo::find()
+                ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
+                ->andWhere(['device_subscriber_asm.subscriber_id' => $question->subscriber_id])
+                ->one();
+            $clickAction = Yii::$app->params['action_android'];
+            CUtils::sendNotify($device_token->device_uid, CUtils::subString($question->answer ? $question->answer : '....', 20, '...'), "Green Coffee hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id);
+        }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 namespace common\helpers;
+
+use common\models\DeviceInfo;
 use Exception;
 use Yii;
 use yii\base\InvalidCallException;
@@ -24,6 +26,7 @@ class CUtils
     }
 
     //put your code here
+
     /**
      * Log a msg as custom level "CUtils::Debug"
      * You need to add this level ("CUtils::Debug") to log component in config/main.php :
@@ -814,56 +817,60 @@ class CUtils
      * @param $path
      * @return bool
      */
-    public static function writeFile($data,$path){
-        try{
-            $data =@mb_convert_encoding($data, 'UTF-8', 'OLD-ENCODING');
+    public static function writeFile($data, $path)
+    {
+        try {
+            $data = @mb_convert_encoding($data, 'UTF-8', 'OLD-ENCODING');
             $Handle = fopen($path, 'w');
 //            $Handle = fopen($path, 'w')or die("Unable to open file!");
             $rs = fwrite($Handle, $data);
-            if($rs===false) {
+            if ($rs === false) {
                 return false;
             }
             fclose($Handle);
             return true;
-        }catch (Exception $ex){
+        } catch (Exception $ex) {
             return false;
         }
     }
 
-    public static function parseTitleToKeyword($title){
+    public static function parseTitleToKeyword($title)
+    {
         $title = trim($title);
         $title = CUtils::utf8Convert($title);
         $title = preg_replace("/[^a-zA-Z0-9 ]+/", "", $title);
 
-        $arr = explode(' ',$title);
+        $arr = explode(' ', $title);
         $str = '';
         foreach ($arr as $item) {
-            $str .= substr($item,0,1);
+            $str .= substr($item, 0, 1);
         }
-        $str = mb_strtolower($str ,'UTF-8');
+        $str = mb_strtolower($str, 'UTF-8');
         return $str;
     }
 
-    public static function  convertVi2Eng($title){
+    public static function convertVi2Eng($title)
+    {
         $title = trim($title);
         $title = CUtils::utf8Convert($title);
         $title = preg_replace("/[^a-zA-Z0-9 ]+/", "", $title);
-        $str = mb_strtolower($title ,'UTF-8');
+        $str = mb_strtolower($title, 'UTF-8');
         return $str;
     }
 
-    public static function utf8Convert($str) {
-        if(!$str) return false;
+    public static function utf8Convert($str)
+    {
+        if (!$str) return false;
         $utf8 = array(
-            'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
-            'd'=>'đ|Đ',
-            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
-            'i'=>'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
-            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
-            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
-            'y'=>'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+            'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+            'd' => 'đ|Đ',
+            'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+            'i' => 'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
+            'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+            'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+            'y' => 'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
         );
-        foreach($utf8 as $ascii=>$uni) $str = preg_replace("/($uni)/i",$ascii,$str);
+        foreach ($utf8 as $ascii => $uni) $str = preg_replace("/($uni)/i", $ascii, $str);
         return $str;
     }
 
@@ -878,24 +885,23 @@ class CUtils
         return $message;
     }
 
-    public static  function subString($str, $length, $minword = 3)
+    public static function subString($str, $length, $minword = 3)
     {
         $sub = '';
         $len = 0;
-        foreach (explode(' ', $str) as $word)
-        {
+        foreach (explode(' ', $str) as $word) {
             $part = (($sub != '') ? ' ' : '') . $word;
             $sub .= $part;
             $len += strlen($part);
-            if (strlen($word) > $minword && strlen($sub) >= $length)
-            {
+            if (strlen($word) > $minword && strlen($sub) >= $length) {
                 break;
             }
         }
         return $sub . (($len < strlen($str)) ? '...' : '');
     }
 
-    public static function generateRandomString($length = 8) {
+    public static function generateRandomString($length = 8)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -905,21 +911,27 @@ class CUtils
         return $randomString;
     }
 
-    public static function sendNotify($device_token,$msg,$title, $action = ''){
-        define( 'API_ACCESS_KEY', Yii::$app->params['firebaseMessage'] );
+    public static function sendNotify($device_token, $msg, $title, $action = '', $type = DeviceInfo::TYPE_PRICE, $id)
+    {
+        define('API_ACCESS_KEY', Yii::$app->params['firebaseMessage']);
         $msg = array(
             'body' => $msg,
             'title' => $title,
-            'vibrate'	=> 1,
-            'sound'		=> 1,
-            'largeIcon'	=> 'large_icon',
-            'smallIcon'	=> 'small_icon',
-            'click_action' =>$action
+            'vibrate' => true,
+            'sound' => true,
+            'largeIcon' => 'large_icon',
+            'smallIcon' => 'small_icon',
+            'click_action' => $action
+        );
+        $data = array(
+            'type' => $type,
+            'id' => $id
         );
         $fields = array
         (
-            'to' 	=> $device_token,
-            'notification'			=> $msg
+            'to' => $device_token,
+            'notification' => $msg,
+            'data' => $data
         );
         $headers = array
         (
@@ -928,20 +940,21 @@ class CUtils
         );
 
         $ch = curl_init();
-        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
-        curl_setopt( $ch,CURLOPT_POST, true );
-        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
-        $result = curl_exec($ch );
-        curl_close( $ch );
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        curl_close($ch);
         $result = json_decode($result);
-        if($result->success){
+        if ($result->success) {
             return true;
         }
         return false;
     }
+
 }
 
 

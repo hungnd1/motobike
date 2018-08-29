@@ -31,6 +31,11 @@ class DeviceInfo extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
 
+    const TYPE_WEATHER = 1;
+    const TYPE_PRICE = 2;
+    const TYPE_QUESTION = 3;
+    const TYPE_PETS = 4;
+
     /**
      * @inheritdoc
      */
