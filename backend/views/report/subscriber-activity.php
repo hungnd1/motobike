@@ -109,6 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     /**  @var $model \common\models\ReportSubscriberActivity */
                                     return $model->total_via_site;
                                 },
+//                                'pageSummary' => true,
                             ],
                             [
                                 'class' => '\kartik\grid\DataColumn',
