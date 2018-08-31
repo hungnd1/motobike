@@ -133,9 +133,17 @@ class ReportSubscriberActivityForm extends Model
         $total_via_site_daily = 0;
         $total_via_android= 0;
         $total_via_website = 0;
+        $total_via = 0;
+        $total_via_sub = 0;
         if(!empty($rawData)){
             $i=0;
             foreach ($rawData as $raw){
+                if($i == 0 ){
+                    $total_via = $raw['total_via_site'];
+                }
+                if($i == sizeof($rawData) - 1){
+                    $total_via_sub = $raw['total_via_site'];
+                }
                 $row[$sttLabel] = ++$i;
                 $row[$dateLabel] = date($dateFormat,$raw['report_date']);
                 $row[$total_via_site_label] = $raw['total_via_site'];
@@ -147,14 +155,13 @@ class ReportSubscriberActivityForm extends Model
                 $total_via_site_daily += $raw['via_site_daily'];
                 $total_via_android += $raw['via_android'];
                 $total_via_website += $raw['via_website'];
-
                 //kết thúc một ngày, khởi tạo thêm 1 dòng cho ngày tiếp theo
                 $row = [];
             }
             //tinh tong cac  cot  dữ liệu
             $row[$sttLabel] = ++$i;
             $row[$dateLabel] = 'Tổng';
-            $row[$total_via_site_label] = '';
+            $row[$total_via_site_label] = $total_via - $total_via_sub;
             $row[$total_via_site_daily_label] = $total_via_site_daily;
             $row[$total_via_android_label] = $total_via_android;
             $row[$total_via_website_label] = $total_via_website;
