@@ -1581,7 +1581,7 @@ return [
     'Thông tin tài khoản  không hợp lệ' => 'Account information is invalid',
     'Phản hồi thành công' => 'Feedback successully',
     'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời' => 'You have successfully asked the question, the system will notify you when there is an answer',
-    'Với tuổi cây đối với tiêu KTCB và kích thước cây đối với Tiêu kinh doanh, chúng tôi khuyến cáo sử dụng phân như sau:' => 'With old tree for KTCB and tree size for Business, us khuyến cáo use a following:',
+    'Với tuổi cây đối với tiêu KTCB và kích thước cây đối với Tiêu kinh doanh, chúng tôi khuyến cáo sử dụng phân như sau:' => 'On base of age for young pepper and size of tree for haversted pepper we would like to send you some suggestion on effective fertilize management and use as below:',
     'Làm đất, chuẩn bị hố và trồng tiêu' => 'Land preparation, pit preparation and pepper cultivation',
     'Chọn lựa và trồng choái cho tiêu leo' => 'Select and grow the clover',
     'Chăm sóc thường xuyên tiêu từ năm một đến năm ba.' => 'Regular care is given from year one to year three.',
