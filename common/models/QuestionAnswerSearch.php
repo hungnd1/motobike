@@ -20,7 +20,7 @@ class QuestionAnswerSearch extends QuestionAnswer
     {
         return [
             [['id', 'created_at', 'updated_at', 'status'], 'integer'],
-            [['question', 'answer', 'image'], 'safe'],
+            [['question', 'answer', 'image','answer_string'], 'safe'],
         ];
     }
 

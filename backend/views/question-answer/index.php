@@ -144,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'btn btn-default'
                     ],
                     'exportConfig' => [
-                        ExportMenu::FORMAT_CSV => false,
+                        ExportMenu::FORMAT_CSV => true,
                         ExportMenu::FORMAT_EXCEL_X => [
                             'label' => 'Excel',
                         ],

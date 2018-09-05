@@ -11,6 +11,7 @@ use backend\controllers\CategoryController;
 use common\auth\helpers\AuthHelper;
 use common\helpers\StringUtils;
 use common\models\AuthItem;
+use common\models\QuestionAnswer;
 use common\models\Site;
 use common\models\User;
 use ReflectionClass;
@@ -224,5 +225,15 @@ class UserController extends Controller
         VarDumper::dump($actionAuth);
     }
 
+    public function actionMigrateAnswer(){
+        $lstAnswer = QuestionAnswer::find()
+            ->andWhere('answer_string is null')
+            ->all();
+        foreach ($lstAnswer as $answer){
+            /** @var $answer QuestionAnswer */
+            $answer->answer_string = strip_tags(html_entity_decode($answer->answer,ENT_NOQUOTES   ,"UTF-8"));
+            $answer->save();
+        }
+    }
 
 }

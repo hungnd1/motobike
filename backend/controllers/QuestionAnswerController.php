@@ -84,6 +84,7 @@ class QuestionAnswerController extends Controller
             }
             if ($model->answer) {
                 $model->status = QuestionAnswer::STATUS_ACTIVE;
+                $model->answer_string = strip_tags(html_entity_decode($model->answer,ENT_NOQUOTES   ,"UTF-8"));
             } else {
                 $model->status = QuestionAnswer::STATUS_INACTIVE;
             }
@@ -129,6 +130,7 @@ class QuestionAnswerController extends Controller
             }
             if ($model->answer) {
                 $model->status = QuestionAnswer::STATUS_ACTIVE;
+                $model->answer_string = strip_tags(html_entity_decode($model->answer,ENT_NOQUOTES   ,"UTF-8"));
             } else {
                 $model->status = QuestionAnswer::STATUS_INACTIVE;
             }

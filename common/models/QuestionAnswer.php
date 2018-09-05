@@ -16,6 +16,7 @@ use yii\helpers\Url;
  * @property integer $status
  * @property integer $subscriber_id
  * @property string $image
+ * @property string $answer_string
  */
 class QuestionAnswer extends \yii\db\ActiveRecord
 {
@@ -38,7 +39,7 @@ class QuestionAnswer extends \yii\db\ActiveRecord
     {
         return [
             [['question','status'],'required'],
-            [['question', 'answer'], 'string'],
+            [['question', 'answer','answer_string'], 'string'],
             [['created_at', 'updated_at', 'status','subscriber_id'], 'integer'],
             [['image'], 'string', 'max' => 500],
         ];
