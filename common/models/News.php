@@ -45,7 +45,7 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'short_description'], 'required'],
+            [['title', 'short_description','fruit_id'], 'required'],
             [['image'], 'required', 'on' => 'admin_create_update'],
             [['description', 'image', 'content'], 'string'],
             [['order', 'created_at', 'updated_at', 'status', 'category_id', 'is_slide', 'comment_count', 'like_count', 'view_count', 'fruit_id'], 'integer'],
