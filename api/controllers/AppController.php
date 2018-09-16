@@ -851,4 +851,32 @@ class AppController extends ApiController
             throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
         }
     }
+
+    public function actionGetMessageAdvice($id){
+        if($id == 1){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY CÀ PHÊ.')
+            ];
+        }else if($id == 2){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY HỒ TIÊU.')
+            ];
+        }else if($id == 3){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY SẦU RIÊNG.')
+            ];
+        }else if($id == 4){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY BƠ.')
+            ];
+        }else if($id == 5){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ROBUSTA (vối).')
+            ];
+        }else if($id == 6){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ARABICA (chè).')
+            ];
+        }
+    }
 }
