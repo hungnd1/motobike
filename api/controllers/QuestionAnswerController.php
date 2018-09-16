@@ -149,7 +149,8 @@ class QuestionAnswerController extends ApiController
     {
         $answer = $this->getParameterPost('answer', '');
         if (!$answer) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
+            throw new ServerErrorHttpException(Yii::t('app', 'Không có khuyến cáo cho lựa chọn này'));
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
         }
         $answerStr = "";
         $answer_1 = isset(explode(':', explode(',', $answer)[0])[1]) ? explode(':', explode(',', $answer)[0])[1] : 0;
