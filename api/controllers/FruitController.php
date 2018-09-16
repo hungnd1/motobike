@@ -102,6 +102,8 @@ class FruitController extends ApiController
         if (!$group_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
         }
+        throw new ServerErrorHttpException(Yii::t('app', 'Nội dung này chúng tôi đang thực hiện, xin gửi thông tin đến các bạn sau'));
+
         $arr_feature = explode(',', $feature_id);
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 
