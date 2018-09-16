@@ -130,11 +130,9 @@ class AppController extends ApiController
             }
         } else {
             if ($deviceSubscriberAsm) {
-                if($deviceSubscriberAsm->device_id != $deviceInfo->id){
                     $deviceSubscriberAsm->device_id = $deviceInfo->id;
                     $deviceSubscriberAsm->updated_at = time();
                     $deviceSubscriberAsm->save();
-                }
             }else{
                 $deviceSubscriberAsm = new DeviceSubscriberAsm();
                 $deviceSubscriberAsm->device_id = $deviceInfo->id;
