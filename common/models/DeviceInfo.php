@@ -31,6 +31,23 @@ class DeviceInfo extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
 
+    const TYPE_WEATHER = 1;
+    const TYPE_PRICE = 2;
+    const TYPE_QUESTION = 3;
+    const TYPE_PETS = 4;
+
+
+    const TARGET_TYPE_WEATHER = 'weather';
+    const TARGET_TYPE_PROFILE = 'profile';
+    const TARGET_TYPE_PEST = 'pest';
+    const TARGET_TYPE_PRICE= 'price';
+    const TARGET_TYPE_EXCHANGE = 'exchange';
+    const TARGET_TYPE_GAPS = 'gaps';
+    const TARGET_TYPE_CLIMATE = 'climate';
+    const TARGET_TYPE_QUESTION = 'question';
+    const TARGET_TYPE_GAP_ADVICE = 'gap';
+    const TARGET_TYPE_PROBLEM = 'problems'; //su co bat thuong
+
     /**
      * @inheritdoc
      */

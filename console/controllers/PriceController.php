@@ -9,7 +9,9 @@
 namespace console\controllers;
 
 
+use common\helpers\CUtils;
 use common\helpers\FileUtils;
+use common\models\DeviceInfo;
 use common\models\PriceCoffee;
 use common\models\Station;
 use common\models\WeatherDetail;
@@ -636,5 +638,17 @@ class PriceController extends Controller
             }
         }
         $this->infoLogWeather("**** TIME END" . time());
+    }
+
+    public function actionNotifyPrice()
+    {
+        $device_token = DeviceInfo::find()
+            ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
+            ->all();
+        $clickAction = Yii::$app->params['action_android'];
+        foreach ($device_token as $token) {
+            /** @var $token DeviceInfo */
+            CUtils::sendNotify($token->device_uid, "Bấm vào để xem chi tiết giá cà phê hôm nay", "Giá cả", $clickAction, DeviceInfo::TYPE_PRICE, 1, DeviceInfo::TARGET_TYPE_PRICE);
+        }
     }
 }

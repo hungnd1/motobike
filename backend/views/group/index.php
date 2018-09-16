@@ -34,8 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'class' => 'yii\grid\SerialColumn',
                         ],
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format'=>'raw',
+                            'label'=>'Ảnh đại diện',
+                            'attribute' => 'image',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\Group */
+                                $cat_image=  Yii::getAlias('@news_image');
+                                return $model->image ? Html::img('@web/'.$cat_image.'/'.$model->image, ['alt' => 'Thumbnail','width'=>'250','height'=>'150']) : '';
+                            },
+                        ],
                         'name',
-
                         ['class' => 'kartik\grid\ActionColumn',
                             'template' => '{view} {update} {delete}',
                             'buttons' => [

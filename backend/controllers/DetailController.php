@@ -65,7 +65,7 @@ class DetailController extends Controller
     public function actionCreate()
     {
         $model = new Detail();
-
+        $model->setScenario('admin_create_update');
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'image');
             if ($image) {
@@ -100,9 +100,26 @@ class DetailController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $old_image = $model->image;
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            }else{
+                $model->image = $old_image;
+            }
+            $model->updated_at = time();
+            if($model->save()){
+                Yii::$app->session->setFlash("success","Cập nhật chi tiết thành công");
+                return $this->redirect(['index']);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

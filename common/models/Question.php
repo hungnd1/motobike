@@ -10,12 +10,14 @@ use Yii;
  * @property integer $id
  * @property string $question
  * @property integer $is_dropdown_list
+ * @property integer $fruit_id
  */
 class Question extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
+    public $answer;
     public static function tableName()
     {
         return 'question';
@@ -27,8 +29,9 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question'], 'string'],
-            [['is_dropdown_list'], 'integer'],
+            [['question','answer'], 'string'],
+            [['question','fruit_id','answer'], 'required'],
+            [['is_dropdown_list','fruit_id'], 'integer'],
         ];
     }
 
@@ -39,8 +42,10 @@ class Question extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'question' => 'Question',
+            'question' => 'Câu hỏi',
             'is_dropdown_list' => 'Is Dropdown List',
+            'fruit_id' => 'Cây trồng',
+            'answer' => 'Câu trả lời'
         ];
     }
 }

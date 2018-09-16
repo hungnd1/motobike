@@ -35,6 +35,7 @@ class SubscriberTransaction extends \yii\db\ActiveRecord
     const STATUS_FAIL = 0;
 
     const TYPE_REGISTER = 1;
+    const TYPE_RENEW = 2;
 
 
     /**

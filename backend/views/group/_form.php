@@ -7,6 +7,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Group */
 /* @var $form yii\widgets\ActiveForm */
+$showPreview = !$model->isNewRecord && !empty($model->image);
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -20,6 +21,27 @@ use yii\helpers\Html;
     <div class="row">
         <div class="col-md-12">
             <?= $form->field($model, 'name')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <?php if ($showPreview) { ?>
+                <div class="form-group field-category-icon">
+                    <div class="col-sm-offset-3 col-sm-5">
+                        <?php echo Html::img($model->getImageLink(), ['class' => 'file-preview-image']) ?>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?= $form->field($model, 'image')->widget(FileInput::classname(), [
+                'options' => ['multiple' => true, 'accept' => 'image/*'],
+                'pluginOptions' => [
+                    'previewFileType' => 'image',
+                    'showUpload' => false,
+                    'showPreview' => (!$showPreview) ? true : false,
+                ]
+            ]); ?>
         </div>
     </div>
 </div>

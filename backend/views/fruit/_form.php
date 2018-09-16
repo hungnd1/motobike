@@ -44,6 +44,30 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
             ]); ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'parent_id')->widget(\kartik\select2\Select2::classname(), [
+                'data' => \yii\helpers\ArrayHelper::map(
+                    \common\models\Fruit::find()
+                        ->andWhere('parent_id is null ')
+                        ->all(), 'id', 'name'),
+                'options' => ['placeholder' => 'Chọn cây trồng'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ]]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'is_primary')->checkbox() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'order')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
+        </div>
+    </div>
 </div>
 <div class="form-actions">
     <div class="row">

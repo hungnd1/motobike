@@ -43,10 +43,11 @@ class Detail extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'reason', 'harm', 'prevention'], 'string'],
+            [['image'], 'required', 'on' => 'admin_create_update'],
             [['feature_id', 'group_id', 'fruit_id', 'created_at', 'updated_at', 'status'], 'integer'],
             [['display_name'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 500],
-            [['display_name', 'reason', 'harm', 'prevention', 'description', 'feature_id', 'group_id', 'fruit_id', 'image'], 'required']
+            [['display_name', 'reason', 'harm', 'prevention', 'description', 'feature_id', 'group_id', 'fruit_id'], 'required']
         ];
     }
 

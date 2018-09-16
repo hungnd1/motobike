@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Fruit;
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -37,13 +38,36 @@ $this->params['breadcrumbs'][] = $this->title;
                         'name',
                         [
                             'class' => '\kartik\grid\DataColumn',
-                            'format'=>'raw',
-                            'label'=>'Ảnh đại diện',
-                            'attribute' => 'image',
-                            'value'=>function ($model, $key, $index, $widget) {
+                            'format' => 'raw',
+                            'label' => 'Loại cây trồng',
+                            'attribute' => 'is_primary',
+                            'value' => function ($model, $key, $index, $widget) {
                                 /** @var $model \common\models\Fruit */
-                                $cat_image=  Yii::getAlias('@news_image');
-                                return $model->image ? Html::img('@web/'.$cat_image.'/'.$model->image, ['alt' => 'Thumbnail','width'=>'250','height'=>'150']) : '';
+                                return $model->is_primary ? "Cây trồng chính" : "Cây trồng phụ";
+                            },
+                        ],
+                        'order',
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format' => 'raw',
+                            'label' => 'Ảnh đại diện',
+                            'attribute' => 'image',
+                            'value' => function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\Fruit */
+                                $cat_image = Yii::getAlias('@news_image');
+                                return $model->image ? Html::img('@web/' . $cat_image . '/' . $model->image, ['alt' => 'Thumbnail', 'width' => '250', 'height' => '150']) : '';
+                            },
+                        ],
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format' => 'raw',
+                            'label' => 'Cây cha',
+                            'attribute' => 'parent_id',
+                            'value' => function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\Fruit */
+                                if ($model->parent_id) {
+                                    return Fruit::findOne($model->parent_id)->name;
+                                }
                             },
                         ],
 

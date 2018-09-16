@@ -2,6 +2,8 @@
 
 use kartik\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use common\models\Fruit;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\CategorySearch */
@@ -24,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="caption">
                     <i class="fa fa-cogs font-green-sharp"></i>
                     <span
-                        class="caption-subject font-green-sharp bold uppercase"><?= Yii::t('app', 'Danh sách danh mục') ?> </span>
+                            class="caption-subject font-green-sharp bold uppercase"><?= Yii::t('app', 'Danh sách danh mục') ?> </span>
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse">
@@ -52,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'description',
                         'value' => function ($model, $key, $index) {
                             /** @var $model \common\models\Category */
-                            return \common\helpers\CUtils::subString($model->description,150);
+                            return \common\helpers\CUtils::subString($model->description, 150);
                         },
                     ],
                     [
@@ -63,6 +65,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->order_number;
                         },
                         'width' => '150px',
+                    ],
+                    [
+                        'class' => '\kartik\grid\DataColumn',
+                        'attribute' => 'fruit_id',
+                        'width' => '200px',
+                        'filterType' => GridView::FILTER_SELECT2,
+                        'filter' => \common\models\Category::getFruits(),
+                        'filterWidgetOptions' => [
+                            'pluginOptions' => ['allowClear' => true],
+                        ],
+                        'filterInputOptions' => ['placeholder' => \Yii::t('app', 'Tất cả')],
+                        'value' => function ($model, $key, $index) {
+                            /** @var $model \common\models\Category */
+                            return $model->getFruitName($model->fruit_id);
+                        }
                     ],
                     [
                         'class' => 'kartik\grid\EditableColumn',

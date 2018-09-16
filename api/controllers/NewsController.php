@@ -49,14 +49,21 @@ class NewsController extends ApiController
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
         $id = $this->getParameter('id', '');
-        if (!$id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        $fruitId = $this->getParameter('fruit_id','');
+        if (!$id && !$fruitId) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id va fruit_id')]));
         }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 //        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
-        $query = News::find()
-            ->andWhere(['status' => News::STATUS_ACTIVE])
-            ->andWhere(['category_id' => (int)$id]);
+        if($id){
+            $query = News::find()
+                ->andWhere(['status' => News::STATUS_ACTIVE])
+                ->andWhere(['category_id' => (int)$id]);
+        }else{
+            $query = News::find()
+                ->andWhere(['status' => News::STATUS_ACTIVE])
+                ->andWhere(['fruit_id' => (int)$fruitId]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

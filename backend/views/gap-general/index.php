@@ -11,8 +11,10 @@ use yii\helpers\Url;
 
 if($type == GapGeneral::GAP_GENERAL ){
     $this->title = '' . \Yii::t('app', 'Quản lý tin sâu bệnh');
-}else{
+}elseif($type == GapGeneral::GAP_DETAIL){
     $this->title = '' . \Yii::t('app', 'Quản lý GAP chi tiết');
+}else{
+    $this->title = ''. Yii::t('app','Quản lý biến đổi thời tiết');
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -53,18 +55,33 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
+                            'class' => '\kartik\grid\DataColumn',
+                            'attribute' => 'fruit_id',
+                            'width' => '20%',
+                            'filterType' => GridView::FILTER_SELECT2,
+                            'filter' => \common\models\Category::getFruits(),
+                            'filterWidgetOptions' => [
+                                'pluginOptions' => ['allowClear' => true],
+                            ],
+                            'filterInputOptions' => ['placeholder' => \Yii::t('app', 'Tất cả')],
+                            'value' => function ($model, $key, $index) {
+                                /** @var $model \common\models\GapGeneral */
+                                return $model->getFruitName($model->fruit_id);
+                            }
+                        ],
+                        [
                             'attribute' => 'order',
                             'label'=>'Sắp xếp',
                             'format' => 'html',
-                            'width' => '30%',
+                            'width' => '10%',
                             'visible' => function ($model, $key, $index, $widget) {
                                 /**
                                  * @var $model \common\models\GapGeneral
                                  */
-                                if($model->type == GapGeneral::GAP_GENERAL){
-                                    return true;
+                                if($model->type == GapGeneral::GAP_GENERAL || $model->type == GapGeneral::CLIMATE_CHANGE){
+                                    return false;
                                 }
-                                return false;
+                                return true;
 
                             },
                             'value' => function ($model, $key, $index, $widget) {

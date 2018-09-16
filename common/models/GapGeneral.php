@@ -31,6 +31,7 @@ use yii\helpers\Url;
  * @property float $precipitation_min
  * @property float $windspeed_max
  * @property float $windspeed_min
+ * @property integer $fruit_id
  */
 class GapGeneral extends \yii\db\ActiveRecord
 {
@@ -46,7 +47,8 @@ class GapGeneral extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 0;
 
     const GAP_GENERAL = 1; // sau benh
-    const GAP_DETAIL = 2;
+    const GAP_DETAIL = 2; // chi tiet gap
+    const CLIMATE_CHANGE = 3; //bien doi khi hau
 
     /**
      * @inheritdoc
@@ -54,13 +56,12 @@ class GapGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gap', 'title', 'content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
-                'content_8', 'content_9'], 'required'],
+            [['gap', 'title','fruit_id'], 'required'],
             [['gap', 'title', 'image'], 'string'],
             [['content_2', 'content_3', 'content_4', 'content_5', 'content_6', 'content_7',
                 'content_8', 'content_9'
             ], 'string'],
-            [['status', 'created_at', 'updated_at', 'type', 'order'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'type', 'order','fruit_id'], 'integer'],
             [['temperature_max', 'temperature_min', 'windspeed_min', 'windspeed_max', 'precipitation_max', 'precipitation_min'], 'safe']
         ];
     }
@@ -72,15 +73,15 @@ class GapGeneral extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'gap' => 'Làm đất',
-            'content_2' => 'Trồng cà phê hoặc các cây trồng khác',
-            'content_3' => 'Bón phân',
-            'content_4' => 'Tưới nước',
-            'content_5' => 'Phun thuốc',
-            'content_6' => 'Thu hái',
+            'gap' => 'Làm đất/Làm đất, chuẩn bị hố và trồng tiêu',
+            'content_2' => 'Trồng mới, trồng lại và chăm sóc cà phê/Chăm sóc thường xuyên tiêu từ năm một đến năm ba',
+            'content_3' => 'Phân bón/Chăm sóc thường xuyên tiêu kinh doanh',
+            'content_4' => 'Tưới nước/Phòng trừ sâu bệnh cho tiêu kinh doanh',
+            'content_5' => 'Phun thuốc/Đôn tiêu',
+            'content_6' => 'Thu hoạch/Sơ chế bảo quản',
             'content_7' => 'Sơ chế',
-            'content_8' => 'Làm vươn ươm giống',
-            'content_9' => 'Tạo hình',
+            'content_8' => 'Chuẩn bị giống - vườn ươm/Chọn lựa và trồng choái cho tiêu leo',
+            'content_9' => 'Tạo hình/Thu hái',
             'status' => 'Trạng thái',
             'title' => 'Tiêu đề',
             'created_at' => 'Created At',
@@ -92,7 +93,8 @@ class GapGeneral extends \yii\db\ActiveRecord
             'precipitation_max' => 'Lượng mưa lớn nhất (mm)',
             'precipitation_min' => 'Lượn mưa nhỏ nhất (mm)',
             'image' => 'Ảnh đại diện',
-            'order' => 'Sắp xếp'
+            'order' => 'Sắp xếp',
+            'fruit_id' => 'Cây trồng'
         ];
     }
 
@@ -127,5 +129,25 @@ class GapGeneral extends \yii\db\ActiveRecord
     {
         return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';
         // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
+    }
+
+    public static function getFruits()
+    {
+        $arrFruit = [];
+        $listFruit  = Fruit::find()->all();
+        foreach ($listFruit as $item) {
+            /** @var $item Fruit */
+            $arrFruit[$item->id] = $item->name;
+        }
+        return $arrFruit;
+    }
+
+    public function getFruitName($fruit_id)
+    {
+        $lst = self::getFruits();
+        if (array_key_exists($fruit_id, $lst)) {
+            return $lst[$fruit_id];
+        }
+        return $fruit_id;
     }
 }

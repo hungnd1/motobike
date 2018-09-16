@@ -18,7 +18,7 @@ class CategorySearch extends Category
     public function rules()
     {
         return [
-            [['id', 'status', 'order_number', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
             [['display_name', 'description'], 'safe'],
         ];
     }
@@ -64,6 +64,7 @@ class CategorySearch extends Category
             'order_number' => $this->order_number,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'fruit_id' => $this->fruit_id
         ]);
 
         $query->andFilterWhere(['like', 'display_name', $this->display_name])

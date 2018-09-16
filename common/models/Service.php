@@ -17,6 +17,7 @@ use yii\helpers\Url;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $price
+ * @property integer $order
  */
 class Service extends \yii\db\ActiveRecord
 {
@@ -36,9 +37,9 @@ class Service extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['service_name','time_expired','description','status','price','image'],'required'],
+            [['service_name','time_expired','description','status','price','image','order'],'required'],
             [['description'], 'string'],
-            [['status', 'created_at', 'updated_at', 'price','time_expired'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'price','time_expired','order'], 'integer'],
             [['service_name', 'image'], 'string', 'max' => 255],
         ];
     }
@@ -58,6 +59,7 @@ class Service extends \yii\db\ActiveRecord
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
             'price' => 'Giá',
+            'order' => 'Sắp xếp'
         ];
     }
 

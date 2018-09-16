@@ -16,6 +16,8 @@ use api\models\PriceCoffeeDetail;
 use common\models\Answer;
 use common\models\Category;
 use common\models\DeviceInfo;
+use common\models\DeviceSubscriberAsm;
+use common\models\Fruit;
 use common\models\GapGeneral;
 use common\models\PriceCoffee;
 use common\models\Province;
@@ -29,6 +31,7 @@ use common\models\Term;
 use common\models\TotalQuality;
 use common\models\TypeCoffee;
 use common\models\Version;
+use common\models\WeatherDetail;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\caching\TagDependency;
@@ -46,7 +49,7 @@ class AppController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'check-device-token',
+//            'check-device-token',
 //            'get-price',
             'get-price-web',
             'get-price-mobile',
@@ -59,6 +62,7 @@ class AppController extends ApiController
             'log-data',
             'version-app',
             'gap-advice',
+            'gap-advice-except',
             'get-question',
             'get-introduce',
             'get-province',
@@ -77,7 +81,7 @@ class AppController extends ApiController
             'type-coffee' => ['GET'],
             'get-category' => ['GET'],
             'term' => ['GET'],
-            'check-device-token' => ['POST'],
+//            'check-device-token' => ['POST'],
             'log-data' => ['GET'],
             'get-question' => ['GET'],
             'get-introduce' => ['GET']
@@ -86,8 +90,12 @@ class AppController extends ApiController
 
     public function actionCheckDeviceToken()
     {
+        UserHelpers::manualLogin();
+
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
         $uid = $this->getParameterPost('device_token', '');
-        $type = $this->getParameterPost('channel', DeviceInfo::TYPE_ANDROID);
         $mac = $this->getParameterPost('mac', '');
         if (!$uid) {
             throw new InvalidValueException('Device token không được để trống');
@@ -95,16 +103,44 @@ class AppController extends ApiController
         if (!$mac) {
             throw new InvalidValueException('mac không được để trống');
         }
-        $deviceInfo = DeviceInfo::findOne(['device_type' => $type, 'device_uid' => $uid]);
+        $deviceInfo = DeviceInfo::findOne(['device_uid' => $uid]);
+        //kiem tra neu device map voi subcriber roi
+        /** @var  $deviceSubscriberAsm DeviceSubscriberAsm */
+        $deviceSubscriberAsm = DeviceSubscriberAsm::find()->andWhere(['subscriber_id' => $subscriber->id])->one();
         if (!$deviceInfo) {
             $device = new DeviceInfo();
             $device->device_uid = $uid;
-            $device->device_type = $type;
+            $device->device_type = $this->type;
             $device->created_at = time();
             $device->updated_at = time();
             $device->mac = $mac;
             $device->status = DeviceInfo::STATUS_ACTIVE;
             $device->save();
+            if ($deviceSubscriberAsm) {
+                $deviceSubscriberAsm->device_id = $device->id;
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            } else {
+                $deviceSubscriberAsm = new DeviceSubscriberAsm();
+                $deviceSubscriberAsm->device_id = $device->id;
+                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
+                $deviceSubscriberAsm->created_at = time();
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            }
+        } else {
+            if ($deviceSubscriberAsm) {
+                    $deviceSubscriberAsm->device_id = $deviceInfo->id;
+                    $deviceSubscriberAsm->updated_at = time();
+                    $deviceSubscriberAsm->save();
+            }else{
+                $deviceSubscriberAsm = new DeviceSubscriberAsm();
+                $deviceSubscriberAsm->device_id = $deviceInfo->id;
+                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
+                $deviceSubscriberAsm->created_at = time();
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            }
         }
 
         return true;
@@ -272,9 +308,12 @@ class AppController extends ApiController
 
     }
 
-    public function actionGetCategory()
+    public function actionGetCategory($fruit_id = Fruit::COFFEE)
     {
-        $query = Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->orderBy(['order_number' => SORT_DESC]);
+        $query = \api\models\Category::find()
+            ->andWhere(['status' => Category::STATUS_ACTIVE])
+            ->andWhere(['fruit_id' => $fruit_id])
+            ->orderBy(['order_number' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -316,31 +355,393 @@ class AppController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGapAdvice($tem = 0, $pre = 0, $wind = 0)
+    public function actionGapAdvice($fruit_id = 5, $tem = 0, $pre = 0, $wind = 0)
     {
 
-        $wind = $wind * 3.6;
-//        if ($this->type != SiteApiCredential::TYPE_WEB_APPLICATION) {
-//            UserHelpers::manualLogin();
-//            /** @var  $subscriber Subscriber */
-//            /** @var  $subscriberServiceAsm  SubscriberServiceAsm*/
+        UserHelpers::manualLogin();
+
+        $today = strtotime('today midnight');
+        $tomorrow = strtotime('tomorrow');
+
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+        /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
+
+        if ($tem || $pre || $wind) {
+            $wind = $wind * 3.6;
+        } else {
+            $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
+            sin((`latitude`*pi()/180))+cos((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) *
+            cos((`latitude`*pi()/180)) * cos(((" . Yii::$app->request->headers->get(static::HEADER_LONGITUDE) . "- `longtitude`)*pi()/180))))*180/pi())*60*1.1515) 
+            as distance
+            FROM station where latitude is not null and longtitude is not null  order by distance asc limit 1";
+            $connect = Yii::$app->getDb();
+            $command = $connect->createCommand($sql);
+            $result = $command->queryAll();
+            $stationCode = $result[0]['station_code'];
+            $weatherDetail = WeatherDetail::find()
+                ->andWhere(['station_code' => $stationCode])
+                ->andWhere(['>=', 'timestamp', $today])
+                ->andWhere(['<', 'timestamp', $tomorrow])
+                ->one();
+            if (!$weatherDetail) {
+                $this->setStatusCode(407);
+                return [
+                    'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
+                ];
+            }
+            $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
+            $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
+            $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
+        }
+
+//        if ($subscriber) {
 //            $subscriberServiceAsm = SubscriberServiceAsm::find()
 //                ->andWhere(['subscriber_id' => $subscriber->id])
 //                ->andWhere(['status' => SubscriberServiceAsm::STATUS_ACTIVE])
 //                ->orderBy(['updated_at' => SORT_DESC])->one();
-//            if (!$subscriberServiceAsm) {
-//                if($subscriberServiceAsm->time_expired - time() < 0){
-//                    $this->setStatusCode(201);
+//            if ($subscriberServiceAsm) {
+//                if ($subscriberServiceAsm->time_expired - time() < 0) {
+//                    $this->setStatusCode(406);
 //                    return [
 //                        'message' => 'Gói cước của bạn đã hết hạn. Vui lòng gia gói cước mới'
 //                    ];
 //                }
+//            } else {
+//                $this->setStatusCode(405);
+//                return [
+//                    'message' => 'Bạn chưa đăng ký mua gói'
+//                ];
 //            }
-//            $this->setStatusCode(201);
-//            return [
-//                'message' => 'Bạn chưa đăng ký mua gói'
-//            ];
 //        }
+
+        $gapAdvice = GapGeneral::find()
+            ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+            ->andWhere(['fruit_id' => $fruit_id])
+            ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+            ->andWhere('temperature_max > :temp', [':temp' => $tem])
+            ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+            ->andWhere('precipitation_max >= :prep', [':prep' => $pre])
+            ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+            ->andWhere('windspeed_max >= :wind1', [':wind1' => $wind])->one();
+
+        if (!$gapAdvice) {
+            $gapAdvice = GapGeneral::find()
+                ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                ->andWhere(['fruit_id' => $fruit_id])
+                ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                ->andWhere(['precipitation_max' => 0])
+                ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                ->andWhere('windspeed_max >= :wind1', [':wind1' => $wind])->one();
+
+            if (!$gapAdvice) {
+                $gapAdvice = GapGeneral::find()
+                    ->andWhere(['fruit_id' => $fruit_id])
+                    ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                    ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                    ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                    ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                    ->andWhere('precipitation_max >= :prep', [':prep' => $pre])
+                    ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                    ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                    ->andWhere(['windspeed_max' => 0])->one();
+                if (!$gapAdvice) {
+                    $gapAdvice = GapGeneral::find()
+                        ->andWhere(['fruit_id' => $fruit_id])
+                        ->andWhere(['type' => GapGeneral::GAP_DETAIL])
+                        ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
+                        ->andWhere('temperature_max > :temp', [':temp' => $tem])
+                        ->andWhere('precipitation_min != :pre1', [':pre1' => 0])
+                        ->andWhere('precipitation_min <= :pre', [':pre' => $pre])
+                        ->andWhere(['precipitation_max' => 0])
+                        ->andWhere('windspeed_min <= :wind', [':wind' => $wind])
+                        ->andWhere('windspeed_min !=  :wind1', [':wind1' => 0])
+                        ->andWhere(['windspeed_max' => 0])->one();
+
+                }
+            }
+        }
+        /** @var $gapAdvice GapGeneral */
+        if ($gapAdvice) {
+            $res = array();
+            $arr_item = array();
+            if ($fruit_id == 5 || $fruit_id == 6) {
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Làm đất'),
+                    'is_question' => false
+                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_8,
+                        'tag' => Yii::t('app', 'Chuẩn bị giống - vườn ươm'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Trồng mới, trồng lại và chăm sóc cà phê'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Phân bón'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Phun thuốc'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Tưới nước'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Tạo hình'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Thu hoạch'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_7,
+                        'tag' => Yii::t('app', 'Sơ chế'),
+                        'is_question' => false
+                    ]);
+            } elseif ($fruit_id == 2) {
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Làm đất, chuẩn bị hố và trồng tiêu'),
+                    'is_question' => false
+                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_8,
+                        'tag' => Yii::t('app', 'Chọn lựa và trồng choái cho tiêu leo'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Chăm sóc thường xuyên tiêu từ năm một đến năm ba.'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Chăm sóc thường xuyên tiêu kinh doanh'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Đôn tiêu'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Phòng trừ sâu bệnh cho tiêu kinh doanh'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Thu hái'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Sơ chế bảo quản'),
+                        'is_question' => false
+                    ]);
+            } else if ($fruit_id == 3) {
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Chọn đất, mật độ, đào hố, bón lót'),
+                    'is_question' => false
+                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Trồng sầu riêng'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Bón phân'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Phun thuốc'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Tưới nước'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Tỉa cành, tạo hình'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Thu hái, bảo quản'),
+                        'is_question' => false
+                    ]);
+            } else if ($fruit_id == 4) {
+                array_push($arr_item, [
+                    'content' => $gapAdvice->gap,
+                    'tag' => Yii::t('app', 'Chọn đất, mật độ, đào hố, bón lót'),
+                    'is_question' => false
+                ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_2,
+                        'tag' => Yii::t('app', 'Trồng bơ'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_3,
+                        'tag' => Yii::t('app', 'Bón phân'),
+                        'is_question' => true
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_5,
+                        'tag' => Yii::t('app', 'Phun thuốc'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_4,
+                        'tag' => Yii::t('app', 'Tưới nước'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_9,
+                        'tag' => Yii::t('app', 'Tỉa cành, tạo hình'),
+                        'is_question' => false
+                    ]);
+                array_push($arr_item,
+                    [
+                        'content' => $gapAdvice->content_6,
+                        'tag' => Yii::t('app', 'Thu hái, bảo quản'),
+                        'is_question' => false
+                    ]);
+            }
+            $res['items'] = $arr_item;
+
+            return $res;
+        } else {
+            throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+        }
+    }
+
+    public function actionGetQuestion($fruit_id = 5)
+    {
+        $listQuestion = Question::find()
+            ->andWhere(['fruit_id' => $fruit_id])
+            ->all();
+        $arrRes = [];
+        $res = [];
+        $arrQues = [];
+        foreach ($listQuestion as $question) {
+            /** @var $question Question */
+            $arrAnswer = [];
+            $resAnswer = [];
+            $listAnswer = Answer::find()->andWhere(['question_id' => $question->id])->all();
+            foreach ($listAnswer as $answer) {
+                /** @var $answer Answer */
+                array_push($arrAnswer, $answer);
+            }
+            $resAnswer['items'] = $arrAnswer;
+            $arrRes['id'] = $question->id;
+            $arrRes['question'] = $question->question;
+            $arrRes['is_dropdown_list'] = $question->is_dropdown_list;
+            if (empty($resAnswer['items'])) {
+                $arrRes['answer'] = null;
+            } else {
+                $arrRes['answer'] = $resAnswer;
+            }
+            array_push($arrQues, $arrRes);
+        }
+        $res['items'] = $arrQues;
+        return $res;
+    }
+
+    public function actionGetIntroduce()
+    {
+        $res = array();
+        $cache = Yii::$app->cache;
+        $key = Yii::$app->params['key_cache']['Introduce'] . $this->language;
+        $res = $cache->get($key);
+        if ($res === false) {
+            $arr_item = array();
+            array_push($arr_item, [
+                'content' => Yii::t('app', "Greencoffee xin chào,\n chúc một ngày tốt lành!"),
+                'type' => 1
+            ]);
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn hôm nay như sau:'),
+                'type' => 2
+            ]);
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:'),
+                'type' => 3
+            ]);
+            array_push($arr_item, [
+                'content' => Yii::t('app', "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây."),
+                'type' => 4
+            ]);
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'),
+                'type' => 5
+            ]);
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:'),
+                'type' => 6
+            ]);
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Với tuổi cây đối với tiêu KTCB và kích thước cây đối với Tiêu kinh doanh, chúng tôi khuyến cáo sử dụng phân như sau:'),
+                'type' => 7
+            ]);
+            $res['items'] = $arr_item;
+            $cache->set($key, $res, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
+        }
+        return $res;
+    }
+
+    public function actionGapAdviceExcept($tem = 0, $pre = 0, $wind = 0)
+    {
+
+        $wind = 3.6 * $wind;
+
         $gapAdvice = GapGeneral::find()
             ->andWhere(['type' => GapGeneral::GAP_DETAIL])
             ->andWhere('temperature_min <= :tem ', [':tem' => $tem])
@@ -451,73 +852,31 @@ class AppController extends ApiController
         }
     }
 
-    public function actionGetQuestion()
-    {
-        $listQuestion = Question::find()->all();
-        $arrRes = [];
-        $res = [];
-        $arrQues = [];
-        foreach ($listQuestion as $question) {
-            /** @var $question Question */
-            $arrAnswer = [];
-            $resAnswer = [];
-            if ($question->is_dropdown_list) {
-                $listAnswer = Answer::find()->andWhere(['question_id' => $question->id])->all();
-                foreach ($listAnswer as $answer) {
-                    /** @var $answer Answer */
-                    array_push($arrAnswer, $answer);
-                }
-                $resAnswer['items'] = $arrAnswer;
-            }
-            $arrRes['id'] = $question->id;
-            $arrRes['question'] = $question->question;
-            $arrRes['is_dropdown_list'] = $question->is_dropdown_list;
-            if (empty($resAnswer['items'])) {
-                $arrRes['answer'] = null;
-            } else {
-                $arrRes['answer'] = $resAnswer;
-            }
-            array_push($arrQues, $arrRes);
+    public function actionGetMessageAdvice($id){
+        if($id == 1){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY CÀ PHÊ.')
+            ];
+        }else if($id == 2){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY HỒ TIÊU.')
+            ];
+        }else if($id == 3){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY SẦU RIÊNG.')
+            ];
+        }else if($id == 4){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY BƠ.')
+            ];
+        }else if($id == 5){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ROBUSTA (vối).')
+            ];
+        }else if($id == 6){
+            return [
+                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ARABICA (chè).')
+            ];
         }
-        $res['items'] = $arrQues;
-        return $res;
-    }
-
-    public function actionGetIntroduce()
-    {
-        $res = array();
-        $cache = Yii::$app->cache;
-        $key = Yii::$app->params['key_cache']['Introduce'] . $this->language;
-        $res = $cache->get($key);
-        if ($res === false) {
-            $arr_item = array();
-            array_push($arr_item, [
-                'content' => Yii::t('app', "Greencoffee xin chào,\n chúc một ngày tốt lành!"),
-                'type' => 1
-            ]);
-            array_push($arr_item, [
-                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn dự báo thời tiết tại địa bàn của bạn hôm nay như sau:'),
-                'type' => 2
-            ]);
-            array_push($arr_item, [
-                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn chi tiết về dự báo thời tiết tại địa bàn trong tuần như sau:'),
-                'type' => 3
-            ]);
-            array_push($arr_item, [
-                'content' => Yii::t('app', "Trong điều kiện thời tiết hôm nay, chúng tôi xin gửi đến bạn một số tư vấn tham khảo về các công việc chính trên vườn cây."),
-                'type' => 4
-            ]);
-            array_push($arr_item, [
-                'content' => Yii::t('app', 'Với loại đất trồng và năng suất dự kiến như vậy, chúng tôi xin gửi đến bạn đôi lời tư vấn về quản lý và sử dụng phân bón hiệu quả dưới đây:'),
-                'type' => 5
-            ]);
-            array_push($arr_item, [
-                'content' => Yii::t('app', 'Chúng tôi xin gửi đến bạn tình hình sâu bệnh trên địa bàn các tỉnh Tây Nguyên trong tuần như sau:'),
-                'type' => 6
-            ]);
-            $res['items'] = $arr_item;
-            $cache->set($key, $res, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
-        }
-        return $res;
     }
 }

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Category */
 
 $this->title = Yii::t('app','Cập nhật danh mục');
-$this->params['breadcrumbs'][] = ['label' => 'Thiết bị ', 'url' => Yii::$app->urlManager->createUrl(['/device-info/index'])];
+$this->params['breadcrumbs'][] = ['label' => 'Danh mục ', 'url' => Yii::$app->urlManager->createUrl(['/category/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

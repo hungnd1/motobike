@@ -271,7 +271,7 @@ $arrlang = array();
                     'require_auth' => true,
                 ],
                 [
-                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý tin tức'),
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý GAP chung'),
                     'url' => 'javascript:;',
                     'encode' => false,
 //                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
@@ -279,21 +279,27 @@ $arrlang = array();
                     'items' => [
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục'),
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục GAP chung'),
                             'url' => ['category/index'],
                             'require_auth' => true,
                         ],
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý tin tức'),
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý GAP chung'),
                             'url' => ['news/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý GAP chi tiết'),
+                            'url' => ['gap-general/index', 'type' => GapGeneral::GAP_DETAIL],
                             'require_auth' => true,
                         ],
                     ]
 
                 ],
                 [
-                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý GAP'),
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý sâu bệnh và phân bón'),
                     'url' => 'javascript:;',
                     'encode' => false,
 //                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
@@ -307,14 +313,20 @@ $arrlang = array();
                         ],
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý GAP chi tiết'),
-                            'url' => ['gap-general/index', 'type' => GapGeneral::GAP_DETAIL],
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý câu hỏi phân bón'),
+                            'url' => ['question/index'],
                             'require_auth' => true,
                         ],
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý ma trận phân bón'),
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý tư vấn phân bón'),
                             'url' => ['matrix-fertilizing/index'],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý biến đổi khỉ hậu'),
+                            'url' => ['gap-general/index', 'type' => GapGeneral::CLIMATE_CHANGE],
                             'require_auth' => true,
                         ],
                     ]

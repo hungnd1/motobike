@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Answer;
+use common\models\Question;
 use Yii;
 use common\models\MatrixFertilizing;
 use common\models\MatrixFertilizingSearch;
@@ -61,16 +63,31 @@ class MatrixFertilizingController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($fruit_id)
     {
+        $listQuestion = Question::find()
+            ->andWhere(['fruit_id' => $fruit_id])->all();
         $model = new MatrixFertilizing();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success','Thêm mới thành công');
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->id_answer_1){
+                $model->answer = $model->id_answer_1;
+            }
+            if ($model->id_answer_2) {
+                $model->answer .= "-" . $model->id_answer_2;
+            }
+            if ($model->id_answer_3) {
+                $model->answer .= "-" . $model->id_answer_3;
+            }
+            $model->fruit_id = $fruit_id;
+            $model->save();
+            Yii::$app->session->setFlash('success', 'Thêm mới thành công');
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'fruit_id' => $fruit_id,
+                'listQuestion' => $listQuestion
             ]);
         }
     }
@@ -81,16 +98,30 @@ class MatrixFertilizingController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $fruit_id)
     {
         $model = $this->findModel($id);
+        $listQuestion = Question::find()
+            ->andWhere(['fruit_id' => $fruit_id])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success','Cập nhật thành công');
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->id_answer_1){
+                $model->answer = $model->id_answer_1;
+            }
+            if ($model->id_answer_2) {
+                $model->answer .= "-" . $model->id_answer_2;
+            }
+            if ($model->id_answer_3) {
+                $model->answer .= "-" . $model->id_answer_3;
+            }
+            $model->save();
+            Yii::$app->session->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'fruit_id' => $fruit_id,
+                'listQuestion' => $listQuestion
             ]);
         }
     }

@@ -3,6 +3,7 @@
 use common\models\Answer;
 use kartik\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\MatrixFertilizingSearch */
@@ -25,8 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p><?= Html::a('' . \Yii::t('app', 'Tạo mới'), ['create'], ['class' => 'btn btn-success']) ?> </p>
-
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
@@ -54,7 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 /**
                                  * @var $model \common\models\MatrixFertilizing
                                  */
-                                return Answer::find()->andWhere(['id' => $model->id_answer_2])->one()->answer;
+                                if($model->id_answer_2){
+                                    return Answer::find()->andWhere(['id' => $model->id_answer_2])->one()->answer;
+                                }
+                                return "Không có đáp án";
 
                             },
                         ],
@@ -73,11 +75,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'kartik\grid\ActionColumn',
                             'template' => '{view} {update} {delete}',
                             'buttons' => [
-//                                'update' => function ($url, $model) {
-//                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['user/update', 'id' => $model->id]), [
-//                                        'title' => '' . \Yii::t('app', 'Cập nhật thông tin user'),
-//                                    ]);
-//                                },
+                                'update' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['matrix-fertilizing/update', 'id' => $model->id, 'fruit_id' => $model->fruit_id]), [
+                                        'title' => '' . \Yii::t('app', 'Cập nhật thông tin user'),
+                                    ]);
+                                },
 //                                'delete' => function ($url, $model) {
 ////                        Nếu là chính nó thì không cho thay đổi trạng thái
 //                                    if ($model->id != Yii::$app->user->getId()) {

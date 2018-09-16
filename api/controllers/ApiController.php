@@ -24,6 +24,8 @@ class ApiController extends Controller
     const HEADER_SECRET_KEY = "X-Secret-Key";
     const HEADER_PACKAGE_NAME = "X-PackageName";
     const HEADER_FINGERPRINT = "X-Fingerprint";
+    const HEADER_LONGITUDE = "longitude";
+    const HEADER_LATITUDE = "latitude";
 
     const HEADER_LANGUAGE = "X-Language";
 

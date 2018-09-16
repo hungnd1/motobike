@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "category".
@@ -14,6 +15,8 @@ use Yii;
  * @property integer $order_number
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $fruit_id
+ * @property string $image
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -35,9 +38,10 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['display_name'], 'required'],
-            [['description'], 'string'],
-            [['status', 'order_number', 'created_at', 'updated_at'], 'integer'],
+            [['description','image'], 'string'],
+            [['status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
             [['display_name'], 'string', 'max' => 200],
+            [['image'], 'required', 'on' => 'admin_create_update']
         ];
     }
 
@@ -54,6 +58,8 @@ class Category extends \yii\db\ActiveRecord
             'order_number' => 'Sắp xếp',
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Updated At',
+            'fruit_id' => 'Cây trồng',
+            'image' => 'Ảnh đại diện'
         ];
     }
 
@@ -78,5 +84,31 @@ class Category extends \yii\db\ActiveRecord
                 self::STATUS_ACTIVE => Yii::t('app','Hoạt động'),
                 self::STATUS_INACTIVE => Yii::t('app','Tạm dừng'),
             ];
+    }
+
+    public static function getFruits()
+    {
+        $arrFruit = [];
+        $listFruit  = Fruit::find()->all();
+        foreach ($listFruit as $item) {
+            /** @var $item Fruit */
+            $arrFruit[$item->id] = $item->name;
+        }
+        return $arrFruit;
+    }
+
+    public function getFruitName($fruit_id)
+    {
+        $lst = self::getFruits();
+        if (array_key_exists($fruit_id, $lst)) {
+            return $lst[$fruit_id];
+        }
+        return $fruit_id;
+    }
+
+    public function getImageLink()
+    {
+        return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->image, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }
