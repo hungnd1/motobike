@@ -130,10 +130,10 @@ class AppController extends ApiController
             }
         } else {
             if ($deviceSubscriberAsm) {
-                    $deviceSubscriberAsm->device_id = $deviceInfo->id;
-                    $deviceSubscriberAsm->updated_at = time();
-                    $deviceSubscriberAsm->save();
-            }else{
+                $deviceSubscriberAsm->device_id = $deviceInfo->id;
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            } else {
                 $deviceSubscriberAsm = new DeviceSubscriberAsm();
                 $deviceSubscriberAsm->device_id = $deviceInfo->id;
                 $deviceSubscriberAsm->subscriber_id = $subscriber->id;
@@ -158,6 +158,9 @@ class AppController extends ApiController
                     $description = 'Nguoi dung vao gia';
                     $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
                 }
+            } else {
+                $description = 'Nguoi dung vao gia';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
             }
         }
         if (!$date) {
@@ -852,30 +855,31 @@ class AppController extends ApiController
         }
     }
 
-    public function actionGetMessageAdvice($id){
-        if($id == 1){
+    public function actionGetMessageAdvice($id)
+    {
+        if ($id == 1) {
             return [
-                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY CÀ PHÊ.')
+                'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY CÀ PHÊ.')
             ];
-        }else if($id == 2){
+        } else if ($id == 2) {
             return [
-                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY HỒ TIÊU.')
+                'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY HỒ TIÊU.')
             ];
-        }else if($id == 3){
+        } else if ($id == 3) {
             return [
-                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY SẦU RIÊNG.')
+                'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY SẦU RIÊNG.')
             ];
-        }else if($id == 4){
+        } else if ($id == 4) {
             return [
-                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY BƠ.')
+                'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÂY BƠ.')
             ];
-        }else if($id == 5){
+        } else if ($id == 5) {
             return [
-                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ROBUSTA (vối).')
+                'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ROBUSTA (vối).')
             ];
-        }else if($id == 6){
+        } else if ($id == 6) {
             return [
-                'message'=> Yii::t('app','Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ARABICA (chè).')
+                'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ARABICA (chè).')
             ];
         }
     }

@@ -13,6 +13,7 @@ use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\News;
 use common\models\SubscriberActivity;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -83,7 +84,11 @@ class NewsController extends ApiController
                 $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
             }
         }
-        return $dataProvider;
+        if($query->one()){
+            return $dataProvider;
+        }else{
+            throw new NotFoundHttpException("Danh mục này đang được cập nhật nội dung!");
+        }
 
     }
 
