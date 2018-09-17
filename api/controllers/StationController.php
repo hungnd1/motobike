@@ -45,8 +45,6 @@ class StationController extends ApiController
     {
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
-        $description = 'Nguoi dung vao thoi tiet';
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null');

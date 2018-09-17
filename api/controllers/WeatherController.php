@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\WeatherDetail;
 use common\models\Station;
 use common\models\Subscriber;
+use common\models\SubscriberActivity;
 use common\models\SubscriberServiceAsm;
 use Yii;
 use yii\base\InvalidValueException;
@@ -54,6 +55,10 @@ class WeatherController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Station ID ')]));
 
         }
+
+        $description = 'Nguoi dung vao thoi tiet '.$station_id;
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
+
         $arr = [];
         $current_time = time();
         $today = strtotime('today midnight');

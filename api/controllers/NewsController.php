@@ -50,17 +50,17 @@ class NewsController extends ApiController
         UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
         $id = $this->getParameter('id', '');
-        $fruitId = $this->getParameter('fruit_id','');
+        $fruitId = $this->getParameter('fruit_id', '');
         if (!$id && !$fruitId) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id va fruit_id')]));
         }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 //        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
-        if($id){
+        if ($id) {
             $query = News::find()
                 ->andWhere(['status' => News::STATUS_ACTIVE])
                 ->andWhere(['category_id' => (int)$id]);
-        }else{
+        } else {
             $query = News::find()
                 ->andWhere(['status' => News::STATUS_ACTIVE])
                 ->andWhere(['fruit_id' => (int)$fruitId]);
@@ -77,16 +77,19 @@ class NewsController extends ApiController
             ],
         ]);
         /** @var  $lastActivity SubscriberActivity */
-        $lastActivity = SubscriberActivity::find()->andWhere(['action'=>SubscriberActivity::ACTION_GAP])->orderBy(['id'=>SORT_DESC])->one();
-        if($lastActivity) {
-            if (time() - $lastActivity->created_at >= 5 * 60) {
+        $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_GAP])->orderBy(['id' => SORT_DESC])->one();
+        if ($lastActivity) {
+            if (time() - $lastActivity->created_at >= 60 * 60) {
                 $description = 'Nguoi dung vao gap';
                 $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
             }
+        } else {
+            $description = 'Nguoi dung vao gap';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
         }
-        if($query->one()){
+        if ($query->one()) {
             return $dataProvider;
-        }else{
+        } else {
             throw new ServerErrorHttpException("Danh mục này đang được cập nhật nội dung!");
         }
 
@@ -121,6 +124,6 @@ class NewsController extends ApiController
         if ($gap) {
             return $gap;
         }
-        throw new ServerErrorHttpException(Yii::t('app','Lỗi hệ thống, vui lòng thử lại sau'));
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 }
