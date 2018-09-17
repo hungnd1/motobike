@@ -87,7 +87,7 @@ class NewsController extends ApiController
         if($query->one()){
             return $dataProvider;
         }else{
-            throw new NotFoundHttpException("Danh mục này đang được cập nhật nội dung!");
+            throw new ServerErrorHttpException("Danh mục này đang được cập nhật nội dung!");
         }
 
     }
