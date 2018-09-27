@@ -66,6 +66,7 @@ class AppController extends ApiController
             'get-question',
             'get-introduce',
             'get-province',
+            'accept-screen'
         ];
 
         return $behaviors;
@@ -882,5 +883,14 @@ class AppController extends ApiController
                 'message' => Yii::t('app', 'Trong điều kiện thời tiết hôm nay chúng tôi xin gởi đến bạn một số thông tin tham khảo vầ các công việc chính cho CÀ PHÊ ARABICA (chè).')
             ];
         }
+    }
+
+    public function actionAcceptScreen()
+    {
+//        $this->setStatusCode(501);
+        return [
+            'message' => 'OK',
+            'is_screen' => true
+        ];
     }
 }
