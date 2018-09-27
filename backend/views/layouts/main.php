@@ -38,7 +38,7 @@ $arrlang = array();
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="<?= Yii::$app->homeUrl ?>">
-                <img style="height: 65px;width: 60%;" src="<?= Url::to("@web/img/ic_launcher_1.png") ?>" alt="logo"
+                <img style="height: 65px;width: 50%;margin: 1px 25px 7px 15px;" src="<?= Url::to("@web/img/ic_launcher_1.png") ?>" alt="logo"
                      class="logo-default"/>
             </a>
 
