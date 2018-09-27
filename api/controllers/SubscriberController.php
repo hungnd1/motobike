@@ -17,6 +17,7 @@ use api\models\Service;
 use common\helpers\CUtils;
 use common\models\Feedback;
 use common\models\PriceCoffee;
+use common\models\SiteApiCredential;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
 use common\models\SubscriberServiceAsm;
@@ -70,10 +71,17 @@ class SubscriberController extends ApiController
     public function actionLogin()
     {
         $username = $this->getParameterPost('username', '');
-//        $password = $this->getParameterPost('password', '');
+        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
+            $password = $this->getParameterPost('password', '');
+        }
         $request = Yii::$app->request;
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
+        }
+        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
+            if (!$password) {
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
+            }
         }
 //        if (!$password) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
@@ -90,6 +98,11 @@ class SubscriberController extends ApiController
         }
 
         $subscriber = Subscriber::findOne(['username' => $username]);
+        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
+            if (!$subscriber->validatePassword($password)) {
+                throw new InvalidValueException(Message::getWrongUserOrPassMessage());
+            }
+        }
         $password = CUtils::generateRandomString(8);
         if (!$subscriber) {
             $subscriber = new Subscriber();
@@ -138,18 +151,16 @@ class SubscriberController extends ApiController
 
     public function actionRegister()
     {
+        $fullname = $this->getParameterPost('fullname', '');
         $username = $this->getParameterPost('username', '');
         $password = $this->getParameterPost('password', '');
-        $channel = $this->getParameterPost('channel', '');
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Số điện thoại')]));
         }
         if (!$password) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
         }
-        if (!$channel) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Loại tài khoản')]));
-        }
+
         $phone_number = CUtils::validateMobile($username, 0);
         if ($phone_number == '') {
             $phone_number = CUtils::validateMobile($username, 1);
@@ -170,8 +181,9 @@ class SubscriberController extends ApiController
         $subscriber->verification_code = $password;
         $subscriber->status = Subscriber::STATUS_ACTIVE;
         $subscriber->created_at = time();
+        $subscriber->full_name = $fullname;
         $subscriber->updated_at = time();
-        $subscriber->authen_type = $channel;
+        $subscriber->authen_type = $this->type;
         if ($subscriber->save(false)) {
             return [
                 'message' => Yii::t('app', 'Đăng ký tài khoản thành công, quý khách có thể đăng nhập hệ thống để sử dụng các dịch vụ'),
@@ -600,20 +612,20 @@ class SubscriberController extends ApiController
             ->orderBy(['updated_at' => SORT_DESC])->one();
         //gia han goi
         if ($subscriberServiceAsm && $subscriberServiceAsm->time_expired - time() > 0) {
-                $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 24 * 3600;
-                $subscriberServiceAsm->updated_at = time();
-                if ($subscriberServiceAsm->save()) {
-                    $subscriber->coin = $subscriber->coin - $service->price;
-                    $subscriber->save();
-                    //luu log transaction
-                    $subscriber->newTransaction($subscriber->id, SubscriberTransaction::TYPE_RENEW,
-                        $service->id, SubscriberTransaction::STATUS_SUCCESS,
-                        $service->price, 'Gia han goi cuoc', '0', $subscriberServiceAsm->id, $subscriberServiceAsm->time_expired);
-                    return [
-                        'success' => true,
-                        'message' => Yii::t('app', 'Gia hạn gói thành công')
-                    ];
-                }
+            $subscriberServiceAsm->time_expired = $subscriberServiceAsm->time_expired + $service->time_expired * 24 * 3600;
+            $subscriberServiceAsm->updated_at = time();
+            if ($subscriberServiceAsm->save()) {
+                $subscriber->coin = $subscriber->coin - $service->price;
+                $subscriber->save();
+                //luu log transaction
+                $subscriber->newTransaction($subscriber->id, SubscriberTransaction::TYPE_RENEW,
+                    $service->id, SubscriberTransaction::STATUS_SUCCESS,
+                    $service->price, 'Gia han goi cuoc', '0', $subscriberServiceAsm->id, $subscriberServiceAsm->time_expired);
+                return [
+                    'success' => true,
+                    'message' => Yii::t('app', 'Gia hạn gói thành công')
+                ];
+            }
         } else {
             //add vao bang mua goi
             $subscriberServiceAsm = new SubscriberServiceAsm();
