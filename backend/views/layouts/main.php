@@ -31,15 +31,15 @@ $arrlang = array();
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid">
 <?php $this->beginBody() ?>
 <!-- BEGIN HEADER -->
-<div class="page-header navbar navbar-fixed-top">
+<div class="page-header navbar navbar-fixed-top" style="height: 70px">
     <!-- BEGIN HEADER INNER -->
     <div class="page-header-inner">
 
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="<?= Yii::$app->homeUrl ?>">
-                <!--                <img src="-->
-                <? //= Url::to("@web/img/") ?><!--" alt="logo" class="logo-default"/>-->
+                <img style="height: 65px;width: 60%;" src="<?= Url::to("@web/img/ic_launcher_1.png") ?>" alt="logo"
+                     class="logo-default"/>
             </a>
 
             <div class="menu-toggler sidebar-toggler hide">
@@ -106,11 +106,16 @@ $arrlang = array();
 <div class="page-container">
     <!-- BEGIN SIDEBAR -->
     <div class="page-sidebar-wrapper">
-        <div class="page-sidebar navbar-collapse collapse">
+        <div class="page-sidebar navbar-collapse collapse" style="padding-top: 25px;">
             <?php
 
 
             $rightItems = [
+                [
+                    'label' => '<i class="fa fa-dashboard"></i> ' . \Yii::t('app', 'Bảng điều khiển'),
+                    'url' => ['site/index'],
+                    'encode' => false,
+                ],
                 [
                     'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Hệ thống'),
                     'url' => 'javascript:;',

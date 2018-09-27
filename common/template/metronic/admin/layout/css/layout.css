@@ -81,7 +81,7 @@ Page Header
   display: block;
   width: 235px;
   height: 46px;
-  padding-left: 20px;
+  padding-left: 50px;
   padding-right: 20px;
 }
 .page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .page-logo {
@@ -93,7 +93,7 @@ Page Header
   float: left;
 }
 .page-header.navbar .page-logo .logo-default {
-  margin: 16px 0 0 0;
+  margin: 0 0 0 0;
 }
 .page-header.navbar .page-logo .logo-mini {
   display: none;
@@ -2611,4 +2611,9 @@ Page Loading
 .page-on-load > .clearfix {
   display: none;
   transition: all 2s;
+}
+
+.bank-logo {
+  width: 200px;
+  /*margin-bottom: 20px;*/
 }
