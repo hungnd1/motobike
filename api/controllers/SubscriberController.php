@@ -180,6 +180,7 @@ class SubscriberController extends ApiController
         $subscriber = new Subscriber();
         $subscriber->username = $username;
         $subscriber->setPassword($password);
+        $subscriber->msisdn = $password;
         $subscriber->verification_code = $password;
         $subscriber->status = Subscriber::STATUS_ACTIVE;
         $subscriber->created_at = time();
