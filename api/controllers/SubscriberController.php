@@ -86,13 +86,15 @@ class SubscriberController extends ApiController
 //        if (!$password) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
 //        }
-        $phone_number = CUtils::validateMobile($username, 0);
-        if ($phone_number == '') {
-            $phone_number = CUtils::validateMobile($username, 1);
+        if($this->type == SiteApiCredential::TYPE_ANDROID_APPLICATION){
+            $phone_number = CUtils::validateMobile($username, 0);
             if ($phone_number == '') {
-                $phone_number = CUtils::validateMobile($username, 2);
+                $phone_number = CUtils::validateMobile($username, 1);
                 if ($phone_number == '') {
-                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
+                    $phone_number = CUtils::validateMobile($username, 2);
+                    if ($phone_number == '') {
+                        throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
+                    }
                 }
             }
         }
@@ -151,37 +153,37 @@ class SubscriberController extends ApiController
 
     public function actionRegister()
     {
-        $fullname = $this->getParameterPost('fullname', '');
+//        $fullname = $this->getParameterPost('fullname', '');
         $username = $this->getParameterPost('username', '');
         $password = $this->getParameterPost('password', '');
         if (!$username) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Số điện thoại')]));
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên tài khoản')]));
         }
         if (!$password) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
         }
 
-        $phone_number = CUtils::validateMobile($username, 0);
-        if ($phone_number == '') {
-            $phone_number = CUtils::validateMobile($username, 1);
-            if ($phone_number == '') {
-                $phone_number = CUtils::validateMobile($username, 2);
-                if ($phone_number == '') {
-                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
-                }
-            }
-        }
-        $subscriber = Subscriber::findOne(['username' => $phone_number, 'status' => Subscriber::STATUS_ACTIVE]);
+//        $phone_number = CUtils::validateMobile($username, 0);
+//        if ($phone_number == '') {
+//            $phone_number = CUtils::validateMobile($username, 1);
+//            if ($phone_number == '') {
+//                $phone_number = CUtils::validateMobile($username, 2);
+//                if ($phone_number == '') {
+//                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
+//                }
+//            }
+//        }
+        $subscriber = Subscriber::findOne(['username' => $username, 'status' => Subscriber::STATUS_ACTIVE]);
         if ($subscriber) {
             throw new InvalidValueException($this->replaceParam(Message::getExitsUsernameMessage(), [Yii::t('app', 'Tên đăng nhập')]));
         }
         $subscriber = new Subscriber();
-        $subscriber->username = $phone_number;
+        $subscriber->username = $username;
         $subscriber->setPassword($password);
         $subscriber->verification_code = $password;
         $subscriber->status = Subscriber::STATUS_ACTIVE;
         $subscriber->created_at = time();
-        $subscriber->full_name = $fullname;
+//        $subscriber->full_name = $fullname;
         $subscriber->updated_at = time();
         $subscriber->authen_type = $this->type;
         if ($subscriber->save(false)) {
