@@ -58,7 +58,7 @@ class WeatherController extends ApiController
         }
 
         $description = 'Nguoi dung vao thoi tiet '.$station_id;
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
+//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
 
         $arr = [];
         $current_time = time();
