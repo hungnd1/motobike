@@ -30,7 +30,7 @@ class NewsController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-//            'get-list-news',
+            'get-list-news',
             'search',
             'detail-news'
         ];
