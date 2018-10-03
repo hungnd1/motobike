@@ -34,7 +34,8 @@ class GapController extends ApiController
         $behaviors['authenticator']['except'] = [
             'search',
             'detail-gap',
-            'get-statistic'
+            'get-statistic',
+            'get-list-gap'
         ];
 
         return $behaviors;
@@ -49,8 +50,8 @@ class GapController extends ApiController
 
     public function actionGetListGap($type = GapGeneral::GAP_GENERAL)
     {
-        UserHelpers::manualLogin();
-        $subscriber = Yii::$app->user->identity;
+//        UserHelpers::manualLogin();
+//        $subscriber = Yii::$app->user->identity;
         $page = $this->getParameter('page', 0);
         $page = $page > 1 ? $page - 1 : 0;
 
@@ -65,14 +66,14 @@ class GapController extends ApiController
                 'defaultOrder' => ['order' => SORT_DESC, 'created_at' => SORT_DESC],
             ],
         ]);
-        if ($subscriber) {
-            if($type == GapGeneral::GAP_GENERAL){
-                $description = 'Nguoi dung vao sau benh';
-            }else{
-                $description = 'Nguoi dung vao biến đổi khí hậu';
-            }
-            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
-        }
+//        if ($subscriber) {
+//            if($type == GapGeneral::GAP_GENERAL){
+//                $description = 'Nguoi dung vao sau benh';
+//            }else{
+//                $description = 'Nguoi dung vao biến đổi khí hậu';
+//            }
+//            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
+//        }
         return $dataProvider;
 
     }

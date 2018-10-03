@@ -30,7 +30,8 @@ class WeatherController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-weather-detail-except'
+            'get-weather-detail-except',
+            'get-weather-detail'
         ];
 
         return $behaviors;
@@ -326,14 +327,14 @@ class WeatherController extends ApiController
 
     public function actionGetDetail()
     {
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 
         $today = strtotime('today midnight');
         $tomorrow = strtotime('tomorrow');
 
-        $subscriber = Yii::$app->user->identity;
+//        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
         /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
         $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
