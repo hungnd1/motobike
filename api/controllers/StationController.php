@@ -28,7 +28,8 @@ class StationController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'search'
+            'search',
+            'get-list-station'
         ];
 
         return $behaviors;
