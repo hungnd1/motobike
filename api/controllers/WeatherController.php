@@ -31,7 +31,8 @@ class WeatherController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'get-weather-detail-except',
-            'get-weather-detail'
+            'get-weather-detail',
+            'get-detail'
         ];
 
         return $behaviors;
