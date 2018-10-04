@@ -50,7 +50,7 @@ class AppController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
 //            'check-device-token',
-            'get-price',
+//            'get-price',
             'get-price-web',
             'get-price-mobile',
             'total-quality',
@@ -149,21 +149,21 @@ class AppController extends ApiController
 
     public function actionGetPrice($date = 0, $coffee = PriceCoffee::TYPE_GIASAN)
     {
-//        UserHelpers::manualLogin();
-//        $subscriber = Yii::$app->user->identity;
-//        if ($subscriber) {
-//            /** @var  $lastActivity SubscriberActivity */
-//            $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_PRICE])->orderBy(['id' => SORT_DESC])->one();
-//            if ($lastActivity) {
-//                if (time() - $lastActivity->created_at >= 5 * 60) {
-//                    $description = 'Nguoi dung vao gia';
-//                    $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
-//                }
-//            } else {
-//                $description = 'Nguoi dung vao gia';
-//                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
-//            }
-//        }
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        if ($subscriber) {
+            /** @var  $lastActivity SubscriberActivity */
+            $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_PRICE])->orderBy(['id' => SORT_DESC])->one();
+            if ($lastActivity) {
+                if (time() - $lastActivity->created_at >= 5 * 60) {
+                    $description = 'Nguoi dung vao gia';
+                    $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+                }
+            } else {
+                $description = 'Nguoi dung vao gia';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+            }
+        }
         if (!$date) {
             $date = date('d/m/Y', time());
         }
@@ -887,7 +887,7 @@ class AppController extends ApiController
 
     public function actionAcceptScreen()
     {
-//        $this->setStatusCode(501);
+        $this->setStatusCode(501);
         return [
             'message' => 'OK',
             'is_screen' => true

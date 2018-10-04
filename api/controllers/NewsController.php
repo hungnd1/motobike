@@ -30,7 +30,7 @@ class NewsController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'get-list-news',
+//            'get-list-news',
             'search',
             'detail-news'
         ];
@@ -47,8 +47,8 @@ class NewsController extends ApiController
 
     public function actionGetListNews()
     {
-//        UserHelpers::manualLogin();
-//        $subscriber = Yii::$app->user->identity;
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
         $id = $this->getParameter('id', '');
         $fruitId = $this->getParameter('fruit_id', '');
         if (!$id && !$fruitId) {
@@ -77,16 +77,16 @@ class NewsController extends ApiController
             ],
         ]);
         /** @var  $lastActivity SubscriberActivity */
-//        $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_GAP])->orderBy(['id' => SORT_DESC])->one();
-//        if ($lastActivity) {
-//            if (time() - $lastActivity->created_at >= 60 * 60) {
-//                $description = 'Nguoi dung vao gap';
-//                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
-//            }
-//        } else {
-//            $description = 'Nguoi dung vao gap';
-//            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
-//        }
+        $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_GAP])->orderBy(['id' => SORT_DESC])->one();
+        if ($lastActivity) {
+            if (time() - $lastActivity->created_at >= 60 * 60) {
+                $description = 'Nguoi dung vao gap';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
+            }
+        } else {
+            $description = 'Nguoi dung vao gap';
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
+        }
         if ($query->one()) {
             return $dataProvider;
         } else {

@@ -31,8 +31,8 @@ class WeatherController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'get-weather-detail-except',
-            'get-weather-detail',
-            'get-detail'
+//            'get-weather-detail',
+//            'get-detail'
         ];
 
         return $behaviors;
@@ -59,7 +59,7 @@ class WeatherController extends ApiController
         }
 
         $description = 'Nguoi dung vao thoi tiet '.$station_id;
-//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
 
         $arr = [];
         $current_time = time();
@@ -328,7 +328,7 @@ class WeatherController extends ApiController
 
     public function actionGetDetail()
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 

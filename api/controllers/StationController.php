@@ -29,7 +29,7 @@ class StationController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'search',
-            'get-list-station'
+//            'get-list-station'
         ];
 
         return $behaviors;
@@ -44,8 +44,8 @@ class StationController extends ApiController
 
     public function actionGetListStation()
     {
-//        UserHelpers::manualLogin();
-//        $subscriber = Yii::$app->user->identity;
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null');

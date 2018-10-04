@@ -71,22 +71,22 @@ class SubscriberController extends ApiController
     public function actionLogin()
     {
         $username = $this->getParameterPost('username', '');
-        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
-            $password = $this->getParameterPost('password', '');
-        }
+//        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
+//            $password = $this->getParameterPost('password', '');
+//        }
         $request = Yii::$app->request;
         if (!$username) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đăng nhập')]));
         }
-        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
-            if (!$password) {
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
-            }
-        }
+//        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
+//            if (!$password) {
+//                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
+//            }
+//        }
 //        if (!$password) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
 //        }
-        if($this->type == SiteApiCredential::TYPE_ANDROID_APPLICATION){
+//        if($this->type == SiteApiCredential::TYPE_ANDROID_APPLICATION){
             $phone_number = CUtils::validateMobile($username, 0);
             if ($phone_number == '') {
                 $phone_number = CUtils::validateMobile($username, 1);
@@ -97,14 +97,14 @@ class SubscriberController extends ApiController
                     }
                 }
             }
-        }
+//        }
 
         $subscriber = Subscriber::findOne(['username' => $username]);
-        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
-            if (!$subscriber->validatePassword($password)) {
-                throw new InvalidValueException(Message::getWrongUserOrPassMessage());
-            }
-        }
+//        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
+//            if (!$subscriber->validatePassword($password)) {
+//                throw new InvalidValueException(Message::getWrongUserOrPassMessage());
+//            }
+//        }
         $password = CUtils::generateRandomString(8);
         if (!$subscriber) {
             $subscriber = new Subscriber();
