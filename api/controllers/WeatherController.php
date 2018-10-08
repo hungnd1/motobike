@@ -58,7 +58,7 @@ class WeatherController extends ApiController
 
         }
 
-        $description = 'Nguoi dung vao thoi tiet '.$station_id;
+        $description = 'Nguoi dung vao thoi tiet ' . $station_id;
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
 
         $arr = [];
@@ -179,8 +179,8 @@ class WeatherController extends ApiController
 //            $temperature = $temperature / $weekWeatherAgo->count();
 //            $precipitation = $precipitation / $weekWeatherAgo->count();
 //        }
-//        $subscriber->weather_detail_id = $weather->id;
-//        $subscriber->save();
+        $subscriber->weather_detail_id = $weather->id;
+        $subscriber->save();
         return [
             'items' => $weather,
 //            'temperature' => $temperature,
@@ -347,6 +347,15 @@ class WeatherController extends ApiController
         $command = $connect->createCommand($sql);
         $result = $command->queryAll();
         $stationCode = $result[0]['station_code'];
+        if (!$stationCode) {
+            if ($subscriber->weather_detail_id) {
+                /** @var  $weather  WeatherDetail */
+                $weather = WeatherDetail::find()->andWhere(['id' => $subscriber->weather_detail_id])->one();
+                if ($weather) {
+                    $stationCode = $weather->station_code;
+                }
+            }
+        }
         /** @var  $weatherDetail WeatherDetail */
         $weatherDetail = WeatherDetail::find()
             ->andWhere(['station_code' => $stationCode])
