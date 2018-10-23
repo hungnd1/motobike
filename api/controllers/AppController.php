@@ -395,9 +395,11 @@ class AppController extends ApiController
                     'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
                 ];
             }
-            if($subscriber->weather_detail_id != $weatherDetail->station_code){
-                $subscriber->weather_detail_id = $weatherDetail->station_code;
-                $subscriber->save(false);
+            if ($subscriber->weather_detail_id) {
+                if ($subscriber->weather_detail_id != $weatherDetail->station_code) {
+                    $subscriber->weather_detail_id = $weatherDetail->station_code;
+                    $subscriber->save(false);
+                }
             }
             $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
             $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;

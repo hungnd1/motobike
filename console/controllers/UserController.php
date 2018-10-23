@@ -5,6 +5,7 @@
  * @author: Nguyen Chi Thuc
  * @email: gthuc.nguyen@gmail.com
  */
+
 namespace console\controllers;
 
 use backend\controllers\CategoryController;
@@ -32,17 +33,16 @@ class UserController extends Controller
 {
 
 
-
     /**
      * Sample: ./yii be-user/create-admin-user "thucnc@vivas.vn" "123456"
      * @param $email
      * @param $password
      * @throws Exception
      */
-    public function actionCreateAdminUser($email, $password) {
+    public function actionCreateAdminUser($email, $password)
+    {
         $this->actionCreateUser('admin', $email, $password);
     }
-
 
 
     /**
@@ -53,7 +53,8 @@ class UserController extends Controller
      * @param $sp_id
      * @throws Exception
      */
-    public function actionCreateSpUser($user, $email, $password, $sp_id) {
+    public function actionCreateSpUser($user, $email, $password, $sp_id)
+    {
         $sp_user = $this->actionCreateUser($user, $email, $password);
         $sp_user->site_id = $sp_id;
         $sp_user->type = User::USER_TYPE_SP;
@@ -61,21 +62,20 @@ class UserController extends Controller
         return $sp_user;
     }
 
-    public function actionSetPassword($user, $password) {
+    public function actionSetPassword($user, $password)
+    {
         $user = User::findByUsername($user);
         if ($user) {
             $user->setPassword($password);
             if ($user->save()) {
                 echo 'Password changed!\n';
                 return 0;
-            }
-            else {
+            } else {
                 Yii::error($user->getErrors());
                 VarDumper::dump($user->getErrors());
                 throw new Exception("Cannot change password!");
             }
-        }
-        else {
+        } else {
             echo "User not found!\n";
             return 1;
         }
@@ -89,7 +89,8 @@ class UserController extends Controller
      * @return $user User
      * @throws Exception
      */
-    public function actionCreateUser($username, $email, $password,  $full_name = "") {
+    public function actionCreateUser($username, $email, $password, $full_name = "")
+    {
         $user = new User();
         $user->username = $username;
         $user->status = User::STATUS_ACTIVE;
@@ -102,8 +103,7 @@ class UserController extends Controller
         if ($user->save()) {
             echo 'User created!\n';
             return $user;
-        }
-        else {
+        } else {
             Yii::error($user->getErrors());
             VarDumper::dump($user->getErrors());
             throw new Exception("Cannot create User!");
@@ -118,12 +118,14 @@ class UserController extends Controller
      * @param $route
      * @param null $parent
      */
-    public function actionAddPermission($name, $description, $route, $parent = null) {
+    public function actionAddPermission($name, $description, $route, $parent = null)
+    {
         $this->addAuthItem($name, $description, $route, AuthItem::TYPE_PERMISSION, $parent);
 
     }
 
-    public function actionAddRole($name, $description, $route = null, $parent = null) {
+    public function actionAddRole($name, $description, $route = null, $parent = null)
+    {
         $this->addAuthItem($name, $description, $route, AuthItem::TYPE_ROLE, $parent);
     }
 
@@ -133,7 +135,8 @@ class UserController extends Controller
      * @param $username
      * @param $auth_item
      */
-    public function actionAssign($username, $auth_item) {
+    public function actionAssign($username, $auth_item)
+    {
         /* @var $auth DbManager */
         $auth = Yii::$app->authManager;
         $user = User::findByUsername($username);
@@ -145,13 +148,11 @@ class UserController extends Controller
         $item = $auth->getPermission($auth_item);
         if (!empty($item)) {
             echo "Permission with name `$auth_item` found\n";
-        }
-        else {
+        } else {
             $item = $auth->getRole($auth_item);
             if (!empty($item)) {
                 echo "Role with name `$auth_item` found\n";
-            }
-            else {
+            } else {
                 echo "No auth_item named `$auth_item` found\n";
                 return 1;
             }
@@ -160,8 +161,7 @@ class UserController extends Controller
         if (!$auth->getAssignment($auth_item, $user->id)) {
             $auth->assign($item, $user->id);
             echo "Auth_item `$auth_item` has been assigned to `$username`\n";
-        }
-        else {
+        } else {
             echo "Assignment existed!\n";
         }
     }
@@ -175,18 +175,15 @@ class UserController extends Controller
         $newItem = false;
         if (!empty($item)) {
             echo "Role with name `$name` existed, update it...\n";
-        }
-        else {
+        } else {
             $item = $auth->getPermission($name);
             if (!empty($item)) {
                 echo "Permission with name `$name` existed, update it...\n";
-            }
-            else {
+            } else {
                 $newItem = true;
                 if ($type == AuthItem::TYPE_ROLE) {
                     $item = $auth->createRole($name);
-                }
-                else {
+                } else {
                     $item = $auth->createPermission($name);
                 }
             }
@@ -210,8 +207,7 @@ class UserController extends Controller
 
             if ($auth->hasChild($parentItem, $item)) {
                 echo "Parent-child asm already exited\n";
-            }
-            else {
+            } else {
                 $auth->addChild($parentItem, $item);
             }
         }
@@ -222,36 +218,41 @@ class UserController extends Controller
         return 0;
     }
 
-    public function actionListActions($alias = '@app') {
+    public function actionListActions($alias = '@app')
+    {
         $actionAuth = AuthHelper::listActions(@$alias);
         VarDumper::dump($actionAuth);
     }
 
-    public function actionMigrateAnswer(){
+    public function actionMigrateAnswer()
+    {
         $lstAnswer = QuestionAnswer::find()
             ->andWhere('answer_string is null')
             ->all();
-        foreach ($lstAnswer as $answer){
+        foreach ($lstAnswer as $answer) {
             /** @var $answer QuestionAnswer */
-            $answer->answer_string = strip_tags(html_entity_decode($answer->answer,ENT_NOQUOTES   ,"UTF-8"));
+            $answer->answer_string = strip_tags(html_entity_decode($answer->answer, ENT_NOQUOTES, "UTF-8"));
             $answer->save();
         }
     }
 
 
-    public function actionMigrateSubscriber(){
+    public function actionMigrateSubscriber()
+    {
         $lstSubscriber = Subscriber::find()
             ->andWhere('weather_detail_id is not null')
             ->all();
-        foreach ($lstSubscriber as $subscriber){
-            /** @var $subscriber  Subscriber*/
-            /** @var  $weatherDetail WeatherDetail*/
-            $weatherDetail = WeatherDetail::find()
-                ->andWhere(['id'=>$subscriber->weather_detail_id])
-                ->one();
-            if($weatherDetail){
-                $subscriber->weather_detail_id = $weatherDetail->station_code;
-                $subscriber->save(false);
+        foreach ($lstSubscriber as $subscriber) {
+            /** @var $subscriber  Subscriber */
+            /** @var  $weatherDetail WeatherDetail */
+            if ($subscriber->weather_detail_id) {
+                $weatherDetail = WeatherDetail::find()
+                    ->andWhere(['id' => $subscriber->weather_detail_id])
+                    ->one();
+                if ($weatherDetail) {
+                    $subscriber->weather_detail_id = $weatherDetail->station_code;
+                    $subscriber->save(false);
+                }
             }
         }
     }
