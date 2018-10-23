@@ -665,14 +665,9 @@ class PriceController extends Controller
                 ->andWhere(['device_subscriber_asm.subscriber_id' => $subscriber->id])
                 ->one();
             if ($subscriber->weather_detail_id) {
-                /** @var  $weatherDetail WeatherDetail */
-                $weatherDetail = WeatherDetail::findOne($subscriber->weather_detail_id);
                 /** @var  $station Station */
-                $station = Station::findOne(['station_code' => $weatherDetail->station_code]);
+                $station = Station::findOne(['station_code' => $subscriber->weather_detail_id]);
                 CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, $station->id, DeviceInfo::TARGET_TYPE_WEATHER);
-            }else{
-//                $station = Station::findOne(['station_code' => $weatherDetail->station_code]);
-                CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, 300, DeviceInfo::TARGET_TYPE_WEATHER);
             }
         }
     }
