@@ -33,7 +33,7 @@ use yii\web\IdentityInterface;
  * @property string $address
  * @property string $user_agent
  * @property integer $coin
- * @property integer $weather_detail_id
+ * @property string $weather_detail_id
  */
 class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -58,12 +58,12 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin','weather_detail_id'], 'integer'],
+            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin'], 'integer'],
             [['msisdn'], 'required'],
             [['msisdn'], 'string', 'max' => 45],
             [['username', 'email'], 'string', 'max' => 100],
             [['full_name', 'password'], 'string', 'max' => 200],
-            [['avatar_url', 'skype_id', 'google_id', 'facebook_id'], 'string', 'max' => 255],
+            [['avatar_url', 'skype_id', 'google_id', 'facebook_id','weather_detail_id'], 'string', 'max' => 255],
             [['verification_code'], 'string', 'max' => 32],
             [['user_agent','address'], 'string', 'max' => 512],
         ];

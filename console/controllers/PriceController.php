@@ -9,6 +9,7 @@
 namespace console\controllers;
 
 
+use api\models\Subscriber;
 use common\helpers\CUtils;
 use common\helpers\FileUtils;
 use common\models\DeviceInfo;
@@ -649,6 +650,30 @@ class PriceController extends Controller
         foreach ($device_token as $token) {
             /** @var $token DeviceInfo */
             CUtils::sendNotify($token->device_uid, "Bấm vào để xem chi tiết giá cà phê hôm nay", "Giá cả", $clickAction, DeviceInfo::TYPE_PRICE, 1, DeviceInfo::TARGET_TYPE_PRICE);
+        }
+    }
+
+    public function actionNotifyWeather()
+    {
+        $clickAction = Yii::$app->params['action_android'];
+        $lstUser = Subscriber::find()->andWhere(['status' => Subscriber::STATUS_ACTIVE])->all();
+        foreach ($lstUser as $subscriber) {
+            /** @var $subscriber Subscriber */
+            /** @var  $device_token DeviceInfo */
+            $device_token = DeviceInfo::find()
+                ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
+                ->andWhere(['device_subscriber_asm.subscriber_id' => $subscriber->id])
+                ->one();
+            if ($subscriber->weather_detail_id) {
+                /** @var  $weatherDetail WeatherDetail */
+                $weatherDetail = WeatherDetail::findOne($subscriber->weather_detail_id);
+                /** @var  $station Station */
+                $station = Station::findOne(['station_code' => $weatherDetail->station_code]);
+                CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, $station->id, DeviceInfo::TARGET_TYPE_WEATHER);
+            }else{
+//                $station = Station::findOne(['station_code' => $weatherDetail->station_code]);
+                CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, 300, DeviceInfo::TARGET_TYPE_WEATHER);
+            }
         }
     }
 }

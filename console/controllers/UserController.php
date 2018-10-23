@@ -13,7 +13,9 @@ use common\helpers\StringUtils;
 use common\models\AuthItem;
 use common\models\QuestionAnswer;
 use common\models\Site;
+use common\models\Subscriber;
 use common\models\User;
+use common\models\WeatherDetail;
 use ReflectionClass;
 use Yii;
 use yii\console\Controller;
@@ -236,4 +238,21 @@ class UserController extends Controller
         }
     }
 
+
+    public function actionMigrateSubscriber(){
+        $lstSubscriber = Subscriber::find()
+            ->andWhere('weather_detail_id is not null')
+            ->all();
+        foreach ($lstSubscriber as $subscriber){
+            /** @var $subscriber  Subscriber*/
+            /** @var  $weatherDetail WeatherDetail*/
+            $weatherDetail = WeatherDetail::find()
+                ->andWhere(['id'=>$subscriber->weather_detail_id])
+                ->one();
+            if($weatherDetail){
+                $subscriber->weather_detail_id = $weatherDetail->station_code;
+                $subscriber->save(false);
+            }
+        }
+    }
 }

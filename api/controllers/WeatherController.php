@@ -179,8 +179,10 @@ class WeatherController extends ApiController
 //            $temperature = $temperature / $weekWeatherAgo->count();
 //            $precipitation = $precipitation / $weekWeatherAgo->count();
 //        }
-        $subscriber->weather_detail_id = $weather->id;
-        $subscriber->save(false);
+        if ($subscriber->weather_detail_id != $weather->station_code) {
+            $subscriber->weather_detail_id = $weather->station_code;
+            $subscriber->save(false);
+        }
         return [
             'items' => $weather,
 //            'temperature' => $temperature,
@@ -349,11 +351,7 @@ class WeatherController extends ApiController
         $stationCode = $result[0]['station_code'];
         if (!$stationCode) {
             if ($subscriber->weather_detail_id) {
-                /** @var  $weather  WeatherDetail */
-                $weather = WeatherDetail::find()->andWhere(['id' => $subscriber->weather_detail_id])->one();
-                if ($weather) {
-                    $stationCode = $weather->station_code;
-                }
+                $stationCode = $subscriber->weather_detail_id;
             }
         }
         /** @var  $weatherDetail WeatherDetail */
