@@ -656,8 +656,7 @@ class PriceController extends Controller
     public function actionNotifyWeather()
     {
         $clickAction = Yii::$app->params['action_android'];
-        $lstUser = Subscriber::find()->andWhere(['status' => Subscriber::STATUS_ACTIVE])
-            ->andWhere(['id' => 1061])->all();
+        $lstUser = Subscriber::find()->andWhere(['status' => Subscriber::STATUS_ACTIVE])->all();
         foreach ($lstUser as $subscriber) {
             /** @var $subscriber Subscriber */
             /** @var  $device_token DeviceInfo */
