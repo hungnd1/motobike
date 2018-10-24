@@ -664,7 +664,7 @@ class PriceController extends Controller
                 ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
                 ->andWhere(['device_subscriber_asm.subscriber_id' => $subscriber->id])
                 ->one();
-            if ($subscriber->weather_detail_id) {
+            if ($subscriber->weather_detail_id && $device_token) {
                 /** @var  $station Station */
                 $station = Station::findOne(['station_code' => $subscriber->weather_detail_id]);
                 CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, $station->id, DeviceInfo::TARGET_TYPE_WEATHER);
