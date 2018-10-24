@@ -667,7 +667,9 @@ class PriceController extends Controller
             if ($subscriber->weather_detail_id && $device_token) {
                 /** @var  $station Station */
                 $station = Station::findOne(['station_code' => $subscriber->weather_detail_id]);
-                CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, $station->id, DeviceInfo::TARGET_TYPE_WEATHER);
+                if($station){
+                    CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, $station->id, DeviceInfo::TARGET_TYPE_WEATHER);
+                }
             }
         }
     }
