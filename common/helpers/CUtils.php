@@ -175,8 +175,29 @@ class CUtils
 
         // Remove string "+"
         $mobileNumber = str_replace('+84', '84', $mobileNumber);
+        $arr = ['0162', '0163', '0164', '0165', '0166', '0167', '0168', '0169', '0128', '0126', '0122', '0121', '0120', '0123', '0125', '0129', '0127', '0124'];
+        $arrKeyValue = [
+            '0162' => '032',
+            '0163' => '033',
+            '0164' => '034',
+            '0165' => '035',
+            '0166' => '036',
+            '0167' => '037',
+            '0168' => '038',
+            '0169' => '039',
+            '0128' => '078',
+            '0126' => '076',
+            '0122' => '077',
+            '0121' => '079',
+            '0120' => '070',
+            '0125' => '085',
+            '0123' => '083',
+            '0129' => '082',
+            '0127' => '081',
+            '0124' => '084'
+        ];
 
-        if (preg_match('/^(84|0|)(89|86|97|96|98|162|163|164|165|166|167|168|169|90|93|120|121|122|126|128|91|94|123|124|125|127|129|92|188|186|99|199)\d{7}$/', $mobileNumber, $matches)) {
+        if (preg_match('/^(84|0|)(89|86|97|96|98|162|163|164|165|166|167|168|169|90|93|120|121|122|126|128|91|94|123|124|125|127|129|92|188|186|99|199|32|33|34|35|36|37|38|39|78|76|77|79|70|85|83|82|81|84|85|565|567|568|569|582|583|584|585|586|587|588|589|563|564|562|599|598|593|592)\d{7}$/', $mobileNumber, $matches)) {
             /**
              * $typeFormat == 0: 8491xxxxxx
              * $typeFormat == 1: 091xxxxxx
@@ -188,6 +209,7 @@ class CUtils
                 } else {
                     $valid_number = $mobileNumber;
                 }
+                $valid_number = CUtils::str_replace_first("84", "0", $valid_number);
             } else if ($typeFormat == 1) {
                 if ($matches[1] == '84' || $matches[1] == '') {
                     $valid_number = preg_replace('/^(84|)/', '0', $mobileNumber);
@@ -203,7 +225,22 @@ class CUtils
             }
 
         }
+        $str = substr($valid_number, 0, 4);
+        $strSub = '';
+        $strReplace = '';
+        if (in_array($str, $arr)) {
+            $strReplace = $arrKeyValue[$str];
+            $strSub = substr($valid_number, 4);
+            $valid_number = $strReplace . $strSub;
+        }
         return $valid_number;
+    }
+
+    public static function str_replace_first($from, $to, $content)
+    {
+        $from = '/' . preg_quote($from, '/') . '/';
+
+        return preg_replace($from, $to, $content, 1);
     }
 
     /**

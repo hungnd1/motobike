@@ -10,6 +10,7 @@ namespace console\controllers;
 
 use backend\controllers\CategoryController;
 use common\auth\helpers\AuthHelper;
+use common\helpers\CUtils;
 use common\helpers\StringUtils;
 use common\models\AuthItem;
 use common\models\QuestionAnswer;
@@ -253,6 +254,52 @@ class UserController extends Controller
                     $subscriber->weather_detail_id = $weatherDetail->station_code;
                     $subscriber->save(false);
                 }
+            }
+        }
+    }
+
+    public function actionTest()
+    {
+        $test = CUtils::validateMobile("01669299247");
+        var_dump($test);exit;
+        $listUser = Subscriber::find()
+            ->andWhere(['status' => Subscriber::STATUS_ACTIVE])
+            ->all();
+        $arr = ['0162', '0163', '0164', '0165', '0166', '0167', '0168', '0169', '0128', '0126', '0122', '0121', '0120', '0123', '0125', '0129', '0127', '0124'];
+        $arrKeyValue = [
+            '0162' => '032',
+            '0163' => '033',
+            '0164' => '034',
+            '0165' => '035',
+            '0166' => '036',
+            '0167' => '037',
+            '0168' => '038',
+            '0169' => '039',
+            '0128' => '078',
+            '0126' => '076',
+            '0122' => '077',
+            '0121' => '079',
+            '0120' => '070',
+            '0125' => '085',
+            '0123' => '083',
+            '0129' => '082',
+            '0127' => '081',
+            '0124' => '084'
+        ];
+        foreach ($listUser as $user) {
+            /** @var $user Subscriber */
+            $firstStr = substr($user->username, 0, 2);
+            if ($firstStr == '84') {
+                $user->username = CUtils::validateMobile($user->username);
+                $user->save(false);
+            }
+            $subStr = CUtils::validateMobile($user->username);
+            $str = substr($subStr, 0, 4);
+            $strSub = substr($subStr, 4);
+            if (in_array($str, $arr)) {
+                $strReplace = $arrKeyValue[$str];
+                $user->username = $strReplace . $strSub;
+                $user->save(false);
             }
         }
     }

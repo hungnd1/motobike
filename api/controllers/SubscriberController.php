@@ -87,19 +87,20 @@ class SubscriberController extends ApiController
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
 //        }
 //        if($this->type == SiteApiCredential::TYPE_ANDROID_APPLICATION){
-            $phone_number = CUtils::validateMobile($username, 0);
+        $phone_number = CUtils::validateMobile($username, 0);
+        if ($phone_number == '') {
+            $phone_number = CUtils::validateMobile($username, 1);
             if ($phone_number == '') {
-                $phone_number = CUtils::validateMobile($username, 1);
+                $phone_number = CUtils::validateMobile($username, 2);
                 if ($phone_number == '') {
-                    $phone_number = CUtils::validateMobile($username, 2);
-                    if ($phone_number == '') {
-                        throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
-                    }
+                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
                 }
             }
+        }
 //        }
 
-        $subscriber = Subscriber::findOne(['username' => $username]);
+        $subscriber = Subscriber::find()->andWhere(['username' => $phone_number])
+            ->andWhere(['status' => Subscriber::STATUS_ACTIVE])->orderBy(['id' => SORT_DESC])->one();
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
 //            if (!$subscriber->validatePassword($password)) {
 //                throw new InvalidValueException(Message::getWrongUserOrPassMessage());
@@ -108,7 +109,7 @@ class SubscriberController extends ApiController
         $password = CUtils::generateRandomString(8);
         if (!$subscriber) {
             $subscriber = new Subscriber();
-            $subscriber->username = $username;
+            $subscriber->username = $phone_number;
             $subscriber->setPassword($password);
             $subscriber->msisdn = $password;
             $subscriber->verification_code = $password;
