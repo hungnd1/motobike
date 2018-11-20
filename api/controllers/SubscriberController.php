@@ -70,7 +70,7 @@ class SubscriberController extends ApiController
 
     public function actionLogin()
     {
-        $username = $this->getParameterPost('username', '');
+        $username = trim($this->getParameterPost('username', ''));
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
 //            $password = $this->getParameterPost('password', '');
 //        }
