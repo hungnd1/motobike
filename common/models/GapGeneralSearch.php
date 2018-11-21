@@ -17,7 +17,7 @@ class GapGeneralSearch extends GapGeneral
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at','fruit_id'], 'integer'],
+            [['id', 'status', 'created_at', 'updated_at','fruit_id','category_id'], 'integer'],
             [['gap', 'title'], 'safe'],
         ];
     }
@@ -63,6 +63,7 @@ class GapGeneralSearch extends GapGeneral
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'fruit_id' => $this->fruit_id,
+            'category_id' => $this->category_id
         ]);
 
         $query->andFilterWhere(['like', 'gap', $this->gap]);

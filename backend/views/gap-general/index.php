@@ -70,6 +70,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         [
+                            'class' => '\kartik\grid\DataColumn',
+                            'attribute' => 'category_id',
+                            'width' => '20%',
+                            'filterType' => GridView::FILTER_SELECT2,
+                            'filter' => \common\models\GapGeneral::listCategory(),
+                            'filterWidgetOptions' => [
+                                'pluginOptions' => ['allowClear' => true],
+                            ],
+                            'filterInputOptions' => ['placeholder' => \Yii::t('app', 'Tất cả')],
+                            'value' => function ($model, $key, $index) {
+                                /** @var $model \common\models\GapGeneral */
+                                return $model->getCategoryName();
+                            }
+                        ],
+                        [
                             'attribute' => 'order',
                             'label'=>'Sắp xếp',
                             'format' => 'html',

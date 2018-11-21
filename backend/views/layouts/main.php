@@ -312,7 +312,7 @@ $arrlang = array();
                     'items' => [
                         [
                             'encode' => false,
-                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý tin sâu bệnh'),
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý tin sâu bệnh, tin tức, sự kiện'),
                             'url' => ['gap-general/index', 'type' => GapGeneral::GAP_GENERAL],
                             'require_auth' => true,
                         ],

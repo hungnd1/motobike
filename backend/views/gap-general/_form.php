@@ -27,6 +27,11 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     </div>
     <div class="row">
         <div class="col-md-12">
+            <?= $form->field($model, 'category_id')->dropDownList(GapGeneral::listCategory(), ['class' => 'form-control fruit', 'prompt' => ' -- Chọn danh mục --']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
 
             <?php if ($showPreview) { ?>
                 <div class="form-group field-category-icon">

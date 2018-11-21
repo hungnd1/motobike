@@ -742,6 +742,10 @@ class AppController extends ApiController
                 'content' => Yii::t('app', 'Với tuổi cây đối với tiêu KTCB và kích thước cây đối với Tiêu kinh doanh, chúng tôi khuyến cáo sử dụng phân như sau:'),
                 'type' => 7
             ]);
+            array_push($arr_item,[
+               'content' => Yii::t('app','Với tuổi cây như đã chọn, chúng tôi khuyến cáo sử dụng bón phân như sau:'),
+                'type' => 8
+            ]);
             $res['items'] = $arr_item;
             $cache->set($key, $res, Yii::$app->params['time_expire_cache'], new TagDependency(['tags' => Yii::$app->params['key_cache']['Introduce']]));
         }
