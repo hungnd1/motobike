@@ -51,6 +51,10 @@ class GapGeneral extends \yii\db\ActiveRecord
     const GAP_DETAIL = 2; // chi tiet gap
     const CLIMATE_CHANGE = 3; //bien doi khi hau
 
+    const PET = 1;
+    const NEWS = 2;
+    const EVENTS = 3;
+
     /**
      * @inheritdoc
      */
@@ -103,9 +107,9 @@ class GapGeneral extends \yii\db\ActiveRecord
     public static function listCategory()
     {
         $lst = [
-            1 => "Sâu bệnh",
-            2 => "Tin tức",
-            3 => "Sự kiện"
+            self::PET => "Sâu bệnh",
+            self::NEWS => "Tin tức",
+            self::EVENTS => "Sự kiện"
         ];
         return $lst;
     }
