@@ -57,8 +57,10 @@ class GapController extends ApiController
 
         $query = GapGeneral::find()
             ->andWhere(['status' => GapGeneral::STATUS_ACTIVE])
-            ->andWhere(['type' => $type])
-            ->andWhere(['category_id' => $category_id]);
+            ->andWhere(['type' => $type]);
+        if ($type == GapGeneral::GAP_GENERAL) {
+            $query->andWhere(['category_id' => $category_id]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
