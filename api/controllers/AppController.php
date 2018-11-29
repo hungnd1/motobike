@@ -912,17 +912,17 @@ class AppController extends ApiController
         $res = array();
         $arr_item = array();
         array_push($arr_item, [
-            'image' => Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . "benh-gi-sat-tren-cay-ca-phe.png"),
+            'image' => "http://45.32.112.173:84/static/news/benh-gi-sat-tren-cay-ca-phe.png",
             'id' => 1,
             'title' => 'Sâu bệnh'
         ]);
         array_push($arr_item, [
-            'image' => Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . "benh-gi-sat-tren-cay-ca-phe.png"),
+            'image' => "http://45.32.112.173:84/static/news/benh-gi-sat-tren-cay-ca-phe.png",
             'id' => 2,
             'title' => 'Tin tức'
         ]);
         array_push($arr_item, [
-            'image' => Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . "benh-gi-sat-tren-cay-ca-phe.png"),
+            'image' => "http://45.32.112.173:84/static/news/benh-gi-sat-tren-cay-ca-phe.png",
             'id' => 3,
             'title' => 'Sự kiện'
         ]);
