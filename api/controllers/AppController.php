@@ -36,6 +36,7 @@ use Yii;
 use yii\base\InvalidValueException;
 use yii\caching\TagDependency;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 
 class AppController extends ApiController
@@ -66,7 +67,8 @@ class AppController extends ApiController
             'get-question',
             'get-introduce',
             'get-province',
-            'accept-screen'
+            'accept-screen',
+            'get-category-pet'
         ];
 
         return $behaviors;
@@ -742,8 +744,8 @@ class AppController extends ApiController
                 'content' => Yii::t('app', 'Với tuổi cây đối với tiêu KTCB và kích thước cây đối với Tiêu kinh doanh, chúng tôi khuyến cáo sử dụng phân như sau:'),
                 'type' => 7
             ]);
-            array_push($arr_item,[
-               'content' => Yii::t('app','Với tuổi cây như đã chọn, chúng tôi khuyến cáo sử dụng bón phân như sau:'),
+            array_push($arr_item, [
+                'content' => Yii::t('app', 'Với tuổi cây như đã chọn, chúng tôi khuyến cáo sử dụng bón phân như sau:'),
                 'type' => 8
             ]);
             $res['items'] = $arr_item;
@@ -903,5 +905,28 @@ class AppController extends ApiController
             'message' => 'OK',
             'is_screen' => true
         ];
+    }
+
+    public function actionGetCategoryPet()
+    {
+        $res = array();
+        $arr_item = array();
+        array_push($arr_item, [
+            'image' => Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . "benh-gi-sat-tren-cay-ca-phe.png"),
+            'id' => 1,
+            'title' => 'Sâu bệnh'
+        ]);
+        array_push($arr_item, [
+            'image' => Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . "benh-gi-sat-tren-cay-ca-phe.png"),
+            'id' => 2,
+            'title' => 'Tin tức'
+        ]);
+        array_push($arr_item, [
+            'image' => Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . "benh-gi-sat-tren-cay-ca-phe.png"),
+            'id' => 3,
+            'title' => 'Sự kiện'
+        ]);
+        $res['items'] = $arr_item;
+        return $res;
     }
 }
