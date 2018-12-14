@@ -260,8 +260,6 @@ class UserController extends Controller
 
     public function actionTest()
     {
-        $test = CUtils::validateMobile("01669299247");
-        var_dump($test);exit;
         $listUser = Subscriber::find()
             ->andWhere(['status' => Subscriber::STATUS_ACTIVE])
             ->all();
