@@ -53,6 +53,7 @@ class SubscriberActivity extends \yii\db\ActiveRecord
     const ACTION_NONG_NGHIEP_THONG_MINH = 11;
     //bien doi khi hau
     const ACTION_CLIMATE_CHANGE = 12;
+    const ACTION_TU_VAN_SU_DUNG = 14;
 
     const STATUS_SUCCESS = 10;
     const STATUS_FAIL = 0;

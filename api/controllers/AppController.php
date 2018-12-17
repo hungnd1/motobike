@@ -64,7 +64,6 @@ class AppController extends ApiController
             'version-app',
             'gap-advice',
             'gap-advice-except',
-            'get-question',
             'get-introduce',
             'get-province',
             'accept-screen',
@@ -678,6 +677,11 @@ class AppController extends ApiController
 
     public function actionGetQuestion($fruit_id = 5)
     {
+
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+
         $listQuestion = Question::find()
             ->andWhere(['fruit_id' => $fruit_id])
             ->all();
@@ -705,6 +709,9 @@ class AppController extends ApiController
             array_push($arrQues, $arrRes);
         }
         $res['items'] = $arrQues;
+
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TU_VAN_SU_DUNG, 'Tu van su dung phan bong');
+
         return $res;
     }
 
