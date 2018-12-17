@@ -10,9 +10,12 @@ namespace api\controllers;
 
 
 use api\helpers\Message;
+use api\helpers\UserHelpers;
 use api\models\Detail;
 use api\models\Fruit;
 use common\models\Feature;
+use common\models\Subscriber;
+use common\models\SubscriberActivity;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -31,7 +34,6 @@ class FruitController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'get-fruit',
-            'get-group',
             'get-feature',
             'get-list-detail',
             'get-detail'
@@ -73,8 +75,13 @@ class FruitController extends ApiController
 
     public function actionGetGroup()
     {
-        $query = \api\models\Group::find()->orderBy(['id' => SORT_ASC]);
+        UserHelpers::manualLogin();
 
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+
+        $query = \api\models\Group::find()->orderBy(['id' => SORT_ASC]);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TRA_CUU_SU_CO, 'Tra cuu su co bat thuong');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,

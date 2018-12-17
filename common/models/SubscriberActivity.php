@@ -34,14 +34,25 @@ class SubscriberActivity extends \yii\db\ActiveRecord
 
     const ACTION_LOGIN = 1;
     const ACTION_LOGOUT = 2;
+    //sau benh
     const ACTION_GAP_DISEASE = 9;
+    //thoi tiet
     const ACTION_WEATHER = 3;
+    //price
     const ACTION_PRICE = 4;
     const ACTION_BUY = 5;
     const ACTION_SELL = 6;
+    //tai lieu ky thuat canh tac
     const ACTION_GAP = 7;
+    //Q&A
     const ACTION_ANSWER = 8;
 //    const ACTION_REGISTER = 3;
+    //tra cuu su co bat thuogn
+    const ACTION_TRA_CUU_SU_CO = 10;
+    //nongn nghiep thong minh
+    const ACTION_NONG_NGHIEP_THONG_MINH = 11;
+    //bien doi khi hau
+    const ACTION_CLIMATE_CHANGE = 12;
 
     const STATUS_SUCCESS = 10;
     const STATUS_FAIL = 0;

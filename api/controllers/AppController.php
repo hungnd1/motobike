@@ -669,7 +669,7 @@ class AppController extends ApiController
                     ]);
             }
             $res['items'] = $arr_item;
-
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, 'Nong nghiep thong minh');
             return $res;
         } else {
             throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));

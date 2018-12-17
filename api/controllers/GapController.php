@@ -74,10 +74,11 @@ class GapController extends ApiController
         if ($subscriber) {
             if ($type == GapGeneral::GAP_GENERAL) {
                 $description = 'Nguoi dung vao sau benh';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
             } else {
                 $description = 'Nguoi dung vao biến đổi khí hậu';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_CLIMATE_CHANGE, $description);
             }
-            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
         }
         return $dataProvider;
 
