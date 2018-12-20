@@ -156,12 +156,16 @@ class PriceCoffeeController extends Controller
                 if ($file->saveAs(Yii::getAlias('@webroot') . "/" . Yii::getAlias('@excel_folder') . "/" . $file_name)) {
                     $objPHPExcel = PHPExcel_IOFactory::load(Yii::getAlias('@excel_folder') . "/" . $file_name);
                     $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+                    $first = 0;
                     if (sizeof($sheetData) > 0) {
                         foreach ($sheetData as $row) {
-                            $rowA = strtotime(str_replace('Z','',str_replace('T',' ',trim($row['A'])))) + 7 * 3600;
-                            /** @var  $coffee_old PriceCoffee*/
-                            $coffee_old= PriceCoffee::findOne(['organisation_name'=>trim($row['B']),'province_id'=>trim($row['D']),'created_at'=>$rowA]);
-                            if(!$coffee_old){
+                            $rowA = strtotime(str_replace('Z', '', str_replace('T', ' ', trim($row['A'])))) + 7 * 3600;
+                            /** @var  $coffee_old PriceCoffee */
+                            if ($first == 0) {
+                                $priceCoffee = PriceCoffee::deleteAll(['created_at' => $rowA]);
+                            }
+                            $coffee_old = PriceCoffee::findOne(['organisation_name' => trim($row['B']), 'province_id' => trim($row['D']), 'created_at' => $rowA]);
+                            if (!$coffee_old) {
                                 $price = new PriceCoffee();
                                 $price->province_id = trim($row['D']);
                                 $price->price_average = trim($row['C']);
@@ -169,25 +173,20 @@ class PriceCoffeeController extends Controller
                                 $price->created_at = $rowA;
                                 $price->updated_at = $rowA;
                                 $price->last_time_value = $rowA;
-                                $coffee_old_id = PriceCoffee::findOne(['organisation_name'=>$row['B'],'province_id'=>$row['D']]);
-                                if($coffee_old_id){
+                                $coffee_old_id = PriceCoffee::findOne(['organisation_name' => $row['B'], 'province_id' => $row['D']]);
+                                if ($coffee_old_id) {
                                     $price->coffee_old_id = $coffee_old_id->coffee_old_id;
-                                }else{
-                                    if(trim($row['D']) == '10_100_10000'){
+                                } else {
+                                    if (trim($row['D']) == '10_100_10000') {
                                         $price->coffee_old_id = 1;
-                                    }elseif(trim($row['D']) == '11_110_11000'){
+                                    } elseif (trim($row['D']) == '11_110_11000') {
                                         $price->coffee_old_id = 2;
                                     }
                                 }
                                 $price->organisation_name = trim($row['B']);
                                 $price->save(false);
-                            }else{
-                                if($coffee_old->price_average  != trim($row['C'])){
-                                    $coffee_old->price_average = trim($row['C']);
-                                    $coffee_old->save(false);
-                                }
                             }
-
+                            $first++;
                         }
 
                         Yii::$app->getSession()->setFlash('success', Yii::t("app", "Đã import thành công"));
