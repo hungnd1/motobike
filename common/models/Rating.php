@@ -13,6 +13,7 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $subscriber_id
+ * @property integer $type
  */
 class Rating extends \yii\db\ActiveRecord
 {
@@ -30,7 +31,7 @@ class Rating extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rate', 'created_at', 'updated_at', 'subscriber_id'], 'integer'],
+            [['rate', 'created_at', 'updated_at', 'subscriber_id','type'], 'integer'],
             [['content'], 'string'],
         ];
     }
@@ -47,6 +48,7 @@ class Rating extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'subscriber_id' => 'Subscriber ID',
+            'type' => 'Type'
         ];
     }
 }

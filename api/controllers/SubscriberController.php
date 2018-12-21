@@ -683,13 +683,16 @@ class SubscriberController extends ApiController
         throw new ServerErrorHttpException("Hệ thống đang lỗi");
     }
 
-    public function actionIsRating()
+    public function actionIsRating($type = SubscriberActivity::ACTION_WEATHER)
     {
         UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         /** @var  $rating Rating */
-        $rating = Rating::find()->andWhere(['subscriber_id' => $subscriber->id])->one();
+        $rating = Rating::find()
+            ->andWhere(['subscriber_id' => $subscriber->id])
+            ->andWhere(['type' => $type])
+            ->one();
         if ($rating) {
             if (time() - $rating->created_at >= 30 * 24 * 3600) {
                 return [
