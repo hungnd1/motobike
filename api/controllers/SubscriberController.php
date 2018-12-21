@@ -694,6 +694,7 @@ class SubscriberController extends ApiController
             if (time() - $rating->created_at >= 30 * 24 * 3600) {
                 return [
                     'success' => true,
+                    'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
                 ];
             } else {
                 throw new ServerErrorHttpException("Hệ thống đang lỗi");
@@ -701,6 +702,7 @@ class SubscriberController extends ApiController
         } else {
             return [
                 'success' => true,
+                'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
             ];
         }
     }
