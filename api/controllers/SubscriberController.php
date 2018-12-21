@@ -17,6 +17,7 @@ use api\models\Service;
 use common\helpers\CUtils;
 use common\models\Feedback;
 use common\models\PriceCoffee;
+use common\models\Rating;
 use common\models\SiteApiCredential;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
@@ -64,7 +65,8 @@ class SubscriberController extends ApiController
             'exchange-buy' => ['POST'],
             'change-password' => ['POST'],
             'feedback' => ['POST'],
-            'register-package' => ['POST']
+            'register-package' => ['POST'],
+            'rating' => ['POST']
         ];
     }
 
@@ -659,4 +661,47 @@ class SubscriberController extends ApiController
         ];
     }
 
+    public function actionRating()
+    {
+        UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        $rate = $this->getParameterPost('rate', 0);
+        $content = $this->getParameterPost('content', '');
+        $rating = new Rating();
+        $rating->rate = $rate;
+        $rating->content = $content;
+        $rating->created_at = time();
+        $rating->updated_at = time();
+        $rating->subscriber_id = $subscriber->id;
+        if ($rating->save()) {
+            return [
+                'success' => true,
+                'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+            ];
+        }
+        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+    }
+
+    public function actionIsRating()
+    {
+        UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $rating Rating */
+        $rating = Rating::find()->andWhere(['subscriber_id' => $subscriber->id])->one();
+        if ($rating) {
+            if (time() - $rating->created_at >= 30 * 24 * 3600) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                throw new ServerErrorHttpException("Hệ thống đang lỗi");
+            }
+        } else {
+            return [
+                'success' => true,
+            ];
+        }
+    }
 }
