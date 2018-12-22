@@ -668,12 +668,14 @@ class SubscriberController extends ApiController
         $subscriber = Yii::$app->user->identity;
         $rate = $this->getParameterPost('rate', 0);
         $content = $this->getParameterPost('content', '');
+        $type = $this->getParameterPost('type',SubscriberActivity::ACTION_WEATHER);
         $rating = new Rating();
         $rating->rate = $rate;
         $rating->content = $content;
         $rating->created_at = time();
         $rating->updated_at = time();
         $rating->subscriber_id = $subscriber->id;
+        $rating->type = $type;
         if ($rating->save()) {
             return [
                 'success' => true,
