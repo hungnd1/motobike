@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="portlet-body">
                 <p>
-                    <?php echo Html::a('Thêm mới ', Yii::$app->urlManager->createUrl(['category/create']), ['class' => 'btn btn-success']) ?>
+                    <?php echo Html::a('Thêm mới ', Yii::$app->urlManager->createUrl(['category/create', 'type' => $type]), ['class' => 'btn btn-success']) ?>
                 </p>
                 <?php
                 $gridColumn = [
@@ -70,6 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => '\kartik\grid\DataColumn',
                         'attribute' => 'fruit_id',
                         'width' => '200px',
+                        'visible' => $type == \common\models\Category::TYPE_QA ? false : true,
                         'filterType' => GridView::FILTER_SELECT2,
                         'filter' => \common\models\Category::getFruits(),
                         'filterWidgetOptions' => [

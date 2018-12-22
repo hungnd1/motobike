@@ -18,7 +18,7 @@ class CategorySearch extends Category
     public function rules()
     {
         return [
-            [['id', 'status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
+            [['id', 'status', 'order_number', 'created_at', 'updated_at', 'fruit_id'], 'integer'],
             [['display_name', 'description'], 'safe'],
         ];
     }
@@ -41,7 +41,9 @@ class CategorySearch extends Category
      */
     public function search($params)
     {
-        $query = Category::find()->orderBy(['created_at'=>SORT_DESC]);
+        $query = Category::find()
+            ->andWhere(['type' => $params['CategorySearch']['type']])
+            ->orderBy(['created_at' => SORT_DESC]);
 
         // add conditions that should always apply here
 

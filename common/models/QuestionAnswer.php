@@ -15,6 +15,7 @@ use yii\helpers\Url;
  * @property integer $updated_at
  * @property integer $status
  * @property integer $subscriber_id
+ * @property integer $category_id
  * @property string $image
  * @property string $answer_string
  */
@@ -38,7 +39,7 @@ class QuestionAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question','status'],'required'],
+            [['question','status','category_id'],'required'],
             [['question', 'answer','answer_string'], 'string'],
             [['created_at', 'updated_at', 'status','subscriber_id'], 'integer'],
             [['image'], 'string', 'max' => 500],
@@ -58,6 +59,7 @@ class QuestionAnswer extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'status' => 'Trạng thái',
             'image' => 'Ảnh thông tin',
+            'category_id' => 'Danh mục hỏi đáp'
         ];
     }
 

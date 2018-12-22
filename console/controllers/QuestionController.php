@@ -100,6 +100,7 @@ class QuestionController extends Controller
                 ->one();
             $clickAction = Yii::$app->params['action_android'];
             CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem chi tiết chuyên gia trả lời câu hỏi của bạn", "Hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id, DeviceInfo::TARGET_TYPE_QUESTION);
+            FileUtils::appendToFile(Yii::getAlias('@runtime/logs/notifyQuestion.log'), "Notify question " . $question->question . " voi id: " . $question->id);
         }
     }
 

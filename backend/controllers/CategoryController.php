@@ -37,13 +37,16 @@ class CategoryController extends Controller
      * Lists all Category models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($type = Category::TYPE_GAP_GOOD)
     {
         $searchModel = new CategorySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params = Yii::$app->request->queryParams;
+        $params['CategorySearch']['type'] = $type;
+        $dataProvider = $searchModel->search($params);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'type' => $type
         ]);
     }
 
@@ -64,9 +67,10 @@ class CategoryController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type = Category::TYPE_GAP_GOOD)
     {
         $model = new Category();
+        $model->type = $type;
         $model->setScenario('admin_create_update');
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'image');
@@ -83,10 +87,11 @@ class CategoryController extends Controller
             $model->created_at = time();
             $model->updated_at = time();
             $model->save();
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'type' => $type]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'type' => $model->type
             ]);
         }
     }
@@ -119,7 +124,7 @@ class CategoryController extends Controller
             }
             $model->updated_at = time();
             $model->save();
-            return $this->redirect(['index']);
+            return $this->redirect(['index','type'=>$model->type]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -155,7 +160,6 @@ class CategoryController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 
 
 }

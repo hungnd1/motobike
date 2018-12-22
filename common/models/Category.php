@@ -17,6 +17,7 @@ use yii\helpers\Url;
  * @property integer $updated_at
  * @property integer $fruit_id
  * @property string $image
+ * @property integer $type
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -31,6 +32,10 @@ class Category extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
 
+    //danh muc tai lieu ky thuat canh tac
+    const TYPE_GAP_GOOD = 1;
+    const TYPE_QA = 2;
+
     /**
      * @inheritdoc
      */
@@ -38,8 +43,8 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['display_name'], 'required'],
-            [['description','image'], 'string'],
-            [['status', 'order_number', 'created_at', 'updated_at','fruit_id'], 'integer'],
+            [['description', 'image'], 'string'],
+            [['status', 'order_number', 'created_at', 'updated_at', 'fruit_id', 'type'], 'integer'],
             [['display_name'], 'string', 'max' => 200],
             [['image'], 'required', 'on' => 'admin_create_update']
         ];
@@ -59,10 +64,10 @@ class Category extends \yii\db\ActiveRecord
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Updated At',
             'fruit_id' => 'Cây trồng',
-            'image' => 'Ảnh đại diện'
+            'image' => 'Ảnh đại diện',
+            'type' => 'Loại danh mục'
         ];
     }
-
 
 
     public static function getListStatusFilter($type = 'all')
@@ -78,18 +83,19 @@ class Category extends \yii\db\ActiveRecord
         ][$type];
     }
 
-    public static function getListStatus(){
+    public static function getListStatus()
+    {
         return
             $credential_status = [
-                self::STATUS_ACTIVE => Yii::t('app','Hoạt động'),
-                self::STATUS_INACTIVE => Yii::t('app','Tạm dừng'),
+                self::STATUS_ACTIVE => Yii::t('app', 'Hoạt động'),
+                self::STATUS_INACTIVE => Yii::t('app', 'Tạm dừng'),
             ];
     }
 
     public static function getFruits()
     {
         $arrFruit = [];
-        $listFruit  = Fruit::find()->all();
+        $listFruit = Fruit::find()->all();
         foreach ($listFruit as $item) {
             /** @var $item Fruit */
             $arrFruit[$item->id] = $item->name;

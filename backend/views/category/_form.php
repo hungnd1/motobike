@@ -28,10 +28,13 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     <?= $form->field($model, 'display_name')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
     <?= $form->field($model, 'order_number')->textInput(['maxlength' => 255, 'class' => 'input-circle']) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'status')->dropDownList(
         Category::getListStatus(), ['class' => 'input-circle']
     ) ?>
-    <?= $form->field($model, 'fruit_id')->dropDownList(\yii\helpers\ArrayHelper::map(Fruit::find()->asArray()->all(), 'id', 'name')) ?>
+    <?php if ($model->type == Category::TYPE_GAP_GOOD) { ?>
+        <?= $form->field($model, 'fruit_id')->dropDownList(\yii\helpers\ArrayHelper::map(Fruit::find()->asArray()->all(), 'id', 'name')) ?>
+    <?php } ?>
     <div class="row">
         <div class="col-md-12">
 

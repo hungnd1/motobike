@@ -38,7 +38,8 @@ $arrlang = array();
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="<?= Yii::$app->homeUrl ?>">
-                <img style="height: 65px;width: 50%;margin: 1px 25px 7px 15px;" src="<?= Url::to("@web/img/ic_launcher_1.png") ?>" alt="logo"
+                <img style="height: 65px;width: 50%;margin: 1px 25px 7px 15px;"
+                     src="<?= Url::to("@web/img/ic_launcher_1.png") ?>" alt="logo"
                      class="logo-default"/>
             </a>
 
@@ -265,7 +266,7 @@ $arrlang = array();
                 ],
                 [
                     'encode' => false,
-                    'label' => '<i class="icon-eyeglasses"></i> '.\Yii::t('app', 'Quản lý giá'),
+                    'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý giá'),
                     'url' => ['price-coffee/index'],
                     'require_auth' => true,
                 ],
@@ -274,6 +275,26 @@ $arrlang = array();
                     'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý hỏi đáp'),
                     'url' => ['question-answer/index'],
                     'require_auth' => true,
+                ],
+                [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý hỏi đáp'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục hỏi đáp'),
+                            'url' => ['category/index', 'type' => \common\models\Category::TYPE_QA],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý câu hỏi'),
+                            'url' => ['question-answer/index'],
+                            'require_auth' => true,
+                        ],
+                    ]
+
                 ],
                 [
                     'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý GAP chung'),
@@ -285,7 +306,7 @@ $arrlang = array();
                         [
                             'encode' => false,
                             'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục GAP chung'),
-                            'url' => ['category/index'],
+                            'url' => ['category/index','type'=>\common\models\Category::TYPE_GAP_GOOD],
                             'require_auth' => true,
                         ],
                         [
