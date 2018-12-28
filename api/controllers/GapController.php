@@ -11,8 +11,10 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\helpers\UserHelpers;
+use api\models\Subscriber;
 use common\helpers\CUtils;
 use common\models\GapGeneral;
+use common\models\IsRating;
 use common\models\ReportBuySellSearch;
 use common\models\SubscriberActivity;
 use DateTime;
@@ -51,6 +53,7 @@ class GapController extends ApiController
     public function actionGetListGap($type = GapGeneral::GAP_GENERAL, $category_id = GapGeneral::PET)
     {
         UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         $page = $this->getParameter('page', 0);
         $page = $page > 1 ? $page - 1 : 0;
@@ -75,9 +78,13 @@ class GapController extends ApiController
             if ($type == GapGeneral::GAP_GENERAL) {
                 $description = 'Nguoi dung vao sau benh';
                 $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
+                $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_GAP_DISEASE, $subscriber->id);
+
             } else {
                 $description = 'Nguoi dung vao biến đổi khí hậu';
                 $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_CLIMATE_CHANGE, $description);
+                $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_CLIMATE_CHANGE, $subscriber->id);
+
             }
         }
         return $dataProvider;

@@ -12,6 +12,7 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\WeatherDetail;
+use common\models\IsRating;
 use common\models\Station;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
@@ -60,6 +61,7 @@ class WeatherController extends ApiController
 
         $description = 'Nguoi dung vao thoi tiet ' . $station_id;
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_WEATHER, $subscriber->id);
 
         $arr = [];
         $current_time = time();

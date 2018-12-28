@@ -16,6 +16,7 @@ use api\models\ExchangeBuy;
 use api\models\Service;
 use common\helpers\CUtils;
 use common\models\Feedback;
+use common\models\IsRating;
 use common\models\PriceCoffee;
 use common\models\Rating;
 use common\models\SiteApiCredential;
@@ -338,10 +339,11 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
-
+        /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         $description = 'Nguoi dung vao danh sach mua';
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_SELL, $subscriber->id);
 
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -364,10 +366,11 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         $description = 'Nguoi dung vao danh sach ban';
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
-
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_BUY, $subscriber->id);
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -668,7 +671,7 @@ class SubscriberController extends ApiController
         $subscriber = Yii::$app->user->identity;
         $rate = $this->getParameterPost('rate', 0);
         $content = $this->getParameterPost('content', '');
-        $type = $this->getParameterPost('type',SubscriberActivity::ACTION_WEATHER);
+        $type = $this->getParameterPost('type', SubscriberActivity::ACTION_WEATHER);
         $rating = new Rating();
         $rating->rate = $rate;
         $rating->content = $content;
@@ -691,24 +694,37 @@ class SubscriberController extends ApiController
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         /** @var  $rating Rating */
-        $rating = Rating::find()
+        /** @var  $isRating IsRating */
+        $isRating = IsRating::find()
             ->andWhere(['subscriber_id' => $subscriber->id])
             ->andWhere(['type' => $type])
             ->one();
-        if ($rating) {
-            if (time() - $rating->created_at >= 30 * 24 * 3600) {
-                return [
-                    'success' => true,
-                    'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-                ];
+        if ($isRating) {
+            if (time() - $isRating->created_at >= 30 * 24 * 3600) {
+                $rating = Rating::find()
+                    ->andWhere(['subscriber_id' => $subscriber->id])
+                    ->andWhere(['type' => $type])
+                    ->one();
+                if ($rating) {
+                    if (time() - $rating->created_at >= 30 * 24 * 3600) {
+                        return [
+                            'success' => true,
+                            'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+                        ];
+                    } else {
+                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+                    }
+                } else {
+                    return [
+                        'success' => true,
+                        'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+                    ];
+                }
             } else {
                 throw new ServerErrorHttpException("Hệ thống đang lỗi");
             }
         } else {
-            return [
-                'success' => true,
-                'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-            ];
+            throw new ServerErrorHttpException("Hệ thống đang lỗi");
         }
     }
 }

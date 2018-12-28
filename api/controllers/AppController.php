@@ -19,6 +19,7 @@ use common\models\DeviceInfo;
 use common\models\DeviceSubscriberAsm;
 use common\models\Fruit;
 use common\models\GapGeneral;
+use common\models\IsRating;
 use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Question;
@@ -151,6 +152,7 @@ class AppController extends ApiController
     public function actionGetPrice($date = 0, $coffee = PriceCoffee::TYPE_GIASAN)
     {
         UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         if ($subscriber) {
             /** @var  $lastActivity SubscriberActivity */
@@ -164,6 +166,7 @@ class AppController extends ApiController
                 $description = 'Nguoi dung vao gia';
                 $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
             }
+            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_PRICE, $subscriber->id);
         }
         if (!$date) {
             $date = date('d/m/Y', time());
@@ -669,6 +672,8 @@ class AppController extends ApiController
             }
             $res['items'] = $arr_item;
             $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, 'Nong nghiep thong minh');
+            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, $subscriber->id);
+
             return $res;
         } else {
             throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
@@ -711,6 +716,8 @@ class AppController extends ApiController
         $res['items'] = $arrQues;
 
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TU_VAN_SU_DUNG, 'Tu van su dung phan bong');
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TU_VAN_SU_DUNG, $subscriber->id);
+
 
         return $res;
     }

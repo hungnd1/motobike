@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\Detail;
 use api\models\Fruit;
 use common\models\Feature;
+use common\models\IsRating;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
 use Yii;
@@ -82,6 +83,7 @@ class FruitController extends ApiController
 
         $query = \api\models\Group::find()->orderBy(['id' => SORT_ASC]);
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TRA_CUU_SU_CO, 'Tra cuu su co bat thuong');
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TRA_CUU_SU_CO, $subscriber->id);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,

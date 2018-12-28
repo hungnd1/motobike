@@ -12,6 +12,8 @@ namespace api\controllers;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\News;
+use api\models\Subscriber;
+use common\models\IsRating;
 use common\models\SubscriberActivity;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yii;
@@ -48,6 +50,7 @@ class NewsController extends ApiController
     public function actionGetListNews()
     {
         UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         $id = $this->getParameter('id', '');
         $fruitId = $this->getParameter('fruit_id', '');
@@ -87,6 +90,8 @@ class NewsController extends ApiController
             $description = 'Nguoi dung vao gap';
             $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP, $description);
         }
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_GAP, $subscriber->id);
+
         if ($query->one()) {
             return $dataProvider;
         } else {
