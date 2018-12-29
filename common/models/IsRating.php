@@ -59,11 +59,12 @@ class IsRating extends \yii\db\ActiveRecord
             $isRating->type = $type;
             $isRating->subscriber_id = $subscriber_id;
             $isRating->created_at = time();
-            $isRating->status = Subscriber::STATUS_ACTIVE;
+            $isRating->status = Subscriber::STATUS_INACTIVE;
             $isRating->save();
         }else{
             if(time() - $isRating->created_at >= 30 * 24 * 3600){
                 $isRating->created_at = time();
+                $isRating->status = Subscriber::STATUS_INACTIVE;
                 $isRating->save();
             }
         }

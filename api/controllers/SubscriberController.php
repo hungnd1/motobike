@@ -700,7 +700,11 @@ class SubscriberController extends ApiController
             ->andWhere(['type' => $type])
             ->one();
         if ($isRating) {
-            if (time() - $isRating->created_at >= 30 * 24 * 3600) {
+            if ($isRating->status == Subscriber::STATUS_INACTIVE) {
+                $isRating->status = Subscriber::STATUS_ACTIVE;
+                $isRating->created_at = time();
+                $isRating->save();
+
                 $rating = Rating::find()
                     ->andWhere(['subscriber_id' => $subscriber->id])
                     ->andWhere(['type' => $type])
