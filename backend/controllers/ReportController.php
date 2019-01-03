@@ -244,4 +244,27 @@ class ReportController extends Controller
         ]);
 
      }
+
+    public function actionSubscriberActivityType()
+    {
+        $param = Yii::$app->request->queryParams;
+        $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-7 days')->format('d/m/Y');
+
+
+        $from_date = isset($param['ReportSubscriberActivityForm']['from_date']) ? $param['ReportSubscriberActivityForm']['from_date'] : $from_date_default;
+        $to_date = isset($param['ReportSubscriberActivityForm']['to_date']) ? $param['ReportSubscriberActivityForm']['to_date'] : $to_date_default;
+
+        $report = new ReportSubscriberActivityForm();
+        $report->from_date = $from_date;
+        $report->to_date = $to_date;
+        $dataProvider = $report->generateReportType();
+        $dataProviderAll = $report->generateReportAllType();
+        $excelDataProvider = $report->generateDetailReportType($dataProviderAll->getModels());
+        return $this->render('subscriber-activity-type', [
+            'report' => $report,
+            'dataProvider' => $dataProvider,
+            'excelDataProvider' => $excelDataProvider
+        ]);
+    }
 }
