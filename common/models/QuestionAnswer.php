@@ -39,9 +39,9 @@ class QuestionAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question','status','category_id'],'required'],
+            [['question','status'],'required'],
             [['question', 'answer','answer_string'], 'string'],
-            [['created_at', 'updated_at', 'status','subscriber_id'], 'integer'],
+            [['created_at', 'updated_at', 'status','subscriber_id','category_id'], 'integer'],
             [['image'], 'string', 'max' => 500],
         ];
     }
