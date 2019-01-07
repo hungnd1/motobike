@@ -38,7 +38,6 @@ class QuestionController extends Controller
         $this->infoLogAnswer("Start answer");
         $listQuestion = QuestionAnswer::find()
             ->andWhere(['status' => QuestionAnswer::STATUS_INACTIVE])
-            ->andWhere('answer is null')
             ->andWhere(['id' => $id])
             ->andWhere('question is not null')
 //            ->andWhere('image is null')
@@ -75,9 +74,10 @@ class QuestionController extends Controller
 
     private function getAnswerResult($result)
     {
-        $chuoi = explode(',', $result);
+        $chuoi = explode(',"', $result);
         $error_code = explode(':"', $chuoi[2]);
         $error_code = $error_code[1];
+
         return $error_code;
     }
 
