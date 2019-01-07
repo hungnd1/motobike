@@ -65,7 +65,8 @@ class QuestionController extends Controller
                             ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
                             ->andWhere(['device_subscriber_asm.subscriber_id' => $question->subscriber_id])
                             ->one();
-//                        CUtils::sendNotify($device_token->device_uid, CUtils::subString($question->answer, 30, '...'), 'Hệ thống trả lời');
+                        $clickAction = Yii::$app->params['action_android'];
+                        CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem chi tiết chuyên gia trả lời câu hỏi của bạn", "Hỏi đáp", $clickAction, DeviceInfo::TYPE_QUESTION, $id, DeviceInfo::TARGET_TYPE_QUESTION);
                     }
                 }
             }
