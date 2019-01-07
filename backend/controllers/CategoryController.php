@@ -71,7 +71,6 @@ class CategoryController extends Controller
     {
         $model = new Category();
         $model->type = $type;
-        $model->setScenario('admin_create_update');
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'image');
             if ($image) {

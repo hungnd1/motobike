@@ -42,11 +42,10 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['display_name'], 'required'],
+            [['display_name','order_number'], 'required'],
             [['description', 'image'], 'string'],
             [['status', 'order_number', 'created_at', 'updated_at', 'fruit_id', 'type'], 'integer'],
             [['display_name'], 'string', 'max' => 200],
-            [['image'], 'required', 'on' => 'admin_create_update']
         ];
     }
 
