@@ -126,7 +126,7 @@ class QuestionAnswerSearch extends QuestionAnswer
             foreach ($rawData as $raw) {
                 $row[$sttLabel] = ++$i;
                 $row[$dateLabel] = $raw['question'];
-                $row[$total_via_site_label] = $raw['answer_string'];
+                $row[$total_via_site_label] = html_entity_decode(strip_tags($raw['answer_string']));
                 $row[$status] = $raw['status'] == QuestionAnswer::STATUS_ACTIVE ? "Đã trả lời" : "Chưa trả lời";
                 $row[$total_via_site_daily_label] = date('d/m/Y H:i:s', $raw['created_at']);
                 $dataRow[] = $row;
