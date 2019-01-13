@@ -733,10 +733,7 @@ class SubscriberController extends ApiController
                 throw new ServerErrorHttpException("Hệ thống đang lỗi");
             }
         } else {
-            return [
-                'success' => true,
-                'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-            ];
+            throw new ServerErrorHttpException("Hệ thống đang lỗi");
         }
     }
 }
