@@ -685,9 +685,11 @@ class SubscriberController extends ApiController
                 ->andWhere(['subscriber_id' => $subscriber->id])
                 ->andWhere(['type' => $type])
                 ->one();
-            $isRating->status = Subscriber::STATUS_ACTIVE;
-            $isRating->created_at = time();
-            $isRating->save();
+            if($isRating){
+                $isRating->status = Subscriber::STATUS_ACTIVE;
+                $isRating->created_at = time();
+                $isRating->save();
+            }
             return [
                 'success' => true,
                 'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
