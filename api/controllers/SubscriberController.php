@@ -700,45 +700,45 @@ class SubscriberController extends ApiController
 
     public function actionIsRating($type = SubscriberActivity::ACTION_WEATHER)
     {
-        throw new ServerErrorHttpException("Hệ thống đang lỗi");
-//        UserHelpers::manualLogin();
-//        /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
-//        /** @var  $rating Rating */
-//        /** @var  $isRating IsRating */
-//        $isRating = IsRating::find()
-//            ->andWhere(['subscriber_id' => $subscriber->id])
-//            ->andWhere(['type' => $type])
-//            ->one();
-//        if ($isRating) {
-//            if ($isRating->status == Subscriber::STATUS_INACTIVE) {
-//
-//                $rating = Rating::find()
-//                    ->andWhere(['subscriber_id' => $subscriber->id])
-//                    ->andWhere(['type' => $type])
-//                    ->one();
-//                if ($rating) {
-//                    if (time() - $rating->created_at >= 30 * 24 * 3600) {
-////                        return [
-////                            'success' => true,
-////                            'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-////                        ];
-//                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
-//                    } else {
-//                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
-//                    }
-//                } else {
-//                    throw new ServerErrorHttpException("Hệ thống đang lỗi");
-////                    return [
-////                        'success' => true,
-////                        'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-////                    ];
-//                }
-//            } else {
-//                throw new ServerErrorHttpException("Hệ thống đang lỗi");
-//            }
-//        } else {
-//            throw new ServerErrorHttpException("Hệ thống đang lỗi");
-//        }
+//        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+        UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $rating Rating */
+        /** @var  $isRating IsRating */
+        $isRating = IsRating::find()
+            ->andWhere(['subscriber_id' => $subscriber->id])
+            ->andWhere(['type' => $type])
+            ->one();
+        if ($isRating) {
+            if ($isRating->status == Subscriber::STATUS_INACTIVE) {
+
+                $rating = Rating::find()
+                    ->andWhere(['subscriber_id' => $subscriber->id])
+                    ->andWhere(['type' => $type])
+                    ->one();
+                if ($rating) {
+                    if (time() - $rating->created_at >= 30 * 24 * 3600) {
+//                        return [
+//                            'success' => true,
+//                            'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+//                        ];
+                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+                    } else {
+                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+                    }
+                } else {
+                    throw new ServerErrorHttpException("Hệ thống đang lỗi");
+//                    return [
+//                        'success' => true,
+//                        'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+//                    ];
+                }
+            } else {
+                throw new ServerErrorHttpException("Hệ thống đang lỗi");
+            }
+        } else {
+            throw new ServerErrorHttpException("Hệ thống đang lỗi");
+        }
     }
 }
