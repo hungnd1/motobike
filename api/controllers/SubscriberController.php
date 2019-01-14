@@ -719,20 +719,20 @@ class SubscriberController extends ApiController
                     ->one();
                 if ($rating) {
                     if (time() - $rating->created_at >= 30 * 24 * 3600) {
-//                        return [
-//                            'success' => true,
-//                            'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-//                        ];
-                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+                        return [
+                            'success' => true,
+                            'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+                        ];
+//                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
                     } else {
                         throw new ServerErrorHttpException("Hệ thống đang lỗi");
                     }
                 } else {
-                    throw new ServerErrorHttpException("Hệ thống đang lỗi");
-//                    return [
-//                        'success' => true,
-//                        'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
-//                    ];
+//                    throw new ServerErrorHttpException("Hệ thống đang lỗi");
+                    return [
+                        'success' => true,
+                        'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
+                    ];
                 }
             } else {
                 throw new ServerErrorHttpException("Hệ thống đang lỗi");
