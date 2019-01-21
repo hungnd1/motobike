@@ -139,7 +139,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
                 ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60])
                 ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                 ->andWhere(['in','price_coffee.organisation_name',$key])
-                ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
+                ->orderBy(['price_coffee.province_id' => SORT_DESC,'organisation_name'=>SORT_DESC])->all();
             if(!$pricePre){
                 /** @var  $pricePre PriceCoffee */
                 $pricePre = \api\models\PriceCoffee::find()
@@ -149,7 +149,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
                     ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 -  86400])
                     ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                     ->andWhere(['in','price_coffee.organisation_name',$key])
-                    ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
+                    ->orderBy(['price_coffee.province_id' => SORT_DESC,'organisation_name'=>SORT_DESC])->all();
                 if(!$pricePre){
                     /** @var  $pricePre PriceCoffee */
                     $pricePre = \api\models\PriceCoffee::find()
@@ -159,7 +159,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
                         ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 2* 86400])
                         ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                         ->andWhere(['in','price_coffee.organisation_name',$key])
-                        ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
+                        ->orderBy(['price_coffee.province_id' => SORT_DESC,'organisation_name'=>SORT_DESC])->all();
                     if(!$pricePre){
                         /** @var  $pricePre PriceCoffee */
                         $pricePre = \api\models\PriceCoffee::find()
@@ -169,7 +169,7 @@ class PriceCoffee extends \yii\db\ActiveRecord
                             ->andWhere(['<=', 'price_coffee.created_at', $to_time + 7 * 60 * 60 - 3 * 86400])
                             ->andWhere(['not in', 'price_coffee.organisation_name', ['dRBE', 'dRCL', 'dACN','dABE','dACE','dRCE']])
                             ->andWhere(['in','price_coffee.organisation_name',$key])
-                            ->orderBy(['price_coffee.province_id' => SORT_DESC])->all();
+                            ->orderBy(['price_coffee.province_id' => SORT_DESC,'organisation_name'=>SORT_DESC])->all();
                     }
                 }
             }
