@@ -12,7 +12,7 @@
 // Production
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 0);
-$baseUrl = 'http://45.119.80.32:82/';
+$baseUrl = 'http://45.119.80.39:82/';
 //$baseUrl = 'http://45.32.112.173:85/';
 
 // Development
