@@ -74,6 +74,10 @@ class SubscriberController extends ApiController
     public function actionLogin()
     {
         $username = trim($this->getParameterPost('username', ''));
+        $full_name = trim($this->getParameterPost('fullName',''));
+        $age = $this.$this->getParameterPost('age',0);
+        $sex = $this->getParameterPost('gender',0);
+        $address = $this->getParameterPost('address','');
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
 //            $password = $this->getParameterPost('password', '');
 //        }
@@ -101,7 +105,7 @@ class SubscriberController extends ApiController
             }
         }
 //        }
-
+        /** @var  $subscriber  Subscriber*/
         $subscriber = Subscriber::find()->andWhere(['username' => $phone_number])
             ->andWhere(['status' => Subscriber::STATUS_ACTIVE])->orderBy(['id' => SORT_DESC])->one();
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
@@ -113,6 +117,10 @@ class SubscriberController extends ApiController
         if (!$subscriber) {
             $subscriber = new Subscriber();
             $subscriber->username = $phone_number;
+            $subscriber->full_name = $full_name;
+            $subscriber->sex = $sex;
+            $subscriber->address = $address;
+            $subscriber->age = $age;
             $subscriber->setPassword($password);
             $subscriber->msisdn = $password;
             $subscriber->verification_code = $password;
@@ -121,6 +129,19 @@ class SubscriberController extends ApiController
             $subscriber->updated_at = time();
             $subscriber->authen_type = Subscriber::AUTHEN_TYPE_NORMAL;
             $subscriber->save();
+        }else{
+            if($full_name){
+                $subscriber->full_name = $full_name;
+            }
+            if($age){
+                $subscriber->age = $age;
+            }
+            if($address){
+                $subscriber->address = $address;
+            }
+            if($sex){
+                $subscriber->sex = $sex;
+            }
         }
 //        if (!$subscriber->validatePassword($password)) {
 //            throw new InvalidValueException(Message::getWrongUserOrPassMessage());

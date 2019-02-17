@@ -34,6 +34,7 @@ use yii\web\IdentityInterface;
  * @property string $user_agent
  * @property integer $coin
  * @property string $weather_detail_id
+ * @property integer $age
  */
 class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -58,7 +59,7 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin'], 'integer'],
+            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin','age'], 'integer'],
             [['msisdn'], 'required'],
             [['msisdn'], 'string', 'max' => 45],
             [['username', 'email'], 'string', 'max' => 100],
@@ -97,7 +98,8 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
             'using_promotion' => 'Using Promotion',
             'verification_code' => 'Verification Code',
             'user_agent' => 'User Agent',
-            'coin' => 'Tiền'
+            'coin' => 'Tiền',
+            'age' => 'Tuổi'
         ];
     }
 

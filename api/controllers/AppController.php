@@ -68,7 +68,8 @@ class AppController extends ApiController
             'get-introduce',
             'get-province',
             'accept-screen',
-            'get-category-pet'
+            'get-category-pet',
+            'check-login'
         ];
 
         return $behaviors;
@@ -942,5 +943,22 @@ class AppController extends ApiController
         ]);
         $res['items'] = $arr_item;
         return $res;
+    }
+
+    public function actionCheckLogin($mac){
+        /** @var  $subscriber Subscriber */
+        $subscriber = Subscriber::find()
+            ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = subscriber.id')
+            ->innerJoin('device_info','device_subscriber_asm.device_id = device_info.id')
+            ->andWhere(['device_info.mac'=>$mac])
+            ->one();
+        if($subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
+            $this->setStatusCode(200);
+        } else{
+            $this->setStatusCode(501);
+        }
+        return [
+            'message' => 'Ok'
+        ];
     }
 }
