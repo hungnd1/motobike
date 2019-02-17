@@ -952,7 +952,7 @@ class AppController extends ApiController
             ->innerJoin('device_info','device_subscriber_asm.device_id = device_info.id')
             ->andWhere(['device_info.mac'=>$mac])
             ->one();
-        if($subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
+        if($subscriber && $subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
             $this->setStatusCode(200);
         } else{
             $this->setStatusCode(501);
