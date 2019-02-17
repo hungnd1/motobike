@@ -75,7 +75,7 @@ class SubscriberController extends ApiController
     {
         $username = trim($this->getParameterPost('username', ''));
         $full_name = trim($this->getParameterPost('fullName',''));
-        $age = $this.$this->getParameterPost('age',0);
+        $age = $this->getParameterPost('age',0);
         $sex = $this->getParameterPost('gender',0);
         $address = $this->getParameterPost('address','');
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
