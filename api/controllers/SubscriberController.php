@@ -74,10 +74,10 @@ class SubscriberController extends ApiController
     public function actionLogin()
     {
         $username = trim($this->getParameterPost('username', ''));
-        $full_name = trim($this->getParameterPost('fullName',''));
-        $age = $this->getParameterPost('age',0);
-        $sex = $this->getParameterPost('gender',0);
-        $address = $this->getParameterPost('address','');
+        $full_name = trim($this->getParameterPost('fullName', ''));
+        $age = $this->getParameterPost('age', 0);
+        $sex = $this->getParameterPost('gender', 0);
+        $address = $this->getParameterPost('address', '');
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
 //            $password = $this->getParameterPost('password', '');
 //        }
@@ -105,7 +105,7 @@ class SubscriberController extends ApiController
             }
         }
 //        }
-        /** @var  $subscriber  Subscriber*/
+        /** @var  $subscriber  Subscriber */
         $subscriber = Subscriber::find()->andWhere(['username' => $phone_number])
             ->andWhere(['status' => Subscriber::STATUS_ACTIVE])->orderBy(['id' => SORT_DESC])->one();
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
@@ -113,6 +113,23 @@ class SubscriberController extends ApiController
 //                throw new InvalidValueException(Message::getWrongUserOrPassMessage());
 //            }
 //        }
+        if (!$subscriber || !$subscriber->full_name) {
+            if (!$full_name) {
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đẩy đủ')]));
+            }
+            if (!$age) {
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tuổi ')]));
+            }
+            if (!$sex) {
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giới tính ')]));
+            }
+            if (!$address) {
+                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ ')]));
+            }
+            if (!is_numeric($age) || $age <= 18) {
+                throw new InvalidValueException("Tuổi phải là số và lớn hơn 18 tuổi");
+            }
+        }
         $password = CUtils::generateRandomString(8);
         if (!$subscriber) {
             $subscriber = new Subscriber();
@@ -129,17 +146,17 @@ class SubscriberController extends ApiController
             $subscriber->updated_at = time();
             $subscriber->authen_type = Subscriber::AUTHEN_TYPE_NORMAL;
             $subscriber->save();
-        }else{
-            if($full_name){
+        } else {
+            if ($full_name) {
                 $subscriber->full_name = $full_name;
             }
-            if($age){
+            if ($age) {
                 $subscriber->age = $age;
             }
-            if($address){
+            if ($address) {
                 $subscriber->address = $address;
             }
-            if($sex){
+            if ($sex) {
                 $subscriber->sex = $sex;
             }
         }
