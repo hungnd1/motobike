@@ -120,7 +120,7 @@ class SubscriberController extends ApiController
             if (!$age) {
                 throw new InvalidValueException("Tuổi không được để trống");
             }
-            if (!$sex) {
+            if (!$sex || $sex == 0) {
                 throw new InvalidValueException("Giới tính không được để trống");
             }
             if (!$address) {
