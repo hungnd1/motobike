@@ -115,16 +115,16 @@ class SubscriberController extends ApiController
 //        }
         if (!$subscriber || !$subscriber->full_name) {
             if (!$full_name) {
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên đẩy đủ')]));
+                throw new InvalidValueException("Tên đầy đủ không được để trống");
             }
             if (!$age) {
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tuổi ')]));
+                throw new InvalidValueException("Tuổi không được để trống");
             }
             if (!$sex) {
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giới tính ')]));
+                throw new InvalidValueException("Giới tính không được để trống");
             }
             if (!$address) {
-                throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ ')]));
+                throw new InvalidValueException("Địa chỉ không được để trống");
             }
             if (!is_numeric($age) || $age <= 18) {
                 throw new InvalidValueException("Tuổi phải là số và lớn hơn 18 tuổi");
