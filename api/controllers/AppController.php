@@ -134,6 +134,8 @@ class AppController extends ApiController
                 $deviceSubscriberAsm->save();
             }
         } else {
+            $deviceInfo->last_subscriber_id = $subscriber->id;
+            $deviceInfo->save(false);
             if ($deviceSubscriberAsm) {
                 $deviceSubscriberAsm->device_id = $deviceInfo->id;
                 $deviceSubscriberAsm->updated_at = time();
