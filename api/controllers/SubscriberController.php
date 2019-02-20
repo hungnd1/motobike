@@ -113,23 +113,6 @@ class SubscriberController extends ApiController
 //                throw new InvalidValueException(Message::getWrongUserOrPassMessage());
 //            }
 //        }
-        if (!$subscriber || !$subscriber->full_name) {
-            if (!$full_name) {
-                throw new InvalidValueException("Tên đầy đủ không được để trống");
-            }
-            if (!$age) {
-                throw new InvalidValueException("Tuổi không được để trống");
-            }
-            if (!$sex || $sex == 0) {
-                throw new InvalidValueException("Giới tính không được để trống");
-            }
-            if (!$address) {
-                throw new InvalidValueException("Địa chỉ không được để trống");
-            }
-            if (!is_numeric($age) || $age <= 18) {
-                throw new InvalidValueException("Tuổi phải là số và lớn hơn 18 tuổi");
-            }
-        }
         $password = CUtils::generateRandomString(8);
         if (!$subscriber) {
             $subscriber = new Subscriber();
