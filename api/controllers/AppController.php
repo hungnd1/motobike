@@ -951,6 +951,7 @@ class AppController extends ApiController
             ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = subscriber.id')
             ->innerJoin('device_info','device_subscriber_asm.device_id = device_info.id')
             ->andWhere(['device_info.mac'=>$mac])
+            ->orderBy(['id'=>SORT_DESC])
             ->one();
         if($subscriber && $subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
             $this->setStatusCode(200);
