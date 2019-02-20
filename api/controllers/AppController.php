@@ -119,6 +119,7 @@ class AppController extends ApiController
             $device->updated_at = time();
             $device->mac = $mac;
             $device->status = DeviceInfo::STATUS_ACTIVE;
+            $device->last_subscriber_id = $subscriber->id;
             $device->save();
             if ($deviceSubscriberAsm) {
                 $deviceSubscriberAsm->device_id = $device->id;
@@ -947,15 +948,25 @@ class AppController extends ApiController
 
     public function actionCheckLogin($mac){
         /** @var  $subscriber Subscriber */
-        $subscriber = Subscriber::find()
-            ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = subscriber.id')
-            ->innerJoin('device_info','device_subscriber_asm.device_id = device_info.id')
-            ->andWhere(['device_info.mac'=>$mac])
-            ->orderBy(['id'=>SORT_DESC])
-            ->one();
-        if($subscriber && $subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
-            $this->setStatusCode(200);
-        } else{
+        /** @var  $deviceInfo  DeviceInfo*/
+        $deviceInfo = DeviceInfo::find()
+            ->innerJoin('device_subscriber_asm','device_subscriber_asm.device_id = device_info.id')
+            ->andWhere(['device_info.mac'=>$mac])->one();
+        if($deviceInfo){
+            if($deviceInfo->last_subscriber_id){
+                $subscriber = Subscriber::find()->andWhere(['id'=>$deviceInfo->last_subscriber_id])->one();
+            }else{
+                $subscriber= Subscriber::find()
+                    ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = subscriber.id')
+                    ->innerJoin('device_info','device_info.id = device_subscriber_asm.device_id')
+                    ->andWhere(['device_info.mac'=>$mac])->one();
+            }
+            if($subscriber && $subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
+                $this->setStatusCode(200);
+            } else{
+                $this->setStatusCode(501);
+            }
+        }else{
             $this->setStatusCode(501);
         }
         return [

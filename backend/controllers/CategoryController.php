@@ -28,6 +28,7 @@ class CategoryController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'get-frui'=>['POST']
                 ],
             ],
         ];
@@ -160,5 +161,16 @@ class CategoryController extends Controller
         }
     }
 
+    public function actionGetFruit(){
 
+        if ($id = Yii::$app->request->post('id')) {
+            $rows = Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->andWhere(['fruit_id'=>$id])->all();
+            echo "<option value='0'>-- Chọn danh mục --</option>";
+            foreach ($rows as $operation)
+                /** @var $operation Category */
+                    echo "<option value='" . $operation->id . "'>" . $operation->display_name . "</option>";
+            } else
+                echo "<option>-- Chọn danh mục --</option>";
+
+    }
 }

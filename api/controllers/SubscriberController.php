@@ -108,6 +108,7 @@ class SubscriberController extends ApiController
         /** @var  $subscriber  Subscriber */
         $subscriber = Subscriber::find()->andWhere(['username' => $phone_number])
             ->andWhere(['status' => Subscriber::STATUS_ACTIVE])->orderBy(['id' => SORT_DESC])->one();
+
 //        if ($this->type == SiteApiCredential::TYPE_IOS_APPLICATION) {
 //            if (!$subscriber->validatePassword($password)) {
 //                throw new InvalidValueException(Message::getWrongUserOrPassMessage());

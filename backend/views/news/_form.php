@@ -5,6 +5,7 @@ use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\View;
 
 /* @var $this yii\web\View */
@@ -38,13 +39,21 @@ $this->registerJs($js, View::POS_END);
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?php echo $form->field($model, 'fruit_id')->dropDownList(ArrayHelper::map(\common\models\Fruit::find()->asArray()->all(), 'id', 'name'), ['class' => 'form-control fruit', 'prompt' => ' -- Chọn cây trồng --']);
+            <?php echo $form->field($model, 'fruit_id')->dropDownList(ArrayHelper::map(\common\models\Fruit::find()->asArray()->all(), 'id', 'name'),
+                ['class' => 'form-control fruit', 'prompt' => ' -- Chọn cây trồng --',
+                    'onchange' => '$.post("' . Url::toRoute('category/get-fruit') . '", 
+                {id: $(this).val()}, 
+                function(res){
+                    $("#emeliyyatlar").html(res);
+                });',
+
+                ]);
             ?>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?php echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->andWhere(['status' => Category::STATUS_ACTIVE])->asArray()->all(), 'id', 'display_name'), ['class' => 'form-control category', 'prompt' => ' -- Chọn danh mục --']);
+            <?php echo $form->field($model, 'category_id')->dropDownList([], ['class' => 'form-control category','id'=>'emeliyyatlar', 'prompt' => ' -- Chọn danh mục --']);
             ?>
         </div>
     </div>

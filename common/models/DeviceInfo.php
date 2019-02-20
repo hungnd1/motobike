@@ -14,6 +14,7 @@ use Yii;
  * @property integer $mac
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $last_subscriber_id
  */
 class DeviceInfo extends \yii\db\ActiveRecord
 {
@@ -55,7 +56,7 @@ class DeviceInfo extends \yii\db\ActiveRecord
     {
         return [
             [['device_type', 'device_uid'], 'required'],
-            [['device_type', 'created_at', 'updated_at','status'], 'integer'],
+            [['device_type', 'created_at', 'updated_at','status','last_subscriber_id'], 'integer'],
             [['device_uid','mac'], 'string', 'max' => 500],
         ];
     }
@@ -71,7 +72,8 @@ class DeviceInfo extends \yii\db\ActiveRecord
             'device_uid' => 'Uid thiết bị',
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
-            'status' => 'Trạng thái'
+            'status' => 'Trạng thái',
+            'last_subscriber_id'=>'last_subscriber_id'
         ];
     }
 
