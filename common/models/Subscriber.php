@@ -53,6 +53,9 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     const AUTHEN_TYPE_NORMAL = 1; //login thuong
     const AUTHEN_TYPE_FACE = 2; //login bang face
 
+    const EXCHANGE_BUY = 1;
+    const EXCHANGE_SALE = 2;
+
     /**
      * @inheritdoc
      */

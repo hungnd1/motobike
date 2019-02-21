@@ -26,6 +26,7 @@ use common\models\SubscriberServiceAsm;
 use common\models\SubscriberToken;
 use common\models\SubscriberTransaction;
 use DateTime;
+use Madcoda\Youtube\Constants;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -67,7 +68,8 @@ class SubscriberController extends ApiController
             'change-password' => ['POST'],
             'feedback' => ['POST'],
             'register-package' => ['POST'],
-            'rating' => ['POST']
+            'rating' => ['POST'],
+            'detail' => ['GET']
         ];
     }
 
@@ -762,5 +764,19 @@ class SubscriberController extends ApiController
         } else {
             throw new ServerErrorHttpException("Hệ thống đang lỗi");
         }
+    }
+
+    public function actionDetail($type = Subscriber::EXCHANGE_SALE, $id)
+    {
+        UserHelpers::manualLogin();
+        if ($type == Subscriber::EXCHANGE_SALE) {
+            $exchange = Exchange::findOne($id);
+        } else {
+            $exchange = ExchangeBuy::findOne($id);
+        }
+        if (!$exchange) {
+            throw new ServerErrorHttpException("Hệ thống đang lỗi");
+        }
+        return $exchange;
     }
 }
