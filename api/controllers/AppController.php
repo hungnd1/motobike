@@ -19,6 +19,7 @@ use common\models\DeviceInfo;
 use common\models\DeviceSubscriberAsm;
 use common\models\Fruit;
 use common\models\GameMini;
+use common\models\GameMiniLog;
 use common\models\GapGeneral;
 use common\models\IsRating;
 use common\models\PriceCoffee;
@@ -92,7 +93,7 @@ class AppController extends ApiController
             'get-question' => ['GET'],
             'get-introduce' => ['GET'],
             'game-question' => ['GET'],
-//            'game-submit' => ['POST']
+            'game-submit' => ['POST']
         ];
     }
 
@@ -1003,7 +1004,12 @@ class AppController extends ApiController
 
     public function actionGameSubmit()
     {
-        $answer = $this->getParameter('answer', '');
+        UserHelpers::manualLogin();
+
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
+        $answer = $this->getParameterPost('answer', '');
         if (!$answer) {
             throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
         }
@@ -1023,6 +1029,7 @@ class AppController extends ApiController
         if ($numberCorrect >= 2) {
             $isSmile = true;
         }
+        GameMiniLog::addGameMiniLog($subscriber->id, $answer, $numberCorrect);
         return [
             'isSmile' => $isSmile,
             'message' => 'Ok',
