@@ -1,5 +1,6 @@
 <?php
 
+use common\models\GameMini;
 use common\models\News;
 use kartik\grid\GridView;
 use yii\helpers\Html;

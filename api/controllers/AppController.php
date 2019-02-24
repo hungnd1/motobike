@@ -18,6 +18,7 @@ use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\DeviceSubscriberAsm;
 use common\models\Fruit;
+use common\models\GameMini;
 use common\models\GapGeneral;
 use common\models\IsRating;
 use common\models\PriceCoffee;
@@ -37,6 +38,7 @@ use Yii;
 use yii\base\InvalidValueException;
 use yii\caching\TagDependency;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 
@@ -88,7 +90,8 @@ class AppController extends ApiController
 //            'check-device-token' => ['POST'],
             'log-data' => ['GET'],
             'get-question' => ['GET'],
-            'get-introduce' => ['GET']
+            'get-introduce' => ['GET'],
+            'game-question' => ['GET']
         ];
     }
 
@@ -727,7 +730,6 @@ class AppController extends ApiController
         $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TU_VAN_SU_DUNG, 'Tu van su dung phan bong');
         $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TU_VAN_SU_DUNG, $subscriber->id);
 
-
         return $res;
     }
 
@@ -980,5 +982,17 @@ class AppController extends ApiController
         return [
             'message' => 'Ok'
         ];
+    }
+
+    public function actionGameQuestion($category_id)
+    {
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
+        /** @var  $subscriber Subscriber */
+        $listQuestion = GameMini::find()
+            ->andWhere(['status' => GameMini::STATUS_ACTIVE])
+            ->andWhere(['category_id' => $category_id])
+            ->orderBy(new Expression("rand()"))->limit(3)->all();
+        return $listQuestion;
     }
 }
