@@ -91,7 +91,8 @@ class AppController extends ApiController
             'log-data' => ['GET'],
             'get-question' => ['GET'],
             'get-introduce' => ['GET'],
-            'game-question' => ['GET']
+            'game-question' => ['GET'],
+//            'game-submit' => ['POST']
         ];
     }
 
@@ -998,5 +999,34 @@ class AppController extends ApiController
             'pagination' => false,
         ]);
         return $dataProvider;
+    }
+
+    public function actionGameSubmit()
+    {
+        $answer = $this->getParameter('answer', '');
+        if (!$answer) {
+            throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
+        }
+        $numberCorrect = 0;
+        $isSmile = false;
+        $answer = explode(',', $answer);
+        foreach ($answer as $item) {
+            $id = explode(':', $item)[0];
+            $answer = explode(':', $item)[1];
+            $gameMini = GameMini::find()
+                ->andWhere(['id' => $id])
+                ->andWhere(['answer_correct' => $answer])->one();
+            if ($gameMini) {
+                $numberCorrect += 1;
+            }
+        }
+        if ($numberCorrect >= 2) {
+            $isSmile = true;
+        }
+        return [
+            'isSmile' => $isSmile,
+            'message' => 'Ok',
+            'numberCorrect' => $numberCorrect
+        ];
     }
 }
