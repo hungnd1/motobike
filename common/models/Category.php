@@ -35,6 +35,7 @@ class Category extends \yii\db\ActiveRecord
     //danh muc tai lieu ky thuat canh tac
     const TYPE_GAP_GOOD = 1;
     const TYPE_QA = 2;
+    const TYPE_GAME = 3;
 
     /**
      * @inheritdoc

@@ -1,6 +1,7 @@
 <?php
 
 use common\models\AuthItem;
+use common\models\Category;
 use common\models\GapGeneral;
 use common\models\User;
 use common\widgets\Alert;
@@ -306,7 +307,7 @@ $arrlang = array();
                         [
                             'encode' => false,
                             'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục GAP chung'),
-                            'url' => ['category/index','type'=>\common\models\Category::TYPE_GAP_GOOD],
+                            'url' => ['category/index', 'type' => \common\models\Category::TYPE_GAP_GOOD],
                             'require_auth' => true,
                         ],
                         [
@@ -423,6 +424,29 @@ $arrlang = array();
                             'encode' => false,
                             'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Báo cáo truy cập các chức năng'),
                             'url' => ['report/subscriber-activity-type'],
+                            'require_auth' => true,
+                        ],
+
+                    ]
+
+                ],
+                [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Chiến dịch'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục game'),
+                            'url' => ['category/index', 'type' => Category::TYPE_GAME],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý câu hỏi game'),
+                            'url' => ['game-mini/index'],
                             'require_auth' => true,
                         ],
 

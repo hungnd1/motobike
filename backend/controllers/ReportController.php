@@ -267,4 +267,28 @@ class ReportController extends Controller
             'excelDataProvider' => $excelDataProvider
         ]);
     }
+
+
+    public function actionExchange()
+    {
+        $param = Yii::$app->request->queryParams;
+        $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');
+
+
+        $from_date = isset($param['ReportSubscriberForm']['from_date']) ? $param['ReportSubscriberForm']['from_date'] : $from_date_default;
+        $to_date = isset($param['ReportSubscriberForm']['to_date']) ? $param['ReportSubscriberForm']['to_date'] : $to_date_default;
+
+        $report = new ReportSubscriberForm();
+        $report->from_date = $from_date;
+        $report->to_date = $to_date;
+        $dataProvider = $report->generateReport();
+        $dataProviderAll = $report->generateReportAll();
+        $excelDataProvider = $report->generateDetailReport($dataProviderAll->getModels());
+        return $this->render('exchange', [
+            'report' => $report,
+            'dataProvider' => $dataProvider,
+            'excelDataProvider' => $excelDataProvider
+        ]);
+    }
 }

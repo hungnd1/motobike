@@ -320,12 +320,17 @@ class AppController extends ApiController
 
     }
 
-    public function actionGetCategory($fruit_id = Fruit::COFFEE)
+    public function actionGetCategory($fruit_id = Fruit::COFFEE, $type = Category::TYPE_GAP_GOOD)
     {
         $query = \api\models\Category::find()
-            ->andWhere(['status' => Category::STATUS_ACTIVE])
-            ->andWhere(['fruit_id' => $fruit_id])
-            ->orderBy(['order_number' => SORT_DESC]);
+            ->andWhere(['status' => Category::STATUS_ACTIVE]);
+        if ($type == Category::TYPE_GAP_GOOD) {
+            $query->andWhere(['fruit_id' => $fruit_id])
+                ->andWhere(['type' => Category::TYPE_GAP_GOOD]);
+        } else {
+            $query->andWhere(['type' => Category::TYPE_GAME]);
+        }
+        $query->orderBy(['order_number' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -948,27 +953,28 @@ class AppController extends ApiController
         return $res;
     }
 
-    public function actionCheckLogin($mac){
+    public function actionCheckLogin($mac)
+    {
         /** @var  $subscriber Subscriber */
-        /** @var  $deviceInfo  DeviceInfo*/
+        /** @var  $deviceInfo  DeviceInfo */
         $deviceInfo = DeviceInfo::find()
-            ->innerJoin('device_subscriber_asm','device_subscriber_asm.device_id = device_info.id')
-            ->andWhere(['device_info.mac'=>$mac])->one();
-        if($deviceInfo){
-            if($deviceInfo->last_subscriber_id){
-                $subscriber = Subscriber::find()->andWhere(['id'=>$deviceInfo->last_subscriber_id])->one();
-            }else{
-                $subscriber= Subscriber::find()
-                    ->innerJoin('device_subscriber_asm','device_subscriber_asm.subscriber_id = subscriber.id')
-                    ->innerJoin('device_info','device_info.id = device_subscriber_asm.device_id')
-                    ->andWhere(['device_info.mac'=>$mac])->one();
+            ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.device_id = device_info.id')
+            ->andWhere(['device_info.mac' => $mac])->one();
+        if ($deviceInfo) {
+            if ($deviceInfo->last_subscriber_id) {
+                $subscriber = Subscriber::find()->andWhere(['id' => $deviceInfo->last_subscriber_id])->one();
+            } else {
+                $subscriber = Subscriber::find()
+                    ->innerJoin('device_subscriber_asm', 'device_subscriber_asm.subscriber_id = subscriber.id')
+                    ->innerJoin('device_info', 'device_info.id = device_subscriber_asm.device_id')
+                    ->andWhere(['device_info.mac' => $mac])->one();
             }
-            if($subscriber && $subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address){
+            if ($subscriber && $subscriber->full_name && $subscriber->age && $subscriber->sex && $subscriber->address) {
                 $this->setStatusCode(200);
-            } else{
+            } else {
                 $this->setStatusCode(501);
             }
-        }else{
+        } else {
             $this->setStatusCode(501);
         }
         return [

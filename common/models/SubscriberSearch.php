@@ -20,8 +20,8 @@ class SubscriberSearch extends Subscriber
     public function rules()
     {
         return [
-            [['id', 'authen_type', 'status'], 'integer'],
-            [['username', 'email','created_at'], 'safe'],
+            [['id', 'authen_type', 'status','sex'], 'integer'],
+            [['username', 'email','created_at','full_name'], 'safe'],
             [['from_date', 'to_date'], 'safe'],
         ];
     }
@@ -66,6 +66,7 @@ class SubscriberSearch extends Subscriber
             'authen_type' => $this->authen_type,
             'status' => $this->status,
             'updated_at' => $this->updated_at,
+            'sex' => $this->sex,
         ]);
         if ($this->created_at !== '' && $this->created_at !== null) {
             $from_time = strtotime(str_replace('/', '-', $this->created_at) . ' 00:00:00');
@@ -75,7 +76,8 @@ class SubscriberSearch extends Subscriber
         }
         $query
             ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'password', $this->password]);
+            ->andFilterWhere(['like', 'password', $this->password])
+            ->andFilterWhere(['like', 'full_name', $this->full_name]);
         if ($this->from_date) {
             $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
         }

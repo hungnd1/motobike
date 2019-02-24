@@ -1,15 +1,15 @@
 <?php
 
-use common\models\Subscriber;
+use common\models\News;
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\SubscriberSearch */
+/* @var $searchModel common\models\GameMiniSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '' . \Yii::t('app', 'Quản lý tài khoản');
+$this->title = '' . \Yii::t('app', 'Quản lý câu hỏi game');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="portlet-body">
-                <p><?= Html::a('' . \Yii::t('app', 'Tạo tài khoản'), ['create'], ['class' => 'btn btn-success']) ?> </p>
+                <p><?= Html::a('' . \Yii::t('app', 'Tạo câu hỏi'), ['create'], ['class' => 'btn btn-success']) ?> </p>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -36,46 +36,70 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'yii\grid\SerialColumn',
                         ],
                         [
-                            'attribute' => 'username',
+                            'attribute' => 'question',
+                            'label'=>'Câu hỏi',
                             'format' => 'raw',
                             'width' => '20%',
                             'value' => function ($model, $key, $index, $widget) {
                                 /**
-                                 * @var $model \common\models\Subscriber
+                                 * @var $model \common\models\GameMini
                                  */
-                                $action = "subscriber/view";
-                                $res = Html::a('<kbd>' . $model->username . '</kbd>', [$action, 'id' => $model->id]);
+                                $action = "game-mini/view";
+                                $res = Html::a('<kbd>' . $model->question . '</kbd>', [$action, 'id' => $model->id]);
                                 return $res;
 
                             },
                         ],
-                        'full_name',
                         [
                             'class' => '\kartik\grid\DataColumn',
-                            'attribute' => 'sex',
-                            'width' => '20%',
-                            'format' => 'raw',
-                            'value' => function ($model, $key, $index, $widget) {
-                                /**
-                                 * @var $model \common\models\Subscriber
-                                 */
-                                if ($model->sex == Subscriber::MALE) {
-                                    return 'Nam';
-                                } else if ($model->sex == Subscriber::FEMALE) {
-                                    return "Nữ";
-                                } else {
-                                    return "Chưa cập nhât";
-                                }
-
+                            'format'=>'raw',
+                            'label'=>'Đáp án A',
+                            'attribute' => 'answer_a',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\GameMini */
+                                return $model->answer_a;
                             },
-                            'filter' => Subscriber::lstSex(),
-                            'filterType' => GridView::FILTER_SELECT2,
-                            'filterWidgetOptions' => [
-                                'pluginOptions' => ['allowClear' => true],
-                            ],
-                            'filterInputOptions' => ['placeholder' => "" . \Yii::t('app', 'Tất cả')],
                         ],
-                        'address',
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format'=>'raw',
+                            'label'=>'Đáp án B',
+                            'attribute' => 'answer_b',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\GameMini */
+                                return $model->answer_b;
+                            },
+                        ],
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format'=>'raw',
+                            'label'=>'Đáp án C',
+                            'attribute' => 'answer_c',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\GameMini */
+                                return $model->answer_c;
+                            },
+                        ],
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format'=>'raw',
+                            'label'=>'Đáp án D',
+                            'attribute' => 'answer_d',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\GameMini */
+                                return $model->answer_d;
+                            },
+                        ],
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'format'=>'raw',
+                            'label'=>'Đáp án đúng',
+                            'attribute' => 'answer_d',
+                            'value'=>function ($model, $key, $index, $widget) {
+                                /** @var $model \common\models\GameMini */
+                                return $model->answer_correct;
+                            },
+                        ],
                         [
                             'class' => '\kartik\grid\DataColumn',
                             'attribute' => 'status',
@@ -85,40 +109,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $widget) {
                                 /**
-                                 * @var $model \common\models\Subscriber
+                                 * @var $model \common\models\GameMini
                                  */
-                                if ($model->status == Subscriber::STATUS_ACTIVE) {
+                                if ($model->status == GameMini::STATUS_ACTIVE) {
                                     return '<span class="label label-success">' . $model->getStatusName() . '</span>';
                                 } else {
                                     return '<span class="label label-danger">' . $model->getStatusName() . '</span>';
                                 }
 
                             },
-                            'filter' => Subscriber::listStatus(),
+                            'filter' => \common\models\GameMini::listStatus(),
                             'filterType' => GridView::FILTER_SELECT2,
                             'filterWidgetOptions' => [
                                 'pluginOptions' => ['allowClear' => true],
                             ],
                             'filterInputOptions' => ['placeholder' => "" . \Yii::t('app', 'Tất cả')],
                         ],
-                        [
-                            'format' => 'raw',
-                            'class' => '\kartik\grid\DataColumn',
-                            'width' => '20%',
-                            'label' => 'Ngày tạo',
-                            'filterType' => GridView::FILTER_DATE,
-                            'attribute' => 'created_at',
-                            'value' => function ($model) {
-                                return date('d-m-Y H:i:s', $model->created_at);
-                            }
-                        ],
-
                         ['class' => 'kartik\grid\ActionColumn',
-                            'template' => '{view}',
+                            'template' => '{view} {update} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute(['subscriber/view', 'id' => $model->id]), [
-                                        'title' => '' . \Yii::t('app', 'Thông tin user'),
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute(['game-mini/view', 'id' => $model->id]), [
+                                        'title' => '' . \Yii::t('app', 'Thông tin chi tiết'),
                                     ]);
 
                                 },

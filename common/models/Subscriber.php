@@ -56,6 +56,9 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     const EXCHANGE_BUY = 1;
     const EXCHANGE_SALE = 2;
 
+    const MALE = 1;
+    const FEMALE = 2;
+
     /**
      * @inheritdoc
      */
@@ -85,12 +88,12 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
             'username' => 'Tên đăng nhập',
             'status' => 'Trạng thái',
             'email' => 'Email',
-            'full_name' => 'Full Name',
+            'full_name' => 'Tên đầy đủ',
             'password' => 'Mật khẩu',
             'last_login_at' => 'Last Login At',
             'last_login_session' => 'Last Login Session',
             'birthday' => 'Birthday',
-            'sex' => 'Sex',
+            'sex' => 'Giới tính',
             'avatar_url' => 'Avatar Url',
             'skype_id' => 'Skype ID',
             'google_id' => 'Google ID',
@@ -102,7 +105,8 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
             'verification_code' => 'Verification Code',
             'user_agent' => 'User Agent',
             'coin' => 'Tiền',
-            'age' => 'Tuổi'
+            'age' => 'Tuổi',
+            'address'=>'Địa chỉ'
         ];
     }
 
@@ -111,6 +115,15 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
         $lst = [
             self::STATUS_ACTIVE => \Yii::t('app', 'Kích hoạt'),
             self::STATUS_INACTIVE => \Yii::t('app', 'Tạm dừng'),
+        ];
+        return $lst;
+    }
+
+    public static function lstSex()
+    {
+        $lst = [
+            self::MALE => \Yii::t('app', 'Nam'),
+            self::FEMALE => \Yii::t('app', 'Nữ'),
         ];
         return $lst;
     }
