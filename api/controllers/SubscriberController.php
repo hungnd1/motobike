@@ -73,7 +73,8 @@ class SubscriberController extends ApiController
             'register-package' => ['POST'],
             'rating' => ['POST'],
             'detail' => ['GET'],
-            'question-upload'=>['POST']
+            'question-upload'=>['POST'],
+            'get-list-dictionary' => ['GET']
         ];
     }
 
@@ -824,19 +825,26 @@ class SubscriberController extends ApiController
         $questionUpload->group_id = $group_id;
         $questionUpload->content = $question;
         if ($questionUpload->save(false)) {
-            $query = Detail::find()
-                ->andWhere(['status'=>Detail::STATUS_ACTIVE])
-                ->andWhere(['group_id'=>$group_id])
-                ->andWhere(['fruit_id'=>$fruit_id])
-                ->orderBy(new Expression("rand()"))->limit(9);
-            $dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 30,
-                ],
-            ]);
-            return $dataProvider;
+            return [
+                'message' => Yii::t('app', 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
+            ];
         }
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
+
+    public function actionGetListDictionary($group_id, $fruit_id){
+        UserHelpers::manualLogin();
+        $query = Detail::find()
+            ->andWhere(['status'=>Detail::STATUS_ACTIVE])
+            ->andWhere(['group_id'=>$group_id])
+            ->andWhere(['fruit_id'=>$fruit_id])
+            ->orderBy(new Expression("rand()"))->limit(9);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 30,
+            ],
+        ]);
+        return $dataProvider;
     }
 }
