@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use api\helpers\Message;
 use api\helpers\UserHelpers;
+use api\models\Detail;
 use api\models\Exchange;
 use api\models\ExchangeBuy;
 use api\models\Service;
@@ -22,6 +23,7 @@ use common\models\Rating;
 use common\models\SiteApiCredential;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
+use common\models\SubscriberDictionary;
 use common\models\SubscriberServiceAsm;
 use common\models\SubscriberToken;
 use common\models\SubscriberTransaction;
@@ -30,6 +32,7 @@ use Madcoda\Youtube\Constants;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\web\ServerErrorHttpException;
 
 class SubscriberController extends ApiController
@@ -69,7 +72,8 @@ class SubscriberController extends ApiController
             'feedback' => ['POST'],
             'register-package' => ['POST'],
             'rating' => ['POST'],
-            'detail' => ['GET']
+            'detail' => ['GET'],
+            'question-upload'=>['POST']
         ];
     }
 
@@ -778,5 +782,61 @@ class SubscriberController extends ApiController
             throw new ServerErrorHttpException("Hệ thống đang lỗi");
         }
         return $exchange;
+    }
+
+    public function actionQuestionUpload()
+    {
+
+        UserHelpers::manualLogin();
+        $question = $this->getParameterPost('question', null);
+        $base = $this->getParameterPost('image', '');
+        $group_id = $this->getParameterPost('group_id',0);
+        $fruit_id = $this->getParameterPost('fruit_id',0);
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
+        if (!$question) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
+        }
+        if (!$group_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
+        }
+        if (!$fruit_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'fruit_id')]));
+        }
+        $file_name = '';
+        if ($base) {
+            $binary = base64_decode($base, true);
+            $url = Yii::getAlias('@question') . DIRECTORY_SEPARATOR;
+            $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
+            if (!file_exists($url)) {
+                mkdir($url, 0777, true);
+            }
+            file_put_contents($url . $file_name, $binary);
+            $file = fopen($url . $file_name, 'wb');
+            fwrite($file, $binary);
+            fclose($file);
+        }
+        $questionUpload = new SubscriberDictionary();
+        $questionUpload->image = $file_name;
+        $questionUpload->subscriber = $subscriber->id;
+        $questionUpload->created_at = time();
+        $questionUpload->group_id = $group_id;
+        $questionUpload->content = $question;
+        if ($questionUpload->save(false)) {
+            $query = Detail::find()
+                ->andWhere(['status'=>Detail::STATUS_ACTIVE])
+                ->andWhere(['group_id'=>$group_id])
+                ->andWhere(['fruit_id'=>$fruit_id])
+                ->orderBy(new Expression("rand()"))->limit(9);
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 30,
+                ],
+            ]);
+            return $dataProvider;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 }

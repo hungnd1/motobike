@@ -47,7 +47,7 @@ class Detail extends \yii\db\ActiveRecord
             [['feature_id', 'group_id', 'fruit_id', 'created_at', 'updated_at', 'status'], 'integer'],
             [['display_name'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 500],
-            [['display_name', 'reason', 'harm', 'prevention', 'description', 'feature_id', 'group_id', 'fruit_id'], 'required']
+            [['display_name', 'reason', 'harm', 'prevention', 'description', 'group_id', 'fruit_id'], 'required']
         ];
     }
 
@@ -60,7 +60,7 @@ class Detail extends \yii\db\ActiveRecord
             'id' => 'ID',
             'display_name' => 'Tên hiển thị',
             'description' => 'Mô tả',
-            'reason' => 'Nguyên nhân',
+            'reason' => 'Nội dung',
             'harm' => 'Tác hại',
             'prevention' => 'Phòng/ trị',
             'feature_id' => 'Đặc điểm cây',

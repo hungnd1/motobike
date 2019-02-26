@@ -79,19 +79,6 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'feature_id')->widget(\kartik\select2\Select2::classname(), [
-                'data' => \yii\helpers\ArrayHelper::map(
-                    \common\models\Feature::find()
-                        ->all(), 'id', 'display_name'),
-                'options' => ['placeholder' => 'Chọn đặc điểm cây'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ]]);
-            ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
             <?php echo $form->field($model, 'description')->widget(CKEditor::className(), [
                 'options' => ['rows' => 2],
                 'preset' => 'full'
@@ -102,24 +89,6 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     <div class="row">
         <div class="col-md-12">
             <?php echo $form->field($model, 'reason')->widget(CKEditor::className(), [
-                'options' => ['rows' => 2],
-                'preset' => 'full'
-            ]);
-            ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <?php echo $form->field($model, 'prevention')->widget(CKEditor::className(), [
-                'options' => ['rows' => 2],
-                'preset' => 'full'
-            ]);
-            ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <?php echo $form->field($model, 'harm')->widget(CKEditor::className(), [
                 'options' => ['rows' => 2],
                 'preset' => 'full'
             ]);

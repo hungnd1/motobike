@@ -59,17 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
-                            'attribute' => 'harm',
-                            'format' => 'html',
-                            'value' => function ($model, $key, $index, $widget) {
-                                /**
-                                 * @var $model \common\models\Detail
-                                 */
-                                return \common\helpers\CUtils::subString($model->harm,150,'...');
-
-                            },
-                        ],
-                        [
                             'attribute' => 'reason',
                             'format' => 'html',
                             'value' => function ($model, $key, $index, $widget) {
@@ -81,17 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
-                            'attribute' => 'prevention',
-                            'format' => 'html',
-                            'value' => function ($model, $key, $index, $widget) {
-                                /**
-                                 * @var $model \common\models\Detail
-                                 */
-                                return \common\helpers\CUtils::subString($model->prevention,150,'...');
-
-                            },
-                        ],
-                        [
                             'attribute' => 'fruit_id',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $widget) {
@@ -99,17 +77,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                  * @var $model \common\models\Detail
                                  */
                                 return \common\models\Fruit::findOne($model->fruit_id)->name;
-
-                            },
-                        ],
-                        [
-                            'attribute' => 'feature_id',
-                            'format' => 'raw',
-                            'value' => function ($model, $key, $index, $widget) {
-                                /**
-                                 * @var $model \common\models\Detail
-                                 */
-                                return \common\models\Feature::findOne($model->feature_id)->display_name;
 
                             },
                         ],
