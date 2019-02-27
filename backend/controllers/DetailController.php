@@ -80,7 +80,7 @@ class DetailController extends Controller
             }
             $model->created_at = time();
             $model->updated_at = time();
-            if($model->save()){
+            if($model->save(false)){
                 Yii::$app->session->setFlash("success","Thêm mới chi tiết thành công");
                 return $this->redirect(['index']);
             }
@@ -116,7 +116,7 @@ class DetailController extends Controller
                 $model->image = $old_image;
             }
             $model->updated_at = time();
-            if($model->save()){
+            if($model->save(false)){
                 Yii::$app->session->setFlash("success","Cập nhật chi tiết thành công");
                 return $this->redirect(['index']);
             }
