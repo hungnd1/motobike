@@ -236,11 +236,15 @@ class SubscriberController extends ApiController
         $sex = $this->getParameterPost('sex', 1);
         $address = $this->getParameterPost('address', '');
         $base = $this->getParameterPost('image', '');
+        $age = $this->getParameterPost('age','');
         if (!$fullname) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Họ và tên')]));
         }
         if (!$address) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Địa chỉ')]));
+        }
+        if (!$age) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tuổi')]));
         }
         $subscriber = Subscriber::findOne(['id' => Yii::$app->user->id]);
         $file_name = '';
@@ -260,6 +264,7 @@ class SubscriberController extends ApiController
 
         $subscriber->full_name = $fullname;
         $subscriber->sex = $sex;
+        $subscriber->age = $age;
         $subscriber->address = $address;
         if ($subscriber->save(false)) {
             return ['message' => Yii::t('app', 'Cập nhật thông tin thành công!!!')];
