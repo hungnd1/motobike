@@ -266,6 +266,7 @@ class SubscriberController extends ApiController
         $subscriber->sex = $sex;
         $subscriber->age = $age;
         $subscriber->address = $address;
+        $subscriber->updated_at = time();
         if ($subscriber->save(false)) {
             return ['message' => Yii::t('app', 'Cập nhật thông tin thành công!!!')];
         }
@@ -842,8 +843,8 @@ class SubscriberController extends ApiController
         $query = Detail::find()
             ->andWhere(['status'=>Detail::STATUS_ACTIVE])
             ->andWhere(['group_id'=>$group_id])
-            ->andWhere(['fruit_id'=>$fruit_id])
-            ->orderBy(new Expression("rand()"))->limit(9);
+            ->andWhere(['fruit_id'=>$fruit_id]);
+//            ->orderBy(new Expression("rand()"))->limit(9);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
