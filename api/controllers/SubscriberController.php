@@ -51,7 +51,14 @@ class SubscriberController extends ApiController
             'run',
             'reset-password',
             'transaction-buy',
-            'transaction-sold'
+            'transaction-sold',
+
+
+            'get-list-exchange-sold',
+            'get-list-exchange-buy',
+            'get-list-dictionary',
+            'question-upload',
+            'is-rating'
         ];
 
         return $behaviors;
@@ -373,12 +380,12 @@ class SubscriberController extends ApiController
     public function actionGetListExchangeSold()
     {
 
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-        $subscriber = Yii::$app->user->identity;
-        $description = 'Nguoi dung vao danh sach mua';
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
-        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_SELL, $subscriber->id);
+//        $subscriber = Yii::$app->user->identity;
+//        $description = 'Nguoi dung vao danh sach mua';
+//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
+//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_SELL, $subscriber->id);
 
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -400,12 +407,12 @@ class SubscriberController extends ApiController
     public function actionGetListExchangeBuy()
     {
 
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-        $subscriber = Yii::$app->user->identity;
-        $description = 'Nguoi dung vao danh sach ban';
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
-        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_BUY, $subscriber->id);
+//        $subscriber = Yii::$app->user->identity;
+//        $description = 'Nguoi dung vao danh sach ban';
+//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
+//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_BUY, $subscriber->id);
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -735,7 +742,7 @@ class SubscriberController extends ApiController
 
     public function actionIsRating($type = SubscriberActivity::ACTION_WEATHER)
     {
-//        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+        throw new ServerErrorHttpException("Hệ thống đang lỗi");
         UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
@@ -779,7 +786,7 @@ class SubscriberController extends ApiController
 
     public function actionDetail($type = Subscriber::EXCHANGE_SALE, $id)
     {
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         if ($type == Subscriber::EXCHANGE_SALE) {
             $exchange = Exchange::findOne($id);
         } else {
@@ -794,7 +801,7 @@ class SubscriberController extends ApiController
     public function actionQuestionUpload()
     {
 
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         $question = $this->getParameterPost('question', null);
         $base = $this->getParameterPost('image', '');
         $group_id = $this->getParameterPost('group_id',0);
@@ -826,7 +833,7 @@ class SubscriberController extends ApiController
         }
         $questionUpload = new SubscriberDictionary();
         $questionUpload->image = $file_name;
-        $questionUpload->subscriber = $subscriber->id;
+//        $questionUpload->subscriber = $subscriber->id;
         $questionUpload->created_at = time();
         $questionUpload->group_id = $group_id;
         $questionUpload->content = $question;
@@ -839,7 +846,7 @@ class SubscriberController extends ApiController
     }
 
     public function actionGetListDictionary($group_id, $fruit_id){
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         $query = Detail::find()
             ->andWhere(['status'=>Detail::STATUS_ACTIVE])
             ->andWhere(['group_id'=>$group_id])

@@ -37,7 +37,9 @@ class FruitController extends ApiController
             'get-fruit',
             'get-feature',
             'get-list-detail',
-            'get-detail'
+            'get-detail',
+
+            'get-group'
         ];
 
         return $behaviors;
@@ -76,14 +78,14 @@ class FruitController extends ApiController
 
     public function actionGetGroup()
     {
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
 
-        $subscriber = Yii::$app->user->identity;
+//        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 
         $query = \api\models\Group::find()->orderBy(['id' => SORT_ASC]);
-        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TRA_CUU_SU_CO, 'Tra cuu su co bat thuong');
-        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TRA_CUU_SU_CO, $subscriber->id);
+//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TRA_CUU_SU_CO, 'Tra cuu su co bat thuong');
+//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TRA_CUU_SU_CO, $subscriber->id);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,

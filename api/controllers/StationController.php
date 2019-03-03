@@ -29,7 +29,8 @@ class StationController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'search',
-//            'get-list-station'
+            'get-list-station',
+            'get-location'
         ];
 
         return $behaviors;
@@ -44,8 +45,8 @@ class StationController extends ApiController
 
     public function actionGetListStation()
     {
-        UserHelpers::manualLogin();
-        $subscriber = Yii::$app->user->identity;
+//        UserHelpers::manualLogin();
+//        $subscriber = Yii::$app->user->identity;
         $query = Station::find()
             ->andWhere(['status' => Station::STATUS_ACTIVE])
             ->andWhere('latitude is not null');
@@ -82,7 +83,7 @@ class StationController extends ApiController
 
     public function actionGetLocation($id)
     {
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         $location = Station::findOne($id);
         if (!$location) {
             throw new ServerErrorHttpException(Yii::t('app', 'Không có vị trí này'));
