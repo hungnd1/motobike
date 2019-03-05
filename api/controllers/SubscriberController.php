@@ -54,11 +54,11 @@ class SubscriberController extends ApiController
             'transaction-sold',
 
 
-            'get-list-exchange-sold',
-            'get-list-exchange-buy',
-            'get-list-dictionary',
-            'question-upload',
-            'is-rating'
+//            'get-list-exchange-sold',
+//            'get-list-exchange-buy',
+            'get-list-dictionary'
+//            'question-upload',
+//            'is-rating'
         ];
 
         return $behaviors;
@@ -80,7 +80,7 @@ class SubscriberController extends ApiController
             'register-package' => ['POST'],
             'rating' => ['POST'],
             'detail' => ['GET'],
-            'question-upload'=>['POST'],
+            'question-upload' => ['POST'],
             'get-list-dictionary' => ['GET']
         ];
     }
@@ -107,17 +107,17 @@ class SubscriberController extends ApiController
 //        if (!$password) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
 //        }
-//        if($this->type == SiteApiCredential::TYPE_ANDROID_APPLICATION){
-//        $phone_number = CUtils::validateMobile($username, 0);
-//        if ($phone_number == '') {
-//            $phone_number = CUtils::validateMobile($username, 1);
-//            if ($phone_number == '') {
-//                $phone_number = CUtils::validateMobile($username, 2);
-//                if ($phone_number == '') {
-//                    throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
-//                }
-//            }
-//        }
+//        if ($this->type == SiteApiCredential::TYPE_ANDROID_APPLICATION) {
+            $phone_number = CUtils::validateMobile($username, 0);
+            if ($phone_number == '') {
+                $phone_number = CUtils::validateMobile($username, 1);
+                if ($phone_number == '') {
+                    $phone_number = CUtils::validateMobile($username, 2);
+                    if ($phone_number == '') {
+                        throw new InvalidValueException(Yii::t('app', 'Số điện thoại không đúng định dạng'));
+                    }
+                }
+            }
 //        }
         /** @var  $subscriber  Subscriber */
         $subscriber = Subscriber::find()->andWhere(['username' => $username])
@@ -243,7 +243,7 @@ class SubscriberController extends ApiController
         $sex = $this->getParameterPost('sex', 1);
         $address = $this->getParameterPost('address', '');
         $base = $this->getParameterPost('image', '');
-        $age = $this->getParameterPost('age','');
+        $age = $this->getParameterPost('age', '');
         if (!$fullname) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Họ và tên')]));
         }
@@ -380,12 +380,12 @@ class SubscriberController extends ApiController
     public function actionGetListExchangeSold()
     {
 
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
-//        $description = 'Nguoi dung vao danh sach mua';
-//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
-//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_SELL, $subscriber->id);
+        $subscriber = Yii::$app->user->identity;
+        $description = 'Nguoi dung vao danh sach mua';
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_SELL, $description);
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_SELL, $subscriber->id);
 
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -407,12 +407,12 @@ class SubscriberController extends ApiController
     public function actionGetListExchangeBuy()
     {
 
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
-//        $description = 'Nguoi dung vao danh sach ban';
-//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
-//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_BUY, $subscriber->id);
+        $subscriber = Yii::$app->user->identity;
+        $description = 'Nguoi dung vao danh sach ban';
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_BUY, $description);
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_BUY, $subscriber->id);
         $timeExpired = time() - Yii::$app->params['timeExpired'] * 24 * 60 * 60;
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
@@ -742,8 +742,8 @@ class SubscriberController extends ApiController
 
     public function actionIsRating($type = SubscriberActivity::ACTION_WEATHER)
     {
-        throw new ServerErrorHttpException("Hệ thống đang lỗi");
-        UserHelpers::manualLogin();
+//        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+//        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
         /** @var  $rating Rating */
@@ -765,12 +765,12 @@ class SubscriberController extends ApiController
                             'success' => true,
                             'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
                         ];
-                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
+//                        throw new ServerErrorHttpException("Hệ thống đang lỗi");
                     } else {
                         throw new ServerErrorHttpException("Hệ thống đang lỗi");
                     }
                 } else {
-                    throw new ServerErrorHttpException("Hệ thống đang lỗi");
+//                    throw new ServerErrorHttpException("Hệ thống đang lỗi");
                     return [
                         'success' => true,
                         'message' => Yii::t('app', 'Cám ơn bạn đã đánh giá nội dung này')
@@ -786,7 +786,7 @@ class SubscriberController extends ApiController
 
     public function actionDetail($type = Subscriber::EXCHANGE_SALE, $id)
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         if ($type == Subscriber::EXCHANGE_SALE) {
             $exchange = Exchange::findOne($id);
         } else {
@@ -801,11 +801,11 @@ class SubscriberController extends ApiController
     public function actionQuestionUpload()
     {
 
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         $question = $this->getParameterPost('question', null);
         $base = $this->getParameterPost('image', '');
-        $group_id = $this->getParameterPost('group_id',0);
-        $fruit_id = $this->getParameterPost('fruit_id',0);
+        $group_id = $this->getParameterPost('group_id', 0);
+        $fruit_id = $this->getParameterPost('fruit_id', 0);
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
 
@@ -845,12 +845,13 @@ class SubscriberController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGetListDictionary($group_id, $fruit_id){
+    public function actionGetListDictionary($group_id, $fruit_id)
+    {
 //        UserHelpers::manualLogin();
         $query = Detail::find()
-            ->andWhere(['status'=>Detail::STATUS_ACTIVE])
-            ->andWhere(['group_id'=>$group_id])
-            ->andWhere(['fruit_id'=>$fruit_id]);
+            ->andWhere(['status' => Detail::STATUS_ACTIVE])
+            ->andWhere(['group_id' => $group_id])
+            ->andWhere(['fruit_id' => $fruit_id]);
 //            ->orderBy(new Expression("rand()"))->limit(9);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
