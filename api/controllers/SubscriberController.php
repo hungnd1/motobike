@@ -809,9 +809,9 @@ class SubscriberController extends ApiController
         /** @var  $subscriber Subscriber */
 //        $subscriber = Yii::$app->user->identity;
 
-        if (!$question) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
-        }
+//        if (!$question) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
+//        }
         if (!$group_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
         }
