@@ -32,7 +32,7 @@ class QuestionAnswerController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-//            'get-list-question-answer',
+            'get-list-question-answer',
             'search',
             'detail-question',
             'fertilizing',
@@ -52,14 +52,14 @@ class QuestionAnswerController extends ApiController
 
     public function actionGetListQuestionAnswer()
     {
-        UserHelpers::manualLogin();
+//        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-        $subscriber = Yii::$app->user->identity;
-        if ($subscriber) {
-            $description = 'Nguoi dung vao hoi dap';
-            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_ANSWER, $description);
-            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_ANSWER, $subscriber->id);
-        }
+//        $subscriber = Yii::$app->user->identity;
+//        if ($subscriber) {
+//            $description = 'Nguoi dung vao hoi dap';
+//            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_ANSWER, $description);
+//            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_ANSWER, $subscriber->id);
+//        }
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
         $query = QuestionAnswer::find();
