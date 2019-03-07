@@ -399,15 +399,20 @@ class AppController extends ApiController
         if ($tem || $pre || $wind) {
             $wind = $wind * 3.6;
         } else {
-            $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
+            if ($subscriber->weather_detail_id) {
+                $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
             sin((`latitude`*pi()/180))+cos((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) *
             cos((`latitude`*pi()/180)) * cos(((" . Yii::$app->request->headers->get(static::HEADER_LONGITUDE) . "- `longtitude`)*pi()/180))))*180/pi())*60*1.1515) 
             as distance
             FROM station where latitude is not null and longtitude is not null  order by distance asc limit 1";
-            $connect = Yii::$app->getDb();
-            $command = $connect->createCommand($sql);
-            $result = $command->queryAll();
-            $stationCode = $result[0]['station_code'];
+                $connect = Yii::$app->getDb();
+                $command = $connect->createCommand($sql);
+                $result = $command->queryAll();
+                $stationCode = $result[0]['station_code'];
+            } else {
+                $stationCode = $subscriber->weather_detail_id;
+            }
+
             /** @var  $weatherDetail WeatherDetail */
             $weatherDetail = WeatherDetail::find()
                 ->andWhere(['station_code' => $stationCode])
@@ -420,12 +425,12 @@ class AppController extends ApiController
                     'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
                 ];
             }
-            if ($subscriber->weather_detail_id) {
-                if ($subscriber->weather_detail_id != $weatherDetail->station_code) {
-                    $subscriber->weather_detail_id = $weatherDetail->station_code;
-                    $subscriber->save(false);
-                }
-            }
+//            if ($subscriber->weather_detail_id) {
+//                if ($subscriber->weather_detail_id != $weatherDetail->station_code) {
+//                    $subscriber->weather_detail_id = $weatherDetail->station_code;
+//                    $subscriber->save(false);
+//                }
+//            }
             $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
             $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
             $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
