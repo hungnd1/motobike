@@ -36,8 +36,8 @@ class GapController extends ApiController
         $behaviors['authenticator']['except'] = [
             'search',
             'detail-gap',
-            'get-statistic',
-            'get-list-gap'
+            'get-statistic'
+//            'get-list-gap'
         ];
 
         return $behaviors;
@@ -52,9 +52,9 @@ class GapController extends ApiController
 
     public function actionGetListGap($type = GapGeneral::GAP_GENERAL, $category_id = GapGeneral::PET)
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
+        $subscriber = Yii::$app->user->identity;
         $page = $this->getParameter('page', 0);
         $page = $page > 1 ? $page - 1 : 0;
 
@@ -74,19 +74,19 @@ class GapController extends ApiController
                 'defaultOrder' => ['order' => SORT_DESC, 'created_at' => SORT_DESC],
             ],
         ]);
-//        if ($subscriber) {
-//            if ($type == GapGeneral::GAP_GENERAL) {
-//                $description = 'Nguoi dung vao sau benh';
-//                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
-//                $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_GAP_DISEASE, $subscriber->id);
-//
-//            } else {
-//                $description = 'Nguoi dung vao biến đổi khí hậu';
-//                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_CLIMATE_CHANGE, $description);
-//                $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_CLIMATE_CHANGE, $subscriber->id);
-//
-//            }
-//        }
+        if ($subscriber) {
+            if ($type == GapGeneral::GAP_GENERAL) {
+                $description = 'Nguoi dung vao sau benh';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_GAP_DISEASE, $description);
+                $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_GAP_DISEASE, $subscriber->id);
+
+            } else {
+                $description = 'Nguoi dung vao biến đổi khí hậu';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_CLIMATE_CHANGE, $description);
+                $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_CLIMATE_CHANGE, $subscriber->id);
+
+            }
+        }
         return $dataProvider;
 
     }

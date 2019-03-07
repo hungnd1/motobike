@@ -74,12 +74,12 @@ class AppController extends ApiController
             'get-category-pet',
             'check-login',
 
-            'check-device-token',
-            'get-price',
-            'gap-advice',
-            'get-question',
-            'game-question',
-            'game-submit'
+//            'check-device-token',
+//            'get-price',
+//            'gap-advice',
+//            'get-question',
+            'game-question'
+//            'game-submit'
         ];
 
         return $behaviors;
@@ -106,84 +106,84 @@ class AppController extends ApiController
 
     public function actionCheckDeviceToken()
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
 
         /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
+        $subscriber = Yii::$app->user->identity;
 
-//        $uid = $this->getParameterPost('device_token', '');
-//        $mac = $this->getParameterPost('mac', '');
-//        if (!$uid) {
-//            throw new InvalidValueException('Device token không được để trống');
-//        }
-//        if (!$mac) {
-//            throw new InvalidValueException('mac không được để trống');
-//        }
-//        $deviceInfo = DeviceInfo::findOne(['device_uid' => $uid]);
-//        //kiem tra neu device map voi subcriber roi
-//        /** @var  $deviceSubscriberAsm DeviceSubscriberAsm */
-//        $deviceSubscriberAsm = DeviceSubscriberAsm::find()->andWhere(['subscriber_id' => $subscriber->id])->one();
-//        if (!$deviceInfo) {
-//            $device = new DeviceInfo();
-//            $device->device_uid = $uid;
-//            $device->device_type = $this->type;
-//            $device->created_at = time();
-//            $device->updated_at = time();
-//            $device->mac = $mac;
-//            $device->status = DeviceInfo::STATUS_ACTIVE;
-//            $device->last_subscriber_id = $subscriber->id;
-//            $device->save();
-//            if ($deviceSubscriberAsm) {
-//                $deviceSubscriberAsm->device_id = $device->id;
-//                $deviceSubscriberAsm->updated_at = time();
-//                $deviceSubscriberAsm->save();
-//            } else {
-//                $deviceSubscriberAsm = new DeviceSubscriberAsm();
-//                $deviceSubscriberAsm->device_id = $device->id;
-//                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
-//                $deviceSubscriberAsm->created_at = time();
-//                $deviceSubscriberAsm->updated_at = time();
-//                $deviceSubscriberAsm->save();
-//            }
-//        } else {
-//            $deviceInfo->last_subscriber_id = $subscriber->id;
-//            $deviceInfo->save(false);
-//            if ($deviceSubscriberAsm) {
-//                $deviceSubscriberAsm->device_id = $deviceInfo->id;
-//                $deviceSubscriberAsm->updated_at = time();
-//                $deviceSubscriberAsm->save();
-//            } else {
-//                $deviceSubscriberAsm = new DeviceSubscriberAsm();
-//                $deviceSubscriberAsm->device_id = $deviceInfo->id;
-//                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
-//                $deviceSubscriberAsm->created_at = time();
-//                $deviceSubscriberAsm->updated_at = time();
-//                $deviceSubscriberAsm->save();
-//            }
-//        }
+        $uid = $this->getParameterPost('device_token', '');
+        $mac = $this->getParameterPost('mac', '');
+        if (!$uid) {
+            throw new InvalidValueException('Device token không được để trống');
+        }
+        if (!$mac) {
+            throw new InvalidValueException('mac không được để trống');
+        }
+        $deviceInfo = DeviceInfo::findOne(['device_uid' => $uid]);
+        //kiem tra neu device map voi subcriber roi
+        /** @var  $deviceSubscriberAsm DeviceSubscriberAsm */
+        $deviceSubscriberAsm = DeviceSubscriberAsm::find()->andWhere(['subscriber_id' => $subscriber->id])->one();
+        if (!$deviceInfo) {
+            $device = new DeviceInfo();
+            $device->device_uid = $uid;
+            $device->device_type = $this->type;
+            $device->created_at = time();
+            $device->updated_at = time();
+            $device->mac = $mac;
+            $device->status = DeviceInfo::STATUS_ACTIVE;
+            $device->last_subscriber_id = $subscriber->id;
+            $device->save();
+            if ($deviceSubscriberAsm) {
+                $deviceSubscriberAsm->device_id = $device->id;
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            } else {
+                $deviceSubscriberAsm = new DeviceSubscriberAsm();
+                $deviceSubscriberAsm->device_id = $device->id;
+                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
+                $deviceSubscriberAsm->created_at = time();
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            }
+        } else {
+            $deviceInfo->last_subscriber_id = $subscriber->id;
+            $deviceInfo->save(false);
+            if ($deviceSubscriberAsm) {
+                $deviceSubscriberAsm->device_id = $deviceInfo->id;
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            } else {
+                $deviceSubscriberAsm = new DeviceSubscriberAsm();
+                $deviceSubscriberAsm->device_id = $deviceInfo->id;
+                $deviceSubscriberAsm->subscriber_id = $subscriber->id;
+                $deviceSubscriberAsm->created_at = time();
+                $deviceSubscriberAsm->updated_at = time();
+                $deviceSubscriberAsm->save();
+            }
+        }
 
         return true;
     }
 
     public function actionGetPrice($date = 0, $coffee = PriceCoffee::TYPE_GIASAN)
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
         /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
-//        if ($subscriber) {
-//            /** @var  $lastActivity SubscriberActivity */
-//            $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_PRICE])->orderBy(['id' => SORT_DESC])->one();
-//            if ($lastActivity) {
-//                if (time() - $lastActivity->created_at >= 5 * 60) {
-//                    $description = 'Nguoi dung vao gia';
-//                    $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
-//                }
-//            } else {
-//                $description = 'Nguoi dung vao gia';
-//                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
-//            }
-//            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_PRICE, $subscriber->id);
-//        }
+        $subscriber = Yii::$app->user->identity;
+        if ($subscriber) {
+            /** @var  $lastActivity SubscriberActivity */
+            $lastActivity = SubscriberActivity::find()->andWhere(['action' => SubscriberActivity::ACTION_PRICE])->orderBy(['id' => SORT_DESC])->one();
+            if ($lastActivity) {
+                if (time() - $lastActivity->created_at >= 5 * 60) {
+                    $description = 'Nguoi dung vao gia';
+                    $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+                }
+            } else {
+                $description = 'Nguoi dung vao gia';
+                $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_PRICE, $description);
+            }
+            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_PRICE, $subscriber->id);
+        }
         if (!$date) {
             $date = date('d/m/Y', time());
         }
@@ -387,12 +387,12 @@ class AppController extends ApiController
     public function actionGapAdvice($fruit_id = 5, $tem = 0, $pre = 0, $wind = 0)
     {
 
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
 
         $today = strtotime('today midnight');
         $tomorrow = strtotime('tomorrow');
 
-//        $subscriber = Yii::$app->user->identity;
+        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
         /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
 
@@ -420,12 +420,12 @@ class AppController extends ApiController
                     'message' => 'Bạn vui lòng xem thông tin thời tiết xã mà bạn muốn xem trước khi vào khuyến cáo thông minh'
                 ];
             }
-//            if ($subscriber->weather_detail_id) {
-//                if ($subscriber->weather_detail_id != $weatherDetail->station_code) {
-//                    $subscriber->weather_detail_id = $weatherDetail->station_code;
-//                    $subscriber->save(false);
-//                }
-//            }
+            if ($subscriber->weather_detail_id) {
+                if ($subscriber->weather_detail_id != $weatherDetail->station_code) {
+                    $subscriber->weather_detail_id = $weatherDetail->station_code;
+                    $subscriber->save(false);
+                }
+            }
             $wind = $weatherDetail ? 3.6 * $weatherDetail->wndspd : 2 * 3.6;
             $tem = $weatherDetail ? round(($weatherDetail->tmax + $weatherDetail->tmin) / 2, 1) : 25;
             $pre = $weatherDetail ? $weatherDetail->precipitation : 8;
@@ -692,8 +692,8 @@ class AppController extends ApiController
                     ]);
             }
             $res['items'] = $arr_item;
-//            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, 'Nong nghiep thong minh');
-//            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, $subscriber->id);
+            $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, 'Nong nghiep thong minh');
+            $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_NONG_NGHIEP_THONG_MINH, $subscriber->id);
 
             return $res;
         } else {
@@ -704,8 +704,8 @@ class AppController extends ApiController
     public function actionGetQuestion($fruit_id = 5)
     {
 
-//        UserHelpers::manualLogin();
-//        $subscriber = Yii::$app->user->identity;
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 
         $listQuestion = Question::find()
@@ -736,8 +736,8 @@ class AppController extends ApiController
         }
         $res['items'] = $arrQues;
 
-//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TU_VAN_SU_DUNG, 'Tu van su dung phan bong');
-//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TU_VAN_SU_DUNG, $subscriber->id);
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_TU_VAN_SU_DUNG, 'Tu van su dung phan bong');
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_TU_VAN_SU_DUNG, $subscriber->id);
 
         return $res;
     }
@@ -934,7 +934,7 @@ class AppController extends ApiController
 
     public function actionAcceptScreen()
     {
-//        $this->setStatusCode(501);
+        $this->setStatusCode(501);
         return [
             'message' => 'OK',
             'is_screen' => true
@@ -1011,18 +1011,18 @@ class AppController extends ApiController
 
     public function actionGameSubmit()
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
 
         /** @var  $subscriber Subscriber */
-//        $subscriber = Yii::$app->user->identity;
+        $subscriber = Yii::$app->user->identity;
 
-        $answer = $this->getParameterPost('answer', '');
-        if (!$answer) {
+        $answerQuestion = $this->getParameterPost('answer', '');
+        if (!$answerQuestion) {
             throw new InvalidValueException('Bạn phải trả lời hết các câu hỏi');
         }
         $numberCorrect = 0;
         $isSmile = false;
-        $answer = explode(',', $answer);
+        $answer = explode(',', $answerQuestion);
         foreach ($answer as $item) {
             $id = explode(':', $item)[0];
             $answer = explode(':', $item)[1];
@@ -1036,7 +1036,7 @@ class AppController extends ApiController
         if ($numberCorrect >= 2) {
             $isSmile = true;
         }
-//        GameMiniLog::addGameMiniLog($subscriber->id, $answer, $numberCorrect);
+        GameMiniLog::addGameMiniLog($subscriber->id, $answerQuestion, $numberCorrect);
         return [
             'isSmile' => $isSmile,
             'message' => 'Ok',

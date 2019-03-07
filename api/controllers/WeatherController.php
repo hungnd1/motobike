@@ -32,8 +32,8 @@ class WeatherController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
             'get-weather-detail-except',
-            'get-weather-detail',
-            'get-detail'
+//            'get-weather-detail',
+//            'get-detail'
         ];
 
         return $behaviors;
@@ -49,9 +49,9 @@ class WeatherController extends ApiController
 
     public function actionGetWeatherDetail()
     {
-//        UserHelpers::manualLogin();
+        UserHelpers::manualLogin();
 
-//        $subscriber = Yii::$app->user->identity;
+        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
         $station_id = $this->getParameter('station_id', '');
         if (!$station_id) {
@@ -59,9 +59,9 @@ class WeatherController extends ApiController
 
         }
 
-//        $description = 'Nguoi dung vao thoi tiet ' . $station_id;
-//        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
-//        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_WEATHER, $subscriber->id);
+        $description = 'Nguoi dung vao thoi tiet ' . $station_id;
+        $subscriberActivity = SubscriberActivity::addActivity($subscriber, Yii::$app->request->getUserIP(), $this->type, SubscriberActivity::ACTION_WEATHER, $description);
+        $isRating = IsRating::addIsRating(SubscriberActivity::ACTION_WEATHER, $subscriber->id);
 
         $arr = [];
         $current_time = time();
@@ -182,12 +182,12 @@ class WeatherController extends ApiController
 //            $precipitation = $precipitation / $weekWeatherAgo->count();
 //        }
         //
-//        if($subscriber->weather_detail_id){
-//            if ($subscriber->weather_detail_id != $weather->station_code) {
-//                $subscriber->weather_detail_id = $weather->station_code;
-//                $subscriber->save(false);
-//            }
-//        }
+        if($subscriber->weather_detail_id){
+            if ($subscriber->weather_detail_id != $weather->station_code) {
+                $subscriber->weather_detail_id = $weather->station_code;
+                $subscriber->save(false);
+            }
+        }
         return [
             'items' => $weather,
 //            'temperature' => $temperature,
@@ -335,14 +335,14 @@ class WeatherController extends ApiController
 
     public function actionGetDetail()
     {
-//        UserHelpers::manualLogin();
-//        $subscriber = Yii::$app->user->identity;
+        UserHelpers::manualLogin();
+        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 
         $today = strtotime('today midnight');
         $tomorrow = strtotime('tomorrow');
 
-//        $subscriber = Yii::$app->user->identity;
+        $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
         /** @var  $subscriberServiceAsm  SubscriberServiceAsm */
         $sql = "select station_code, (((acos(sin((" . Yii::$app->request->headers->get(static::HEADER_LATITUDE) . "*pi()/180)) * 
