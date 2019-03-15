@@ -1005,8 +1005,8 @@ class AppController extends ApiController
         /** @var  $subscriber Subscriber */
         $listQuestion = GameMini::find()
             ->andWhere(['status' => GameMini::STATUS_ACTIVE])
-            ->andWhere(['category_id' => $category_id]);
-//            ->orderBy(new Expression("rand()"))->limit(3);
+            ->andWhere(['category_id' => $category_id])
+            ->orderBy(new Expression("rand()"))->limit(3);
         $dataProvider = new ActiveDataProvider([
             'query' => $listQuestion,
             'pagination' => false,
