@@ -18,7 +18,7 @@ class FeatureSearch extends Feature
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id','status','order'], 'integer'],
             [['display_name'], 'safe'],
         ];
     }
@@ -60,6 +60,8 @@ class FeatureSearch extends Feature
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'order' => $this->order,
+            'status' => $this->status
         ]);
 
         $query->andFilterWhere(['like', 'display_name', $this->display_name]);

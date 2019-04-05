@@ -70,7 +70,22 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
                 'data' => \yii\helpers\ArrayHelper::map(
                     \common\models\Group::find()
                         ->all(), 'id', 'name'),
-                'options' => ['placeholder' => 'Chọn nhóm cây trồng'],
+                'options' => ['placeholder' => 'Chọn nhóm đặc điểm'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ]]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'feature_id')->widget(\kartik\select2\Select2::classname(), [
+                'data' => \yii\helpers\ArrayHelper::map(
+                    \common\models\Feature::find()
+                        ->andWhere(['status'=>\common\models\Feature::STATUS_ACTIVE])
+                        ->orderBy(['order'=>SORT_ASC])
+                        ->all(), 'id', 'display_name'),
+                'options' => ['placeholder' => 'Đặc điểm cây trồng'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ]]);

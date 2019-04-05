@@ -238,12 +238,12 @@ $arrlang = array();
                             'url' => ['group/index'],
                             'require_auth' => true,
                         ],
-//                        [
-//                            'encode' => false,
-//                            'label' => '<i class=" icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý đặc điểm cây'),
-//                            'url' => ['feature/index'],
-//                            'require_auth' => true,
-//                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý đặc điểm cây'),
+                            'url' => ['feature/index'],
+                            'require_auth' => true,
+                        ],
                         [
                             'encode' => false,
                             'label' => '<i class=" icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý thông tin chi tiết'),

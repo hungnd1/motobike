@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Feature;
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -35,6 +36,31 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'yii\grid\SerialColumn',
                         ],
                         'display_name',
+                        'order',
+                        [
+                            'class' => '\kartik\grid\DataColumn',
+                            'attribute' => 'status',
+                            'label' => '' . \Yii::t('app', 'Trạng thái'),
+                            'width' => '20%',
+                            'format' => 'raw',
+                            'value' => function ($model, $key, $index, $widget) {
+                                /**
+                                 * @var $model \common\models\Feature
+                                 */
+                                if ($model->status == Feature::STATUS_ACTIVE) {
+                                    return '<span class="label label-success">' . $model->getStatusName() . '</span>';
+                                } else {
+                                    return '<span class="label label-danger">' . $model->getStatusName() . '</span>';
+                                }
+
+                            },
+                            'filter' => Feature::listStatus(),
+                            'filterType' => GridView::FILTER_SELECT2,
+                            'filterWidgetOptions' => [
+                                'pluginOptions' => ['allowClear' => true],
+                            ],
+                            'filterInputOptions' => ['placeholder' => "" . \Yii::t('app', 'Tất cả')],
+                        ],
 
                         ['class' => 'kartik\grid\ActionColumn',
                             'template' => '{view} {update} {delete}',

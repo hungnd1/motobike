@@ -9,6 +9,8 @@ use Yii;
  *
  * @property integer $id
  * @property string $display_name
+ * @property integer $order
+ * @property integer $status
  */
 class Feature extends \yii\db\ActiveRecord
 {
@@ -20,6 +22,9 @@ class Feature extends \yii\db\ActiveRecord
         return 'feature';
     }
 
+    const STATUS_ACTIVE = 10;
+    const STATUS_INACTIVE = 0;
+
     /**
      * @inheritdoc
      */
@@ -27,7 +32,8 @@ class Feature extends \yii\db\ActiveRecord
     {
         return [
             [['display_name'], 'string', 'max' => 255],
-            [['display_name'],'required']
+            [['display_name'], 'required'],
+            [['order', 'status'], 'integer']
         ];
     }
 
@@ -39,6 +45,26 @@ class Feature extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'display_name' => 'Đặc điểm cây trồng',
+            'order' => 'Sắp xếp',
+            'status' => 'Trạng thái'
         ];
+    }
+
+    public static function listStatus()
+    {
+        $lst = [
+            self::STATUS_ACTIVE => \Yii::t('app', 'Kích hoạt'),
+            self::STATUS_INACTIVE => \Yii::t('app', 'Tạm dừng'),
+        ];
+        return $lst;
+    }
+
+    public function getStatusName()
+    {
+        $lst = self::listStatus();
+        if (array_key_exists($this->status, $lst)) {
+            return $lst[$this->status];
+        }
+        return $this->status;
     }
 }

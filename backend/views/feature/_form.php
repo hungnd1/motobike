@@ -21,6 +21,18 @@ use yii\helpers\Html;
             <?= $form->field($model, 'display_name')->textInput(['maxlength' => 500, 'class' => 'input-circle']) ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'order')->textInput(['maxlength' => 10, 'class' => 'input-circle']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'status')->dropDownList(
+                \common\models\Feature::listStatus(), ['class' => 'input-circle']
+            ) ?>
+        </div>
+    </div>
 </div>
 <div class="form-actions">
     <div class="row">

@@ -95,7 +95,7 @@ class FruitController extends ApiController
 
     public function actionGetFeature()
     {
-        $query = Feature::find()->orderBy(['id' => SORT_ASC]);
+        $query = Feature::find()->andWhere(['status'=>Feature::STATUS_ACTIVE])->orderBy(['order' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -113,6 +113,9 @@ class FruitController extends ApiController
         if (!$group_id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
         }
+//        if (!$feature_id) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'feature_id')]));
+//        }
         throw new ServerErrorHttpException(Yii::t('app', 'Nội dung này chúng tôi đang thực hiện, xin gửi thông tin đến các bạn sau'));
 
         $arr_feature = explode(',', $feature_id);
