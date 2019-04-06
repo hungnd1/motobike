@@ -64,19 +64,19 @@ $showPreview = !$model->isNewRecord && !empty($model->image);
     ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <?= $form->field($model, 'group_id')->widget(\kartik\select2\Select2::classname(), [
-                'data' => \yii\helpers\ArrayHelper::map(
-                    \common\models\Group::find()
-                        ->all(), 'id', 'name'),
-                'options' => ['placeholder' => 'Chọn nhóm đặc điểm'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ]]);
-            ?>
-        </div>
-    </div>
+<!--    <div class="row">-->
+<!--        <div class="col-md-12">-->
+<!--             $form->field($model, 'group_id')->widget(\kartik\select2\Select2::classname(), [
+//                'data' => \yii\helpers\ArrayHelper::map(
+//                    \common\models\Group::find()
+//                        ->all(), 'id', 'name'),
+//                'options' => ['placeholder' => 'Chọn nhóm đặc điểm'],
+//                'pluginOptions' => [
+//                    'allowClear' => true
+//                ]]);
+//            ?>
+<!--        </div>-->
+<!--    </div>-->
     <div class="row">
         <div class="col-md-12">
             <?= $form->field($model, 'feature_id')->widget(\kartik\select2\Select2::classname(), [

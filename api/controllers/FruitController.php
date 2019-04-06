@@ -95,7 +95,7 @@ class FruitController extends ApiController
 
     public function actionGetFeature()
     {
-        $query = Feature::find()->andWhere(['status'=>Feature::STATUS_ACTIVE])->orderBy(['order' => SORT_ASC]);
+        $query = Feature::find()->andWhere(['status' => Feature::STATUS_ACTIVE])->orderBy(['order' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -110,39 +110,41 @@ class FruitController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'fruit_id')]));
         }
 
-        if (!$group_id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
-        }
-//        if (!$feature_id) {
-//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'feature_id')]));
+//        if (!$group_id) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
 //        }
-        throw new ServerErrorHttpException(Yii::t('app', 'Nội dung này chúng tôi đang thực hiện, xin gửi thông tin đến các bạn sau'));
+        if (!$feature_id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'feature_id')]));
+        }
 
-        $arr_feature = explode(',', $feature_id);
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $detail = Detail::find()
+            ->andWhere(['status' => Detail::STATUS_ACTIVE])
+            ->andWhere(['fruit_id' => $fruit_id])
+            ->andWhere(['feature_id' => $feature_id]);
 
-        $detail = \api\models\Detail::find()
-            ->andWhere([
-                'and',
-                ['fruit_id' => $fruit_id],
-                (['IN', 'feature_id', $arr_feature]),
-                ['group_id' => $group_id]
-            ])
-            ->orWhere([
-                'and',
-                ['fruit_id' => $fruit_id],
-                ['group_id' => $group_id]
-            ])
-            ->orWhere([
-                'and',
-                ['fruit_id' => $fruit_id],
-                (['IN', 'feature_id', $arr_feature])
-            ])
-            ->orWhere([
-                'and',
-                ['group_id' => $group_id],
-                (['IN', 'feature_id', $arr_feature])
-            ]);
+//        $detail = \api\models\Detail::find()
+//            ->andWhere([
+//                'and',
+//                ['fruit_id' => $fruit_id],
+//                (['IN', 'feature_id', $arr_feature]),
+//                ['group_id' => $group_id]
+//            ])
+//            ->orWhere([
+//                'and',
+//                ['fruit_id' => $fruit_id],
+//                ['group_id' => $group_id]
+//            ])
+//            ->orWhere([
+//                'and',
+//                ['fruit_id' => $fruit_id],
+//                (['IN', 'feature_id', $arr_feature])
+//            ])
+//            ->orWhere([
+//                'and',
+//                ['group_id' => $group_id],
+//                (['IN', 'feature_id', $arr_feature])
+//            ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $detail,
