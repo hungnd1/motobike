@@ -848,12 +848,13 @@ class SubscriberController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGetListDictionary($group_id, $fruit_id)
+    public function actionGetListDictionary($group_id, $fruit_id,$feature_id)
     {
         UserHelpers::manualLogin();
         $query = Detail::find()
             ->andWhere(['status' => Detail::STATUS_ACTIVE])
-            ->andWhere(['group_id' => $group_id])
+            ->andWhere(['feature_id' => $feature_id])
+//            ->andWhere(['group_id' => $group_id])
             ->andWhere(['fruit_id' => $fruit_id]);
 //            ->orderBy(new Expression("rand()"))->limit(9);
         $dataProvider = new ActiveDataProvider([
