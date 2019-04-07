@@ -70,26 +70,44 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
+                            'class' => '\kartik\grid\DataColumn',
                             'attribute' => 'fruit_id',
+                            'label' => '' . \Yii::t('app', 'Cây trồng'),
+                            'width' => '20%',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $widget) {
                                 /**
-                                 * @var $model \common\models\Detail
+                                 * @var $model Detail
                                  */
                                 return \common\models\Fruit::findOne($model->fruit_id)->name;
 
                             },
+                            'filter' => Detail::listFruit(),
+                            'filterType' => GridView::FILTER_SELECT2,
+                            'filterWidgetOptions' => [
+                                'pluginOptions' => ['allowClear' => true],
+                            ],
+                            'filterInputOptions' => ['placeholder' => "" . \Yii::t('app', 'Tất cả')],
                         ],
                         [
-                            'attribute' => 'group_id',
+                            'class' => '\kartik\grid\DataColumn',
+                            'attribute' => 'feature_id',
+                            'label' => '' . \Yii::t('app', 'Đặc điểm cây'),
+                            'width' => '20%',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $widget) {
                                 /**
-                                 * @var $model \common\models\Detail
+                                 * @var $model Detail
                                  */
-                                return \common\models\Group::findOne($model->group_id)->name;
+                                return \common\models\Feature::findOne($model->feature_id)->display_name;
 
                             },
+                            'filter' => Detail::listFeature(),
+                            'filterType' => GridView::FILTER_SELECT2,
+                            'filterWidgetOptions' => [
+                                'pluginOptions' => ['allowClear' => true],
+                            ],
+                            'filterInputOptions' => ['placeholder' => "" . \Yii::t('app', 'Tất cả')],
                         ],
                         [
                             'class' => '\kartik\grid\DataColumn',

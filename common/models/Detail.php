@@ -82,6 +82,20 @@ class Detail extends \yii\db\ActiveRecord
         return $lst;
     }
 
+    public static function listFruit(){
+        $lst = \yii\helpers\ArrayHelper::map(
+            \common\models\Fruit::find()
+                ->all(), 'id', 'name');
+        return $lst;
+    }
+
+    public static function listFeature(){
+        $lst = \yii\helpers\ArrayHelper::map(
+            \common\models\Feature::find()
+                ->all(), 'id', 'display_name');
+        return $lst;
+    }
+
     public function getStatusName()
     {
         $lst = self::listStatus();
