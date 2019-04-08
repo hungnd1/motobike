@@ -53,7 +53,8 @@ $this->registerJs($js, View::POS_END);
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?php echo $form->field($model, 'category_id')->dropDownList([], ['class' => 'form-control category','id'=>'emeliyyatlar', 'prompt' => ' -- Chọn danh mục --']);
+            <?php echo $form->field($model, 'category_id')
+                ->dropDownList(ArrayHelper::map(\common\models\Category::find()->andWhere(['fruit_id'=>$model->fruit_id])->asArray()->all(), 'id', 'display_name'), ['class' => 'form-control category','id'=>'emeliyyatlar', 'prompt' => ' -- Chọn danh mục --']);
             ?>
         </div>
     </div>
