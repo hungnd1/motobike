@@ -41,7 +41,7 @@ class DetailSearch extends Detail
      */
     public function search($params)
     {
-        $query = Detail::find();
+        $query = Detail::find()->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -74,7 +74,6 @@ class DetailSearch extends Detail
             ->andFilterWhere(['like', 'harm', $this->harm])
             ->andFilterWhere(['like', 'prevention', $this->prevention])
             ->andFilterWhere(['like', 'image', $this->image]);
-
         return $dataProvider;
     }
 }
