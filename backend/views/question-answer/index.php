@@ -106,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
 
                     ['class' => 'kartik\grid\ActionColumn',
-                        'template' => '{view} {update} {delete}',
+                        'template' => '{view} {update} {delete} {delete_image}',
                         'buttons' => [
                             'view' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute(['QuestionAnswer/view', 'id' => $model->id]), [
@@ -114,6 +114,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
 
                             },
+                            'delete_image' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->urlManager->createUrl(['question-answer/remove','id' => $model->id]), [
+                                    'title' => '' . \Yii::t('app', 'Xóa ảnh'),
+                                    'data-confirm' => Yii::t('app', 'Xóa ảnh này?'),
+                                    'data-method' => 'post',
+                                    'data-pjax' => '0',
+                                ]);
+                            }
 //                                'update' => function ($url, $model) {
 //                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['user/update', 'id' => $model->id]), [
 //                                        'title' => '' . \Yii::t('app', 'Cập nhật thông tin user'),

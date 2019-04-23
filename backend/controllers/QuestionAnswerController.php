@@ -26,6 +26,7 @@ class QuestionAnswerController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'remove' => ['POST']
                 ],
             ],
         ];
@@ -155,8 +156,17 @@ class QuestionAnswerController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->image = "";
+        $model->save();
 
+        return $this->redirect(['index']);
+    }
+
+    public function actionRemove($id)
+    {
+        $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success','Xóa ảnh thành công');
         return $this->redirect(['index']);
     }
 
