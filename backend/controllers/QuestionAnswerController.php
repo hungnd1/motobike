@@ -157,15 +157,17 @@ class QuestionAnswerController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->image = "";
+        $model->status = QuestionAnswer::STATUS_INACTIVE;
         $model->save();
-
+        Yii::$app->session->setFlash('success','Xóa câu hỏi thành công');
         return $this->redirect(['index']);
     }
 
     public function actionRemove($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->image = "";
+        $model->save();
         Yii::$app->session->setFlash('success','Xóa ảnh thành công');
         return $this->redirect(['index']);
     }

@@ -20,7 +20,7 @@ class QuestionAnswerSearch extends QuestionAnswer
     {
         return [
             [['id', 'created_at', 'updated_at', 'status'], 'integer'],
-            [['question', 'answer', 'image','answer_string'], 'safe'],
+            [['question', 'answer', 'image', 'answer_string'], 'safe'],
         ];
     }
 
@@ -42,7 +42,7 @@ class QuestionAnswerSearch extends QuestionAnswer
      */
     public function search($params)
     {
-        $query = QuestionAnswer::find()->orderBy(['created_at' => SORT_DESC]);
+        $query = QuestionAnswer::find()->andWhere(['status' => QuestionAnswer::STATUS_ACTIVE])->orderBy(['created_at' => SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -120,7 +120,7 @@ class QuestionAnswerSearch extends QuestionAnswer
         $dateLabel = Yii::t('app', 'Câu hỏi');
         $total_via_site_label = Yii::t('app', 'Câu trả lời');
         $total_via_site_daily_label = Yii::t('app', 'Ngày viết câu hỏi');
-        $status = Yii::t("app",'Trạng thái câu hỏi');
+        $status = Yii::t("app", 'Trạng thái câu hỏi');
         if (!empty($rawData)) {
             $i = 0;
             foreach ($rawData as $raw) {
