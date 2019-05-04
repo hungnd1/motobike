@@ -108,12 +108,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'kartik\grid\ActionColumn',
                         'template' => '{view} {update} {delete} {delete_image}',
                         'buttons' => [
-                            'view' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute(['QuestionAnswer/view', 'id' => $model->id]), [
-                                    'title' => '' . \Yii::t('app', 'Thông tin chi tiết'),
-                                ]);
-
-                            },
                             'delete_image' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->urlManager->createUrl(['question-answer/remove','id' => $model->id]), [
                                     'title' => '' . \Yii::t('app', 'Xóa ảnh'),
