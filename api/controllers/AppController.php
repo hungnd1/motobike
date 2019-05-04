@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\LogData;
 use api\models\PriceCoffeeDetail;
 use common\models\Answer;
+use common\models\AppParam;
 use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\DeviceSubscriberAsm;
@@ -73,6 +74,7 @@ class AppController extends ApiController
             'accept-screen',
             'get-category-pet',
             'check-login',
+            'get-param',
 
 //            'check-device-token',
 //            'get-price',
@@ -100,7 +102,8 @@ class AppController extends ApiController
             'get-question' => ['GET'],
             'get-introduce' => ['GET'],
             'game-question' => ['GET'],
-            'game-submit' => ['POST']
+            'game-submit' => ['POST'],
+            'get-param' => ['GET']
         ];
     }
 
@@ -1047,5 +1050,17 @@ class AppController extends ApiController
             'message' => 'Ok',
             'numberCorrect' => $numberCorrect
         ];
+    }
+
+    public function actionGetParam($key)
+    {
+        $appParam = AppParam::find()
+            ->andWhere(['param_key' => $key])
+            ->andWhere(['status' => AppParam::STATUS_ACTIVE])
+            ->one();
+        if ($appParam) {
+            return $appParam;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 }

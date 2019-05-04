@@ -173,6 +173,12 @@ $arrlang = array();
                             'url' => ['banner/index'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class=" icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý cấu hình'),
+                            'url' => ['app-param/index'],
+                            'require_auth' => true,
+                        ],
                     ]
                 ],
 //                [
