@@ -42,7 +42,7 @@ class QuestionAnswerSearch extends QuestionAnswer
      */
     public function search($params)
     {
-        $query = QuestionAnswer::find()->andWhere(['status' => QuestionAnswer::STATUS_ACTIVE])->orderBy(['created_at' => SORT_DESC]);
+        $query = QuestionAnswer::find()->orderBy(['created_at' => SORT_DESC]);
 
         // add conditions that should always apply here
 
