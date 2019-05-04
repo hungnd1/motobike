@@ -859,9 +859,7 @@ class SubscriberController extends ApiController
 //            ->orderBy(new Expression("rand()"))->limit(9);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 30,
-            ],
+            'pagination' => false
         ]);
         return $dataProvider;
     }
