@@ -148,10 +148,7 @@ class FruitController extends ApiController
 
         $dataProvider = new ActiveDataProvider([
             'query' => $detail,
-            'pagination' => [
-                'pageSize' => 15,
-                'page' => $page
-            ],
+            'pagination' => false
         ]);
 
         return $dataProvider;
