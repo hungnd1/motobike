@@ -43,43 +43,17 @@ use yii\caching\TagDependency;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use yii\helpers\Url;
+use yii\web\Controller;
 use yii\web\ServerErrorHttpException;
 
-class MoMtController extends ApiController
+class MoMtController extends Controller
 {
-    public $serializer = [
-        'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'items',
-    ];
-
-    public function behaviors()
+    public function actionReceiveMo($from, $to, $message,$requestid)
     {
-        $behaviors = parent::behaviors();
-        $behaviors['authenticator']['except'] = [
-            'receive-mo'
-        ];
-
-        return $behaviors;
-    }
-
-    protected function verbs()
-    {
-        return [
-            'receive-mo' => ['POST']
-        ];
-    }
-
-    public function actionReceiveMo()
-    {
-        $fromPhone =  $this->getParameterPost('from','');
-        $toPhone = $this->getParameterPost('to','');
-        $message = $this->getParameterPost('message','');
-        $requestId = $this->getParameterPost('requestId','');
-
-        if (!$fromPhone) {
+        if (!$from) {
             throw new InvalidValueException('Số điện thoại gửi không được để trống');
         }
-        if(!$toPhone){
+        if(!$to){
             throw  new InvalidValueException('Đầu số không được để trống');
         }
 
@@ -87,23 +61,25 @@ class MoMtController extends ApiController
             throw  new InvalidValueException('Nội dung không được để trống');
         }
 
-        if(!$requestId){
+        if(!$requestid){
             throw  new InvalidValueException('Request ID không được để trống');
         }
         $momt = new MoMt();
-        $momt->from_number = $fromPhone;
-        $momt->to_number = $toPhone;
+        $momt->from_number = $from;
+        $momt->to_number = $to;
         $momt->message_mo = $message;
-        $momt->request_id = $requestId;
+        $momt->request_id = $requestid;
         $momt->status_sync = MoMt::STATUS_ACTIVE;
         $momt->status = MoMt::STATUS_ACTIVE;
         $momt->created_at = time();
         $momt->updated_at = time();
         $momt->save();
-        return [
-            'status' => $momt->status,
-            'message' => "Test",
-            'sync' => true
+        header('Content-type: application/json');
+        $arr = [
+            '"sync"' => true,
+            '"status"' => 0,
+            '"message"' => 'test'
         ];
+        return json_encode($arr);
      }
 }
