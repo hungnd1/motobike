@@ -76,9 +76,9 @@ class MoMtController extends Controller
         $momt->save();
         header('Content-type: application/json');
         $arr = [
-            '"Sync"' => true,
-            '"status"' => 0,
-            '"message"' => 'test'
+            'Sync' => true,
+            'status' => 0,
+            'message' => 'test'
         ];
         return json_encode($arr);
      }
