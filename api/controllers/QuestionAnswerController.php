@@ -138,7 +138,7 @@ class QuestionAnswerController extends ApiController
         $question_answer->image = $file_name;
         $question_answer->created_at = time();
         $question_answer->subscriber_id = $subscriber->id;
-        $question_answer->updated_at = time();
+//        $question_answer->updated_at = time();
         $question_answer->status = QuestionAnswer::STATUS_INACTIVE;
         if ($question_answer->save(false)) {
 //            shell_exec("/usr/bin/nohup  ./auto_answer.sh $question_answer->id > /dev/null 2>&1 &");

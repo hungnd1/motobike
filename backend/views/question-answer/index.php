@@ -104,6 +104,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             return date('d-m-Y H:i:s', $model->created_at);
                         }
                     ],
+                    [
+                        'format' => 'raw',
+                        'class' => '\kartik\grid\DataColumn',
+                        'width' => '20%',
+                        'label' => 'Ngày trả lời',
+                        'filterType' => GridView::FILTER_DATE,
+                        'attribute' => 'updated_at',
+                        'value' => function ($model) {
+                            return date('d-m-Y H:i:s', $model->updated_at);
+                        }
+                    ],
 
                     ['class' => 'kartik\grid\ActionColumn',
                         'template' => '{view} {update} {delete} {delete_image}',
