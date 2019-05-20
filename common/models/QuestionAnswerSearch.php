@@ -121,6 +121,7 @@ class QuestionAnswerSearch extends QuestionAnswer
         $total_via_site_label = Yii::t('app', 'Câu trả lời');
         $total_via_site_daily_label = Yii::t('app', 'Ngày viết câu hỏi');
         $status = Yii::t("app", 'Trạng thái câu hỏi');
+        $update_at = Yii::t("app", 'Ngày trả lời câu hỏi');
         if (!empty($rawData)) {
             $i = 0;
             foreach ($rawData as $raw) {
@@ -129,6 +130,7 @@ class QuestionAnswerSearch extends QuestionAnswer
                 $row[$total_via_site_label] = html_entity_decode(strip_tags($raw['answer_string']));
                 $row[$status] = $raw['status'] == QuestionAnswer::STATUS_ACTIVE ? "Đã trả lời" : "Chưa trả lời";
                 $row[$total_via_site_daily_label] = date('d/m/Y H:i:s', $raw['created_at']);
+                $row[$update_at] = $raw['updated_at'] ? date('d/m/Y H:i:s',$raw['updated_at']) :'';
                 $dataRow[] = $row;
                 //kết thúc một ngày, khởi tạo thêm 1 dòng cho ngày tiếp theo
                 $row = [];
