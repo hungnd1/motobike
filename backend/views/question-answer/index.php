@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filterType' => GridView::FILTER_DATE,
                         'attribute' => 'updated_at',
                         'value' => function ($model) {
-                            return date('d-m-Y H:i:s', $model->updated_at);
+                            return $model->updated_at ? date('d-m-Y H:i:s', $model->updated_at) : '';
                         }
                     ],
 
