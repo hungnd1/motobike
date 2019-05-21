@@ -459,6 +459,12 @@ $arrlang = array();
                     ]
 
                 ],
+                [
+                    'encode' => false,
+                    'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý MO MT'),
+                    'url' => ['mt-template/index'],
+                    'require_auth' => true,
+                ],
             ];
 
 

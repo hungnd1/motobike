@@ -17,6 +17,7 @@ use Yii;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $mt_template_id
  */
 class MoMt extends \yii\db\ActiveRecord
 {
@@ -38,7 +39,7 @@ class MoMt extends \yii\db\ActiveRecord
     {
         return [
             [['message_mo', 'message_mt'], 'string'],
-            [['request_id', 'status_sync', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['request_id', 'status_sync', 'status', 'created_at', 'updated_at','mt_template_id'], 'integer'],
             [['from_number', 'to_number'], 'string', 'max' => 255],
         ];
     }
@@ -59,6 +60,7 @@ class MoMt extends \yii\db\ActiveRecord
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'mt_template_id' => 'Mt Template'
         ];
     }
 }

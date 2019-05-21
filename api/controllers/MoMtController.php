@@ -24,6 +24,7 @@ use common\models\GameMiniLog;
 use common\models\GapGeneral;
 use common\models\IsRating;
 use common\models\MoMt;
+use common\models\MtTemplate;
 use common\models\PriceCoffee;
 use common\models\Province;
 use common\models\Question;
@@ -48,20 +49,20 @@ use yii\web\ServerErrorHttpException;
 
 class MoMtController extends Controller
 {
-    public function actionReceiveMo($from, $to, $message,$requestid)
+    public function actionReceiveMo($from, $to, $message, $requestid)
     {
         if (!$from) {
             throw new InvalidValueException('Số điện thoại gửi không được để trống');
         }
-        if(!$to){
+        if (!$to) {
             throw  new InvalidValueException('Đầu số không được để trống');
         }
 
-        if(!$message){
+        if (!$message) {
             throw  new InvalidValueException('Nội dung không được để trống');
         }
 
-        if(!$requestid){
+        if (!$requestid) {
             throw  new InvalidValueException('Request ID không được để trống');
         }
         $momt = new MoMt();
@@ -74,12 +75,29 @@ class MoMtController extends Controller
         $momt->created_at = time();
         $momt->updated_at = time();
         $momt->save();
-        header('Content-type: application/json');
-        $arr = [
-            'Sync' => true,
-            'status' => 0,
-            'message' => 'test'
-        ];
+        /** @var  $mtTemplate MtTemplate */
+        $mtTemplate = MtTemplate::find()
+            ->andWhere(['mo_key' => strtoupper($message)])
+            ->andWhere(['status' => MtTemplate::STATUS_ACTIVE])
+            ->one();
+        if($mtTemplate){
+            $messageSuccess = $mtTemplate->content;
+            $momt->mt_template_id = $mtTemplate->id;
+            $momt->save();
+            header('Content-type: application/json');
+            $arr = [
+                'Sync' => true,
+                'status' => 0,
+                'message' => $messageSuccess
+            ];
+        }else{
+            $arr = [
+                'Sync' => false,
+                'status' => 0,
+                'message' => "error"
+            ];
+        }
+
         return json_encode($arr);
      }
 }
