@@ -96,7 +96,7 @@ class MoMtController extends Controller
                 /** @var  $province Province */
                 $province = Province::find()->andWhere(['id'=>$stationCode->province_id])->one();
                 $messageSuccess = str_replace("$1",$stationCode->station_name,$mtTemplate->content);
-                $messageSuccess = str_replace("$2",$province->province_name,$messageSuccess);
+                $messageSuccess = str_replace("$2",$province->province_name_sms,$messageSuccess);
                 $date = date('d/m/Y', time());
                 $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
                 $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
