@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $province_name
  * @property string $province_code
+ * @property string $province_name_sms
  */
 class Province extends \yii\db\ActiveRecord
 {
@@ -27,7 +28,7 @@ class Province extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['province_name'], 'string', 'max' => 255],
+            [['province_name','province_name_sms'], 'string', 'max' => 255],
             [['province_code'], 'string', 'max' => 45],
         ];
     }
@@ -41,6 +42,7 @@ class Province extends \yii\db\ActiveRecord
             'id' => 'ID',
             'province_name' => 'Tên tỉnh',
             'province_code' => 'Mã tỉnh',
+            'province_name_sms'=>'Ten khong dau'
         ];
     }
 }
