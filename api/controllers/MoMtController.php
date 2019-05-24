@@ -77,11 +77,13 @@ class MoMtController extends Controller
         $momt->created_at = time();
         $momt->updated_at = time();
 //        $momt->save();
-
-        $gia = explode("GIA", strtoupper(str_replace(" ", "", $message)));
-        if($gia[1]){
-            $message = str_replace("-","",str_replace("_","",$gia[1]));
+        if(strtoupper($message) != 'DKGC'){
+            $gia = explode("GIA", strtoupper(str_replace(" ", "", $message)));
+            if($gia[1]){
+                $message = str_replace("-","",str_replace("_","",$gia[1]));
+            }
         }
+
         /** @var  $mtTemplate MtTemplate */
         $mtTemplate = MtTemplate::find()
             ->andWhere(['mo_key' => strtoupper($message)])
