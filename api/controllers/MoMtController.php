@@ -13,6 +13,7 @@ use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\LogData;
 use api\models\PriceCoffeeDetail;
+use common\helpers\StringUtils;
 use common\models\Answer;
 use common\models\AppParam;
 use common\models\Category;
@@ -30,6 +31,7 @@ use common\models\Province;
 use common\models\Question;
 use common\models\SiteApiCredential;
 use common\models\Sold;
+use common\models\Station;
 use common\models\Subscriber;
 use common\models\SubscriberActivity;
 use common\models\SubscriberServiceAsm;
@@ -74,30 +76,67 @@ class MoMtController extends Controller
         $momt->status = MoMt::STATUS_ACTIVE;
         $momt->created_at = time();
         $momt->updated_at = time();
-        $momt->save();
+//        $momt->save();
+
+        $gia = explode("GIA", strtoupper(str_replace(" ", "", $message)));
+        if($gia[1]){
+            $message = str_replace("-","",str_replace("_","",$gia[1]));
+        }
         /** @var  $mtTemplate MtTemplate */
         $mtTemplate = MtTemplate::find()
             ->andWhere(['mo_key' => strtoupper($message)])
             ->andWhere(['status' => MtTemplate::STATUS_ACTIVE])
             ->one();
-        if($mtTemplate){
-            $messageSuccess = $mtTemplate->content;
+        if ($mtTemplate) {
+            if($mtTemplate->station_code){
+                /** @var  $stationCode Station */
+                $stationCode = Station::find()->andWhere(['station_code'=>$mtTemplate->station_code])->one();
+                /** @var  $province Province */
+                $province = Province::find()->andWhere(['id'=>$stationCode->province_id])->one();
+                $messageSuccess = str_replace("$1",$stationCode->station_name,$mtTemplate->content);
+                $messageSuccess = str_replace("$2",$province->province_name,$messageSuccess);
+                $date = date('d/m/Y', time());
+                $from_time = strtotime(str_replace('/', '-', $date) . ' 00:00:00');
+                $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
+                /** @var  $priceCoffee PriceCoffee */
+                $priceCoffee = PriceCoffee::find()
+//                    ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
+//                    ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
+                    ->andWhere(['province_id'=>$stationCode->station_code])
+                    ->andWhere(['in', 'price_coffee.organisation_name', ['dACC', 'dACN', 'dRCL','dRBC','dRCC']])
+                    ->one();
+                if($priceCoffee){
+                    $messageSuccess = str_replace("$3",$priceCoffee->price_average,$messageSuccess);
+                }else{
+                    $messageSuccess = '';
+                }
+            }else{
+                $messageSuccess = $mtTemplate->content;
+            }
+            if(!$messageSuccess){
+                $arr = [
+                    'Sync' => false,
+                    'status' => 0,
+                    'message' => "error"
+                ];
+            }else{
+                $arr = [
+                    'Sync' => true,
+                    'status' => 0,
+                    'message' => $messageSuccess
+                ];
+            }
             $momt->mt_template_id = $mtTemplate->id;
             $momt->save();
-            header('Content-type: application/json');
-            $arr = [
-                'Sync' => true,
-                'status' => 0,
-                'message' => $messageSuccess
-            ];
-        }else{
+        } else {
             $arr = [
                 'Sync' => false,
                 'status' => 0,
                 'message' => "error"
             ];
         }
+        header('Content-type: application/json');
 
         return json_encode($arr);
-     }
+    }
 }
