@@ -76,7 +76,7 @@ class MoMtController extends Controller
         $momt->status = MoMt::STATUS_ACTIVE;
         $momt->created_at = time();
         $momt->updated_at = time();
-//        $momt->save();
+        $momt->save();
         if(strtoupper($message) != 'DKGC'){
             $gia = explode("GIA", strtoupper(str_replace(" ", "", $message)));
             if($gia[1]){
@@ -102,8 +102,8 @@ class MoMtController extends Controller
                 $to_time = strtotime(str_replace('/', '-', $date) . ' 23:59:59');
                 /** @var  $priceCoffee PriceCoffee */
                 $priceCoffee = PriceCoffee::find()
-//                    ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
-//                    ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
+                    ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60])
+                    ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60])
                     ->andWhere(['province_id'=>$stationCode->station_code])
                     ->andWhere(['in', 'price_coffee.organisation_name', ['dACC', 'dACN', 'dRCL','dRBC','dRCC']])
                     ->one();
