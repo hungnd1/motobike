@@ -18,7 +18,7 @@ class NewSearch extends News
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at', 'status'], 'integer'],
+            [['id', 'created_at', 'updated_at', 'status','fruit_id'], 'integer'],
             [['title', 'short_description', 'description', 'content'], 'safe'],
         ];
     }
@@ -61,6 +61,7 @@ class NewSearch extends News
         $query->andFilterWhere([
             'id' => $this->id,
             'created_at' => $this->created_at,
+            'fruit_id' => $this->fruit_id,
             'updated_at' => $this->updated_at,
             'status' => $this->status,
         ]);
