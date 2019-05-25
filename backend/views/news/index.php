@@ -72,6 +72,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
+                            'class' => '\kartik\grid\DataColumn',
+                            'attribute' => 'fruit_id',
+                            'width' => '200px',
+                            'filterType' => GridView::FILTER_SELECT2,
+                            'filter' => \common\models\Category::getFruits(),
+                            'filterWidgetOptions' => [
+                                'pluginOptions' => ['allowClear' => true],
+                            ],
+                            'filterInputOptions' => ['placeholder' => \Yii::t('app', 'Tất cả')],
+                            'value' => function ($model, $key, $index) {
+                                /** @var $model \common\models\Category */
+                                return $model->getFruitName($model->fruit_id);
+                            }
+                        ],
+                        [
                             'class' => 'kartik\grid\EditableColumn',
                             'attribute' => 'order',
                             'refreshGrid' => true,
