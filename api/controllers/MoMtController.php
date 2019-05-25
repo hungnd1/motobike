@@ -107,6 +107,30 @@ class MoMtController extends Controller
                     ->andWhere(['province_id'=>$stationCode->station_code])
                     ->andWhere(['in', 'price_coffee.organisation_name', ['dACC', 'dACN', 'dRCL','dRBC','dRCC']])
                     ->one();
+                if(!$priceCoffee){
+                    $priceCoffee = PriceCoffee::find()
+                        ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60 - 86400])
+                        ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60 - 86400])
+                        ->andWhere(['province_id'=>$stationCode->station_code])
+                        ->andWhere(['in', 'price_coffee.organisation_name', ['dACC', 'dACN', 'dRCL','dRBC','dRCC']])
+                        ->one();
+                    if(!$priceCoffee){
+                        $priceCoffee = PriceCoffee::find()
+                            ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60 - 2 * 86400])
+                            ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60 - 2 * 86400])
+                            ->andWhere(['province_id'=>$stationCode->station_code])
+                            ->andWhere(['in', 'price_coffee.organisation_name', ['dACC', 'dACN', 'dRCL','dRBC','dRCC']])
+                            ->one();
+                        if(!$priceCoffee){
+                            $priceCoffee = PriceCoffee::find()
+                                ->andWhere(['>=', 'created_at', $from_time + 7 * 60 * 60 - 3* 86400])
+                                ->andWhere(['<=', 'created_at', $to_time + 7 * 60 * 60 - 3 * 86400])
+                                ->andWhere(['province_id'=>$stationCode->station_code])
+                                ->andWhere(['in', 'price_coffee.organisation_name', ['dACC', 'dACN', 'dRCL','dRBC','dRCC']])
+                                ->one();
+                        }
+                    }
+                }
                 if($priceCoffee){
                     $messageSuccess = str_replace("$3",$priceCoffee->price_average,$messageSuccess);
                     $messageSuccess = str_replace("$4",$date, $messageSuccess);
