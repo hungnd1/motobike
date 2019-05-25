@@ -109,6 +109,7 @@ class MoMtController extends Controller
                     ->one();
                 if($priceCoffee){
                     $messageSuccess = str_replace("$3",$priceCoffee->price_average,$messageSuccess);
+                    $messageSuccess = str_replace("$4",$date, $messageSuccess);
                 }else{
                     $messageSuccess = '';
                 }
