@@ -67,6 +67,39 @@ class APIHelper
         return $result;
     }
 
+    public static function apiQueryV1($method, $url, $data = null, $authen = null) {
+        $curl = curl_init();
+
+        switch ($method)
+        {
+            case "POST":
+                curl_setopt($curl, CURLOPT_POST, 1);
+                if ($data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                break;
+        }
+
+        $headr = array();
+        $headr[] = 'Content-Type: application/json';
+        $headr[] = 'Accept: application/json';
+        $headr[] = 'Authorization:Basic b21paHViczp5eVlzbVZ4aA==';
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headr);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+
+        $result = curl_exec($curl);
+//        if ($result === false)
+//        {
+//            // throw new Exception('Curl error: ' . curl_error($crl));
+//            print_r('Curl error: ' . curl_error($curl));
+//        }
+        curl_close($curl);
+
+        return $result;
+    }
+
     public static function isResultSuccess($apiResults) {
         return ($apiResults != null) && ($apiResults['success'] == true);
     }

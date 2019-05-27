@@ -3,8 +3,8 @@ return [
     'adminEmail' => 'admin@example.com',
     'semantic_url' => 'http://semantic.tvod.vn/api/film',
     'semantic_url2' => 'http://se.tvod.vn',
-    'semantic_url_new' => 'http://103.31.126.219/' ,
-    'semantic_url_search_engine' => 'http://10.84.82.139/' ,
+    'semantic_url_new' => 'http://103.31.126.219/',
+    'semantic_url_search_engine' => 'http://10.84.82.139/',
     'site_id' => 1,
     'secret_key' => "VNPT-Technology", //secret_key dùng để valid khi checkMac
     'supportEmail' => 'support@example.com',
@@ -53,20 +53,23 @@ return [
     'retry' => 3,
     'delay' => 1,
     'recommend_url' => 'http://10.84.82.11:5432/',
-    'partner'=>[
-        'voucher_tvod'=>[
-            'key'=>'rdvias@123',
+    'partner' => [
+        'voucher_tvod' => [
+            'key' => 'rdvias@123',
         ],
     ],
     'GreenCoffee' => 'https://greencoffee.lizard.net/api/v2/timeseries/?location__organisation__name=G4AW%20Green%20Coffee&format=json',
-    'username' =>'duc.dame',
-    'password'=>'Kopainfo2017',
-    'price_detail'=>'https://greencoffee.lizard.net/api/v2/timeseries/?end=1690171661710&min_points=320&start=1488521600001&format=json&uuid=',
-    'timeExpired'=> 7,
+    'username' => 'duc.dame',
+    'password' => 'Kopainfo2017',
+    'price_detail' => 'https://greencoffee.lizard.net/api/v2/timeseries/?end=1690171661710&min_points=320&start=1488521600001&format=json&uuid=',
+    'timeExpired' => 7,
     'key_cache' => [
         'Introduce' => 'Introduce',
     ],
     'time_expire_cache' => 24 * 3600,
     'firebaseMessage' => 'AAAARjwDLSc:APA91bHKJbj57sC1LcnBQqKMNbbN6P4-eNZwzUta5CwVGWCGxpNC3BtozHolgDJiLUOBYR6eki3hL64-tG2Tofs1cU7YLW0pgV_h_FajAdp1zoCRNY9l_F1f91eQ3l4y965AY3Q0IW2d',
-    'action_android' => 'vn.monkey.icco.activity.NotificationActivity'
+    'action_android' => 'vn.monkey.icco.activity.NotificationActivity',
+    "Authorization" => "Basic b21paHViczp5eVlzbVZ4aA==",
+    'brandName' => '901800836',
+    'urlSms' => 'http://api-02.worldsms.vn/webapi/sendSMS'
 ];
