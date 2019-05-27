@@ -68,6 +68,7 @@ class SendReceiveController extends Controller
     {
         $model = new SendReceive();
         if ($model->load(Yii::$app->request->post())) {
+            $lstTo = $model->to;
             $lstPhone = explode(",",$model->to);
             $mtTem = MtTemplate::findOne($model->mt_template_id)->content;
             if(sizeof($lstPhone)>= 1){
@@ -107,6 +108,7 @@ class SendReceiveController extends Controller
                     }
                 }
             }
+            $model->to = $lstTo;
             $model->isNewRecord = true;
             Yii::$app->session->setFlash('success','Gửi tin nhắn thành công');
             return $this->render('create', [
