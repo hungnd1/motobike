@@ -141,10 +141,13 @@ class MoMtController extends Controller
                 $messageSuccess = $mtTemplate->content;
             }
             if(!$messageSuccess){
+                /** @var  $content MtTemplate */
+                $content = MtTemplate::find()->andWhere(['mo_key'=>'ERRORCODE'])->andWhere(['status' => MtTemplate::STATUS_ACTIVE])
+                    ->one();
                 $arr = [
-                    'Sync' => false,
+                    'Sync' => true,
                     'status' => 0,
-                    'message' => "error"
+                    'message' => $content->content
                 ];
             }else{
                 $arr = [
@@ -156,10 +159,13 @@ class MoMtController extends Controller
             $momt->mt_template_id = $mtTemplate->id;
             $momt->save();
         } else {
+            /** @var  $content MtTemplate */
+            $content = MtTemplate::find()->andWhere(['mo_key'=>'ERRORCODE'])->andWhere(['status' => MtTemplate::STATUS_ACTIVE])
+                ->one();
             $arr = [
-                'Sync' => false,
+                'Sync' => true,
                 'status' => 0,
-                'message' => "error"
+                'message' => $content->content
             ];
         }
         header('Content-type: application/json');
