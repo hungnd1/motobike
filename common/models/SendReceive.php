@@ -29,6 +29,10 @@ class SendReceive extends \yii\db\ActiveRecord
     }
 
     public $mt_template_id;
+    public $import;
+    public $input;
+    public $errorFile;
+    public $fileUpload;
 
     /**
      * @inheritdoc
@@ -37,10 +41,12 @@ class SendReceive extends \yii\db\ActiveRecord
     {
         return [
             [['from'], 'required'],
-            [['text'], 'string'],
+            [['text','import','input'], 'string'],
             [['created_at', 'updated_at', 'status', 'error_code','mt_template_id'], 'integer'],
             [['from'], 'string', 'max' => 500],
             [['to', 'carrier', 'description'], 'string', 'max' => 255],
+            [['fileUpload'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xlsx,csv', 'maxFiles' => 1],
+            [['errorFile'], 'safe'],
         ];
     }
 
@@ -60,7 +66,12 @@ class SendReceive extends \yii\db\ActiveRecord
             'carrier' => 'Carrier',
             'error_code' => 'Error Code',
             'description' => 'Description',
-            'mt_template_id' => 'Mẫu tin nhắn'
+            'mt_template_id' => 'Mẫu tin nhắn',
+            'fileUpload'=>'File import'
         ];
+    }
+
+    public static function getTemplateFilePrice() {
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/templateImport.xlsx';
     }
 }

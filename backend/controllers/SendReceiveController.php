@@ -5,12 +5,14 @@ namespace backend\controllers;
 use api\helpers\APIHelper;
 use common\helpers\CUtils;
 use common\models\MtTemplate;
+use PHPExcel_IOFactory;
 use Yii;
 use common\models\SendReceive;
 use common\models\SendReceiveSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * SendReceiveController implements the CRUD actions for SendReceive model.
@@ -68,49 +70,105 @@ class SendReceiveController extends Controller
     {
         $model = new SendReceive();
         if ($model->load(Yii::$app->request->post())) {
-            $lstTo = $model->to;
-            $lstPhone = explode(",",$model->to);
             $mtTem = MtTemplate::findOne($model->mt_template_id)->content;
-            if(sizeof($lstPhone)>= 1){
-                for($i=0; $i < sizeof($lstPhone); $i++ ){
-                    $phoneNumber = CUtils::validateMobile($lstPhone[$i]);
-                    if($phoneNumber){
-                        $model->to = $phoneNumber;
-                    }else{
-                        $model->to = $lstPhone[$i];
-                    }
-                    $model->from = Yii::$app->params['brandName'];
-                    $model->text = $mtTem;
-                    $model->created_at = time();
-                    $model->updated_at = time();
-                    $model->save(false);
+            if ($model->import == 1) {
+                $lstTo = $model->to;
+                $lstPhone = explode(",", $model->to);
+                if (sizeof($lstPhone) >= 1) {
+                    for ($i = 0; $i < sizeof($lstPhone); $i++) {
+                        $phoneNumber = CUtils::validateMobile($lstPhone[$i]);
+                        if ($phoneNumber) {
+                            $model->to = $phoneNumber;
+                        } else {
+                            $model->to = $lstPhone[$i];
+                        }
+                        $model->from = Yii::$app->params['brandName'];
+                        $model->text = $mtTem;
+                        $model->created_at = time();
+                        $model->updated_at = time();
+                        $model->save(false);
 //                    $data = array(['from'=>Yii::$app->params['brandName'],'to'=>$phoneNumber,'text'=>$mtTem]);
-                    $data = '
+                        $data = '
                     {
-                      "from": "' . Yii::$app->params['brandName'].'",
+                      "from": "' . Yii::$app->params['brandName'] . '",
                       "to": "' . $phoneNumber . '",
                       "text": "' . $mtTem . '"
                      }';
-                    $result = APIHelper::apiQueryV1("POST",Yii::$app->params['urlSms'],$data,Yii::$app->params['Authorization']);
-                    if(isset($result)){
-                        $arr = json_decode($result,true);
-                        if($arr['status'] == 1){
-                            $arr = json_decode($result,true);
-                            $model->status = $arr['status'];
-                            $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
-                        }else{
-                            $model->status = $arr['status'];
-                            $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
-                            $model->error_code = $arr['errorcode'];
-                            $model->description = $arr['description'];
+                        $result = APIHelper::apiQueryV1("POST", Yii::$app->params['urlSms'], $data, Yii::$app->params['Authorization']);
+                        if (isset($result)) {
+                            $arr = json_decode($result, true);
+                            if ($arr['status'] == 1) {
+                                $arr = json_decode($result, true);
+                                $model->status = $arr['status'];
+                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                            } else {
+                                $model->status = $arr['status'];
+                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                $model->error_code = $arr['errorcode'];
+                                $model->description = $arr['description'];
+                            }
+                            $model->save();
                         }
-                        $model->save();
                     }
                 }
+                $model->to = $lstTo;
+            } else {
+                $file = UploadedFile::getInstance($model, 'fileUpload');
+                if ($file) {
+                    $file_name = uniqid() . time() . '.' . $file->extension;
+                    if ($file->saveAs(Yii::getAlias('@webroot') . "/" . Yii::getAlias('@excel_folder') . "/" . $file_name)) {
+                        $objPHPExcel = PHPExcel_IOFactory::load(Yii::getAlias('@excel_folder') . "/" . $file_name);
+                        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+                        $first = 0;
+                        if (sizeof($sheetData) > 0) {
+                            foreach ($sheetData as $row) {
+                                if ($first > 1) {
+                                    $phoneNumber = trim($row['A']);
+                                    $phoneNumber = CUtils::validateMobile($phoneNumber);
+                                    if ($phoneNumber) {
+                                        $model->to = $phoneNumber;
+                                        $model->from = Yii::$app->params['brandName'];
+                                        $model->text = $mtTem;
+                                        $model->created_at = time();
+                                        $model->updated_at = time();
+                                        $model->save(false);
+                                        $data = '
+                                        {
+                                          "from": "' . Yii::$app->params['brandName'] . '",
+                                          "to": "' . $phoneNumber . '",
+                                          "text": "' . $mtTem . '"
+                                         }';
+                                        $result = APIHelper::apiQueryV1("POST", Yii::$app->params['urlSms'], $data, Yii::$app->params['Authorization']);
+                                        if (isset($result)) {
+                                            $arr = json_decode($result, true);
+                                            if ($arr['status'] == 1) {
+                                                $arr = json_decode($result, true);
+                                                $model->status = $arr['status'];
+                                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                            } else {
+                                                $model->status = $arr['status'];
+                                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                                $model->error_code = $arr['errorcode'];
+                                                $model->description = $arr['description'];
+                                            }
+                                            $model->save();
+                                        }
+                                    }
+                                }
+                                $first++;
+                            }
+                        }
+                    }
+                } else {
+                    Yii::$app->getSession()->setFlash('error', Yii::t("app", "Có lỗi xảy ra trong quá trình import. Vui lòng thử lại"));
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+
             }
-            $model->to = $lstTo;
             $model->isNewRecord = true;
-            Yii::$app->session->setFlash('success','Gửi tin nhắn thành công');
+            Yii::$app->session->setFlash('success', 'Gửi tin nhắn thành công');
             return $this->render('create', [
                 'model' => $model,
             ]);
