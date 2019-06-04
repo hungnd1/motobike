@@ -76,17 +76,18 @@ class SendReceiveController extends Controller
                 $lstPhone = explode(",", $model->to);
                 if (sizeof($lstPhone) >= 1) {
                     for ($i = 0; $i < sizeof($lstPhone); $i++) {
+                        $modelNew = new SendReceive();
                         $phoneNumber = CUtils::validateMobile($lstPhone[$i]);
                         if ($phoneNumber) {
-                            $model->to = $phoneNumber;
+                            $modelNew->to = $phoneNumber;
                         } else {
-                            $model->to = $lstPhone[$i];
+                            $modelNew->to = $lstPhone[$i];
                         }
-                        $model->from = Yii::$app->params['brandName'];
-                        $model->text = $mtTem;
-                        $model->created_at = time();
-                        $model->updated_at = time();
-                        $model->save(false);
+                        $modelNew->from = Yii::$app->params['brandName'];
+                        $modelNew->text = $mtTem;
+                        $modelNew->created_at = time();
+                        $modelNew->updated_at = time();
+                        $modelNew->save(false);
 //                    $data = array(['from'=>Yii::$app->params['brandName'],'to'=>$phoneNumber,'text'=>$mtTem]);
                         $data = '
                     {
@@ -99,15 +100,15 @@ class SendReceiveController extends Controller
                             $arr = json_decode($result, true);
                             if ($arr['status'] == 1) {
                                 $arr = json_decode($result, true);
-                                $model->status = $arr['status'];
-                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                $modelNew->status = $arr['status'];
+                                $modelNew->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
                             } else {
-                                $model->status = $arr['status'];
-                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
-                                $model->error_code = $arr['errorcode'];
-                                $model->description = $arr['description'];
+                                $modelNew->status = $arr['status'];
+                                $modelNew->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                $modelNew->error_code = $arr['errorcode'];
+                                $modelNew->description = $arr['description'];
                             }
-                            $model->save();
+                            $modelNew->save();
                         }
                     }
                 }
@@ -123,15 +124,16 @@ class SendReceiveController extends Controller
                         if (sizeof($sheetData) > 0) {
                             foreach ($sheetData as $row) {
                                 if ($first > 1) {
+                                    $modelNew = new SendReceive();
                                     $phoneNumber = trim($row['A']);
                                     $phoneNumber = CUtils::validateMobile($phoneNumber);
                                     if ($phoneNumber) {
-                                        $model->to = $phoneNumber;
-                                        $model->from = Yii::$app->params['brandName'];
-                                        $model->text = $mtTem;
-                                        $model->created_at = time();
-                                        $model->updated_at = time();
-                                        $model->save(false);
+                                        $modelNew->to = $phoneNumber;
+                                        $modelNew->from = Yii::$app->params['brandName'];
+                                        $modelNew->text = $mtTem;
+                                        $modelNew->created_at = time();
+                                        $modelNew->updated_at = time();
+                                        $modelNew->save(false);
                                         $data = '
                                         {
                                           "from": "' . Yii::$app->params['brandName'] . '",
@@ -143,15 +145,15 @@ class SendReceiveController extends Controller
                                             $arr = json_decode($result, true);
                                             if ($arr['status'] == 1) {
                                                 $arr = json_decode($result, true);
-                                                $model->status = $arr['status'];
-                                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                                $modelNew->status = $arr['status'];
+                                                $modelNew->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
                                             } else {
-                                                $model->status = $arr['status'];
-                                                $model->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
-                                                $model->error_code = $arr['errorcode'];
-                                                $model->description = $arr['description'];
+                                                $modelNew->status = $arr['status'];
+                                                $modelNew->carrier = isset($arr['carrier']) ? $arr['carrier'] : '';
+                                                $modelNew->error_code = $arr['errorcode'];
+                                                $modelNew->description = $arr['description'];
                                             }
-                                            $model->save();
+                                            $modelNew->save();
                                         }
                                     }
                                 }
