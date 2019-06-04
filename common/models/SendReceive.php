@@ -40,7 +40,6 @@ class SendReceive extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['from'], 'required'],
             [['text','import','input'], 'string'],
             [['created_at', 'updated_at', 'status', 'error_code','mt_template_id'], 'integer'],
             [['from'], 'string', 'max' => 500],
