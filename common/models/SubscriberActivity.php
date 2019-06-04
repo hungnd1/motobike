@@ -55,6 +55,8 @@ class SubscriberActivity extends \yii\db\ActiveRecord
     const ACTION_CLIMATE_CHANGE = 12;
     const ACTION_TU_VAN_SU_DUNG = 14;
 
+    const ACTION_RA_CERTIFICATION = 15;
+
     const STATUS_SUCCESS = 10;
     const STATUS_FAIL = 0;
 

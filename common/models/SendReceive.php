@@ -44,7 +44,7 @@ class SendReceive extends \yii\db\ActiveRecord
             [['text','import','input'], 'string'],
             [['created_at', 'updated_at', 'status', 'error_code','mt_template_id'], 'integer'],
             [['from'], 'string', 'max' => 500],
-            [['to', 'carrier', 'description'], 'string', 'max' => 255],
+            [['to', 'carrier', 'description'], 'string', 'max' => 500],
             [['fileUpload'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xlsx,csv', 'maxFiles' => 1],
             [['errorFile'], 'safe'],
         ];
