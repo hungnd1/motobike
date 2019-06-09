@@ -480,7 +480,28 @@ $arrlang = array();
                         ],
 
                     ]
+                ],
+                [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý RA Certification'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý danh mục RA'),
+                            'url' => ['category/index', 'type' => \common\models\Category::TYPE_RA],
+                            'require_auth' => true,
+                        ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh sách file RA'),
+                            'url' => ['file-manage/index'],
+                            'require_auth' => true,
+                        ],
 
+                    ]
                 ],
             ];
 

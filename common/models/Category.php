@@ -36,6 +36,7 @@ class Category extends \yii\db\ActiveRecord
     const TYPE_GAP_GOOD = 1;
     const TYPE_QA = 2;
     const TYPE_GAME = 3;
+    const TYPE_RA = 4;
 
     /**
      * @inheritdoc

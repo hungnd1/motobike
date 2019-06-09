@@ -18,6 +18,7 @@ use common\models\AppParam;
 use common\models\Category;
 use common\models\DeviceInfo;
 use common\models\DeviceSubscriberAsm;
+use common\models\FileManage;
 use common\models\Fruit;
 use common\models\GameMini;
 use common\models\GameMiniLog;
@@ -75,6 +76,7 @@ class AppController extends ApiController
             'get-category-pet',
             'check-login',
             'get-param',
+            'get-file-manage',
 
 //            'check-device-token',
 //            'get-price',
@@ -1062,5 +1064,19 @@ class AppController extends ApiController
             return $appParam;
         }
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
+
+    public function actionGetFileManage($category_id, $type)
+    {
+        $lstFile = \api\models\FileManage::find()
+            ->andWhere(['status' => FileManage::STATUS_ACTIVE])
+            ->andWhere(['category_id' => $category_id])
+            ->andWhere(['type' => $type])
+            ->orderBy(['id' => SORT_ASC]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $lstFile,
+            'pagination' => false,
+        ]);
+        return $dataProvider;
     }
 }
