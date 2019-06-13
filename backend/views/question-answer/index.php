@@ -51,7 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             /**
                              * @var $model \common\models\QuestionAnswer
                              */
-                            return CUtils::subString($model->question, 150, '...');
+                            return $model->question;
+//                           return CUtils::subString($model->question, 150, '...');
 
                         },
                     ],
@@ -64,7 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             /**
                              * @var $model \common\models\QuestionAnswer
                              */
-                            return CUtils::subString($model->answer, 250, '...');
+                            return $model->answer;
+//                            return CUtils::subString($model->answer, 250, '...');
 
                         },
                     ],
@@ -120,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => '{view} {update} {delete} {delete_image}',
                         'buttons' => [
                             'delete_image' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->urlManager->createUrl(['question-answer/remove','id' => $model->id]), [
+                                return Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->urlManager->createUrl(['question-answer/remove', 'id' => $model->id]), [
                                     'title' => '' . \Yii::t('app', 'Xóa ảnh'),
                                     'data-confirm' => Yii::t('app', 'Xóa ảnh này?'),
                                     'data-method' => 'post',
