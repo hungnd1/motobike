@@ -839,60 +839,6 @@ class SubscriberController extends ApiController
                    "file": "' . $base . '"                     
                     }';
         $result = APIHelper::apiQueryV1("POST", Yii::$app->params['urlMachine'], $data, null);
-        $result = '{
-    "result": [
-        {
-            "dislay": "lân ",
-            "id": "88",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb7996ef2ab61555536238.jpg"
-        },
-        {
-            "dislay": "lân",
-            "id": "251",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb84d1d916461555582237.png"
-        },
-        {
-            "dislay": "đạm ",
-            "id": "245",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb84bfedb8c11555581950.png"
-        },
-        {
-            "dislay": "đạm",
-            "id": "40",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb78f68c20b21555533672.jpg"
-        },
-        {
-            "dislay": "lân ",
-            "id": "86",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb79926dbddf1555536166.jpg"
-        },
-        {
-            "dislay": "lân",
-            "id": "53",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb792eaa1cc61555534570.jpg"
-        },
-        {
-            "dislay": "cháy lá do nhiệt độ cao ",
-            "id": "131",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb7cfea303a51555550186.jpg"
-        },
-        {
-            "dislay": "rệp sáp hại quả ",
-            "id": "217",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb84117a54691555579159.png"
-        },
-        {
-            "dislay": "thối nứt thân ",
-            "id": "165",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb82904dae7a1555572996.jpg"
-        },
-        {
-            "dislay": "can xi và kẽm",
-            "id": "81",
-            "name": "http://be.thongtincafe.online/static/news/16.5cb7986d950ad1555535981.jpg"
-        }
-    ]
-}';
         $arrId = [];
         if (isset($result)) {
             $arr = json_decode($result, true);
