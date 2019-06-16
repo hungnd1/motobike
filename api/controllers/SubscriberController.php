@@ -9,6 +9,7 @@
 namespace api\controllers;
 
 
+use api\helpers\APIHelper;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\Detail;
@@ -51,13 +52,13 @@ class SubscriberController extends ApiController
             'run',
             'reset-password',
             'transaction-buy',
-            'transaction-sold'
+            'transaction-sold',
 
 
 //            'get-list-exchange-sold',
 //            'get-list-exchange-buy',
 //            'get-list-dictionary',
-//            'question-upload',
+            'question-upload'
 //            'is-rating'
         ];
 
@@ -805,22 +806,22 @@ class SubscriberController extends ApiController
     {
 
         UserHelpers::manualLogin();
-        $question = $this->getParameterPost('question', null);
+//        $question = $this->getParameterPost('question', null);
         $base = $this->getParameterPost('image', '');
-        $group_id = $this->getParameterPost('group_id', 0);
-        $fruit_id = $this->getParameterPost('fruit_id', 0);
+//        $group_id = $this->getParameterPost('group_id', 0);
+//        $fruit_id = $this->getParameterPost('fruit_id', 0);
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
 
         if (!$base) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Ảnh')]));
         }
-        if (!$group_id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
-        }
-        if (!$fruit_id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'fruit_id')]));
-        }
+//        if (!$group_id) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'group_id')]));
+//        }
+//        if (!$fruit_id) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'fruit_id')]));
+//        }
         $file_name = '';
         if ($base) {
             $binary = base64_decode($base, true);
@@ -834,21 +835,98 @@ class SubscriberController extends ApiController
             fwrite($file, $binary);
             fclose($file);
         }
-        $questionUpload = new SubscriberDictionary();
-        $questionUpload->image = $file_name;
-        $questionUpload->subscriber = $subscriber->id;
-        $questionUpload->created_at = time();
-        $questionUpload->group_id = $group_id;
-        $questionUpload->content = $question;
-        if ($questionUpload->save(false)) {
-            return [
-                'message' => Yii::t('app', 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
-            ];
+        $data = '{
+                   "file": "' . $base . '"                     
+                    }';
+        $result = APIHelper::apiQueryV1("POST", Yii::$app->params['urlMachine'], $data, null);
+        $result = '{
+    "result": [
+        {
+            "dislay": "lân ",
+            "id": "88",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb7996ef2ab61555536238.jpg"
+        },
+        {
+            "dislay": "lân",
+            "id": "251",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb84d1d916461555582237.png"
+        },
+        {
+            "dislay": "đạm ",
+            "id": "245",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb84bfedb8c11555581950.png"
+        },
+        {
+            "dislay": "đạm",
+            "id": "40",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb78f68c20b21555533672.jpg"
+        },
+        {
+            "dislay": "lân ",
+            "id": "86",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb79926dbddf1555536166.jpg"
+        },
+        {
+            "dislay": "lân",
+            "id": "53",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb792eaa1cc61555534570.jpg"
+        },
+        {
+            "dislay": "cháy lá do nhiệt độ cao ",
+            "id": "131",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb7cfea303a51555550186.jpg"
+        },
+        {
+            "dislay": "rệp sáp hại quả ",
+            "id": "217",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb84117a54691555579159.png"
+        },
+        {
+            "dislay": "thối nứt thân ",
+            "id": "165",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb82904dae7a1555572996.jpg"
+        },
+        {
+            "dislay": "can xi và kẽm",
+            "id": "81",
+            "name": "http://be.thongtincafe.online/static/news/16.5cb7986d950ad1555535981.jpg"
         }
-        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    ]
+}';
+        $arrId = [];
+        if (isset($result)) {
+            $arr = json_decode($result, true);
+            for ($i = 0; $i < sizeof($arr['result']); $i++) {
+                array_push($arrId, (int)$arr['result'][$i]['id']);
+            }
+        }
+
+        $query = Detail::find()
+            ->andWhere(['status' => Detail::STATUS_ACTIVE])
+//            ->andWhere(['group_id' => $group_id])
+            ->andWhere(['IN', 'ID', $arrId]);
+//            ->orderBy(new Expression("rand()"))->limit(9);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false
+        ]);
+        return $dataProvider;
+
+//        $questionUpload = new SubscriberDictionary();
+//        $questionUpload->image = $file_name;
+//        $questionUpload->subscriber = $subscriber->id;
+//        $questionUpload->created_at = time();
+//        $questionUpload->group_id = $group_id;
+//        $questionUpload->content = $question;
+//        if ($questionUpload->save(false)) {
+//            return [
+//                'message' => Yii::t('app', 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
+//            ];
+//        }
+//        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGetListDictionary($group_id, $fruit_id,$feature_id)
+    public function actionGetListDictionary($group_id, $fruit_id, $feature_id)
     {
         UserHelpers::manualLogin();
         $query = Detail::find()
