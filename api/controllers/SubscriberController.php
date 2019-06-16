@@ -839,6 +839,7 @@ class SubscriberController extends ApiController
                    "file": "' . $base . '"                     
                     }';
         $result = APIHelper::apiQueryV1("POST", Yii::$app->params['urlMachine'], $data, null);
+        Yii::info("result",$result);
         $arrId = [];
         if (isset($result)) {
             $arr = json_decode($result, true);
