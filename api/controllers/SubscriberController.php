@@ -839,6 +839,8 @@ class SubscriberController extends ApiController
                    "file": "' . $base . '"                     
                     }';
         $data = str_replace("\r\n",'', $data);
+        $data = str_replace("\n",'', $data);
+        $data = str_replace("\r",'', $data);
         $result = APIHelper::apiQueryV1("POST", Yii::$app->params['urlMachine'], $data, null);
         Yii::info("result",$result);
         $arrId = [];
