@@ -111,6 +111,7 @@ class AppParamController extends Controller
             }
 
             $model->updated_at = time();
+            $model->save();
             Yii::$app->session->setFlash('success', 'Cập nhật thành công');
             return $this->redirect(['index']);
         } else {

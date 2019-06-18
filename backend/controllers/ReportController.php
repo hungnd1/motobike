@@ -198,7 +198,8 @@ class ReportController extends Controller
     }
 
     public function actionSubscriberAction(){
-
+        ini_set('memory_limit', '-1');
+        ini_set('MAX_EXECUTION_TIME', '-1');
         $param = Yii::$app->request->queryParams;
         $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
         $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');

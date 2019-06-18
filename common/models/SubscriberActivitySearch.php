@@ -82,10 +82,10 @@ class SubscriberActivitySearch extends SubscriberActivity
 //        }
 
         if ($this->from_date) {
-            $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
+            $query->andWhere(['>=', 'created_at', $this->from_date]);
         }
         if ($this->to_date) {
-            $query->andFilterWhere(['<=', 'created_at', $this->to_date]);
+            $query->andWhere(['<=', 'created_at', $this->to_date]);
         }
 
         return $dataProvider;
@@ -133,12 +133,11 @@ class SubscriberActivitySearch extends SubscriberActivity
 //        }
 
         if ($this->from_date) {
-            $query->andFilterWhere(['>=', 'created_at', $this->from_date]);
+            $query->andWhere(['>=', 'created_at', $this->from_date]);
         }
         if ($this->to_date) {
-            $query->andFilterWhere(['<=', 'created_at', $this->to_date]);
+            $query->andWhere(['<=', 'created_at', $this->to_date]);
         }
-
         return $dataProvider;
     }
 }
