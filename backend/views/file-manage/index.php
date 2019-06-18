@@ -45,7 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 /** @var $model \common\models\FileManage */
                                 /** @var  $cate \common\models\Category*/
                                 $cate = \common\models\Category::find()->andWhere(['type' => \common\models\Category::TYPE_RA])->andWhere(['id'=>$model->category_id])->one();;
-                                return $cate->display_name;
+                                if($cate){
+                                    return $cate->display_name;
+                                }else{
+                                    return '';
+                                }
                             }
                         ],
                         [
