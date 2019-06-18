@@ -202,8 +202,7 @@ class ReportController extends Controller
         ini_set('MAX_EXECUTION_TIME', '-1');
         $param = Yii::$app->request->queryParams;
         $to_date_default = (new DateTime('now'))->setTime(23, 59, 59)->format('d/m/Y');
-        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-100 days')->format('d/m/Y');
-
+        $from_date_default = (new DateTime('now'))->setTime(0, 0)->modify('-30 days')->format('d/m/Y');
         $from_date = isset($param['ReportSubscriberAction']['from_date']) ? $param['ReportSubscriberAction']['from_date'] : $from_date_default;
         $to_date = isset($param['ReportSubscriberAction']['to_date']) ? $param['ReportSubscriberAction']['to_date'] : $to_date_default;
 

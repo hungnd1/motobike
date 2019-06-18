@@ -87,6 +87,8 @@ class SubscriberActivitySearch extends SubscriberActivity
         if ($this->to_date) {
             $query->andWhere(['<=', 'created_at', $this->to_date]);
         }
+        $query->limit(10000);
+
 
         return $dataProvider;
     }
@@ -137,7 +139,9 @@ class SubscriberActivitySearch extends SubscriberActivity
         }
         if ($this->to_date) {
             $query->andWhere(['<=', 'created_at', $this->to_date]);
+
         }
+        $query->limit(10000);
         return $dataProvider;
     }
 }
