@@ -72,5 +72,5 @@ return [
     "Authorization" => "Basic b21paHViczp5eVlzbVZ4aA==",
     'brandName' => '901800836',
     'urlSms' => 'http://api-02.worldsms.vn/webapi/sendSMS',
-    'urlMachine' => 'http://45.32.112.173:5000/predict'
+    'urlMachine' => 'http://45.119.80.39:5000/predict'
 ];
