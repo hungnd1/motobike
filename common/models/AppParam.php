@@ -11,6 +11,7 @@ use Yii;
  * @property string $param_key
  * @property string $param_value
  * @property string $content
+ * @property string $content_en
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -36,7 +37,7 @@ class AppParam extends \yii\db\ActiveRecord
     {
         return [
             [['param_key','param_value'], 'required'],
-            [['param_value', 'content'], 'string'],
+            [['param_value', 'content','content_en'], 'string'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['param_key'], 'string', 'max' => 255],
         ];
@@ -55,6 +56,7 @@ class AppParam extends \yii\db\ActiveRecord
             'status' => 'Trạng thái',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'content_en' => 'Nội dung tiếng anh'
         ];
     }
 

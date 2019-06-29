@@ -47,6 +47,15 @@ $this->registerJs($js, View::POS_END);
     </div>
     <div class="row">
         <div class="col-md-12">
+            <?php echo $form->field($model, 'content_en')->widget(\common\widgets\CKEditor::className(), [
+                'options' => ['rows' => 8],
+                'preset' => 'full'
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <?= $form->field($model, 'status')->dropDownList(
                 \common\models\AppParam::listStatus(), ['class' => 'input-circle']
             ) ?>
