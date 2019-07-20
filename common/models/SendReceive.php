@@ -69,7 +69,6 @@ class SendReceive extends \yii\db\ActiveRecord
             'fileUpload'=>'File import'
         ];
     }
-
     public static function getTemplateFilePrice() {
         return Yii::$app->getUrlManager()->getBaseUrl() . '/templateImport.xlsx';
     }
