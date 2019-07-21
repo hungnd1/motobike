@@ -58,7 +58,8 @@ class CompanyController extends ApiController
     {
         return [
             'login' => ['POST'],
-            'upload-company' => ['POST']
+            'upload-company' => ['POST'],
+            'get-list-farmer' => ['GET']
         ];
     }
 
