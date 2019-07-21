@@ -22,7 +22,7 @@ class Company extends \common\models\Company
         $fields = parent::fields();
         $fields['file'] = function ($model) {
             /* @var $model \common\models\Company */
-            if($model->image){
+            if($model->file){
                 return $model->getImageLink();
             }
             return '';
