@@ -48,7 +48,6 @@ class CompanyController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'login'
         ];
 
         return $behaviors;
@@ -57,12 +56,14 @@ class CompanyController extends ApiController
     protected function verbs()
     {
         return [
-            'login' => ['POST']
+            'login' => ['POST'],
+            'upload-company' => ['POST']
         ];
     }
 
     public function actionLogin()
     {
+        UserHelpers::manualLogin();
         $username = trim($this->getParameterPost('username', ''));
         $password = trim($this->getParameterPost('password', ''));
         if (!$username) {
@@ -73,13 +74,76 @@ class CompanyController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mật khẩu')]));
         }
 
-        /** @var  $company Company*/
-        $company = Company::find()->andWhere(['username'=>$username])->andWhere(['password'=>$password])->one();
-        if(!$company){
+        /** @var  $company Company */
+        $company = Company::find()->andWhere(['username' => $username])->andWhere(['password' => $password])->one();
+        if (!$company) {
             throw new ServerErrorHttpException("Tài khoản hoặc mật khẩu của bạn không chính xác");
         }
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $company->id
         ];
+    }
+
+    public function actionUploadCompany()
+    {
+        UserHelpers::manualLogin();
+
+        $id = $this->getParameterPost('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id công ty')]));
+        }
+        $fileBase64 = $this->getParameterPost('file', '');
+        $congTy = $this->getParameterPost('ten', '');
+        $diachi = $this->getParameterPost('dia_chi', '');
+        $kinhdoanh = $this->getParameterPost('kinh_doanh', '');
+        $sanpham = $this->getParameterPost('san_pham', '');
+        $dientich = $this->getParameterPost('dien_tich', '');
+        $website = $this->getParameterPost('website', '');
+        $extension = $this->getParameterPost('extension', '');
+        /** @var  $company Company */
+        $company = Company::find()->andWhere(['id'=>$id])->one();
+        if(!$company){
+            throw new ServerErrorHttpException("Tài khoản hoặc mật khẩu của bạn không chính xác");
+        }
+        $arr = array(
+            'ten' => $congTy,
+            'diachi' => $diachi,
+            'kinhdoanh' => $kinhdoanh,
+            'sanpham' => $sanpham,
+            'dientich' => $dientich,
+            'website' => $website
+        );
+        $company->description = json_encode($arr);
+        if ($fileBase64) {
+            $binary = base64_decode($fileBase64, true);
+            $url = Yii::getAlias('@company') . DIRECTORY_SEPARATOR;
+            $file_name = Yii::$app->user->id . '.' . uniqid() . time() . $extension;
+            if (!file_exists($url)) {
+                mkdir($url, 0777, true);
+            }
+            file_put_contents($url . $file_name, $binary);
+            $file = fopen($url . $file_name, 'wb');
+            fwrite($file, $binary);
+            fclose($file);
+            $company->file = $file_name;
+        }
+        if(!$company->save()){
+            throw new ServerErrorHttpException("Lưu thông tin công ty thất bại");
+        }
+        return ['message' => "Lưu thông tin thành công",
+            'id' => $company->id
+        ];
+    }
+
+    public function actionGetCompany($id){
+        UserHelpers::manualLogin();
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id công ty')]));
+        }
+        $company = \api\models\Company::find()->andWhere(['id'=>$id])->one();
+        if(!$company){
+            throw new ServerErrorHttpException("Tài khoản hoặc mật khẩu của bạn không chính xác");
+        }
+        return $company;
     }
 }

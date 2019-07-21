@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "company".
@@ -12,6 +13,7 @@ use Yii;
  * @property string $password
  * @property string $file_company_file
  * @property string $file
+ * @property string $description
  * @property integer $status
  */
 class Company extends \yii\db\ActiveRecord
@@ -38,6 +40,7 @@ class Company extends \yii\db\ActiveRecord
             [['username','password','file'],'required'],
             [['username'], 'string', 'max' => 255],
             [['password', 'file','file_company_file'], 'string', 'max' => 500],
+            [['description'],'string']
         ];
     }
 
@@ -80,5 +83,11 @@ class Company extends \yii\db\ActiveRecord
 
     public static function getTemplateFile() {
         return Yii::$app->getUrlManager()->getBaseUrl() . '/DS nong dan_VN.xlsx';
+    }
+
+    public function getImageLink()
+    {
+        return $this->file ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->file, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }

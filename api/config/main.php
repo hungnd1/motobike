@@ -15,6 +15,7 @@ return [
     'aliases' => [
         '@question' => 'staticdata/question',
         '@avatar' => 'staticdata/avatar',
+        '@company' => 'static/news'
 //        '@content_images' =>'content_images',
 //        '@ads_images' => 'sp/web/content_images',
 //        '@cat_image' => 'news',
