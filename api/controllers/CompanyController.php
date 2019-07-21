@@ -18,6 +18,7 @@ use api\models\ExchangeBuy;
 use api\models\Service;
 use common\helpers\CUtils;
 use common\models\Company;
+use common\models\CompanyProfile;
 use common\models\Feedback;
 use common\models\IsRating;
 use common\models\PriceCoffee;
@@ -101,8 +102,8 @@ class CompanyController extends ApiController
         $website = $this->getParameterPost('website', '');
         $extension = $this->getParameterPost('extension', '');
         /** @var  $company Company */
-        $company = Company::find()->andWhere(['id'=>$id])->one();
-        if(!$company){
+        $company = Company::find()->andWhere(['id' => $id])->one();
+        if (!$company) {
             throw new ServerErrorHttpException("Tài khoản hoặc mật khẩu của bạn không chính xác");
         }
         $arr = array(
@@ -127,7 +128,7 @@ class CompanyController extends ApiController
             fclose($file);
             $company->file = $file_name;
         }
-        if(!$company->save()){
+        if (!$company->save()) {
             throw new ServerErrorHttpException("Lưu thông tin công ty thất bại");
         }
         return ['message' => "Lưu thông tin thành công",
@@ -135,15 +136,34 @@ class CompanyController extends ApiController
         ];
     }
 
-    public function actionGetCompany($id){
+    public function actionGetCompany($id)
+    {
         UserHelpers::manualLogin();
         if (!$id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id công ty')]));
         }
-        $company = \api\models\Company::find()->andWhere(['id'=>$id])->one();
-        if(!$company){
+        $company = \api\models\Company::find()->andWhere(['id' => $id])->one();
+        if (!$company) {
             throw new ServerErrorHttpException("Tài khoản hoặc mật khẩu của bạn không chính xác");
         }
         return $company;
+    }
+
+    public function actionGetListFarmer($id)
+    {
+        UserHelpers::manualLogin();
+        $query = CompanyProfile::find()
+            ->andWhere(['id_company' => $id])
+            ->andWhere('kinh_do_gps is not null')
+            ->andWhere('kinh_do_gps is not null');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+            'sort' => [
+                'defaultOrder' => ['ma' => SORT_ASC],
+            ],
+        ]);
+        return $dataProvider;
+
     }
 }
