@@ -59,7 +59,8 @@ class CompanyController extends ApiController
         return [
             'login' => ['POST'],
             'upload-company' => ['POST'],
-            'get-list-farmer' => ['GET']
+            'get-list-farmer' => ['GET'],
+            'search' => ['GET']
         ];
     }
 
@@ -166,5 +167,27 @@ class CompanyController extends ApiController
         ]);
         return $dataProvider;
 
+    }
+
+    public function actionSearch($keyword = '', $id)
+    {
+        UserHelpers::manualLogin();
+        $query = CompanyProfile::find()
+            ->andWhere(['id_company' => $id])
+            ->andWhere('kinh_do_gps is not null')
+            ->andWhere('kinh_do_gps is not null')
+            ->andWhere(['id_number'=>$keyword]);
+        $defaultSort = ['id_number' => SORT_ASC];
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSizeLimit' => [1, 1000],
+            ],
+            'sort' => [
+                'defaultOrder' => $defaultSort,
+            ],
+        ]);
+        return $dataProvider;
     }
 }
