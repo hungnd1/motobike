@@ -22,11 +22,12 @@ class CompanyProfile extends \common\models\CompanyProfile
         $fields = parent::fields();
         $fields['ho_ten'] = function ($model) {
             /* @var $model \common\models\CompanyProfile */
-                return $model->ho + " " + $model->ten;
+
+                return ($model->ho . " " . $model->ten);
         };
         $fields['dia_chi'] = function ($model) {
             /* @var $model \common\models\CompanyProfile */
-                return $model->thon_lang + " - " + $model->huyen ? $model->huyen : " Đang câp nhậpt" + $model->thanh_pho ? $model->thanh_pho : " Đang câp nhậpt";
+                return ($model->thon_lang . " - " . $model->huyen ? $model->huyen : " Đang câp nhật" . $model->thanh_pho ? $model->thanh_pho : " Đang câp nhật");
         };
 
 
