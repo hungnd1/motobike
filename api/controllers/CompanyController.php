@@ -154,7 +154,7 @@ class CompanyController extends ApiController
     public function actionGetListFarmer($id)
     {
         UserHelpers::manualLogin();
-        $query = CompanyProfile::find()
+        $query = \api\models\CompanyProfile::find()
             ->andWhere(['id_company' => $id])
             ->andWhere('kinh_do_gps is not null')
             ->andWhere('kinh_do_gps is not null');
@@ -172,9 +172,9 @@ class CompanyController extends ApiController
     public function actionSearch($keyword = '', $id)
     {
         UserHelpers::manualLogin();
-        $query = CompanyProfile::find()
+        $query = \api\models\CompanyProfile::find()
             ->andWhere(['id_company' => $id])
-            ->andWhere('kinh_do_gps is not null')
+            ->andWhere('vi_do_gps is not null')
             ->andWhere('kinh_do_gps is not null')
             ->andWhere(['id_number'=>$keyword]);
         $defaultSort = ['id_number' => SORT_ASC];
