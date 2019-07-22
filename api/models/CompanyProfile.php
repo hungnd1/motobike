@@ -27,7 +27,7 @@ class CompanyProfile extends \common\models\CompanyProfile
         };
         $fields['dia_chi'] = function ($model) {
             /* @var $model \common\models\CompanyProfile */
-                return ($model->thon_lang . " - " . $model->huyen ? $model->huyen : " Đang câp nhật" . $model->thanh_pho ? $model->thanh_pho : " Đang câp nhật");
+                return $model->thon_lang . " - " . ($model->huyen ? $model->huyen : " Đang câp nhật") ." - " . ($model->thanh_pho ? $model->thanh_pho : " Đang câp nhật");
         };
 
 
