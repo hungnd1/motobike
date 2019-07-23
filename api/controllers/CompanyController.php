@@ -237,4 +237,17 @@ class CompanyController extends ApiController
         ]);
         return $dataProvider;
     }
+
+    public function actionDetailQuestion()
+    {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $question = CompanyQa::findOne([$id]);
+        if ($question) {
+            return $question;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
 }
