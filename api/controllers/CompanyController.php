@@ -19,6 +19,7 @@ use api\models\Service;
 use common\helpers\CUtils;
 use common\models\Company;
 use common\models\CompanyProfile;
+use api\models\CompanyQa;
 use common\models\Feedback;
 use common\models\IsRating;
 use common\models\PriceCoffee;
@@ -183,6 +184,52 @@ class CompanyController extends ApiController
             'query' => $query,
             'pagination' => [
                 'pageSizeLimit' => [1, 1000],
+            ],
+            'sort' => [
+                'defaultOrder' => $defaultSort,
+            ],
+        ]);
+        return $dataProvider;
+    }
+
+    public function actionGetListQuestionAnswer($id)
+    {
+        UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id công ty')]));
+        }
+
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+        $query = CompanyQa::find()->andWhere(['company_id'=>$id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
+        ]);
+        return $dataProvider;
+
+    }
+
+    public function actionQuestionSearch($keyword = '', $id)
+    {
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id công ty')]));
+        }
+
+        $query = CompanyQa::find()->andWhere(['like', 'lower(question)', strtolower($keyword)])
+            ->orWhere(['like', 'lower(answer)', strtolower($keyword)]);
+        $defaultSort = ['created_at' => SORT_DESC];
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
             ],
             'sort' => [
                 'defaultOrder' => $defaultSort,
