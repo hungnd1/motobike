@@ -17,6 +17,14 @@ class CompanyQA extends \common\models\CompanyQa
     {
         $fields = parent::fields();
 
+        $fields['image'] = function ($model) {
+            /* @var $model \common\models\CompanyQa */
+            if($model->image){
+                return $model->getImageLink();
+            }
+            return '';
+        };
+
         $fields['subscriber_name'] = function ($model) {
             /* @var $model \common\models\CompanyQa */
             /** @var  $companyProfile CompanyProfile */

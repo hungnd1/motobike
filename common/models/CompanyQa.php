@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "company_qa".
@@ -10,6 +11,7 @@ use Yii;
  * @property integer $id
  * @property string $question
  * @property string $answer
+ * @property string $image
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $status
@@ -32,7 +34,7 @@ class CompanyQa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question', 'answer'], 'string'],
+            [['question', 'answer','image'], 'string'],
             [['created_at', 'updated_at', 'status', 'company_id', 'farmer_id'], 'integer'],
         ];
     }
@@ -52,5 +54,11 @@ class CompanyQa extends \yii\db\ActiveRecord
             'company_id' => 'Company ID',
             'farmer_id' => 'Farmer ID',
         ];
+    }
+
+    public function getImageLink()
+    {
+        return $this->image ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@question') . DIRECTORY_SEPARATOR . $this->image, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }

@@ -61,6 +61,7 @@ class CompanyController extends ApiController
             'login' => ['POST'],
             'upload-company' => ['POST'],
             'get-list-farmer' => ['GET'],
+            'question-and-answer' => ['POST'],
             'search' => ['GET']
         ];
     }
@@ -247,6 +248,53 @@ class CompanyController extends ApiController
         $question = CompanyQa::findOne([$id]);
         if ($question) {
             return $question;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
+
+    public function actionQuestionAndAnswer()
+    {
+
+        UserHelpers::manualLogin();
+        $question = $this->getParameterPost('answer', null);
+        $id = $this->getParameterPost('id', null);
+        $base = $this->getParameterPost('image', '');
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id')]));
+        }
+        if (!$question) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
+        }
+        $file_name = '';
+        if ($base) {
+            $binary = base64_decode($base, true);
+            $url = Yii::getAlias('@question') . DIRECTORY_SEPARATOR;
+            $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
+            if (!file_exists($url)) {
+                mkdir($url, 0777, true);
+            }
+            file_put_contents($url . $file_name, $binary);
+            $file = fopen($url . $file_name, 'wb');
+            fwrite($file, $binary);
+            fclose($file);
+        }
+        /** @var  $companyQA \common\models\CompanyQa */
+        $companyQA = \common\models\CompanyQa::find()->andWhere(['id'=>$id])->one();
+        if(!$companyQA){
+            throw new ServerErrorHttpException(Yii::t('app', 'Không tồn tại câu hỏi'));
+        }
+        $companyQA->answer = $question;
+        $companyQA->image = $file_name;
+        $companyQA->updated_at = time();
+        $companyQA->status = Company::STATUS_ACTIVE;
+
+        if ($companyQA->save(false)) {
+//            shell_exec("/usr/bin/nohup  ./auto_answer.sh $question_answer->id > /dev/null 2>&1 &");
+            return [
+                'message' => Yii::t('app', 'Bạn đã trả lời câu hỏi thành công'),
+            ];
         }
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
