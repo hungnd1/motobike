@@ -11,7 +11,7 @@ namespace api\models;
 
 use common\models\Subscriber;
 
-class CompanyQA extends \common\models\CompanyQA
+class CompanyQA extends \common\models\CompanyQa
 {
     public function fields()
     {
