@@ -9,30 +9,12 @@
 namespace api\controllers;
 
 
-use api\helpers\APIHelper;
 use api\helpers\Message;
 use api\helpers\UserHelpers;
+use api\models\CompanyNews;
 use api\models\CompanyQA;
-use api\models\Detail;
-use api\models\Exchange;
-use api\models\ExchangeBuy;
-use api\models\Service;
-use common\helpers\CUtils;
 use common\models\Company;
-use common\models\CompanyProfile;
-use common\models\Feedback;
-use common\models\IsRating;
-use common\models\PriceCoffee;
-use common\models\Rating;
-use common\models\SiteApiCredential;
 use common\models\Subscriber;
-use common\models\SubscriberActivity;
-use common\models\SubscriberDictionary;
-use common\models\SubscriberServiceAsm;
-use common\models\SubscriberToken;
-use common\models\SubscriberTransaction;
-use DateTime;
-use Madcoda\Youtube\Constants;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\data\ActiveDataProvider;
@@ -62,7 +44,9 @@ class CompanyController extends ApiController
             'upload-company' => ['POST'],
             'get-list-farmer' => ['GET'],
             'question-and-answer' => ['POST'],
-            'search' => ['GET']
+            'search' => ['GET'],
+            'get-list-news' => ['GET'],
+            'detail-news' => ['GET']
         ];
     }
 
@@ -295,6 +279,54 @@ class CompanyController extends ApiController
             return [
                 'message' => Yii::t('app', 'Bạn đã trả lời câu hỏi thành công'),
             ];
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
+
+    public function actionGetListNews()
+    {
+        UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'ID công ty')]));
+        }
+        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
+//        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
+        if ($id) {
+            $query = CompanyNews::find()
+                ->andWhere(['status' => CompanyNews::STATUS_ACTIVE])
+                ->andWhere(['company_id' => (int)$id]);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+                'page' => $page
+            ],
+            'sort' => [
+                'defaultOrder' => ['order' => SORT_DESC],
+            ],
+        ]);
+        if ($query->one()) {
+            return $dataProvider;
+        } else {
+            throw new ServerErrorHttpException("Danh mục này đang được cập nhật nội dung!");
+        }
+
+    }
+
+    public function actionDetailNews()
+    {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $com = CompanyNews::findOne([$id]);
+        if ($com) {
+            return $com;
         }
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
