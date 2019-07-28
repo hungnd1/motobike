@@ -307,7 +307,7 @@ class CompanyController extends ApiController
                 'page' => $page
             ],
             'sort' => [
-                'defaultOrder' => ['order' => SORT_DESC],
+                'defaultOrder' => ['id' => SORT_DESC],
             ],
         ]);
         if ($query->one()) {
@@ -324,7 +324,7 @@ class CompanyController extends ApiController
         if (!$id) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
         }
-        $com = CompanyNews::findOne([$id]);
+        $com = \common\models\CompanyNews::findOne([$id]);
         if ($com) {
             return $com;
         }
