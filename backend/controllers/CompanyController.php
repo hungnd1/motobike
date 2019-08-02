@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use api\models\CompanyNews;
 use common\models\CompanyProfile;
 use PHPExcel_IOFactory;
 use Yii;
@@ -280,6 +281,12 @@ class CompanyController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        $company = CompanyProfile::find()
+            ->andWhere(['id_company'=>$id])->all();
+        foreach ($company as $item){
+            /** @var $item CompanyProfile */
+            $item->delete();
+        }
 
         Yii::$app->session->setFlash('success', 'Xóa công ty thành công');
 

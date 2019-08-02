@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'filterInputOptions' => ['placeholder' => "" . \Yii::t('app', 'Tất cả')],
                         ],
                         ['class' => 'kartik\grid\ActionColumn',
-                            'template' => '{update}',
+                            'template' => '{update} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute(['app-param/view', 'id' => $model->id]), [
@@ -86,15 +86,15 @@ $this->params['breadcrumbs'][] = $this->title;
 //                                        'title' => '' . \Yii::t('app', 'Cập nhật thông tin user'),
 //                                    ]);
 //                                },
-//                                'delete' => function ($url, $model) {
-////                        Nếu là chính nó thì không cho thay đổi trạng thái
-//                                    if ($model->id != Yii::$app->user->getId()) {
-//                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::toRoute(['user/delete', 'id' => $model->id]), [
-//                                            'title' => '' . \Yii::t('app', 'Xóa user'),
-//                                            'data-confirm' => Yii::t('app', 'Xóa người dùng này?')
-//                                        ]);
-//                                    }
-//                                }
+                                'delete' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>',
+                                        Yii::$app->urlManager->createUrl(['company/delete', 'id' => $model->id]), [
+                                            'title' => Yii::t('yii', 'Delete'),
+                                            'data-confirm' => Yii::t('app', 'Bạn có chắc chắn xóa nội dung này?'),
+                                            'data-method' => 'post',
+                                            'data-pjax' => '0',
+                                        ]);
+                                }
                             ]
                         ],
                     ],
