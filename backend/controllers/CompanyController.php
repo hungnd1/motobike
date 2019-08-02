@@ -67,7 +67,7 @@ class CompanyController extends Controller
     public function actionCreate()
     {
         $model = new Company();
-
+        $model->setScenario('admin_create_update');
         if ($model->load(Yii::$app->request->post())) {
             $existCompany = Company::find()->andWhere(['username'=>strtolower($model->username)])->one();
             if($existCompany){
@@ -175,7 +175,7 @@ class CompanyController extends Controller
             $existCompany = Company::find()->andWhere(['username'=>strtolower($model->username)])->andWhere(['<>','id',$model->id])->one();
             if($existCompany){
                 Yii::$app->session->setFlash('error',"Username công ty đã tồn tại");
-                return $this->render('create', [
+                return $this->render('update', [
                     'model' => $model,
                 ]);
             }

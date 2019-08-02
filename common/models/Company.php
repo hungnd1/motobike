@@ -37,7 +37,8 @@ class Company extends \yii\db\ActiveRecord
     {
         return [
             [['status'], 'integer'],
-            [['username','password','file'],'required'],
+            [['file'], 'required', 'on' => 'admin_create_update'],
+            [['username','password'],'required'],
             [['username'], 'string', 'max' => 255],
             [['password', 'file','file_company_file'], 'string', 'max' => 500],
             [['description'],'string']
