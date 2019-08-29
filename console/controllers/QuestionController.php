@@ -9,23 +9,11 @@
 namespace console\controllers;
 
 use api\helpers\APIHelper;
-use common\auth\helpers\AuthHelper;
 use common\helpers\CUtils;
 use common\helpers\FileUtils;
-use common\helpers\StringUtils;
-use common\models\AuthItem;
 use common\models\DeviceInfo;
-use common\models\DeviceSubscriberAsm;
-use common\models\Site;
-use common\models\User;
-use ReflectionClass;
 use Yii;
 use yii\console\Controller;
-use yii\console\Exception;
-use yii\helpers\StringHelper;
-use yii\helpers\VarDumper;
-use yii\rbac\DbManager;
-use yii\rbac\Item;
 use common\models\QuestionAnswer;
 
 /**

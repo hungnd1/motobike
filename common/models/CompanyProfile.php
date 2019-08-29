@@ -128,6 +128,6 @@ class CompanyProfile extends \yii\db\ActiveRecord
         ];
     }
     public static function getTemplateFilePrice() {
-        return Yii::$app->getUrlManager()->getBaseUrl() . '/DS nong dan_VN.xlsx';
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/DS nong dan (vi du).xlsx';
     }
 }
