@@ -162,8 +162,11 @@ class CompanyController extends ApiController
             ->andWhere(['id_company' => $id])
             ->andWhere('vi_do_gps is not null')
             ->andWhere('kinh_do_gps is not null')
-            ->andWhere(['id_number'=>$keyword]);
-        $defaultSort = ['id_number' => SORT_ASC];
+            ->andFilterWhere(['or',
+                ['like', 'cmnd', $keyword],
+                ['like', 'ten', $keyword]
+            ]);
+        $defaultSort = ['ten' => SORT_ASC];
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -186,7 +189,7 @@ class CompanyController extends ApiController
         }
 
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-        $query = CompanyQa::find()->andWhere(['company_id'=>$id]);
+        $query = CompanyQa::find()->andWhere(['company_id' => $id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -265,8 +268,8 @@ class CompanyController extends ApiController
             fclose($file);
         }
         /** @var  $companyQA \common\models\CompanyQa */
-        $companyQA = \common\models\CompanyQa::find()->andWhere(['id'=>$id])->one();
-        if(!$companyQA){
+        $companyQA = \common\models\CompanyQa::find()->andWhere(['id' => $id])->one();
+        if (!$companyQA) {
             throw new ServerErrorHttpException(Yii::t('app', 'Không tồn tại câu hỏi'));
         }
         $companyQA->answer = $question;
