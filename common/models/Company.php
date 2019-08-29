@@ -83,7 +83,7 @@ class Company extends \yii\db\ActiveRecord
     }
 
     public static function getTemplateFile() {
-        return Yii::$app->getUrlManager()->getBaseUrl() . '/DS nong dan_VN.xlsx';
+        return Yii::$app->getUrlManager()->getBaseUrl() . '/DS nong dan (vi du).xlsx';
     }
 
     public function getImageLink()
