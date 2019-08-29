@@ -68,7 +68,7 @@ class CompanyController extends Controller
     public function actionCreate()
     {
         $model = new Company();
-        $model->setScenario('admin_create_update');
+//        $model->setScenario('admin_create_update');
         if ($model->load(Yii::$app->request->post())) {
             $existCompany = Company::find()->andWhere(['username'=>strtolower($model->username)])->one();
             if($existCompany){
