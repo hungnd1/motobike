@@ -254,7 +254,7 @@ class CompanyController extends Controller
                                 $companyProfile->tong_so_vuon_ca_phe = $row['AN'];
                                 $companyProfile->tong_so_dien_tich_chung_nhan = $row['AO'];
                                 $companyProfile->tong_so_dien_tich_cac_vuon = $row['AP'];
-                                $companyProfile->id_number = $row['AQ'];
+//                                $companyProfile->id_number = $row['AQ'];
                                 $companyProfile->id_company = $model->id;
                                 $companyProfile->save(false);
                             }
