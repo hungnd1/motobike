@@ -22,7 +22,7 @@ use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use yii\web\ServerErrorHttpException;
 
-class CompanyController extends ApiController
+class FarmerController extends ApiController
 {
     public $serializer = [
         'class' => 'yii\rest\Serializer',
