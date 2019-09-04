@@ -59,7 +59,7 @@ class FarmerController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Mã code')]));
         }
         /** @var  $company CompanyProfile */
-        $company = Company::find()->andWhere(['cmnd' => $username])->one();
+        $company = CompanyProfile::find()->andWhere(['cmnd' => $username])->one();
         if (!$company) {
             throw new ServerErrorHttpException("Mã code của bạn không chính xác");
         }
