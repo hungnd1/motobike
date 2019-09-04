@@ -239,16 +239,17 @@ class FarmerController extends ApiController
     {
 
         UserHelpers::manualLogin();
-        $question = $this->getParameterPost('answer', null);
-        $id = $this->getParameterPost('id', null);
+        $question = $this->getParameterPost('question', null);
         $base = $this->getParameterPost('image', '');
+        $id = $this->getParameterPost('id',null);
         /** @var  $subscriber Subscriber */
         $subscriber = Yii::$app->user->identity;
-        if (!$id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Id')]));
-        }
+
         if (!$question) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu trả lời')]));
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Câu hỏi')]));
+        }
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Nông dân')]));
         }
         $file_name = '';
         if ($base) {
@@ -263,70 +264,22 @@ class FarmerController extends ApiController
             fwrite($file, $binary);
             fclose($file);
         }
-        /** @var  $companyQA \common\models\CompanyQa */
-        $companyQA = \common\models\CompanyQa::find()->andWhere(['id' => $id])->one();
-        if (!$companyQA) {
-            throw new ServerErrorHttpException(Yii::t('app', 'Không tồn tại câu hỏi'));
-        }
-        $companyQA->answer = $question;
-        $companyQA->image = $file_name;
-        $companyQA->updated_at = time();
-        $companyQA->status = Company::STATUS_ACTIVE;
-
-        if ($companyQA->save(false)) {
+        $companyQa = new \common\models\CompanyQa();
+        $companyQa->question = $question;
+        $companyQa->image = $file_name;
+        $companyQa->created_at = time();
+        $companyQa->farmer_id = $id;
+        $companyQa->company_id = CompanyProfile::find()->andWhere(['id'=>$id])->one()->id_company;
+//        $question_answer->updated_at = time();
+        $companyQa->status = Company::STATUS_INACTIVE;
+        $companyQa->updated_at = time();
+        if ($companyQa->save(false)) {
 //            shell_exec("/usr/bin/nohup  ./auto_answer.sh $question_answer->id > /dev/null 2>&1 &");
             return [
-                'message' => Yii::t('app', 'Bạn đã trả lời câu hỏi thành công'),
+                'message' => Yii::t('app', 'Bạn đã đặt câu hỏi thành công, hệ thống sẽ thông báo khi có câu trả lời'),
             ];
         }
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
-    public function actionGetListNews()
-    {
-        UserHelpers::manualLogin();
-        /** @var  $subscriber Subscriber */
-        $subscriber = Yii::$app->user->identity;
-        $id = $this->getParameter('id', '');
-        if (!$id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'ID công ty')]));
-        }
-        $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
-//        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
-        if ($id) {
-            $query = CompanyNews::find()
-                ->andWhere(['status' => CompanyNews::STATUS_ACTIVE])
-                ->andWhere(['company_id' => (int)$id]);
-        }
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 15,
-                'page' => $page
-            ],
-            'sort' => [
-                'defaultOrder' => ['id' => SORT_DESC],
-            ],
-        ]);
-        if ($query->one()) {
-            return $dataProvider;
-        } else {
-            throw new ServerErrorHttpException("Danh mục này đang được cập nhật nội dung!");
-        }
-
-    }
-
-    public function actionDetailNews()
-    {
-        $id = $this->getParameter('id', '');
-        if (!$id) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
-        }
-        $com = \common\models\CompanyNews::findOne([$id]);
-        if ($com) {
-            return $com;
-        }
-        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
-    }
 }
