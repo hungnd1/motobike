@@ -64,7 +64,8 @@ class FarmerController extends ApiController
             throw new ServerErrorHttpException("Mã code của bạn không chính xác");
         }
         return ['message' => Message::getLoginSuccessMessage(),
-            'id' => $company->id
+            'id' => $company->id,
+            'company_id' => $company->id_company
         ];
     }
 
