@@ -282,4 +282,49 @@ class FarmerController extends ApiController
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 
+    public function actionUpdateProfile()
+    {
+
+        UserHelpers::manualLogin();
+        $base = $this->getParameterPost('image', '');
+        $id = $this->getParameterPost('id',null);
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
+        if (!$base) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'File ảnh')]));
+        }
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Nông dân')]));
+        }
+        $file_name = '';
+        if ($base) {
+            $binary = base64_decode($base, true);
+            $url = Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR;
+            $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.jpg';
+            if (!file_exists($url)) {
+                mkdir($url, 0777, true);
+            }
+            file_put_contents($url . $file_name, $binary);
+            $file = fopen($url . $file_name, 'wb');
+            fwrite($file, $binary);
+            fclose($file);
+        }
+        $companyQa = new \common\models\CompanyQa();
+        $companyQa->image = $file_name;
+        $companyQa->created_at = time();
+        $companyQa->farmer_id = $id;
+        $companyQa->company_id = CompanyProfile::find()->andWhere(['id'=>$id])->one()->id_company;
+//        $question_answer->updated_at = time();
+        $companyQa->status = Company::STATUS_INACTIVE;
+        $companyQa->updated_at = time();
+        if ($companyQa->save(false)) {
+//            shell_exec("/usr/bin/nohup  ./auto_answer.sh $question_answer->id > /dev/null 2>&1 &");
+            return [
+                'message' => Yii::t('app', 'Bạn đã cập nhật thông tin hình ảnh thành công'),
+            ];
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
+
 }
