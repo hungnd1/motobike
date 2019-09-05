@@ -310,15 +310,14 @@ class FarmerController extends ApiController
             fwrite($file, $binary);
             fclose($file);
         }
-        $companyQa = new \common\models\CompanyQa();
-        $companyQa->image = $file_name;
-        $companyQa->created_at = time();
-        $companyQa->farmer_id = $id;
-        $companyQa->company_id = CompanyProfile::find()->andWhere(['id'=>$id])->one()->id_company;
-//        $question_answer->updated_at = time();
-        $companyQa->status = Company::STATUS_INACTIVE;
-        $companyQa->updated_at = time();
-        if ($companyQa->save(false)) {
+        /** @var  $companyProfile CompanyProfile */
+        $companyProfile = CompanyProfile::find()->andWhere(['id'=>$id])->one();
+        if(!$companyProfile){
+            throw new ServerErrorHttpException(Yii::t('app', 'Không tồn tại nông dân cập nhật'));
+        }
+        $companyProfile->file = $file_name;
+        $companyProfile->updated_at = time();
+        if ($companyProfile->save(false)) {
 //            shell_exec("/usr/bin/nohup  ./auto_answer.sh $question_answer->id > /dev/null 2>&1 &");
             return [
                 'message' => Yii::t('app', 'Bạn đã cập nhật thông tin hình ảnh thành công'),
