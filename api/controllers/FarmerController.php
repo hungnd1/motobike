@@ -316,7 +316,6 @@ class FarmerController extends ApiController
             throw new ServerErrorHttpException(Yii::t('app', 'Không tồn tại nông dân cập nhật'));
         }
         $companyProfile->file = $file_name;
-        $companyProfile->updated_at = time();
         if ($companyProfile->save(false)) {
 //            shell_exec("/usr/bin/nohup  ./auto_answer.sh $question_answer->id > /dev/null 2>&1 &");
             return [
