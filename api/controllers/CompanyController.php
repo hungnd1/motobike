@@ -13,7 +13,9 @@ use api\helpers\Message;
 use api\helpers\UserHelpers;
 use api\models\CompanyNews;
 use api\models\CompanyQA;
+use api\models\FormAnalyst;
 use common\models\Company;
+use common\models\ReportFormAnalyst;
 use common\models\Subscriber;
 use Yii;
 use yii\base\InvalidValueException;
@@ -46,7 +48,8 @@ class CompanyController extends ApiController
             'question-and-answer' => ['POST'],
             'search' => ['GET'],
             'get-list-news' => ['GET'],
-            'detail-news' => ['GET']
+            'detail-news' => ['GET'],
+            'form-analyst' => ['POST']
         ];
     }
 
@@ -330,6 +333,27 @@ class CompanyController extends ApiController
         $com = \common\models\CompanyNews::findOne([$id]);
         if ($com) {
             return $com;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
+
+    public function actionSubmitForm()
+    {
+        $formAnalyst = $this->getParameterPost('formAnalyst', '');
+        $formAnalyst = json_decode($formAnalyst);
+        $form = new \common\models\FormAnalyst();
+        $form->save($formAnalyst);
+        $reportFormAnalyst = new ReportFormAnalyst();
+        $reportFormAnalyst->sanLuongThucTe = 1;
+        $reportFormAnalyst->nangSuatDatDuoc = 1;
+        $reportFormAnalyst->tongChiPhiThucTeTrongNam = 1;
+        $reportFormAnalyst->nhanCong = 1;
+        $reportFormAnalyst->phanBon = 1;
+        $reportFormAnalyst->tuoi = 1;
+        $reportFormAnalyst->chiKhac = 2;
+        $reportFormAnalyst->giaThanh = 2;
+        if ($reportFormAnalyst->save(false)) {
+            return $reportFormAnalyst;
         }
         throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
