@@ -583,4 +583,12 @@ class CompanyController extends ApiController
             ->orderBy(['form_analyst.id'=>SORT_DESC])->one();
         return $reportForm;
     }
+
+    public function actionGetGraphic($farmer_id){
+        UserHelpers::manualLogin();
+        $formAnalyst = \common\models\FormAnalyst::find()
+            ->andWhere(['farmerId' => $farmer_id])
+            ->orderBy(['id'=>SORT_DESC])->one();
+        return $formAnalyst;
+    }
 }
