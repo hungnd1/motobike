@@ -17,6 +17,15 @@ use Yii;
  * @property string $bvtv
  * @property string $chiKhac
  * @property string $giaThanh
+ * @property string $nhanCongPhanTram
+ * @property string $phanBonPhanTram
+ * @property string $tuoiPhanTram
+ * @property string $bvtvPhanTram
+ * @property string $chiKhacPhanTram
+ * @property string $giaBan
+ * @property string $loiNhuan
+ * @property string $tongLoiNhuan
+ * @property integer $form_id
  */
 class ReportFormAnalyst extends \yii\db\ActiveRecord
 {
@@ -34,7 +43,9 @@ class ReportFormAnalyst extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['form_id'], 'integer'],
             [['sanLuongThucTe', 'nangSuatDatDuoc', 'tongChiPhiThucTeTrongNam', 'nhanCong', 'phanBon', 'tuoi', 'bvtv', 'chiKhac', 'giaThanh'], 'string', 'max' => 255],
+            [['nhanCongPhanTram', 'phanBonPhanTram', 'tuoiPhanTram','bvtvPhanTram', 'chiKhacPhanTram', 'giaBan', 'loiNhuan', 'tongLoiNhuan'], 'string', 'max' => 255],
         ];
     }
 

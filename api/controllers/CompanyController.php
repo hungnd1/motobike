@@ -400,18 +400,28 @@ class CompanyController extends ApiController
         $form->thuNhapTrongSen = isset($formAnalyst['thuNhapTrongSen']) ? $formAnalyst['thuNhapTrongSen'] : 0 ;
         $form->type = isset($formAnalyst['type']) ? $formAnalyst['type'] : 0 ;
         $form->farmerId = isset($formAnalyst['farmerId']) ? $formAnalyst['farmerId'] : 0 ;
-        if(!$form->save($formAnalyst)){
+        if(!$form->save(false)){
             throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
         };
         $reportFormAnalyst = new ReportFormAnalyst();
-        $reportFormAnalyst->sanLuongThucTe = 1;
-        $reportFormAnalyst->nangSuatDatDuoc = 1;
-        $reportFormAnalyst->tongChiPhiThucTeTrongNam = 1;
-        $reportFormAnalyst->nhanCong = 1;
-        $reportFormAnalyst->phanBon = 1;
-        $reportFormAnalyst->tuoi = 1;
-        $reportFormAnalyst->chiKhac = 2;
-        $reportFormAnalyst->giaThanh = 2;
+        $reportFormAnalyst->sanLuongThucTe = "1 T";
+        $reportFormAnalyst->nangSuatDatDuoc = "1 T/ha";
+        $reportFormAnalyst->tongChiPhiThucTeTrongNam = "100 tr.đ";
+        $reportFormAnalyst->nhanCong = "20";
+        $reportFormAnalyst->nhanCongPhanTram = "20%";
+        $reportFormAnalyst->phanBon = "10";
+        $reportFormAnalyst->phanBonPhanTram = "20%";
+        $reportFormAnalyst->tuoi = "10";
+        $reportFormAnalyst->tuoiPhanTram = "10%";
+        $reportFormAnalyst->bvtv = "20";
+        $reportFormAnalyst->bvtvPhanTram = "20%";
+        $reportFormAnalyst->chiKhac = "20";
+        $reportFormAnalyst->chiKhacPhanTram = "20%";
+        $reportFormAnalyst->form_id = $form->id;
+        $reportFormAnalyst->giaThanh = "20 tr.đ";
+        $reportFormAnalyst->giaBan = '20 VNĐ';
+        $reportFormAnalyst->loiNhuan = '20 VNĐ';
+        $reportFormAnalyst->tongLoiNhuan = '20 VNĐ';
         if ($reportFormAnalyst->save(false)) {
             return $reportFormAnalyst;
         }
