@@ -343,6 +343,7 @@ class CompanyController extends ApiController
         $formAnalyst = $this->getParameterPost('formAnalyst', '');
         $formAnalyst = json_decode($formAnalyst, true);
         $form = new \common\models\FormAnalyst();
+        $form->month = isset($formAnalyst['month']) ? $formAnalyst['month'] : 0;
         $form->tenChuVuon = isset($formAnalyst['tenChuVuon']) ? $formAnalyst['tenChuVuon'] : "";
         if (!$form->tenChuVuon) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên chủ vuòn')]));
@@ -584,10 +585,11 @@ class CompanyController extends ApiController
         return $reportForm;
     }
 
-    public function actionGetGraphic($farmer_id){
+    public function actionGetGraphic($month = 0, $farmer_id){
         UserHelpers::manualLogin();
         $formAnalyst = \common\models\FormAnalyst::find()
             ->andWhere(['farmerId' => $farmer_id])
+            ->andWhere(['month' => $month])
             ->orderBy(['id'=>SORT_DESC])->one();
         return $formAnalyst;
     }

@@ -64,6 +64,7 @@ use Yii;
  * @property string $giaBinhQuan
  * @property string $sanLuongTan
  * @property string $thuNhapTrongSen
+ * @property string $month
  * @property string $type
  * @property integer $farmerId
  * @property integer $created_at
@@ -86,7 +87,7 @@ class FormAnalyst extends \yii\db\ActiveRecord
     {
         return [
             [['farmerId', 'created_at', 'updated_at'], 'integer'],
-            [['tenChuVuon', 'cmnd', 'dienTich', 'congLamCoCong', 'congLamCoDong', 'congTaoHinhCong', 'congTaoHinhDong', 'congBonPhanCong', 'congBonPhanDong', 'congThuHaiCong', 'congThuHaiDong', 'congSoCheCong', 'congSoCheDong', 'congTuoiCong', 'congTuoiDong', 'congPhunThuocCong', 'congPhunThuocDong', 'congKhacCong', 'congKhacDong', 'thuocSauCong', 'thuocsauDong', 'thuocBenhCong', 'thuocBenhDong', 'phanBonLaCong', 'phanBonLaDong', 'phanHuuCoCong', 'phanHuuCoDong', 'voiNongNghiepCong', 'voiNongNghiepDong', 'phanViSinhCong', 'phanViSinhDong', 'phanDamSaCong', 'phanDamSaDong', 'phanDamUreCong', 'phanDamUreDong', 'phanLanCong', 'phanLanDong', 'phanKaliCong', 'phanKaliDong', 'phanHonHop1Cong', 'phanHonHop1Dong', 'phanHonHop1N', 'phanHonHop1P', 'phanHonHop1K', 'phanHonHop2Cong', 'phanHonHop2Dong', 'phanHonHop2N', 'phanHonHop2P', 'phanHonHop2K', 'laiVay', 'khauHao', 'nhienLieu', 'chiPhiKhac', 'giaBinhQuan', 'sanLuongTan', 'thuNhapTrongSen', 'type'], 'string', 'max' => 200],
+            [['month','tenChuVuon', 'cmnd', 'dienTich', 'congLamCoCong', 'congLamCoDong', 'congTaoHinhCong', 'congTaoHinhDong', 'congBonPhanCong', 'congBonPhanDong', 'congThuHaiCong', 'congThuHaiDong', 'congSoCheCong', 'congSoCheDong', 'congTuoiCong', 'congTuoiDong', 'congPhunThuocCong', 'congPhunThuocDong', 'congKhacCong', 'congKhacDong', 'thuocSauCong', 'thuocsauDong', 'thuocBenhCong', 'thuocBenhDong', 'phanBonLaCong', 'phanBonLaDong', 'phanHuuCoCong', 'phanHuuCoDong', 'voiNongNghiepCong', 'voiNongNghiepDong', 'phanViSinhCong', 'phanViSinhDong', 'phanDamSaCong', 'phanDamSaDong', 'phanDamUreCong', 'phanDamUreDong', 'phanLanCong', 'phanLanDong', 'phanKaliCong', 'phanKaliDong', 'phanHonHop1Cong', 'phanHonHop1Dong', 'phanHonHop1N', 'phanHonHop1P', 'phanHonHop1K', 'phanHonHop2Cong', 'phanHonHop2Dong', 'phanHonHop2N', 'phanHonHop2P', 'phanHonHop2K', 'laiVay', 'khauHao', 'nhienLieu', 'chiPhiKhac', 'giaBinhQuan', 'sanLuongTan', 'thuNhapTrongSen', 'type'], 'string', 'max' => 200],
         ];
     }
 
