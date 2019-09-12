@@ -609,7 +609,7 @@ class CompanyController extends ApiController
         UserHelpers::manualLogin();
         $formAnalyst = \common\models\FormAnalyst::find()
             ->andWhere(['farmerId' => $farmer_id])
-            ->andWhere(['month' => $month])
+//            ->andWhere(['month' => $month])
             ->andWhere(['type' => 3])
             ->orderBy(['id' => SORT_DESC])->one();
         return $formAnalyst;
