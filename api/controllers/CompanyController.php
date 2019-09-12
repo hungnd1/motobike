@@ -604,7 +604,7 @@ class CompanyController extends ApiController
         return $reportForm;
     }
 
-    public function actionGetGraphic($month = 0, $farmer_id)
+    public function actionGetGraphic($farmer_id)
     {
         UserHelpers::manualLogin();
         $formAnalyst = \common\models\FormAnalyst::find()
