@@ -63,6 +63,10 @@ class FarmerController extends ApiController
         if (!$company) {
             throw new ServerErrorHttpException("Mã code của bạn không chính xác");
         }
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+        $subscriber->farmer_id = $company->id;
+        $subscriber->save(false);
         return ['message' => Message::getLoginSuccessMessage(),
             'id' => $company->id,
             'company_id' => $company->id_company

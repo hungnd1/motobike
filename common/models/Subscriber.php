@@ -35,6 +35,7 @@ use yii\web\IdentityInterface;
  * @property integer $coin
  * @property string $weather_detail_id
  * @property integer $age
+ * @property integer $farmer_id
  */
 class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -65,7 +66,7 @@ class Subscriber extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['authen_type', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin','age'], 'integer'],
+            [['authen_type','farmer_id', 'status', 'last_login_at', 'last_login_session', 'birthday', 'sex', 'created_at', 'updated_at', 'client_type', 'using_promotion','coin','age'], 'integer'],
             [['msisdn'], 'required'],
             [['msisdn'], 'string', 'max' => 45],
             [['username', 'email'], 'string', 'max' => 100],

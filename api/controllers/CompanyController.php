@@ -340,10 +340,14 @@ class CompanyController extends ApiController
 
     public function actionSubmitForm()
     {
+        UserHelpers::manualLogin();
+        /** @var  $subscriber Subscriber */
+        $subscriber = Yii::$app->user->identity;
+
         $formAnalyst = $this->getParameterPost('formAnalyst', '');
         $formAnalyst = json_decode($formAnalyst, true);
-        $type = isset($formAnalyst['type']) ? $formAnalyst['type'] : 0;
-        $farmerId = isset($formAnalyst['farmerId']) ? $formAnalyst['farmerId'] : 0;
+        $type = isset($formAnalyst['type']) ? $formAnalyst['type'] : 3;
+        $farmerId = isset($formAnalyst['farmerId']) ? $formAnalyst['farmerId'] : $subscriber->farmer_id;
         $month = isset($formAnalyst['month']) ? $formAnalyst['month'] : 0;
 
         if ($type == 3) {
