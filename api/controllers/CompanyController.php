@@ -367,7 +367,9 @@ class CompanyController extends ApiController
             $form->month = $month;
             $form->type = $type;
         }
+        $form = new \common\models\FormAnalyst();
         $form->tenChuVuon = isset($formAnalyst['tenChuVuon']) ? $formAnalyst['tenChuVuon'] : "";
+
         if (!$form->tenChuVuon) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên chủ vuòn')]));
         }
