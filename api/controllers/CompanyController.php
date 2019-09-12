@@ -604,14 +604,22 @@ class CompanyController extends ApiController
         return $reportForm;
     }
 
-    public function actionGetGraphic($farmer_id)
+    public function actionGetGraphic($month = 0, $farmer_id)
     {
         UserHelpers::manualLogin();
-        $formAnalyst = \common\models\FormAnalyst::find()
-            ->andWhere(['farmerId' => $farmer_id])
-//            ->andWhere(['month' => $month])
-            ->andWhere(['type' => 3])
-            ->orderBy(['id' => SORT_DESC])->one();
+        if(!$month){
+            $formAnalyst = \common\models\FormAnalyst::find()
+                ->andWhere(['farmerId' => $farmer_id])
+                ->andWhere(['month' => $month])
+                ->andWhere(['type' => 3])
+                ->orderBy(['id' => SORT_DESC])->one();
+        }else{
+            $formAnalyst = \common\models\FormAnalyst::find()
+                ->andWhere(['farmerId' => $farmer_id])
+//                ->andWhere(['month' => $month])
+                ->andWhere(['type' => 3])
+                ->orderBy(['id' => SORT_DESC])->one();
+        }
         return $formAnalyst;
     }
 }
