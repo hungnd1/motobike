@@ -607,7 +607,7 @@ class CompanyController extends ApiController
     public function actionGetGraphic($month = 0, $farmer_id)
     {
         UserHelpers::manualLogin();
-        if(!$month){
+        if($month){
             $formAnalyst = \common\models\FormAnalyst::find()
                 ->andWhere(['farmerId' => $farmer_id])
                 ->andWhere(['month' => $month])
