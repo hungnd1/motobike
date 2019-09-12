@@ -13,6 +13,7 @@ use Yii;
  * @property string $link
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $checkLogin
  */
 class Version extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class Version extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'created_at', 'updated_at'], 'integer'],
+            [['type', 'created_at', 'updated_at','checkLogin'], 'integer'],
             [['link','version'], 'string', 'max' => 255],
         ];
     }

@@ -34,7 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="portlet-body">
                 <p>
-<!--                    --><?php //echo Html::a('Thêm mới ', Yii::$app->urlManager->createUrl(['device-info/create']), ['class' => 'btn btn-success']) ?>
+                    <?php echo Html::a('Update version', Yii::$app->urlManager->createUrl(['device-info/create']), ['class' => 'btn btn-success']) ?>
+                    <?php echo Html::a('Back version', Yii::$app->urlManager->createUrl(['device-info/update']), ['class' => 'btn btn-success']) ?>
                 </p>
                 <?php
                 $gridColumn = [

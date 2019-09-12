@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\DeviceInfo;
 use common\models\DeviceInfoSearch;
+use common\models\Version;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -68,8 +69,19 @@ class DeviceInfoController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->created_at = time();
             $model->updated_at = time();
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            /** @var  $version Version */
+            $version = Version::find()
+                ->andWhere(['id' => 1])->one();
+            $version->version = '2.27.0';
+            $version->save(false);
+
+            /** @var  $version2 Version */
+            $version2 = Version::find()
+                ->andWhere(['id' => 2])->one();
+            $version2->version = '2.70';
+            $version2->save(false);
+//            $model->save();
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -83,19 +95,25 @@ class DeviceInfoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
-        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->updated_at = time();
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        /** @var  $version Version*/
+        $version =  Version::find()
+            ->andWhere(['id'=>1])->one();
+        $version->version = '2.26.0';
+        $version->checkLogin = 0;
+        $version->save(false);
+
+        /** @var  $version2 Version*/
+        $version2 =  Version::find()
+            ->andWhere(['id'=>2])->one();
+        $version2->version = '2.60';
+        $version2->checkLogin = 0;
+        $version2->save(false);
+
+
+        return $this->redirect(['index']);
     }
 
     /**

@@ -944,7 +944,11 @@ class AppController extends ApiController
 
     public function actionAcceptScreen()
     {
-//        $this->setStatusCode(501);
+        /** @var  $version Version */
+        $version = Version::find()->andWhere(['id' => 1])->one();
+        if (!$version->checkLogin) {
+            $this->setStatusCode(501);
+        }
         return [
             'message' => 'OK',
             'is_screen' => true
