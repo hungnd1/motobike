@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "company_profile".
@@ -129,5 +130,11 @@ class CompanyProfile extends \yii\db\ActiveRecord
     }
     public static function getTemplateFilePrice() {
         return Yii::$app->getUrlManager()->getBaseUrl() . '/DS nong dan (vi du).xlsx';
+    }
+
+    public function getImageLink()
+    {
+        return $this->file ? Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@news_image') . DIRECTORY_SEPARATOR . $this->file, true) : '';
+        // return $this->images ? Url::to('@web/' . Yii::getAlias('@cat_image') . DIRECTORY_SEPARATOR . $this->images, true) : '';
     }
 }

@@ -29,7 +29,13 @@ class CompanyProfile extends \common\models\CompanyProfile
             /* @var $model \common\models\CompanyProfile */
             return $model->thon_lang . ($model->huyen ? " - " . $model->huyen : "") . ($model->thanh_pho ? " - " . $model->thanh_pho : "");
         };
-
+        $fields['file'] = function ($model) {
+            /* @var $model \common\models\CompanyProfile */
+            if($model->image){
+                return $model->getImageLink();
+            }
+            return '';
+        };
 
         return $fields;
     }
