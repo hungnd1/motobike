@@ -609,7 +609,7 @@ class CompanyController extends ApiController
         $reportFormAnalyst->chiKhac = $chikhac."tr.đ";
         $reportFormAnalyst->chiKhacPhanTram =  round($chikhac / $tong,2) * 100 ."%";
         $reportFormAnalyst->form_id = $form->id;
-        $reportFormAnalyst->giaThanh = "20 tr.đ";
+        $reportFormAnalyst->giaThanh = $tong / $form->sanLuongTan . "tr.đ";
         $reportFormAnalyst->giaBan = '20 VNĐ';
         $reportFormAnalyst->loiNhuan = '20 VNĐ';
         $reportFormAnalyst->tongLoiNhuan = '20 VNĐ';
