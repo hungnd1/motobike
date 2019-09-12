@@ -31,7 +31,7 @@ class CompanyProfile extends \common\models\CompanyProfile
         };
         $fields['file'] = function ($model) {
             /* @var $model \common\models\CompanyProfile */
-            if($model->image){
+            if($model->file){
                 return $model->getImageLink();
             }
             return '';
