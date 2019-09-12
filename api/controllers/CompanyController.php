@@ -342,8 +342,27 @@ class CompanyController extends ApiController
     {
         $formAnalyst = $this->getParameterPost('formAnalyst', '');
         $formAnalyst = json_decode($formAnalyst, true);
-        $form = new \common\models\FormAnalyst();
-        $form->month = isset($formAnalyst['month']) ? $formAnalyst['month'] : 0;
+        $type = isset($formAnalyst['type']) ? $formAnalyst['type'] : 0;
+        $farmerId = isset($formAnalyst['farmerId']) ? $formAnalyst['farmerId'] : 0;
+        $month = isset($formAnalyst['month']) ? $formAnalyst['month'] : 0;
+
+        if ($type == 3) {
+            $form = \common\models\FormAnalyst::find()
+                ->andWhere(['type' => $type])
+                ->andWhere(['farmerId' => $farmerId])
+                ->andWhere(['month' => $month])->one();
+            if (!$form) {
+                $form = new \common\models\FormAnalyst();
+                $form->farmerId = $farmerId;
+                $form->month = $month;
+                $form->type = $type;
+            }
+        } else if ($type == 1) {
+            $form = new \common\models\FormAnalyst();
+            $form->farmerId = $farmerId;
+            $form->month = $month;
+            $form->type = $type;
+        }
         $form->tenChuVuon = isset($formAnalyst['tenChuVuon']) ? $formAnalyst['tenChuVuon'] : "";
         if (!$form->tenChuVuon) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên chủ vuòn')]));
@@ -543,8 +562,7 @@ class CompanyController extends ApiController
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công làm cỏ')]));
 //        }
 
-        $form->type = isset($formAnalyst['type']) ? $formAnalyst['type'] : 0;
-        $form->farmerId = isset($formAnalyst['farmerId']) ? $formAnalyst['farmerId'] : 0;
+
         $form->created_at = time();
         $form->updated_at = time();
         if (!$form->save(false)) {
@@ -581,16 +599,17 @@ class CompanyController extends ApiController
         $reportForm = ReportFormAnalyst::find()
             ->innerJoin('form_analyst', 'report_form_analyst.form_id = form_analyst.id')
             ->andWhere(['form_analyst.farmerId' => $farmer_id])
-            ->orderBy(['form_analyst.id'=>SORT_DESC])->one();
+            ->orderBy(['form_analyst.id' => SORT_DESC])->one();
         return $reportForm;
     }
 
-    public function actionGetGraphic($month = 0, $farmer_id){
+    public function actionGetGraphic($month = 0, $farmer_id)
+    {
         UserHelpers::manualLogin();
         $formAnalyst = \common\models\FormAnalyst::find()
             ->andWhere(['farmerId' => $farmer_id])
             ->andWhere(['month' => $month])
-            ->orderBy(['id'=>SORT_DESC])->one();
+            ->orderBy(['id' => SORT_DESC])->one();
         return $formAnalyst;
     }
 }
