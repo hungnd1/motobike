@@ -944,7 +944,7 @@ class AppController extends ApiController
 
     public function actionAcceptScreen()
     {
-        $this->setStatusCode(501);
+//        $this->setStatusCode(501);
         return [
             'message' => 'OK',
             'is_screen' => true
