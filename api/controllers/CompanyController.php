@@ -346,8 +346,8 @@ class CompanyController extends ApiController
 
         $formAnalyst = $this->getParameterPost('formAnalyst', '');
         $formAnalyst = json_decode($formAnalyst, true);
-        $type = isset($formAnalyst['type']) ? $formAnalyst['type'] : 3;
-        $farmerId = isset($formAnalyst['farmerId']) ? $formAnalyst['farmerId'] : $subscriber->farmer_id;
+        $type = isset($formAnalyst['type']) && $formAnalyst['type'] ? $formAnalyst['type'] : 3;
+        $farmerId = isset($formAnalyst['farmerId']) && $formAnalyst['farmerId']? $formAnalyst['farmerId'] : $subscriber->farmer_id;
         $month = isset($formAnalyst['month']) ? $formAnalyst['month'] : 0;
 
         if ($type == 3) {
