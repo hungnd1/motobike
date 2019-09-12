@@ -347,7 +347,7 @@ class CompanyController extends ApiController
         $formAnalyst = $this->getParameterPost('formAnalyst', '');
         $formAnalyst = json_decode($formAnalyst, true);
         $type = isset($formAnalyst['type']) && $formAnalyst['type'] ? $formAnalyst['type'] : 3;
-        $farmerId = isset($formAnalyst['farmerId']) && $formAnalyst['farmerId']? $formAnalyst['farmerId'] : $subscriber->farmer_id;
+        $farmerId = isset($formAnalyst['farmerId']) && $formAnalyst['farmerId'] ? $formAnalyst['farmerId'] : $subscriber->farmer_id;
         $month = isset($formAnalyst['month']) ? $formAnalyst['month'] : 0;
 
         if ($type == 3) {
@@ -577,20 +577,37 @@ class CompanyController extends ApiController
         if (!$form->save(false)) {
             throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
         };
+        $tongNhanCong = $form->congLamCoCong * $form->congLamCoDong + $form->congTaoHinhCong * $form->congTaoHinhDong
+            + $form->congBonPhanCong * $form->congBonPhanDong + $form->congThuHaiCong * $form->congThuHaiDong
+            + $form->congSoCheCong * $form->congSoCheDong + $form->congTuoiCong * $form->congTuoiDong
+            + $form->congPhunThuocCong * $form->congPhunThuocDong + $form->congKhacCong * $form->congKhacDong;
+
+        $thuocbvtv = $form->congPhunThuocDong * $form->congPhunThuocCong + $form->thuocsauDong * $form->thuocSauCong
+            + $form->thuocBenhCong * $form->thuocBenhDong;
+        $phanBon = $form->congBonPhanDong * $form->congBonPhanCong + $form->phanBonLaCong * $form->phanBonLaDong
+            + $form->phanHuuCoCong * $form->phanHuuCoDong + $form->voiNongNghiepCong * $form->voiNongNghiepDong
+            + $form->phanViSinhCong * $form->phanViSinhDong + $form->phanDamSaCong *$form->phanDamSaDong
+            + $form->phanDamUreCong * $form->phanDamUreDong + $form->phanLanCong * $form->phanLanDong
+            + $form->phanKaliCong * $form->phanKaliDong + $form->phanHonHop1Cong * $form->phanHonHop1Dong
+            + $form->phanHonHop2Cong * $form->phanHonHop2Dong;
+        $tuoi = $form->congTuoiDong * $form->congTuoiCong;
+        $chikhac = $form->chiPhiKhac;
+        $tong = $tongNhanCong + $thuocbvtv + $phanBon + $tuoi + $chikhac;
+
         $reportFormAnalyst = new ReportFormAnalyst();
-        $reportFormAnalyst->sanLuongThucTe = "1 T";
-        $reportFormAnalyst->nangSuatDatDuoc = "1 T/ha";
+        $reportFormAnalyst->sanLuongThucTe = $form->sanLuongTan . " T";
+        $reportFormAnalyst->nangSuatDatDuoc = round($form->sanLuongTan/$form->dienTich,2) ." T/ha";
         $reportFormAnalyst->tongChiPhiThucTeTrongNam = "100 tr.đ";
-        $reportFormAnalyst->nhanCong = "20";
-        $reportFormAnalyst->nhanCongPhanTram = "20%";
-        $reportFormAnalyst->phanBon = "10";
-        $reportFormAnalyst->phanBonPhanTram = "20%";
-        $reportFormAnalyst->tuoi = "10";
-        $reportFormAnalyst->tuoiPhanTram = "10%";
-        $reportFormAnalyst->bvtv = "20";
-        $reportFormAnalyst->bvtvPhanTram = "20%";
-        $reportFormAnalyst->chiKhac = "20";
-        $reportFormAnalyst->chiKhacPhanTram = "20%";
+        $reportFormAnalyst->nhanCong = $tongNhanCong;
+        $reportFormAnalyst->nhanCongPhanTram = round($tongNhanCong / $tong) ."%";
+        $reportFormAnalyst->phanBon = $phanBon;
+        $reportFormAnalyst->phanBonPhanTram = round($phanBon / $tong) ."%";
+        $reportFormAnalyst->tuoi = $tuoi;
+        $reportFormAnalyst->tuoiPhanTram = round($tuoi / $tong) ."%";
+        $reportFormAnalyst->bvtv = $thuocbvtv;
+        $reportFormAnalyst->bvtvPhanTram = round($thuocbvtv / $tong) ."%";
+        $reportFormAnalyst->chiKhac = $chikhac;
+        $reportFormAnalyst->chiKhacPhanTram =  round($chikhac / $tong) ."%";
         $reportFormAnalyst->form_id = $form->id;
         $reportFormAnalyst->giaThanh = "20 tr.đ";
         $reportFormAnalyst->giaBan = '20 VNĐ';
@@ -616,13 +633,13 @@ class CompanyController extends ApiController
     public function actionGetGraphic($month = 0, $farmer_id)
     {
         UserHelpers::manualLogin();
-        if($month){
+        if ($month) {
             $formAnalyst = \common\models\FormAnalyst::find()
                 ->andWhere(['farmerId' => $farmer_id])
                 ->andWhere(['month' => $month])
                 ->andWhere(['type' => 3])
                 ->orderBy(['id' => SORT_DESC])->one();
-        }else{
+        } else {
             $formAnalyst = \common\models\FormAnalyst::find()
                 ->andWhere(['farmerId' => $farmer_id])
 //                ->andWhere(['month' => $month])
