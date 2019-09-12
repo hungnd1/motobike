@@ -597,7 +597,7 @@ class CompanyController extends ApiController
         $reportFormAnalyst = new ReportFormAnalyst();
         $reportFormAnalyst->sanLuongThucTe = $form->sanLuongTan . " T";
         $reportFormAnalyst->nangSuatDatDuoc = round($form->sanLuongTan/$form->dienTich,2) ." T/ha";
-        $reportFormAnalyst->tongChiPhiThucTeTrongNam = "100 tr.đ";
+        $reportFormAnalyst->tongChiPhiThucTeTrongNam = $tong;
         $reportFormAnalyst->nhanCong = $tongNhanCong;
         $reportFormAnalyst->nhanCongPhanTram = round($tongNhanCong / $tong) ."%";
         $reportFormAnalyst->phanBon = $phanBon;
