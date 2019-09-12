@@ -599,6 +599,7 @@ class CompanyController extends ApiController
         $reportForm = ReportFormAnalyst::find()
             ->innerJoin('form_analyst', 'report_form_analyst.form_id = form_analyst.id')
             ->andWhere(['form_analyst.farmerId' => $farmer_id])
+            ->andWhere(['type' => 3])
             ->orderBy(['form_analyst.id' => SORT_DESC])->one();
         return $reportForm;
     }
@@ -609,6 +610,7 @@ class CompanyController extends ApiController
         $formAnalyst = \common\models\FormAnalyst::find()
             ->andWhere(['farmerId' => $farmer_id])
             ->andWhere(['month' => $month])
+            ->andWhere(['type' => 3])
             ->orderBy(['id' => SORT_DESC])->one();
         return $formAnalyst;
     }
