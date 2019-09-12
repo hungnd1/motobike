@@ -368,6 +368,9 @@ class CompanyController extends ApiController
             $form->type = $type;
         }
         $form = new \common\models\FormAnalyst();
+        $form->farmerId = $farmerId;
+        $form->month = $month;
+        $form->type = $type;
         $form->tenChuVuon = isset($formAnalyst['tenChuVuon']) ? $formAnalyst['tenChuVuon'] : "";
 
         if (!$form->tenChuVuon) {
