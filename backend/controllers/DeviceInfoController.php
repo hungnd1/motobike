@@ -64,11 +64,7 @@ class DeviceInfoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new DeviceInfo();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->created_at = time();
-            $model->updated_at = time();
             /** @var  $version Version */
             $version = Version::find()
                 ->andWhere(['id' => 1])->one();
@@ -82,11 +78,6 @@ class DeviceInfoController extends Controller
             $version2->save(false);
 //            $model->save();
             return $this->redirect(['index']);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**
