@@ -69,12 +69,14 @@ class DeviceInfoController extends Controller
             $version = Version::find()
                 ->andWhere(['id' => 1])->one();
             $version->version = '2.27.0';
+            $version->checkLogin = 0;
             $version->save(false);
 
             /** @var  $version2 Version */
             $version2 = Version::find()
                 ->andWhere(['id' => 2])->one();
             $version2->version = '2.70';
+            $version2->checkLogin = 0;
             $version2->save(false);
 //            $model->save();
             return $this->redirect(['index']);
@@ -93,14 +95,14 @@ class DeviceInfoController extends Controller
         $version =  Version::find()
             ->andWhere(['id'=>1])->one();
         $version->version = '2.26.0';
-        $version->checkLogin = 0;
+        $version->checkLogin = 1;
         $version->save(false);
 
         /** @var  $version2 Version*/
         $version2 =  Version::find()
             ->andWhere(['id'=>2])->one();
         $version2->version = '2.60';
-        $version2->checkLogin = 0;
+        $version2->checkLogin = 1;
         $version2->save(false);
 
 
