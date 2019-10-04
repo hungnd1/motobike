@@ -30,32 +30,38 @@ class Common
     //ham lay huong gio
     public static function windir($wnddtxt)
     {
-        if ($wnddtxt == 'N') {
-            return 'Hướng Bắc (B)';
-        } elseif ($wnddtxt == 'NE') {
-            return 'Hướng Đông Bắc (ĐB)';
-        } elseif ($wnddtxt == 'E') {
-            return 'Hướng Đông (Đ)';
-        } elseif ($wnddtxt == 'SE') {
-            return 'Hướng Đông Nam (ĐN)';
-        } elseif ($wnddtxt == 'S') {
-            return 'Hướng Nam (N)';
-        } elseif ($wnddtxt == 'SW') {
-            return 'Hướng Tây Nam (TN)';
-        } elseif ($wnddtxt == 'W') {
-            return 'Hướng Tây (T)';
-        } elseif ($wnddtxt == 'NW') {
-            return 'Hướng Tây Bắc (TB)';
-        }
-        return 'Hướng Bắc (B)';
+        $string = 'Hướng ';
+        $wnddtxt = str_replace('Đ', 'Đông ', $wnddtxt);
+        $wnddtxt = str_replace('N', 'Nam ', $wnddtxt);
+        $wnddtxt = str_replace('B', 'Bắc ', $wnddtxt);
+        $wnddtxt = str_replace('T', 'Tây ', $wnddtxt);
+//        if ($wnddtxt == 'N') {
+//            return 'Hướng Bắc (B)';
+//        } elseif ($wnddtxt == 'NE') {
+//            return 'Hướng Đông Bắc (ĐB)';
+//        } elseif ($wnddtxt == 'E') {
+//            return 'Hướng Đông (Đ)';
+//        } elseif ($wnddtxt == 'SE') {
+//            return 'Hướng Đông Nam (ĐN)';
+//        } elseif ($wnddtxt == 'S') {
+//            return 'Hướng Nam (N)';
+//        } elseif ($wnddtxt == 'SW') {
+//            return 'Hướng Tây Nam (TN)';
+//        } elseif ($wnddtxt == 'W') {
+//            return 'Hướng Tây (T)';
+//        } elseif ($wnddtxt == 'NW') {
+//            return 'Hướng Tây Bắc (TB)';
+//        }
+//        return 'Hướng Bắc (B)';
+        return $string . $wnddtxt;
     }
 
     //ham lay luong mua
     public static function precipitation($wtxt)
     {
-        $icon = explode('_',$wtxt);
-        if(isset($icon['1'])){
-            return Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@weather') . DIRECTORY_SEPARATOR . $icon['1'].'.png', true);
+        $icon = explode('_', $wtxt);
+        if (isset($icon['1'])) {
+            return Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@weather') . DIRECTORY_SEPARATOR . $icon['1'] . '.png', true);
         }
         return Url::to(Yii::getAlias('@web') . DIRECTORY_SEPARATOR . Yii::getAlias('@weather') . DIRECTORY_SEPARATOR . 'muanhokhongdangke.png', true);
     }

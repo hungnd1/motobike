@@ -19,6 +19,7 @@ use Yii;
  * @property string $latitude
  * @property string $longtitude
  * @property string $district_name
+ * @property string $station_key
  */
 class Station extends \yii\db\ActiveRecord
 {
@@ -42,7 +43,7 @@ class Station extends \yii\db\ActiveRecord
         return [
             [['station_name','province_id','district_id','latitude','longtitude'],'required'],
             [['province_id','status','district_id','district_code','com_code'], 'integer'],
-            [['station_name','district_name','station_code'], 'string', 'max' => 255],
+            [['station_name','district_name','station_code','station_key'], 'string', 'max' => 255],
             [['url_weather'], 'string', 'max' => 500],
             [['latitude', 'longtitude'], 'string', 'max' => 45],
         ];

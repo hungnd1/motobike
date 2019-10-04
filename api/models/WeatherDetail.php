@@ -39,7 +39,7 @@ class WeatherDetail extends \common\models\WeatherDetail
 
         $fields['wndspd_km_h'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */
-            return floor($model->wndspd * 3.6) . ' Km/h' . ' (' . WeatherDetail::convertWind($model->wndspd) . ')';
+            return $model->wndspd. ' Km/h' . ' (' . WeatherDetail::convertWind($model->wndspd) . ')';
         };
         $fields['content'] = function ($model) {
             /* @var $model \common\models\WeatherDetail */

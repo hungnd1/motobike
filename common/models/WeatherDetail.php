@@ -73,6 +73,7 @@ class WeatherDetail extends \yii\db\ActiveRecord
 
     public static function convertWind($wind)
     {
+        $wind = $wind / 3.6;
         $levelWind = '';
         if ($wind >= 0 && $wind <= 0.2) {
             $levelWind = 'Cấp 0';
