@@ -66,7 +66,7 @@ class FileManageController extends Controller
     public function actionCreate()
     {
         $model = new FileManage();
-
+        $model->setScenario('create');
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'file');
             if ($image) {
@@ -104,9 +104,31 @@ class FileManageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->setScenario('update');
+        $oldFile = $model->file;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'file');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                if(strtolower($image->extension) == 'xlsx' || strtolower($image->extension) == 'xls'){
+                    $model->type_extension =  FileManage::EXCEL;
+                }else{
+                    $model->type_extension = FileManage::PDF;
+                }
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->file = $file_name;
+                }
+            }else{
+                $model->file = $oldFile;
+            }
+            $model->updated_at = time();
+            $model->save();
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

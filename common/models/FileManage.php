@@ -43,9 +43,10 @@ class FileManage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['file','display_name','status','category_id'],'required'],
+            [['display_name','status','category_id'],'required'],
             [['category_id', 'type', 'status', 'created_at', 'updated_at','type_extension'], 'integer'],
             [['file'], 'string'],
+            ['file', 'required','on' => 'create'],
             [['display_name'], 'string', 'max' => 255],
         ];
     }
@@ -66,6 +67,17 @@ class FileManage extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function validateUnique($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = User::findUser($this->username);
+            if($user){
+                $this->addError($attribute, Yii::t('app','Tên tài khoản đã tồn tại trong hệ thống'));
+            }
+        }
+    }
+
 
     public static function listStatus()
     {
