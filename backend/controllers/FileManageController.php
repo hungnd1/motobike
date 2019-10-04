@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use api\helpers\Message;
 use PHPExcel_IOFactory;
 use Yii;
 use common\models\FileManage;
@@ -87,6 +88,7 @@ class FileManageController extends Controller
             $model->created_at = time();
             $model->updated_at = time();
             $model->save();
+            Yii::$app->session->setFlash('success', Message::getAddSuccessMessage());
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -104,7 +106,6 @@ class FileManageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->setScenario('update');
         $oldFile = $model->file;
 
         if ($model->load(Yii::$app->request->post())) {
@@ -128,6 +129,7 @@ class FileManageController extends Controller
             }
             $model->updated_at = time();
             $model->save();
+            Yii::$app->session->setFlash('success', Message::getUpdateSuccessMessage());
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
