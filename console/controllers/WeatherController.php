@@ -281,7 +281,7 @@ class WeatherController extends Controller
         $this->infoLogMigrateWeather("Start process migrate data at " . date('Y-m-d H:i:s', time()));
         $station = \common\models\Station::find()->andWhere('latitude is not null')->andWhere('longtitude is not null')
 //            ->andWhere(['id' => 433])
-            ->limit(10)
+//            ->limit(10)
             ->all();
         $begin = new \DateTime();
         $begin->setTime(0, 0, 0);
