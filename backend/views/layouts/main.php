@@ -500,6 +500,12 @@ $arrlang = array();
                             'url' => ['file-manage/index'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-users"></i> ' . \Yii::t('app', 'Quản lý danh mục phim tài liệu'),
+                            'url' => ['ra-film-document/index'],
+                            'require_auth' => true,
+                        ],
 
                     ]
                 ],
