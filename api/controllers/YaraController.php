@@ -28,7 +28,6 @@ class YaraController extends ApiController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
-            'search',
 //            'get-list-station',
             'get-location'
         ];
@@ -58,5 +57,29 @@ class YaraController extends ApiController
         ]);
         return $dataProvider;
 
+    }
+
+    public function actionSearch($keyword = '')
+    {
+        UserHelpers::manualLogin();
+        $query = \api\models\YaraSupplier::find()
+            ->andWhere('longitude is not null')
+            ->andWhere('latitude is not null')
+            ->andFilterWhere(['or',
+                ['like', 'name', $keyword],
+                ['like', 'address', $keyword]
+            ]);
+        $defaultSort = ['name' => SORT_ASC];
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSizeLimit' => [1, 1000],
+            ],
+            'sort' => [
+                'defaultOrder' => $defaultSort,
+            ],
+        ]);
+        return $dataProvider;
     }
 }
