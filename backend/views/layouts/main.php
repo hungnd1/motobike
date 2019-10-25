@@ -539,6 +539,21 @@ $arrlang = array();
                         ],
                     ]
                 ],
+                [
+                    'label' => '<i class="glyphicon glyphicon-menu-hamburger"></i> ' . \Yii::t('app', 'Quản lý thông tin Yara'),
+                    'url' => 'javascript:;',
+                    'encode' => false,
+//                    'options' => ['class' => 'menu-dropdown mega-menu-dropdown'],
+//                    'linkOptions' => ['data-hover' => 'megamenu-dropdown', 'data-close-others' => 'true'],
+                    'items' => [
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý thông tin đại lý'),
+                            'url' => ['yara-supplier/index'],
+                            'require_auth' => true,
+                        ],
+                    ]
+                ],
             ];
 
 
