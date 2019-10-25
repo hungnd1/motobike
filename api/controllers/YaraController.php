@@ -11,6 +11,7 @@ namespace api\controllers;
 
 use api\helpers\UserHelpers;
 use api\models\Station;
+use api\models\YaraSupplier;
 use common\helpers\CVietnameseTools;
 use common\models\SubscriberActivity;
 use Yii;
@@ -29,7 +30,8 @@ class YaraController extends ApiController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [
 //            'get-list-station',
-            'get-location'
+            'get-location',
+            'get-detail-supplier'
         ];
 
         return $behaviors;
@@ -81,5 +83,10 @@ class YaraController extends ApiController
             ],
         ]);
         return $dataProvider;
+    }
+    public function actionGetDetailSupplier($id){
+        $detail = YaraSupplier::find()
+            ->andWhere(['id'=>$id])->one();
+        return $detail;
     }
 }
