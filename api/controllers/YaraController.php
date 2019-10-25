@@ -87,6 +87,9 @@ class YaraController extends ApiController
     public function actionGetDetailSupplier($id){
         $detail = YaraSupplier::find()
             ->andWhere(['id'=>$id])->one();
-        return $detail;
+        if($detail){
+            return $detail;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
     }
 }
