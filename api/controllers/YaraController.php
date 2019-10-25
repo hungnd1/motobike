@@ -52,7 +52,7 @@ class YaraController extends ApiController
             'query' => $query,
             'pagination' => false,
             'sort' => [
-                'defaultOrder' => ['ma' => SORT_ASC],
+                'defaultOrder' => ['name' => SORT_ASC],
             ],
         ]);
         return $dataProvider;
