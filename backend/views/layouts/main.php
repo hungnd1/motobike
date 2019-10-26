@@ -552,6 +552,12 @@ $arrlang = array();
                             'url' => ['yara-supplier/index'],
                             'require_auth' => true,
                         ],
+                        [
+                            'encode' => false,
+                            'label' => '<i class="icon-eyeglasses"></i> ' . \Yii::t('app', 'Quản lý gap '),
+                            'url' => ['yara-gap/index'],
+                            'require_auth' => true,
+                        ],
                     ]
                 ],
             ];

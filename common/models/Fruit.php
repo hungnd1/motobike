@@ -29,6 +29,7 @@ class Fruit extends \yii\db\ActiveRecord
     const COFFEE = 1;
     const CAPHE_VOI = 1;
     const CAPHE_CHE = 2;
+    const CAPHE_PRIMARY = 3;
 
     const IS_PRIMARY = 1;
 

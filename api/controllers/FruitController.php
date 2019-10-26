@@ -58,7 +58,11 @@ class FruitController extends ApiController
 
     public function actionGetFruit($type = Fruit::CAPHE_VOI, $is_primary = 1)
     {
-        if ($type == Fruit::CAPHE_VOI) {
+        if ($type == Fruit::CAPHE_PRIMARY) {
+            $query = Fruit::find()
+                ->andWhere(['is_primary' => $is_primary])
+                ->andWhere('have_child is not null');
+        } else if ($type == Fruit::CAPHE_VOI) {
             $query = Fruit::find()
                 ->andWhere(['is_primary' => $is_primary])
                 ->andWhere('parent_id is null')
