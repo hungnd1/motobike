@@ -8,6 +8,7 @@ use common\models\YaraGapSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * YaraGapController implements the CRUD actions for YaraGap model.
@@ -65,8 +66,27 @@ class YaraGapController extends Controller
     {
         $model = new YaraGap();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            }
+
+            $model->created_at = time();
+            $model->updated_at = time();
+            $model->save(false);
+            \Yii::$app->getSession()->setFlash('success', 'Thêm mới thành công');
+
+            return $this->redirect(['index']);
+
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -84,8 +104,29 @@ class YaraGapController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $oldImg = $model->image;
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if ($image) {
+                $file_name = Yii::$app->user->id . '.' . uniqid() . time() . '.' . $image->extension;
+                $tmp = Yii::getAlias('@backend') . '/web/' . Yii::getAlias('@news_image') . '/';
+                if (!file_exists($tmp)) {
+                    mkdir($tmp, 0777, true);
+                }
+
+                if ($image->saveAs($tmp . $file_name)) {
+                    $model->image = $file_name;
+                }
+            } else {
+                $model->image = $oldImg;
+            }
+            $model->updated_at = time();
+            $model->save(false);
+
+            \Yii::$app->getSession()->setFlash('success', 'Cập nhật thành công');
+
+            return $this->redirect(['index']);
+
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -119,6 +160,38 @@ class YaraGapController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionUpdateOrder($id)
+    {
+        $model = $this->findModel($id);
+        if (isset($_POST['hasEditable'])) {
+            // read your posted model attributes
+            $post = Yii::$app->request->post();
+            if ($post['editableKey']) {
+                // read or convert your posted information
+                $new = YaraGap::findOne($post['editableKey']);
+                $index = $post['editableIndex'];
+                if ($new || $model->id != $new->id) {
+                    $new->load($post['YaraGap'][$index], '');
+                    if ($new->update()) {
+                        // tao log
+
+                        echo \yii\helpers\Json::encode(['output' => '', 'message' => '']);
+                    } else {
+                        $description = 'UPDATE ORDER CONTENT';
+                        echo \yii\helpers\Json::encode(['output' => '', 'message' => \Yii::t('app', 'Dữ liệu không hợp lệ')]);
+                    }
+                } else {
+                    echo \yii\helpers\Json::encode(['output' => '', 'message' => \Yii::t('app', 'Dữ liệu không tồn tại')]);
+                }
+            } // else if nothing to do always return an empty JSON encoded output
+            else {
+                echo \yii\helpers\Json::encode(['output' => '', 'message' => '']);
+            }
+
+            return;
         }
     }
 }

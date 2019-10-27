@@ -4,18 +4,26 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\YaraGap */
+/* @var $model common\models\News */
 
-$this->title = 'Create Yara Gap';
-$this->params['breadcrumbs'][] = ['label' => 'Yara Gaps', 'url' => ['index']];
+$this->title = 'Tạo GAP';
+$this->params['breadcrumbs'][] = ['label' => 'GAP ', 'url' => Yii::$app->urlManager->createUrl(['/news/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="yara-gap-create">
+<div class="row">
+    <div class="col-md-12">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-gift"></i>Tạo GAP
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <?= $this->render('_form', [
+                    'model' => $model,
+                ]) ?>
+            </div>
+        </div>
+    </div>
 </div>
