@@ -145,4 +145,17 @@ class YaraController extends ApiController
         ]);
         return $dataProvider;
     }
+
+    public function actionDetailGap()
+    {
+        $id = $this->getParameter('id', '');
+        if (!$id) {
+            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'id')]));
+        }
+        $gap = \common\models\YaraGap::findOne([$id]);
+        if ($gap) {
+            return $gap;
+        }
+        throw new ServerErrorHttpException(Yii::t('app', 'Lỗi hệ thống, vui lòng thử lại sau'));
+    }
 }
