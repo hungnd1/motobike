@@ -148,11 +148,13 @@ $this->params['breadcrumbs'][] = $this->title;
 //                                    ]);
 //                                },
                                 'delete' => function ($url, $model) {
-//                        Nếu là chính nó thì không cho thay đổi trạng thái
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::toRoute(['yara-gap/delete', 'id' => $model->id]), [
-                                        'title' => '' . \Yii::t('app', 'Xóa user'),
-                                        'data-confirm' => Yii::t('app', 'Xóa thông tin này?')
-                                    ]);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>',
+                                        Yii::$app->urlManager->createUrl(['yara-gap/delete', 'id' => $model->id]), [
+                                            'title' => Yii::t('yii', 'Delete'),
+                                            'data-confirm' => Yii::t('app', 'Bạn có chắc chắn xóa nội dung này?'),
+                                            'data-method' => 'post',
+                                            'data-pjax' => '0',
+                                        ]);
                                 }
                             ]
                         ],

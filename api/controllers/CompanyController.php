@@ -14,6 +14,7 @@ use api\helpers\UserHelpers;
 use api\models\CompanyNews;
 use api\models\CompanyQA;
 use api\models\FormAnalyst;
+use common\helpers\CUtils;
 use common\models\Company;
 use common\models\ReportFormAnalyst;
 use common\models\Subscriber;
@@ -376,10 +377,10 @@ class CompanyController extends ApiController
         if (!$form->tenChuVuon) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Tên chủ vuòn')]));
         }
-        $form->cmnd = isset($formAnalyst['cmnd']) ? $formAnalyst['cmnd'] : "";
-        if (!$form->cmnd) {
-            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'CMND')]));
-        }
+//        $form->cmnd = isset($formAnalyst['cmnd']) ? $formAnalyst['cmnd'] : "";
+//        if (!$form->cmnd) {
+//            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'CMND')]));
+//        }
         $form->dienTich = isset($formAnalyst['dienTich']) ? $formAnalyst['dienTich'] : 0;
         if (!$form->dienTich) {
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Diện tích')]));
@@ -592,21 +593,21 @@ class CompanyController extends ApiController
             + $form->phanHonHop2Cong * $form->phanHonHop2Dong;
         $tuoi = $form->congTuoiDong * $form->congTuoiCong;
         $chikhac = $form->chiPhiKhac;
-        $tong = $tongNhanCong + $thuocbvtv + $phanBon + $tuoi + $chikhac;
+        $tong = $tongNhanCong + $thuocbvtv + $phanBon + $tuoi + $chikhac + $form->laiVay + $form->khauHao + $form->nhienLieu;
 
         $reportFormAnalyst = new ReportFormAnalyst();
         $reportFormAnalyst->sanLuongThucTe = $form->sanLuongTan . " T";
         $reportFormAnalyst->nangSuatDatDuoc = round($form->sanLuongTan/$form->dienTich,2) ." T/ha";
-        $reportFormAnalyst->tongChiPhiThucTeTrongNam = $tong . "tr.đ";
-        $reportFormAnalyst->nhanCong = $tongNhanCong. "tr.đ";
+        $reportFormAnalyst->tongChiPhiThucTeTrongNam = CUtils::numberFormat($tong) . "tr.đ";
+        $reportFormAnalyst->nhanCong = CUtils::numberFormat($tongNhanCong). "tr.đ";
         $reportFormAnalyst->nhanCongPhanTram = round($tongNhanCong / $tong,2) * 100 ."%";
-        $reportFormAnalyst->phanBon = $phanBon ."tr.đ";
+        $reportFormAnalyst->phanBon = CUtils::numberFormat($phanBon) ."tr.đ";
         $reportFormAnalyst->phanBonPhanTram = round($phanBon / $tong,2) * 100 ."%";
-        $reportFormAnalyst->tuoi = $tuoi."tr.đ";
+        $reportFormAnalyst->tuoi = CUtils::numberFormat($tuoi)."tr.đ";
         $reportFormAnalyst->tuoiPhanTram = round($tuoi / $tong,2) * 100 ."%";
-        $reportFormAnalyst->bvtv = $thuocbvtv."tr.đ";
+        $reportFormAnalyst->bvtv = CUtils::numberFormat($thuocbvtv)."tr.đ";
         $reportFormAnalyst->bvtvPhanTram = round($thuocbvtv / $tong,2) * 100 ."%";
-        $reportFormAnalyst->chiKhac = $chikhac."tr.đ";
+        $reportFormAnalyst->chiKhac = CUtils::numberFormat($chikhac)."tr.đ";
         $reportFormAnalyst->chiKhacPhanTram =  round($chikhac / $tong,2) * 100 ."%";
         $reportFormAnalyst->form_id = $form->id;
         $reportFormAnalyst->giaThanh = $tong / $form->sanLuongTan . "tr.đ";
