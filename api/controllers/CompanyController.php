@@ -587,7 +587,7 @@ class CompanyController extends ApiController
             + $form->thuocBenhCong * $form->thuocBenhDong;
         $phanBon = $form->congBonPhanDong * $form->congBonPhanCong + $form->phanBonLaCong * $form->phanBonLaDong
             + $form->phanHuuCoCong * $form->phanHuuCoDong + $form->voiNongNghiepCong * $form->voiNongNghiepDong
-            + $form->phanViSinhCong * $form->phanViSinhDong + $form->phanDamSaCong *$form->phanDamSaDong
+            + $form->phanViSinhCong * $form->phanViSinhDong + $form->phanDamSaCong * $form->phanDamSaDong
             + $form->phanDamUreCong * $form->phanDamUreDong + $form->phanLanCong * $form->phanLanDong
             + $form->phanKaliCong * $form->phanKaliDong + $form->phanHonHop1Cong * $form->phanHonHop1Dong
             + $form->phanHonHop2Cong * $form->phanHonHop2Dong;
@@ -597,20 +597,20 @@ class CompanyController extends ApiController
 
         $reportFormAnalyst = new ReportFormAnalyst();
         $reportFormAnalyst->sanLuongThucTe = $form->sanLuongTan . " T";
-        $reportFormAnalyst->nangSuatDatDuoc = round($form->sanLuongTan/$form->dienTich,2) ." T/ha";
+        $reportFormAnalyst->nangSuatDatDuoc = $form->dienTich ? round($form->sanLuongTan / $form->dienTich, 2) . " T/ha" : "0 T/ha";
         $reportFormAnalyst->tongChiPhiThucTeTrongNam = CUtils::numberFormat($tong) . "tr.đ";
-        $reportFormAnalyst->nhanCong = CUtils::numberFormat($tongNhanCong). "tr.đ";
-        $reportFormAnalyst->nhanCongPhanTram = round($tongNhanCong / $tong,2) * 100 ."%";
-        $reportFormAnalyst->phanBon = CUtils::numberFormat($phanBon) ."tr.đ";
-        $reportFormAnalyst->phanBonPhanTram = round($phanBon / $tong,2) * 100 ."%";
-        $reportFormAnalyst->tuoi = CUtils::numberFormat($tuoi)."tr.đ";
-        $reportFormAnalyst->tuoiPhanTram = round($tuoi / $tong,2) * 100 ."%";
-        $reportFormAnalyst->bvtv = CUtils::numberFormat($thuocbvtv)."tr.đ";
-        $reportFormAnalyst->bvtvPhanTram = round($thuocbvtv / $tong,2) * 100 ."%";
-        $reportFormAnalyst->chiKhac = CUtils::numberFormat($chikhac)."tr.đ";
-        $reportFormAnalyst->chiKhacPhanTram =  round($chikhac / $tong,2) * 100 ."%";
+        $reportFormAnalyst->nhanCong = CUtils::numberFormat($tongNhanCong) . "tr.đ";
+        $reportFormAnalyst->nhanCongPhanTram = $tong ? round($tongNhanCong / $tong, 2) * 100 . "%" : "0%";
+        $reportFormAnalyst->phanBon = CUtils::numberFormat($phanBon) . "tr.đ";
+        $reportFormAnalyst->phanBonPhanTram = $tong ? round($phanBon / $tong, 2) * 100 . "%" : "0%";
+        $reportFormAnalyst->tuoi = CUtils::numberFormat($tuoi) . "tr.đ";
+        $reportFormAnalyst->tuoiPhanTram = $tong ? round($tuoi / $tong, 2) * 100 . "%" : "0%";
+        $reportFormAnalyst->bvtv = CUtils::numberFormat($thuocbvtv) . "tr.đ";
+        $reportFormAnalyst->bvtvPhanTram = $tong ? round($thuocbvtv / $tong, 2) * 100 . "%" : "0%";
+        $reportFormAnalyst->chiKhac = CUtils::numberFormat($chikhac) . "tr.đ";
+        $reportFormAnalyst->chiKhacPhanTram = $tong ? round($chikhac / $tong, 2) * 100 . "%" : "0%";
         $reportFormAnalyst->form_id = $form->id;
-        $reportFormAnalyst->giaThanh = $tong / $form->sanLuongTan . "tr.đ";
+        $reportFormAnalyst->giaThanh = $form->sanLuongTan  ? $tong / $form->sanLuongTan . "tr.đ" : "0%";
         $reportFormAnalyst->giaBan = '20 VNĐ';
         $reportFormAnalyst->loiNhuan = '20 VNĐ';
         $reportFormAnalyst->tongLoiNhuan = '20 VNĐ';
