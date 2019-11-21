@@ -29,7 +29,7 @@ class RaFilmDocument extends \common\models\RaFilmDocument
         $fields = parent::fields();
         $fields['url'] = function ($model) {
             /* @var $model \common\models\Category */
-            if($model->image){
+            if($model->url){
                 return explode('v=', $model->url)[1];
             }
             return '';
