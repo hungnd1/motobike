@@ -59,7 +59,7 @@ class FilmController extends ApiController
         }
         $page = isset($_GET['page']) && $_GET['page'] > 1 ? $_GET['page'] - 1 : 0;
 //        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
-        $query = RaFilmDocument::find()
+        $query = \api\models\RaFilmDocument::find()
             ->andWhere(['status' => RaFilmDocument::STATUS_ACTIVE])
             ->andWhere(['fruit_id' => (int)$fruitId]);
 
