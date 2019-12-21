@@ -61,15 +61,15 @@ class FilmController extends ApiController
 //        $query = News::find()->andWhere(['status' => News::STATUS_ACTIVE])->orderBy(['updated_at' => SORT_DESC]);
         $query = \api\models\RaFilmDocument::find()
             ->andWhere(['status' => RaFilmDocument::STATUS_ACTIVE])
-            ->andWhere(['fruit_id' => (int)$fruitId]);
+            ->andWhere(['fruit_id' => (int)$fruitId])
+            ->orderBy(['id'=>SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 15,
                 'page' => $page
-            ],
-            'sort' =>['id' => SORT_ASC]
+            ]
         ]);
         if ($query->one()) {
             return $dataProvider;
