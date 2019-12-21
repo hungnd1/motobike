@@ -386,132 +386,132 @@ class CompanyController extends ApiController
             throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Diện tích')]));
         }
         $form->congLamCoCong = isset($formAnalyst['congLamCoCong']) ? $formAnalyst['congLamCoCong'] : 0;
-        $form->congLamCoDong = isset($formAnalyst['congLamCoDong']) ? $formAnalyst['congLamCoDong'] : 0;
+        $form->congLamCoDong = isset($formAnalyst['congLamCoDong']) ? str_replace(".","",$formAnalyst['congLamCoDong']) : 0;
 //        if (!$form->congLamCoCong || !$form->congLamCoDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công làm cỏ')]));
 //        }
 
         $form->congTaoHinhCong = isset($formAnalyst['congTaoHinhCong']) ? $formAnalyst['congTaoHinhCong'] : 0;
-        $form->congTaoHinhDong = isset($formAnalyst['congTaoHinhDong']) ? $formAnalyst['congTaoHinhDong'] : 0;
+        $form->congTaoHinhDong = isset($formAnalyst['congTaoHinhDong']) ? str_replace(".","",$formAnalyst['congTaoHinhDong']) : 0;
 
 //        if (!$form->congTaoHinhCong || !$form->congTaoHinhDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công tạo hình')]));
 //        }
 
         $form->congBonPhanCong = isset($formAnalyst['congBonPhanCong']) ? $formAnalyst['congBonPhanCong'] : 0;
-        $form->congBonPhanDong = isset($formAnalyst['congBonPhanDong']) ? $formAnalyst['congBonPhanDong'] : 0;
+        $form->congBonPhanDong = isset($formAnalyst['congBonPhanDong']) ? str_replace(".","",$formAnalyst['congBonPhanDong']) : 0;
 
 //        if (!$form->congBonPhanCong || !$form->congBonPhanDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công bón phân')]));
 //        }
 
         $form->congThuHaiCong = isset($formAnalyst['congThuHaiCong']) ? $formAnalyst['congThuHaiCong'] : 0;
-        $form->congThuHaiDong = isset($formAnalyst['congThuHaiDong']) ? $formAnalyst['congThuHaiDong'] : 0;
+        $form->congThuHaiDong = isset($formAnalyst['congThuHaiDong']) ? str_replace(".","",$formAnalyst['congThuHaiDong']) : 0;
 
 //        if (!$form->congThuHaiCong || !$form->congThuHaiDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công thu hái')]));
 //        }
 
         $form->congSoCheCong = isset($formAnalyst['congSoCheCong']) ? $formAnalyst['congSoCheCong'] : 0;
-        $form->congSoCheDong = isset($formAnalyst['congSoCheDong']) ? $formAnalyst['congSoCheDong'] : 0;
+        $form->congSoCheDong = isset($formAnalyst['congSoCheDong']) ? str_replace(".","",$formAnalyst['congSoCheDong']) : 0;
 
 //        if (!$form->congSoCheCong || !$form->congSoCheDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công sơ chế')]));
 //        }
 
         $form->congTuoiCong = isset($formAnalyst['congTuoiCong']) ? $formAnalyst['congTuoiCong'] : 0;
-        $form->congTuoiDong = isset($formAnalyst['congTuoiDong']) ? $formAnalyst['congTuoiDong'] : 0;
+        $form->congTuoiDong = isset($formAnalyst['congTuoiDong']) ? str_replace(".","",$formAnalyst['congTuoiDong']) : 0;
 
 //        if (!$form->congTuoiCong || !$form->congTuoiDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công tưới')]));
 //        }
 
         $form->congPhunThuocCong = isset($formAnalyst['congPhunThuocCong']) ? $formAnalyst['congPhunThuocCong'] : 0;
-        $form->congPhunThuocDong = isset($formAnalyst['congPhunThuocDong']) ? $formAnalyst['congPhunThuocDong'] : 0;
+        $form->congPhunThuocDong = isset($formAnalyst['congPhunThuocDong']) ? str_replace(".","",$formAnalyst['congPhunThuocDong']) : 0;
 
 //        if (!$form->congPhunThuocCong || !$form->congPhunThuocDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công phun thuốc')]));
 //        }
 
         $form->congKhacCong = isset($formAnalyst['congKhacCong']) ? $formAnalyst['congKhacCong'] : 0;
-        $form->congKhacDong = isset($formAnalyst['congKhacDong']) ? $formAnalyst['congKhacDong'] : 0;
+        $form->congKhacDong = isset($formAnalyst['congKhacDong']) ? str_replace(".","",$formAnalyst['congKhacDong']) : 0;
 
 //        if (!$form->congKhacCong || !$form->congKhacDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công khác')]));
 //        }
 
         $form->thuocSauCong = isset($formAnalyst['thuocSauCong']) ? $formAnalyst['thuocSauCong'] : 0;
-        $form->thuocsauDong = isset($formAnalyst['thuocsauDong']) ? $formAnalyst['thuocsauDong'] : 0;
+        $form->thuocsauDong = isset($formAnalyst['thuocsauDong']) ? str_replace(".","",$formAnalyst['thuocsauDong']) : 0;
 
 //        if (!$form->thuocSauCong || !$form->thuocsauDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Thuốc sâu')]));
 //        }
 
         $form->thuocBenhCong = isset($formAnalyst['thuocBenhCong']) ? $formAnalyst['thuocBenhCong'] : 0;
-        $form->thuocBenhDong = isset($formAnalyst['thuocBenhDong']) ? $formAnalyst['thuocBenhDong'] : 0;
+        $form->thuocBenhDong = isset($formAnalyst['thuocBenhDong']) ? str_replace(".","",$formAnalyst['thuocBenhDong']) : 0;
 
 //        if (!$form->thuocBenhCong || !$form->thuocBenhDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Thuốc bệnh')]));
 //        }
 
         $form->phanBonLaCong = isset($formAnalyst['phanBonLaCong']) ? $formAnalyst['phanBonLaCong'] : 0;
-        $form->phanBonLaDong = isset($formAnalyst['phanBonLaDong']) ? $formAnalyst['phanBonLaDong'] : 0;
+        $form->phanBonLaDong = isset($formAnalyst['phanBonLaDong']) ? str_replace(".","",$formAnalyst['phanBonLaDong']) : 0;
 
 //        if (!$form->phanBonLaCong || !$form->phanBonLaDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân bón lá')]));
 //        }
 
         $form->phanHuuCoCong = isset($formAnalyst['phanHuuCoCong']) ? $formAnalyst['phanHuuCoCong'] : 0;
-        $form->phanHuuCoDong = isset($formAnalyst['phanHuuCoDong']) ? $formAnalyst['phanHuuCoDong'] : 0;
+        $form->phanHuuCoDong = isset($formAnalyst['phanHuuCoDong']) ? str_replace(".","",$formAnalyst['phanHuuCoDong']) : 0;
 
 //        if (!$form->phanHuuCoCong || !$form->phanHuuCoDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân hữu cơ')]));
 //        }
 
         $form->voiNongNghiepCong = isset($formAnalyst['voiNongNghiepCong']) ? $formAnalyst['voiNongNghiepCong'] : 0;
-        $form->voiNongNghiepDong = isset($formAnalyst['voiNongNghiepDong']) ? $formAnalyst['voiNongNghiepDong'] : 0;
+        $form->voiNongNghiepDong = isset($formAnalyst['voiNongNghiepDong']) ? str_replace(".","",$formAnalyst['voiNongNghiepDong']) : 0;
 
 //        if (!$form->voiNongNghiepCong || !$form->voiNongNghiepDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Vôi nông nghiệp')]));
 //        }
 
         $form->phanViSinhCong = isset($formAnalyst['phanViSinhCong']) ? $formAnalyst['phanViSinhCong'] : 0;
-        $form->phanViSinhDong = isset($formAnalyst['phanViSinhDong']) ? $formAnalyst['phanViSinhDong'] : 0;
+        $form->phanViSinhDong = isset($formAnalyst['phanViSinhDong']) ? str_replace(".","",$formAnalyst['phanViSinhDong']) : 0;
 
 //        if (!$form->phanViSinhCong || !$form->phanViSinhDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân vi sinh')]));
 //        }
 
         $form->phanDamSaCong = isset($formAnalyst['phanDamSaCong']) ? $formAnalyst['phanDamSaCong'] : 0;
-        $form->phanDamSaDong = isset($formAnalyst['phanDamSaDong']) ? $formAnalyst['phanDamSaDong'] : 0;
+        $form->phanDamSaDong = isset($formAnalyst['phanDamSaDong']) ? str_replace(".","",$formAnalyst['phanDamSaDong']) : 0;
 
 //        if (!$form->phanDamSaCong || !$form->phanDamSaDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân đạm SA')]));
 //        }
 
         $form->phanDamUreCong = isset($formAnalyst['phanDamUreCong']) ? $formAnalyst['phanDamUreCong'] : 0;
-        $form->phanDamUreDong = isset($formAnalyst['phanDamUreDong']) ? $formAnalyst['phanDamUreDong'] : 0;
+        $form->phanDamUreDong = isset($formAnalyst['phanDamUreDong']) ? str_replace(".","",$formAnalyst['phanDamUreDong']) : 0;
 
 //        if (!$form->phanDamUreCong || !$form->phanDamUreDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân đạm Ure')]));
 //        }
 
         $form->phanLanCong = isset($formAnalyst['phanLanCong']) ? $formAnalyst['phanLanCong'] : 0;
-        $form->phanLanDong = isset($formAnalyst['phanLanDong']) ? $formAnalyst['phanLanDong'] : 0;
+        $form->phanLanDong = isset($formAnalyst['phanLanDong']) ? str_replace(".","",$formAnalyst['phanLanDong']) : 0;
 
 //        if (!$form->phanLanCong || !$form->phanLanDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân lân')]));
 //        }
 
         $form->phanKaliCong = isset($formAnalyst['phanKaliCong']) ? $formAnalyst['phanKaliCong'] : 0;
-        $form->phanKaliDong = isset($formAnalyst['phanKaliDong']) ? $formAnalyst['phanKaliDong'] : 0;
+        $form->phanKaliDong = isset($formAnalyst['phanKaliDong']) ? str_replace(".","",$formAnalyst['phanKaliDong']) : 0;
 
 //        if (!$form->phanKaliCong || !$form->phanKaliDong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân kali')]));
 //        }
 
         $form->phanHonHop1Cong = isset($formAnalyst['phanHonHop1Cong']) ? $formAnalyst['phanHonHop1Cong'] : 0;
-        $form->phanHonHop1Dong = isset($formAnalyst['phanHonHop1Dong']) ? $formAnalyst['phanHonHop1Dong'] : 0;
+        $form->phanHonHop1Dong = isset($formAnalyst['phanHonHop1Dong']) ? str_replace(".","",$formAnalyst['phanHonHop1Dong']) : 0;
         $form->phanHonHop1N = isset($formAnalyst['phanHonHop1N']) ? $formAnalyst['phanHonHop1N'] : 0;
         $form->phanHonHop1P = isset($formAnalyst['phanHonHop1P']) ? $formAnalyst['phanHonHop1P'] : 0;
         $form->phanHonHop1K = isset($formAnalyst['phanHonHop1K']) ? $formAnalyst['phanHonHop1K'] : 0;
@@ -521,7 +521,7 @@ class CompanyController extends ApiController
 //        }
 
         $form->phanHonHop2Cong = isset($formAnalyst['phanHonHop2Cong']) ? $formAnalyst['phanHonHop2Cong'] : 0;
-        $form->phanHonHop2Dong = isset($formAnalyst['phanHonHop2Dong']) ? $formAnalyst['phanHonHop2Dong'] : 0;
+        $form->phanHonHop2Dong = isset($formAnalyst['phanHonHop2Dong']) ? str_replace(".","",$formAnalyst['phanHonHop2Dong']) : 0;
         $form->phanHonHop2N = isset($formAnalyst['phanHonHop2N']) ? $formAnalyst['phanHonHop2N'] : 0;
         $form->phanHonHop2P = isset($formAnalyst['phanHonHop2P']) ? $formAnalyst['phanHonHop2P'] : 0;
         $form->phanHonHop2K = isset($formAnalyst['phanHonHop2K']) ? $formAnalyst['phanHonHop2K'] : 0;
@@ -530,43 +530,43 @@ class CompanyController extends ApiController
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Phân hỗn hợp 2')]));
 //        }
 
-        $form->laiVay = isset($formAnalyst['laiVay']) ? $formAnalyst['laiVay'] : 0;
+        $form->laiVay = isset($formAnalyst['laiVay']) ? str_replace(".","",$formAnalyst['laiVay']) : 0;
 
 //        if (!$form->laiVay) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Lãi vay')]));
 //        }
 
-        $form->khauHao = isset($formAnalyst['khauHao']) ? $formAnalyst['khauHao'] : 0;
+        $form->khauHao = isset($formAnalyst['khauHao']) ? str_replace(".","",$formAnalyst['khauHao']) : 0;
 
 //        if (!$form->khauHao) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Khấu hao')]));
 //        }
 
-        $form->nhienLieu = isset($formAnalyst['nhienLieu']) ? $formAnalyst['nhienLieu'] : 0;
+        $form->nhienLieu = isset($formAnalyst['nhienLieu']) ? str_replace(".","",$formAnalyst['nhienLieu']) : 0;
 
 //        if (!$form->nhienLieu) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Nhiên liệu')]));
 //        }
 
-        $form->chiPhiKhac = isset($formAnalyst['chiPhiKhac']) ? $formAnalyst['chiPhiKhac'] : 0;
+        $form->chiPhiKhac = isset($formAnalyst['chiPhiKhac']) ? str_replace(".","",$formAnalyst['chiPhiKhac']) : 0;
 
 //        if (!$form->chiPhiKhac) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Chi phí khác')]));
 //        }
 
-        $form->giaBinhQuan = isset($formAnalyst['giaBinhQuan']) ? $formAnalyst['giaBinhQuan'] : 0;
+        $form->giaBinhQuan = isset($formAnalyst['giaBinhQuan']) ? str_replace(".","",$formAnalyst['giaBinhQuan']) : 0;
 
 //        if (!$form->giaBinhQuan) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Giá bình quân')]));
 //        }
 
-        $form->sanLuongTan = isset($formAnalyst['sanLuongTan']) ? $formAnalyst['sanLuongTan'] : 0;
+        $form->sanLuongTan = isset($formAnalyst['sanLuongTan']) ? str_replace(".","",$formAnalyst['sanLuongTan']) : 0;
 
 //        if (!$form->congLamCoCong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công làm cỏ')]));
 //        }
 
-        $form->thuNhapTrongSen = isset($formAnalyst['thuNhapTrongSen']) ? $formAnalyst['thuNhapTrongSen'] : 0;
+        $form->thuNhapTrongSen = isset($formAnalyst['thuNhapTrongSen']) ? str_replace(".","",$formAnalyst['thuNhapTrongSen']) : 0;
 
 //        if (!$form->congLamCoCong) {
 //            throw new InvalidValueException($this->replaceParam(Message::getNullValueMessage(), [Yii::t('app', 'Công làm cỏ')]));
