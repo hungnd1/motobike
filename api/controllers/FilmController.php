@@ -69,9 +69,7 @@ class FilmController extends ApiController
                 'pageSize' => 15,
                 'page' => $page
             ],
-            'sort' => [
-                'defaultOrder' => ['id' => SORT_ASC],
-            ],
+            'sort' =>['id' => SORT_ASC]
         ]);
         if ($query->one()) {
             return $dataProvider;
