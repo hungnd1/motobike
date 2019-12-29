@@ -358,7 +358,7 @@ class AppController extends ApiController
 
     public function actionTerm()
     {
-        if ($this->language = 'en') {
+        if ($this->language == 'en') {
             $query = Term::find()->andWhere(['term_en'=>'2'])->orderBy(['updated_at' => SORT_DESC])->limit(1);
         } else {
             $query = Term::find()->andWhere(['term_en'=>'1'])->orderBy(['updated_at' => SORT_DESC])->limit(1);
