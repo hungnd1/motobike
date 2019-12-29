@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $term
+ * @property string $term_en
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -28,8 +29,8 @@ class Term extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['term'], 'required'],
-            [['term'], 'string'],
+            [['term','term_en'], 'required'],
+            [['term','term_en'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -42,6 +43,7 @@ class Term extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'term' => 'Nội dung quy định',
+            'term_en' => 'Nội dung quy định tiếng anh',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

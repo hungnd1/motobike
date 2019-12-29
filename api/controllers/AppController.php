@@ -358,7 +358,11 @@ class AppController extends ApiController
 
     public function actionTerm()
     {
-        $query = Term::find()->orderBy(['updated_at' => SORT_DESC])->limit(1);
+        if ($this->language = 'en') {
+            $query = Term::find()->andWhere(['term_en'=>'2'])->orderBy(['updated_at' => SORT_DESC])->limit(1);
+        } else {
+            $query = Term::find()->andWhere(['term_en'=>'1'])->orderBy(['updated_at' => SORT_DESC])->limit(1);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
