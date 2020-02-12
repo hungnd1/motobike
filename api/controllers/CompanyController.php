@@ -597,7 +597,7 @@ class CompanyController extends ApiController
 
         $reportFormAnalyst = new ReportFormAnalyst();
         $reportFormAnalyst->sanLuongThucTe = $form->sanLuongTan . " T";
-        $reportFormAnalyst->nangSuatDatDuoc = $form->dienTich ? round($form->sanLuongTan / $form->dienTich, 2) . " T/ha" : "0 T/ha";
+        $reportFormAnalyst->nangSuatDatDuoc = $form->dienTich && is_numeric($form->dienTich) ? round($form->sanLuongTan / $form->dienTich, 2) . " T/ha" : "0 T/ha";
         $reportFormAnalyst->tongChiPhiThucTeTrongNam = CUtils::numberFormat($tong) . " đ";
         $reportFormAnalyst->nhanCong = CUtils::numberFormat($tongNhanCong) . " đ";
         $reportFormAnalyst->nhanCongPhanTram = $tong ? round($tongNhanCong / $tong, 2) * 100 . "%" : "0%";
