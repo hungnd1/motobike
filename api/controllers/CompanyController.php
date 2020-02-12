@@ -610,7 +610,7 @@ class CompanyController extends ApiController
         $reportFormAnalyst->chiKhac = CUtils::numberFormat($chikhac) . " đ";
         $reportFormAnalyst->chiKhacPhanTram = $tong ? round($chikhac / $tong, 2) * 100 . "%" : "0%";
         $reportFormAnalyst->form_id = $form->id;
-        $reportFormAnalyst->giaThanh = $form->sanLuongTan  ? $tong / $form->sanLuongTan . " đ" : "0%";
+        $reportFormAnalyst->giaThanh = $form->sanLuongTan  ? CUtils::numberFormat($tong / $form->sanLuongTan) . " đ" : "0đ";
         $reportFormAnalyst->giaBan = '20 VNĐ';
         $reportFormAnalyst->loiNhuan = '20 VNĐ';
         $reportFormAnalyst->tongLoiNhuan = '20 VNĐ';
