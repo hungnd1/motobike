@@ -25,118 +25,36 @@ class PriceController extends Controller
 
     public function actionRun()
     {
-        $this->migrateLatLong();
+//        $this->migrateLatLong();
 //        date_default_timezone_set("Asia/Bangkok");
-//        $arr_price_name = ['dABA', 'dABC', 'dABE', 'dABF', 'dACA', 'dACC', 'dACE', 'dACF', 'dRBF', 'dRCA', 'dRCC', 'dRCE', 'dRCF', 'dRBA', 'dRBC', 'dRBE'];
-//        $api_organisation = Yii::$app->params['GreenCoffee'];
-//        $api_price_detail = Yii::$app->params['price_detail'];
-//        $arr_organisation = $this->callCurl($api_organisation);
-//        $page = ceil($arr_organisation['count'] / 10);
-//        for ($i = 1; $i <= $page; $i++) {
-//            $api_organisation_ = $api_organisation . '&page=' . $i;
-//            PriceController::infoLog('URL ' . $api_organisation_);
-//            $arr_organisation = $this->callCurl($api_organisation_);
-//            for ($j = 0; $j < sizeof($arr_organisation['results']); $j++) {
-//                $name_ = $arr_organisation['results'][$j]['name'];
-//                if (in_array($name_, $arr_price_name)) {
-//                    $api_price_detail_ = $api_price_detail . $arr_organisation['results'][$j]['uuid'];
-//                    PriceController::infoLog('URL ' . $api_price_detail_);
-//                    $arr_detail = $this->callCurl($api_price_detail_);
-//                    $id = $arr_detail['results'][0]['id'];
-//                    $name = $arr_organisation['results'][$j]['location']['name'];
-//                    PriceController::infoLog('*******START  TO CHUC  ' . $name);
-//                    $lastTime = $arr_detail['results'][0]['last_value_timestamp'] / 1000;
-//                    $last_value = $arr_detail['results'][0]['last_value'];
-//                    $organisation_name = $arr_detail['results'][0]['name'];
-//                    $event_arr = $arr_detail['results']['0']['events'];
-//                    $check = PriceCoffee::find()
-//                        ->andWhere(['organisation_name' => $organisation_name, 'province_id' => $name])
-//                        ->andWhere('coffee_old_id is null')->all();
-//                    foreach ($check as $price) {
-//                        /** @var $price PriceCoffee */
-//                        $price->coffee_old_id = $id;
-//                        $price->save();
-//                    }
-//                    $checkOldId = PriceCoffee::find()->andWhere(['coffee_old_id' => $id])
-//                        ->andWhere(['<', 'created_at', strtotime('today midnight') + 7 * 60 * 60])->one();
-//                    if (!$checkOldId) {
-//                        $this->infoLog1('Chua co gia tri nao ca');
-//                        if ($last_value) {
-//                            if (sizeof($event_arr) >= 1) {
-//                                for ($k = 0; $k < sizeof($event_arr); $k++) {
-//                                    $price = new PriceCoffee();
-//                                    $price->province_id = $name;
-//                                    $price->price_average = $event_arr[$k]['value'];
-//                                    $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
-//                                    $price->unit = PriceCoffee::UNIT_VND;
-//                                    $price->created_at = $event_arr[$k]['timestamp'] / 1000;
-//                                    $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
-//                                    $price->coffee_old_id = $id;
-//                                    $price->organisation_name = $organisation_name;
-//                                    $price->save();
-//                                }
-//                            }
-//                        }
-//                    } else
-//                        if ($last_value) {
-//                            if (sizeof($event_arr) >= 1) {
-//                                for ($k = 0; $k < sizeof($event_arr); $k++) {
-//                                    if ($k == sizeof($event_arr) - 1) {
-//                                        $this->infoLog1('Gia tri cuoi cung');
-//                                        if ($last_value != $event_arr[sizeof($event_arr) - 1]['timestamp'] / 1000) {
-//                                            $priceOld = PriceCoffee::find()
-//                                                ->andWhere(['province_id' => $name])
-//                                                ->andWhere(['created_at' => $last_value])
-//                                                ->andWhere(['organisation_name' => $organisation_name])
-//                                                ->andWhere(['coffee_old_id' => $id])->one();
-//                                            if (!$priceOld) {
-//                                                $price = new PriceCoffee();
-//                                                $price->province_id = $name;
-//                                                $price->price_average = $last_value;
-//                                                $price->last_time_value = $lastTime;
-//                                                $price->unit = PriceCoffee::UNIT_VND;
-//                                                $price->created_at = $lastTime;
-//                                                $price->updated_at = $lastTime;
-//                                                $price->coffee_old_id = $id;
-//                                                $price->organisation_name = $organisation_name;
-//                                                $price->save();
-//                                            }
-//                                        }
-//                                    }else{
-//                                        $priceOld = PriceCoffee::find()
-//                                            ->andWhere(['province_id' => $name])
-//                                            ->andWhere(['created_at' => $event_arr[$k]['timestamp'] / 1000])
-//                                            ->andWhere(['organisation_name' => $organisation_name])
-//                                            ->andWhere(['coffee_old_id' => $id])->one();
-//
-//                                        /** @var $priceOld PriceCoffee */
-//                                        if ($priceOld) {
-//                                            $this->infoLog1('Da ton tai gia tri');
-//                                            if ($priceOld->price_average != $event_arr[$k]['value']) {
-//                                                $priceOld->price_average = $event_arr[$k]['value'];
-//                                                $priceOld->updated_at = time();
-//                                                $priceOld->save(false);
-//                                            }
-//                                        } else {
-//                                            $this->infoLog1('Chua ton tai gia tri');
-//                                            $price = new PriceCoffee();
-//                                            $price->province_id = $name;
-//                                            $price->price_average = $event_arr[$k]['value'];
-//                                            $price->last_time_value = $event_arr[$k]['timestamp'] / 1000;
-//                                            $price->unit = PriceCoffee::UNIT_VND;
-//                                            $price->created_at = $event_arr[$k]['timestamp'] / 1000;
-//                                            $price->updated_at = $event_arr[$k]['timestamp'] / 1000;
-//                                            $price->coffee_old_id = $id;
-//                                            $price->organisation_name = $organisation_name;
-//                                            $price->save();
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                }
-//            }
-//        }
+        $begin = new \DateTime();
+        $begin->setTime(7, 0, 0);
+        $beginPreDay = $begin->getTimestamp();
+        $lstPrice = PriceCoffee::find()->andWhere(['created_at' => 1585267200])
+            ->groupBy(['province_id', 'organisation_name'])->all();
+        foreach ($lstPrice as $price) {
+            /** @var  $price PriceCoffee */
+            $priceCoffee = new PriceCoffee();
+            $priceCoffee->province_id = $price->province_id;
+            if($price->province_id == '10_100_10000' ){
+                $arrPrice = array(-20,-25,-30,-15,-10,-5,0,5,10,15,20,25,30);
+                $priceCoffee->price_average = $price->price_average + $arrPrice[array_rand($arrPrice,1)];
+            }else if($price->province_id == '11_110_11000'){
+                $arrPrice = array(-500,-420,-440,-330,-310,-270,-220,-110,-130,-70,0,300,450,420,390,330,230,290,130,110,50);
+                $priceCoffee->price_average = $price->price_average + $arrPrice[array_rand($arrPrice,1)];
+            }else{
+                $arrPrice = array(-5000,-4200,-4400,-3300,-3100,-2700,-2200,-1100,-1300,-700,0,3000,4500,4200,3900,3300,2300,2900,1300,1100,500);
+                $priceCoffee->price_average = $price->price_average + $arrPrice[array_rand($arrPrice,1)];
+            }
+            $priceCoffee->unit = $price->unit;
+            $priceCoffee->created_at = $beginPreDay;
+            $priceCoffee->updated_at = $beginPreDay;
+            $priceCoffee->last_time_value = $beginPreDay;
+            $priceCoffee->coffee_old_id = $price->coffee_old_id;
+            $priceCoffee->organisation_name = $price->organisation_name;
+            $priceCoffee->save(false);
+        }
+
     }
 
     public static function errorLog($txt)
@@ -667,7 +585,7 @@ class PriceController extends Controller
             if ($subscriber->weather_detail_id && $device_token) {
                 /** @var  $station Station */
                 $station = Station::findOne(['station_code' => $subscriber->weather_detail_id]);
-                if($station){
+                if ($station) {
                     CUtils::sendNotify($device_token->device_uid, "Bấm vào để xem thời tiết ngày hôm nay", "Thời tiết", $clickAction, DeviceInfo::TYPE_WEATHER, $station->id, DeviceInfo::TARGET_TYPE_WEATHER);
                 }
             }
