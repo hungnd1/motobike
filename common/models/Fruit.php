@@ -10,6 +10,7 @@ use yii\helpers\Url;
  *
  * @property integer $id
  * @property string $name
+ * @property string $name_en
  * @property string $image
  * @property integer $parent_id
  * @property integer $have_child
@@ -39,7 +40,7 @@ class Fruit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'image'], 'string', 'max' => 255],
+            [['name', 'image','name_en'], 'string', 'max' => 255],
             [['name'], 'required'],
             [['parent_id', 'have_child','is_primary','order'], 'integer']
         ];
@@ -56,7 +57,8 @@ class Fruit extends \yii\db\ActiveRecord
             'image' => 'Hình ảnh',
             'parent_id' => 'Cây cha',
             'is_primary' => 'Cây trồng chính',
-            'order' => 'Sắp xếp'
+            'order' => 'Sắp xếp',
+            'name_en' => 'Tên tiếng anh'
         ];
     }
 

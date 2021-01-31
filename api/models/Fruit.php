@@ -22,6 +22,13 @@ class Fruit extends \common\models\Fruit
             }
             return '';
         };
+        $fields['name'] = function ($model) {
+            /* @var $model \common\models\Fruit */
+            if(\Yii::$app->language == 'en'){
+                return $model->name_en;
+            }
+            return $model->name;
+        };
 
         return $fields;
     }

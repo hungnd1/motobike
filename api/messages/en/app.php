@@ -135,4 +135,5 @@ return [
     'Đổi mật khẩu thành công' => '',
     'profile_notfound' => '@@@@',
     'tham_so_khong_hop_le' => '@@@@',
+    'Cám ơn bạn đã đánh giá nội dung này'=>'Thank you for feedback'
 ];
