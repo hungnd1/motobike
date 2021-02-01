@@ -1596,11 +1596,11 @@ return [
     'Tỉa cành, tạo hình' => 'Pruning, shaping',
     'Thu hái, bảo quản' => 'Picking, preserving',
     'Trồng bơ' => 'Growing butter',
-    'In today weather conditions we would like to send you some references and main jobs for COFFEE' => 'In today weather we would like to send you some information reference and the main work for COFFEE ',
-    'In today weather conditions we would like to send you some reference information and main jobs for TIGRETS.' => 'In today weather conditions we would like to send you some information. reference information and main jobs for TREE TIRE. ',
-    'In today weather we would like to send you some reference information and main jobs for OWN DRAIN.' => 'In today weather conditions we would like to send you some information. Reference information and main jobs for RIVALS. ',
-    'In today weather we would like to send you some references and main jobs for PUMP.' => 'In today weather we would like to send you some information references and main jobs for POOL. ',
-    'In today weather we would like to send you some references and main jobs for ROBUSTA COFFEE (pot).' => 'In today weather conditions we would like to send you some references and main jobs for ROBUSTA COFFEE (pot). ',
-    'In today weather conditions we would like to send you some references and main jobs for ARABICA COFFEE (tea).' => 'In today weather conditions we would like to send you some reference information and main jobs for ARABICA COFFEE (tea). '
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ'=> 'In today weather we would like to send you some information reference and the main work for COFFEE ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY HỒ TIÊU.'=> 'In today weather conditions we would like to send you some information. reference information and main jobs for TREE TIRE. ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY SẦU RIÊNG.'=> 'In today weather conditions we would like to send you some information. Reference information and main jobs for RIVALS. ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY BƠ.'=> 'In today weather we would like to send you some information references and main jobs for POOL. ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÀ PHÊ ROBUSTA (vối).'=> 'In today weather conditions we would like to send you some references and main jobs for ROBUSTA COFFEE (pot). ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÀ PHÊ ARABICA (chè).'=> 'In today weather conditions we would like to send you some reference information and main jobs for ARABICA COFFEE (tea). '
 
 ];

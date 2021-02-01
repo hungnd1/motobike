@@ -135,4 +135,5 @@ return [
     'Đổi mật khẩu thành công' => '',
     'profile_notfound' => '@@@@',
     'tham_so_khong_hop_le' => '@@@@',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ.'=>'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ.'
 ];
