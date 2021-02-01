@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $display_name
+ * @property string $display_name_en
  * @property integer $order
  * @property integer $status
  */
@@ -31,7 +32,7 @@ class Feature extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['display_name'], 'string', 'max' => 255],
+            [['display_name','display_name_en'], 'string', 'max' => 255],
             [['display_name'], 'required'],
             [['order', 'status'], 'integer']
         ];

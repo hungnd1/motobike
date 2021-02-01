@@ -99,7 +99,7 @@ class FruitController extends ApiController
 
     public function actionGetFeature()
     {
-        $query = Feature::find()->andWhere(['status' => Feature::STATUS_ACTIVE])->orderBy(['order' => SORT_ASC]);
+        $query = \api\models\Feature::find()->andWhere(['status' => Feature::STATUS_ACTIVE])->orderBy(['order' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
