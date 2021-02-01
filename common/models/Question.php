@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $question
+ * @property string $question_en
  * @property integer $is_dropdown_list
  * @property integer $fruit_id
  */
@@ -29,7 +30,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question','answer'], 'string'],
+            [['question','question_en','answer'], 'string'],
             [['question','fruit_id','answer'], 'required'],
             [['is_dropdown_list','fruit_id'], 'integer'],
         ];

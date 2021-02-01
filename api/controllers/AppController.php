@@ -722,7 +722,7 @@ class AppController extends ApiController
         $subscriber = Yii::$app->user->identity;
         /** @var  $subscriber Subscriber */
 
-        $listQuestion = Question::find()
+        $listQuestion = \api\models\Question::find()
             ->andWhere(['fruit_id' => $fruit_id])
             ->all();
         $arrRes = [];
