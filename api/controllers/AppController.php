@@ -739,7 +739,11 @@ class AppController extends ApiController
             }
             $resAnswer['items'] = $arrAnswer;
             $arrRes['id'] = $question->id;
-            $arrRes['question'] = $question->question;
+            if(\Yii::$app->language == 'en') {
+                $arrRes['question'] = $question->question_en;
+            }else{
+                $arrRes['question'] = $question->question;
+            }
             $arrRes['is_dropdown_list'] = $question->is_dropdown_list;
             if (empty($resAnswer['items'])) {
                 $arrRes['answer'] = null;
