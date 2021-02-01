@@ -136,5 +136,10 @@ return [
     'profile_notfound' => '@@@@',
     'tham_so_khong_hop_le' => '@@@@',
     'Cám ơn bạn đã đánh giá nội dung này'=>'Thank you for feedback',
-    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ'=> 'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ'
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ'=> 'In today weather we would like to send you some information reference and the main work for COFFEE ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY HỒ TIÊU.'=> 'In today weather conditions we would like to send you some information. reference information and main jobs for TREE TIRE. ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY SẦU RIÊNG.'=> 'In today weather conditions we would like to send you some information. Reference information and main jobs for RIVALS. ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY BƠ.'=> 'In today weather we would like to send you some information references and main jobs for POOL. ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÀ PHÊ ROBUSTA (vối).'=> 'In today weather conditions we would like to send you some references and main jobs for ROBUSTA COFFEE (pot). ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÀ PHÊ ARABICA (chè).'=> 'In today weather conditions we would like to send you some reference information and main jobs for ARABICA COFFEE (tea). '
 ];
