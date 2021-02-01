@@ -1545,7 +1545,7 @@ return [
     'Ẩn' => '',
     'Ứng dụng' => '',
     'Ứng dụng đã được áp dụng cho một số quảng cáo. Không thể xóa' => '',
-    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ'=>'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ',
+    'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ.'=>'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY CÀ PHÊ',
     'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY HỒ TIÊU.'=>'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY HỒ TIÊU.',
     'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY SẦU RIÊNG.'=>'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY SẦU RIÊNG.',
     'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY BƠ.'=>'Trong điều kiện thời tiết hôm nay chúng tôi xin gửi đến bạn một số thông tin tham khảo và các công việc chính cho CÂY BƠ.',
