@@ -196,7 +196,28 @@ class CUtils
             '0127' => '081',
             '0124' => '084'
         ];
-
+        if(preg_match('/^(31|0|)(64)\d{7}$/', $mobileNumber, $matches)){
+            if ($typeFormat == 0) {
+                if ($matches[1] == '0' || $matches[1] == '') {
+                    $valid_number = preg_replace('/^(0|)/', '31', $mobileNumber);
+                } else {
+                    $valid_number = $mobileNumber;
+                }
+                $valid_number = CUtils::str_replace_first("31", "0", $valid_number);
+            } else if ($typeFormat == 1) {
+                if ($matches[1] == '31' || $matches[1] == '') {
+                    $valid_number = preg_replace('/^(31|)/', '0', $mobileNumber);
+                } else {
+                    $valid_number = $mobileNumber;
+                }
+            } else if ($typeFormat == 2) {
+                if ($matches[1] == '31' || $matches[1] == '0') {
+                    $valid_number = preg_replace('/^(31|0)/', '', $mobileNumber);
+                } else {
+                    $valid_number = $mobileNumber;
+                }
+            }
+        }
         if (preg_match('/^(84|0|)(89|86|97|96|98|162|163|164|165|166|167|168|169|90|93|120|121|122|126|128|91|94|123|124|125|127|129|92|188|186|99|199|32|33|34|35|36|37|38|39|78|76|77|79|70|85|83|82|81|84|85|565|567|568|569|582|583|584|585|586|587|588|589|563|564|562|599|598|593|592)\d{7}$/', $mobileNumber, $matches)) {
             /**
              * $typeFormat == 0: 8491xxxxxx
